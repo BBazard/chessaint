@@ -16,4 +16,11 @@ all : $(OBJS)
 # # # # # # # # # # # # #
 
 clean :
-	@(rm $(OBJS) $(BIN) 2> /dev/null ; echo "Cleaning test directory" || true)
+	(rm $(OBJS) 2> /dev/null ; echo "Cleaning test directory" || true)
+
+cleanbin :
+	(rm $(BIN) 2> /dev/null ; echo "Suppressing test binaries" || true)
+
+.PHONY : all clean cleanbin
+
+.SILENT :

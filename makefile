@@ -10,25 +10,29 @@ BUILDDIR=build
 CLEAN=noclean
 
 all : initdir dev test $(CLEAN)
-	@( echo "Build finished, build directory status : " ; echo $(CLEAN) )
+	( echo "All built, build directory status : $(CLEAN)" ; echo "" )
+	( echo "Thanks for using ChessAint's makefiles !" )
 
-dev :
-	@(cd $(DEVDIR) ; make all BINDIR=${CURDIR}/${BINDIR} BUILDDIR=${CURDIR}/${BUILDDIR}/dev CC=${CC} OPT=${OPT})
+dev : initdir $(CLEAN)
+	(cd $(DEVDIR) ; make all BINDIR=${CURDIR}/${BINDIR} BUILDDIR=${CURDIR}/${BUILDDIR}/dev CC=${CC} OPT=${OPT})
 
-test :
-	@(cd $(TESTDIR) ; make all BINDIR=${CURDIR}/${BINDIR} BUILDDIR=${CURDIR}/${BUILDDIR}/test CC=${CC})
-
-.PHONY : clean cleanall noclean
+test : initdir $(CLEAN)
+	(cd $(TESTDIR) ; make all BINDIR=${CURDIR}/${BINDIR} BUILDDIR=${CURDIR}/${BUILDDIR}/test CC=${CC})
 
 clean : 
-	@(cd $(DEVDIR) ; make clean BUILDDIR=${CURDIR}/${BUILDDIR}/dev)
-	@(cd $(TESTDIR) ; make clean BUILDDIR=${CURDIR}/${BUILDDIR}/test)
+	(cd $(DEVDIR) ; make clean BUILDDIR=${CURDIR}/${BUILDDIR}/dev)
+	(cd $(TESTDIR) ; make clean BUILDDIR=${CURDIR}/${BUILDDIR}/test)
 
 cleanall : clean
-	@(rmdir $(BUILDDIR)/dev 2> /dev/null ; rmdir $(BUILDDIR)/test 2> /dev/null ; echo "Suppressing dev and test directory" || true)
+	(cd $(DEVDIR) ; make cleanbin BINDIR=${CURDIR}/${BINDIR} )
+	(cd $(TESTDIR) ; make cleanbin BINDIR=${CURDIR}/${BINDIR} )
+	(rmdir $(BUILDDIR)/dev 2> /dev/null ; rmdir $(BUILDDIR)/test 2> /dev/null ; echo "Suppressing dev and test directory" || true)
 
 noclean :
-	@:
 
 initdir :
-	@(mkdir $(BUILDDIR)/dev 2> /dev/null ; mkdir $(BUILDDIR)/test 2> /dev/null ; echo "Creating $(BUILDDIR)/dev and $(BUILDDIR)/test" || true)
+	(mkdir $(BUILDDIR)/dev 2> /dev/null ; mkdir $(BUILDDIR)/test 2> /dev/null ; echo "Creating $(BUILDDIR)/dev and $(BUILDDIR)/test" || true)
+
+.PHONY : all dev test clean cleanall noclean initdir
+
+.SILENT :

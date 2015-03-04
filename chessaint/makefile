@@ -1,47 +1,48 @@
 CC=gcc
-OPT=-g
+OPT=
 FLAGS=
 LIBS=
-BINDIR=../bin/
-BUILDIR=../build/
-OBJS=$(BUILDIR)astar.o $(BUILDIR)chessboard.o $(BUILDIR)generate.o $(BUILDIR)graph.o $(BUILDIR)heuristic.o $(BUILDIR)ingui.o $(BUILDIR)list.o $(BUILDIR)main.o $(BUILDIR)notations.o $(BUILDIR)outgui.o $(BUILDIR)uci.o
+BINDIR=.
+BUILDDIR=.
+OBJS=$(BUILDDIR)/astar.o $(BUILDDIR)/chessboard.o $(BUILDDIR)/generate.o $(BUILDDIR)/graph.o $(BUILDDIR)/heuristic.o $(BUILDDIR)/ingui.o $(BUILDDIR)/list.o $(BUILDDIR)/main.o $(BUILDDIR)/notations.o $(BUILDDIR)/outgui.o $(BUILDDIR)/uci.o
 
 build : $(OBJS)
+	$(CC) $(OPT) -o $(BINDIR)/chessaint $(OBJS)
 
-cleanall : build clean
+buildclean : build clean
 
-$(BUILDIR)astar.o : src/astar.c include/astar.h
-	$(CC) $(OPT) -o $(BUILDIR)astar.o -c src/astar.c
+$(BUILDDIR)/astar.o : src/astar.c include/astar.h
+	$(CC) $(OPT) -o $(BUILDDIR)/astar.o -c src/astar.c
 
-$(BUILDIR)chessboard.o : src/chessboard.c include/chessboard.h
-	$(CC) $(OPT) -o $(BUILDIR)chessboard.o -c src/chessboard.c
+$(BUILDDIR)/chessboard.o : src/chessboard.c include/chessboard.h
+	$(CC) $(OPT) -o $(BUILDDIR)/chessboard.o -c src/chessboard.c
 
-$(BUILDIR)generate.o : src/generate.c include/generate.h
-	$(CC) $(OPT) -o $(BUILDIR)generate.o -c src/generate.c
+$(BUILDDIR)/generate.o : src/generate.c include/generate.h
+	$(CC) $(OPT) -o $(BUILDDIR)/generate.o -c src/generate.c
 
-$(BUILDIR)graph.o : src/graph.c include/graph.h
-	$(CC) $(OPT) -o $(BUILDIR)graph.o -c src/graph.c
+$(BUILDDIR)/graph.o : src/graph.c include/graph.h
+	$(CC) $(OPT) -o $(BUILDDIR)/graph.o -c src/graph.c
 
-$(BUILDIR)heuristic.o : src/heuristic.c include/heuristic.h
-	$(CC) $(OPT) -o $(BUILDIR)heuristic.o -c src/heuristic.c
+$(BUILDDIR)/heuristic.o : src/heuristic.c include/heuristic.h
+	$(CC) $(OPT) -o $(BUILDDIR)/heuristic.o -c src/heuristic.c
 
-$(BUILDIR)ingui.o : src/ingui.c include/ingui.h
-	$(CC) $(OPT) -o $(BUILDIR)ingui.o -c src/ingui.c
+$(BUILDDIR)/ingui.o : src/ingui.c include/ingui.h
+	$(CC) $(OPT) -o $(BUILDDIR)/ingui.o -c src/ingui.c
 
-$(BUILDIR)list.o : src/list.c include/list.h
-	$(CC) $(OPT) -o $(BUILDIR)list.o -c src/list.c
+$(BUILDDIR)/list.o : src/list.c include/list.h
+	$(CC) $(OPT) -o $(BUILDDIR)/list.o -c src/list.c
 
-$(BUILDIR)main.o : src/main.c
-	$(CC) $(OPT) -o $(BUILDIR)main.o -c src/main.c
+$(BUILDDIR)/main.o : src/main.c
+	$(CC) $(OPT) -o $(BUILDDIR)/main.o -c src/main.c
 
-$(BUILDIR)notations.o : src/notations.c include/notations.h
-	$(CC) $(OPT) -o $(BUILDIR)notations.o -c src/notations.c
+$(BUILDDIR)/notations.o : src/notations.c include/notations.h
+	$(CC) $(OPT) -o $(BUILDDIR)/notations.o -c src/notations.c
 
-$(BUILDIR)outgui.o : src/outgui.c include/outgui.h
-	$(CC) $(OPT) -o $(BUILDIR)outgui.o -c src/outgui.c
+$(BUILDDIR)/outgui.o : src/outgui.c include/outgui.h
+	$(CC) $(OPT) -o $(BUILDDIR)/outgui.o -c src/outgui.c
 
-$(BUILDIR)uci.o : src/uci.c include/uci.h
-	$(CC) $(OPT) -o $(BUILDIR)uci.o -c src/uci.c
+$(BUILDDIR)/uci.o : src/uci.c include/uci.h
+	$(CC) $(OPT) -o $(BUILDDIR)/uci.o -c src/uci.c
 
 clean :
 	rm $(OBJS)

@@ -5,11 +5,9 @@ LIBS=
 BINDIR=.
 BUILDDIR=.
 OBJS=
+BIN=
 
 all : $(OBJS)
-	touch $(BUILDDIR)/test.o ; touch $(BINDIR)/test
-
-allclean : all clean
 
 # # # # # # # # # # # # #
 
@@ -18,4 +16,4 @@ allclean : all clean
 # # # # # # # # # # # # #
 
 clean :
-	rm $(OBJS)
+	@(rm $(OBJS) $(BIN) 2> /dev/null ; echo "Cleaning test directory" || true)

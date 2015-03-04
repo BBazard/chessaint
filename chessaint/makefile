@@ -6,10 +6,10 @@ BINDIR=.
 BUILDDIR=.
 OBJS=$(BUILDDIR)/astar.o $(BUILDDIR)/chessboard.o $(BUILDDIR)/generate.o $(BUILDDIR)/graph.o $(BUILDDIR)/heuristic.o $(BUILDDIR)/ingui.o $(BUILDDIR)/list.o $(BUILDDIR)/main.o $(BUILDDIR)/notations.o $(BUILDDIR)/outgui.o $(BUILDDIR)/uci.o
 
-build : $(OBJS)
+all : $(OBJS)
 	$(CC) $(OPT) -o $(BINDIR)/chessaint $(OBJS)
 
-buildclean : build clean
+allclean : all clean
 
 $(BUILDDIR)/astar.o : src/astar.c include/astar.h
 	$(CC) $(OPT) -o $(BUILDDIR)/astar.o -c src/astar.c

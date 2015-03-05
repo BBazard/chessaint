@@ -10,6 +10,8 @@ OBJS=$(BUILDDIR)/astar.o $(BUILDDIR)/chessboard.o $(BUILDDIR)/generate.o $(BUILD
 all : $(OBJS)
 	( $(CC) $(OPT) -o $(BINDIR)/chessaint $(OBJS) ; echo "Creating binary file in : $(BINDIR)" )
 
+.PHONY : all clean cleanbin
+
 $(BUILDDIR)/astar.o : src/astar.c include/astar.h
 	$(CC) $(OPT) -o $(BUILDDIR)/astar.o -c src/astar.c
 	echo "Creating object astar.o"
@@ -59,7 +61,3 @@ clean :
 
 cleanbin :
 	(rm $(BIN) 2> /dev/null ; echo "Suppressing dev binary" || true)
-
-.PHONY : all clean cleanbin
-
-.SILENT :

@@ -9,6 +9,10 @@ BIN=
 
 all : $(OBJS)
 
+.PHONY : all clean cleanbin
+
+.SILENT :
+
 # # # # # # # # # # # # #
 
 # HERE THE OBJS TO MAKE #
@@ -20,7 +24,3 @@ clean :
 
 cleanbin :
 	(rm $(BIN) 2> /dev/null ; echo "Suppressing test binaries" || true)
-
-.PHONY : all clean cleanbin
-
-.SILENT :

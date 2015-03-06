@@ -1,15 +1,18 @@
-export CC=gcc
+export CC=clang
 export OPT=-g
-export CFLAGS=${OPT}
+export CFLAGS=$(OPT)
 export LDFLAGS=
 
 CLEAN=noclean
 
 export TRUNK=$(shell pwd)
-export RELEASEDIR=${TRUNK}/chessaint
-export TESTSDIR=${TRUNK}/tests/unit
-export BINDIR=${TRUNK}/bin
-export BUILDDIR=${TRUNK}/build
+export RELEASEDIR=$(TRUNK)/chessaint
+export TESTSDIR=$(TRUNK)/tests/unit
+export BINDIR=$(TRUNK)/bin
+export BUILDDIR=$(TRUNK)/build
+
+export EXECUTABLENAME="chessaint"
+export TESTSNAME="runtests"
 
 all : release tests $(CLEAN)
 	echo "All built, build directory status : $(CLEAN)"
@@ -20,16 +23,16 @@ all : release tests $(CLEAN)
 .SILENT :
 
 release :
-	make -seC $(RELEASEDIR) BUILDDIR=${BUILDDIR}/release
+	make -seC $(RELEASEDIR) BUILDDIR=$(BUILDDIR)/release
 .PHONY : release
 
 tests :
-	make -seC $(TESTSDIR) BUILDDIR=${BUILDDIR}/tests
+	make -seC $(TESTSDIR) BUILDDIR=$(BUILDDIR)/tests
 .PHONY : tests
 
 clean :
-	make -seC $(RELEASEDIR) clean BUILDDIR=${BUILDDIR}/release
-	make -seC $(TESTSDIR) clean BUILDDIR=${BUILDDIR}/tests
+	make -seC $(RELEASEDIR) clean BUILDDIR=$(BUILDDIR)/release
+	make -seC $(TESTSDIR) clean BUILDDIR=$(BUILDDIR)/tests
 .PHONY : clean
 
 cleanall : clean

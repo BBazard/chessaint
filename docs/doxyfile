@@ -1,0 +1,19 @@
+#Doxygen 1.8.1.1
+
+PROJECT_NAME = "ChessAint"
+
+PROJECT_BRIEF = "This project is a chess engine"
+
+OUTPUT_DIRECTORY = "."
+
+INPUT = ../
+
+#FILE_PATTERNS = *.c *.h
+
+RECURSIVE = YES 
+
+EXTRACT_ALL = YES
+
+GENERATE_HTML = YES
+
+GENERATE_LATEX = NO

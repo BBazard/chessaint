@@ -1,16 +1,13 @@
-CC=gcc
-OPT=
-FLAGS=
-LIBS=
-BINDIR=.
-BUILDDIR=.
-BIN=$(BINDIR)/chessaint
+ifeq (${MAKELEVEL}, 0)
+error:
+	@echo "Error : this makefile must be called from another makefile"
+else
+
 OBJS=$(BUILDDIR)/astar.o $(BUILDDIR)/chessboard.o $(BUILDDIR)/generate.o $(BUILDDIR)/graph.o $(BUILDDIR)/heuristic.o $(BUILDDIR)/ingui.o $(BUILDDIR)/list.o $(BUILDDIR)/main.o $(BUILDDIR)/notations.o $(BUILDDIR)/outgui.o $(BUILDDIR)/uci.o
 
 all : $(OBJS)
-	( $(CC) $(OPT) -o $(BINDIR)/chessaint $(OBJS) ; echo "Creating binary file in : $(BINDIR)" )
-
-.PHONY : all clean cleanbin
+	$(CC) $(OPT) -o $(BINDIR)/chessaint $(OBJS) ; echo "Creating binary file in : $(BINDIR)"
+.PHONY : all
 
 $(BUILDDIR)/astar.o : src/astar.c include/astar.h
 	$(CC) $(OPT) -o $(BUILDDIR)/astar.o -c src/astar.c
@@ -57,7 +54,12 @@ $(BUILDDIR)/uci.o : src/uci.c include/uci.h
 	echo "Creating object uci.o"
 
 clean :
-	(rm $(OBJS) 2> /dev/null ; echo "Cleaning dev directory" || true)
+	rm $(OBJS) 2> /dev/null ; echo "Cleaning release directory" || true
+.PHONY : clean
 
 cleanbin :
-	(rm $(BIN) 2> /dev/null ; echo "Suppressing dev binary" || true)
+	rm $(BIN) 2> /dev/null ; echo "Suppressing release binary" || true
+.PHONY : cleanbin
+
+endif
+

@@ -1,17 +1,13 @@
-CC=gcc
-OPT=-g
-FLAGS=
-LIBS=
-BINDIR=.
-BUILDDIR=.
+ifeq (${MAKELEVEL}, 0)
+error:
+	@echo "Error : this makefile must be called from another makefile"
+else
+
 OBJS=
-BIN=
 
 all : $(OBJS)
 
 .PHONY : all clean cleanbin
-
-.SILENT :
 
 # # # # # # # # # # # # #
 
@@ -20,7 +16,10 @@ all : $(OBJS)
 # # # # # # # # # # # # #
 
 clean :
-	(rm $(OBJS) 2> /dev/null ; echo "Cleaning test directory" || true)
+	rm $(OBJS) 2> /dev/null ; echo "Cleaning debug directory" || true
 
 cleanbin :
-	(rm $(BIN) 2> /dev/null ; echo "Suppressing test binaries" || true)
+	rm $(BIN) 2> /dev/null ; echo "Suppressing debug binaries" || true
+
+endif
+

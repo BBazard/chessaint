@@ -45,14 +45,15 @@ enum Color {
  *
  */
 
-typedef struct arc {
+typedef struct Arc Arc;
+struct Arc {
   int id; /**< The id of the arc */
   char* from; /**< from  */
   char* to; /**< to */
   int score; /**< The cumulated score of the move */
   enum Set whichSet; /**< The set in which is the arc for the astar calculation */
   enum Color whoPlays; /**< The player by whom was played the move */
-} Arc;
+};
 
 /** 
  *  @struct Element
@@ -60,10 +61,11 @@ typedef struct arc {
  *
  */
 
-typedef struct element {
+typedef struct Element Element;
+struct Element {
   Arc value; /**< The value of the element, an arc */
   struct element *next; /**< The link to the next element of the list */
-} Element; 
+}; 
 
 typedef Element *Llist;
 

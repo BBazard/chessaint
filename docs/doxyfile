@@ -8,7 +8,7 @@ OUTPUT_DIRECTORY = "."
 
 INPUT = ../
 
-#FILE_PATTERNS = *.c *.h
+#FILE_PATTERNS = *.c, *.h
 
 RECURSIVE = YES 
 

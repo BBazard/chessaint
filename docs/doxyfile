@@ -4,11 +4,9 @@ PROJECT_NAME = "ChessAint"
 
 PROJECT_BRIEF = "This project is a chess engine"
 
-OUTPUT_DIRECTORY = "."
+OUTPUT_DIRECTORY = docs
 
 INPUT = ../
-
-#FILE_PATTERNS = *.c, *.h
 
 RECURSIVE = YES 
 

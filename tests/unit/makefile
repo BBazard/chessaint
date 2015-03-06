@@ -6,8 +6,7 @@ else
 OBJS=
 
 all : $(OBJS)
-
-.PHONY : all clean cleanbin
+.PHONY : all
 
 # # # # # # # # # # # # #
 
@@ -16,10 +15,12 @@ all : $(OBJS)
 # # # # # # # # # # # # #
 
 clean :
-	rm $(OBJS) 2> /dev/null ; echo "Cleaning debug directory" || true
+	rm -f $(OBJS) ; echo "Cleaning debug directory"
+.PHONY : clean
 
 cleanbin :
-	rm $(BIN) 2> /dev/null ; echo "Suppressing debug binaries" || true
+	rm -f $(BIN) ; echo "Suppressing debug binaries"
+.PHONY : cleanbin
 
 endif
 

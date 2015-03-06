@@ -20,14 +20,14 @@ all : release tests $(CLEAN)
 .SILENT :
 
 release :
-	make -seC $(RELEASEDIR) BUILDDIR=${BUILDDIR}/release 
+	make -seC $(RELEASEDIR) BUILDDIR=${BUILDDIR}/release
 .PHONY : release
 
 tests :
-	make -seC $(TESTSDIR) BUILDDIR=${BUILDDIR}/tests 
+	make -seC $(TESTSDIR) BUILDDIR=${BUILDDIR}/tests
 .PHONY : tests
 
-clean : 
+clean :
 	make -seC $(RELEASEDIR) clean BUILDDIR=${BUILDDIR}/release
 	make -seC $(TESTSDIR) clean BUILDDIR=${BUILDDIR}/tests
 .PHONY : clean

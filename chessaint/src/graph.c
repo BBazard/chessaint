@@ -44,7 +44,7 @@ void llist_add (Arc newvalue, Llist *list) {
 
 /** 
  *  @fn Arc llist_suppr (Llist *list) 
- *  @bried Suppress and element
+ *  @brief Suppress and element
  *  @param[in,out] list Pointer on the targeted Llist, not NULL normally
  *  @return First object in the list, NULL if the list was empty.
  *

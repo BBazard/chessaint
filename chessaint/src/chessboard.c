@@ -1,4 +1,5 @@
-
+#include <ctype.h>
+#include <unistd.h>
 #include "../include/chessboard.h"
 
 int color[64] = {
@@ -29,7 +30,7 @@ char pieceChar[12] = {
 
 void initBoardToStartPos(char *board) {
 	int i;
-	for(i=0;i<=63;++i) {
+	for(i=0;i<=63;++i) { /*Starting from a8 to h1 */
 		switch (color[i]) {
 			case WHITE:
 				board[i]=pieceChar[piece[i]];
@@ -46,11 +47,35 @@ void initBoardToStartPos(char *board) {
 
 void printBoard(char *board) {
 	int i;
-	for(i=0;i<=63;i++) {
+	for(i=0;i<=63;++i) {
 		printf("|%c", board[i] );
 
 		if((i+1)%8==0) {
 			printf("|\n");
 		}
+	}
+}
+
+void fenToBoard(char *board, char *fenString) {
+	int i=0;
+	int j=0; /* FEN strings are describing position from a8... (b8... h8... a7...) ... h1 ans SO IS OUR BOARD */
+	int k;
+	while(fenString[i]!=' ') { /* While we're readind the field that interests us */
+		if (fenString[i]=='/') { /* Means we're changing rank (8->7 or 5->4 etc.) */
+			++i;
+		}
+		else {	
+			if (isalpha(fenString[i])) { /* Is it a character from ctype.h library ? */
+				board[j]=fenString[i];
+				++j;
+			}
+			else { /* If we're considering a number in the fen string it means the number of empty case(s) in the rank so we need to put this in our board */
+				for(k=1;k<=atoi(&fenString[i]);++k) {
+					board[j]=' ';
+					++j;
+				}
+			}
+			++i;
+		}	
 	}
 }

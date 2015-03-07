@@ -26,9 +26,15 @@ int piece[64];
 char pieceChar[12];
 
 char board[64]; /* K, Q, R, B, N, P and space for empty cases */
+char board2[64];
+char board3[64];
 
 void initBoardToStartPos(char *board); /* Prepare a new board */
 
 void printBoard(char *board); /* Print the board in a given state */
+
+void fenToBoard(char *board,char *fenString); /* Get the board corresponding to a given FEN string has in the UCI command "position [fen|startpos] moves ..." */
+
+
 
 #endif

@@ -1,7 +1,7 @@
-/* Copyright 2015 <Copyright Owner> */
+/* Copyright 2015 Hugo GANGLOFF */
 
-#ifndef CHESSBOARD_SUITE_H_
-#define CHESSBOARD_SUITE_H_
+#ifndef TRUNK_TESTS_UNIT_INCLUDE_CHESSBOARD_SUITE_H_
+#define TRUNK_TESTS_UNIT_INCLUDE_CHESSBOARD_SUITE_H_
 
 #include "CUnit/Basic.h"
 
@@ -15,4 +15,6 @@ void testNormalValues(void);
 
 /*void testErrorValues(void); */
 
-#endif 
+#endif /*TRUNK_TESTS_UNIT_INCLUDE_CHESSBOARD_SUITE_H_*/
+
+

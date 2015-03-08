@@ -1,4 +1,4 @@
-/* Copyright 2015 <Copyright Owner> */
+/* Copyright 2015 Hugo GANGLOFF */
 
 /*
  *  Simple example of a CUnit unit test.
@@ -31,7 +31,8 @@ int main() {
     return CU_get_error();
 
   /* add a suite to the registry */
-  pSuite = CU_add_suite("Suite chessboard", init_suite_chessboard, clean_suite_chessboard);
+  pSuite = CU_add_suite("Suite chessboard",
+    init_suite_chessboard, clean_suite_chessboard);
   if (NULL == pSuite) {
     CU_cleanup_registry();
     return CU_get_error();

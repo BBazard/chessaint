@@ -64,7 +64,7 @@ struct Arc {
 typedef struct Element Element;
 struct Element {
   Arc value; /**< The value of the element, an arc */
-  struct element *next; /**< The link to the next element of the list */
+  struct Element *next; /**< The link to the next element of the list */
 }; 
 
 typedef Element *Llist;

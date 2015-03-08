@@ -25,5 +25,5 @@ int clean_suite_graph(void) {
   return 0;
 }
 
-void test_create_arc(void) {
+void test_(void) {
 

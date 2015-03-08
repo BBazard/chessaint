@@ -32,7 +32,7 @@ int main() {
     return CU_get_error();
 
   /* add a suite to the registry */
-  pSuite = CU_add_suite("Suite graph", init_suite_fileA, clean_suite_fileA);
+  pSuite = CU_add_suite("Suite graph", init_suite_graph, clean_suite_graph);
   if (NULL == pSuite) {
     CU_cleanup_registry();
     return CU_get_error();
@@ -41,7 +41,7 @@ int main() {
   /* add the tests to the suite */
   /* all the functions in fileA_suite.h must be added */
   if ((NULL == CU_add_test(pSuite,
-          "Test of Arc structure", test_create_arc)) ||
+          "Test of", test_)) ||
      (NULL == CU_add_test(pSuite,
           "", ))) {
     CU_cleanup_registry();

@@ -7,4 +7,4 @@ int init_suite_graph(void);
 
 int clean_suite_graph(void);
 
-int test_create_arc(void);
+int test_llist_add(void);

@@ -12,6 +12,7 @@
 
 /* use the basic interface */
 #include "CUnit/Basic.h"
+//#include "CUnit/MyMem.h"
 
 /* the file to test */
 #include "../../../chessaint/include/graph.h"
@@ -41,7 +42,7 @@ int main() {
   /* add the tests to the suite */
   /* all the functions in fileA_suite.h must be added */
   if ((NULL == CU_add_test(pSuite,
-          "Test of", test_)) ||
+          "Test of the adding function in a linked list", test_llist_add)) ||
      (NULL == CU_add_test(pSuite,
           "", ))) {
     CU_cleanup_registry();

@@ -25,5 +25,25 @@ int clean_suite_graph(void) {
   return 0;
 }
 
-void test_(void) {
+void init_arc(Arc *arc) {
+  *arc.id=0;
+  *arc.from="e4";
+  *arc.to="e5";
+  *arc.score=5;
+  *arc.whichSet=none;
+  *arc.whoPlays=white;
 
+}
+
+void test_llist_add(void) {
+  Llist list=NULL;
+  
+  Arc arc;
+  init_arc(&arc);
+
+  CU_ASSERT_PTR_NULL(list);
+
+  llist_add(arc,&list);
+
+  CU_ASSERT_EQUAL(list->value,arc);
+  

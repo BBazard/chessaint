@@ -1,21 +1,25 @@
 ifeq ($(MAKELEVEL), 0)
 error:
 	@echo "Error : this makefile must be called from another makefile"
+.PHONY : error
 else
-
-#need to do if blabla && blabla
-
-#ifneq ($(BUILDTYPE), debug)
-#error:
-#	@echo "Error : wrong buildtype : $(BUILDTYPE)"
-#else
-#ifneq ($(BUILDTYPE), release)
-#error:
-#	@echo "Error : wrong buildtype : $(BUILDTYPE)"
-#else
-
 ifeq ($(BUILDTYPE), debug)
-	CFLAGS+=$(DEBUGCFLAGS)
+
+CFLAGS+=$(DEBUGCFLAGS)
+
+target: $(MAKECMDGOALS)
+.PHONY : target
+
+else
+ifeq ($(BUILDTYPE), release)
+target: $(MAKECMDGOALS)
+.PHONY : target
+else
+error:
+	@echo "Error : wrong buildtype : $(BUILDTYPE)"
+.PHONY : error
+endif
+endif
 endif
 
 OUTPUTDIR=$(BUILDDIR)/$(BUILDTYPE)
@@ -81,7 +85,4 @@ cleanbin :
 	echo "Suppressing $(BUILDTYPE) binary"
 .PHONY : cleanbin
 
-endif
-#endif
-#endif
 

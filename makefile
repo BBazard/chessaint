@@ -29,11 +29,11 @@ all : release debug tests doc
 .SILENT :
 
 release :
-	$(MAKE) $(PROJECTDIR) BUILDTYPE=release
+	$(MAKE) $(PROJECTDIR) all BUILDTYPE=release
 .PHONY : release
 
 debug :
-	$(MAKE) $(PROJECTDIR) BUILDTYPE=debug
+	$(MAKE) $(PROJECTDIR) all BUILDTYPE=debug
 .PHONY : debug
 
 tests :

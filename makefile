@@ -13,7 +13,7 @@ export DOCDIR=$(TRUNK)/docs
 export EXECUTABLENAME="chessaint"
 export TESTSNAME="runtests"
 
-export MAKE=make -seC
+export MAKE=make -se
 
 export BUILDTYPE=debug
 
@@ -29,15 +29,15 @@ all : release debug tests doc
 .SILENT :
 
 release :
-	$(MAKE) $(PROJECTDIR) all BUILDTYPE=release
+	$(MAKE) -C $(PROJECTDIR) all BUILDTYPE=release
 .PHONY : release
 
 debug :
-	$(MAKE) $(PROJECTDIR) all BUILDTYPE=debug
+	$(MAKE) -C $(PROJECTDIR) all BUILDTYPE=debug
 .PHONY : debug
 
 tests :
-	$(MAKE) $(TESTSDIR) BUILDTYPE=tests
+	$(MAKE) -C $(TESTSDIR) BUILDTYPE=tests
 .PHONY : tests
 
 doc :
@@ -56,15 +56,15 @@ cleanall : clean cleanbin cleandoc
 .PHONY : cleanall
 
 clean :
-	$(MAKE) $(PROJECTDIR) clean BUILDTYPE=release
-	$(MAKE) $(PROJECTDIR) clean BUILDTYPE=debug
-	$(MAKE) $(TESTSDIR) clean BUILDTYPE=tests
+	$(MAKE) -C $(PROJECTDIR) clean BUILDTYPE=release
+	$(MAKE) -C $(PROJECTDIR) clean BUILDTYPE=debug
+	$(MAKE) -C $(TESTSDIR) clean BUILDTYPE=tests
 .PHONY : clean
 
 cleanbin :
-	$(MAKE) $(PROJECTDIR) cleanbin BUILDTYPE=release
-	$(MAKE) $(PROJECTDIR) cleanbin BUILDTYPE=debug
-	$(MAKE) $(TESTSDIR) cleanbin BUILDTYPE=tests
+	$(MAKE) -C $(PROJECTDIR) cleanbin BUILDTYPE=release
+	$(MAKE) -C $(PROJECTDIR) cleanbin BUILDTYPE=debug
+	$(MAKE) -C $(TESTSDIR) cleanbin BUILDTYPE=tests
 .PHONY : cleanbin
 
 noclean :

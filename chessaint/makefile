@@ -84,5 +84,3 @@ cleanbin :
 	rm -f $(BINDIR)/${BUILDTYPE}$(EXECUTABLENAME)
 	echo "Suppressing $(BUILDTYPE) binary"
 .PHONY : cleanbin
-
-

@@ -14,7 +14,7 @@ OBJS=$(OUTPUTDIR)/cunit_chessboard.o $(OUTPUTDIR)/chessboard_suite.o $(OUTPUTDIR
 
 all : $(OBJS)
 	$(CC) $(CFLAGS) -o $(BINDIR)/$(TESTSNAME) $(OBJS) $(LDFLAGS)
-	echo "Creating chessboard.tests"
+	echo "Creating $(TESTSNAME)"
 .PHONY : all
 
 $(OUTPUTDIR)/cunit_chessboard.o : src/cunit_chessboard.c 

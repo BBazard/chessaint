@@ -8,6 +8,7 @@ export PROJECTDIR=$(TRUNK)/chessaint
 export TESTSDIR=$(TRUNK)/tests/unit
 export BINDIR=$(TRUNK)/bin
 export BUILDDIR=$(TRUNK)/build
+export DEPENDIR=$(BUILDDIR)/dependencies
 export DOCDIR=$(TRUNK)/docs
 
 export EXECUTABLENAME="chessaint"
@@ -20,7 +21,7 @@ export BUILDTYPE=debug
 default : debug tests
 	echo "All built"
 	echo ""
-	echo "Thanks for using ChessAint's makefiles !"
+	#echo -e "\033[0;31mThanks for using ChessAint's makefiles !\033[0m"
 .PHONY : default
 
 all : release debug tests doc

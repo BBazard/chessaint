@@ -5,7 +5,7 @@ error:
 else
 ifeq ($(BUILDTYPE), debug)
 
-CFLAGS+=$(DEBUGCFLAGS) -MD
+CFLAGS+=$(DEBUGCFLAGS)
 target: $(MAKECMDGOALS)
 .PHONY : target
 
@@ -23,20 +23,19 @@ endif
 
 OUTPUTDIR=$(BUILDDIR)/$(BUILDTYPE)
 
-DEP=$(patsubst src/%.c,$(OUTPUTDIR)/%.d,$(wildcard src/*.c))
 OBJS=$(patsubst src/%.c,$(OUTPUTDIR)/%.o,$(wildcard src/*.c))
 
-all : $(DEP) $(OBJS)
+all : $(OBJS)
 	$(CC) $(CFLAGS) -o $(BINDIR)/${BUILDTYPE}$(EXECUTABLENAME) $(OBJS)
 	echo "Creating binary file in : $(BINDIR)"
 .PHONY : all
 
-$(OUPUTDIR)/%.d : src/%.c
-	$(CC) -MDE $<
-	echo "Listing dependencies $(@F)"
+-include $(DEPENDIR)/$(OBJS:.o=.d)
 
-
-#-include $(DEP) 
+$(OUTPUTDIR)/%.o : src/%.c
+	$(CC) -c $(CFLAGS) $< -o $@
+	$(CC) -MM $(CFLAGS) $< -o $(DEPENDIR)/$*.d
+	echo "Creating object file $(@F)"
 
 clean :
 	rm -f $(OBJS)

@@ -11,7 +11,9 @@ int init_suite_chessboard(void);
 
 int clean_suite_chessboard(void);
 
-void testNormalValues(void);
+void testInitAndFenChessboard(void);
+
+void testPieceMoving(void);
 
 /*void testErrorValues(void); */
 

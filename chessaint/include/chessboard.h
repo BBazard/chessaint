@@ -48,4 +48,9 @@ void printBoard(char *board); /* Print the board in a given state */
 void fenToBoard(char *board, char *fenString);
 /* Get the board corresponding to a given FEN string has */
 /*in the UCI command "position [fen|startpos] moves ..." */
+
+void humanVHuman(); /*Basic HumanVHuman game, this function must grow*/
+
+void moveBoard(char *move, char *board); /*Only plays a move */
+
 #endif /*TRUNK_CHESSAINT_INCLUDE_CHESSBOARD_H_*/

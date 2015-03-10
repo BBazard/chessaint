@@ -1,19 +1,27 @@
 ifeq ($(MAKELEVEL), 0)
 error:
 	@echo "Error : this makefile must be called from another makefile"
+.PHONY : error
 else
-
-ifneq ($(BUILDTYPE), tests)
+ifeq ($(BUILDTYPE), debug)
+else
+ifeq ($(BUILDTYPE), release)
+else
 error:
 	@echo "Error : wrong buildtype : $(BUILDTYPE)"
-else
+.PHONY : error
+endif
+endif
+endif
 
-OUTPUTDIR=$(BUILDDIR)/$(BUILDTYPE)
+DIRTOTEST=$(BUILDDIR)/$(BUILDTYPE)
+OUTPUTDIR=$(BUILDDIR)/tests
 
-OBJS=$(OUTPUTDIR)/cunit_chessboard.o $(OUTPUTDIR)/chessboard_suite.o $(OUTPUTDIR)/chessboard.o
+TESTSOBJS=$(OUTPUTDIR)/cunit_chessboard.o $(OUTPUTDIR)/chessboard_suite.o
+PROJECTOBJS=$(DIRTOTEST)/chessboard.o
 
-all : $(OBJS)
-	$(CC) $(CFLAGS) -o $(BINDIR)/$(TESTSNAME) $(OBJS) $(LDFLAGS)
+all : $(TESTSOBJS)
+	$(CC) $(CFLAGS) -o $(BINDIR)/${BUILDTYPE}${TESTSNAME} $(PROJECTOBJS) $(TESTSOBJS) $(LDFLAGS)
 	echo "Creating $(TESTSNAME)"
 .PHONY : all
 
@@ -21,25 +29,18 @@ $(OUTPUTDIR)/cunit_chessboard.o : src/cunit_chessboard.c
 	$(CC) $(CFLAGS) -o $(OUTPUTDIR)/cunit_chessboard.o -c src/cunit_chessboard.c
 	echo "Creating cunit_chessboard.o"
 
-$(OUTPUTDIR)/chessboard_suite.o : src/chessboard_suite.o include/chessboard_suite.h
+$(OUTPUTDIR)/chessboard_suite.o : src/chessboard_suite.c include/chessboard_suite.h
 	$(CC) $(CFLAGS) -o $(OUTPUTDIR)/chessboard_suite.o -c src/chessboard_suite.c
 	echo "Creating chessboard_suite.o"
 
-$(OUTPUTDIR)/chessboard.o : $(TRUNK)/chessaint/src/chessboard.c $(TRUNK)/chessaint/include/chessboard.h
-	$(CC) $(CFLAGS) -o $(OUTPUTDIR)/chessboard.o -c $(TRUNK)/chessaint/src/chessboard.c
-	echo "Creating chessboard.o"
-
 
 clean :
-	rm -f $(OBJS)
+	rm -f $(TESTSOBJS)
 	echo "Cleaning $(BUILDTYPE) directory"
 .PHONY : clean
 
 cleanbin :
-	rm -f $(BINDIR)/$(TESTSNAME)
+	rm -f $(BINDIR)/${BUILDTYPE}${TESTSNAME}
 	echo "Suppressing $(BUILDTYPE) binaries"
 .PHONY : cleanbin
-
-endif
-endif
 

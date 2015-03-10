@@ -24,7 +24,7 @@ default : debug tests
 	#echo -e "\033[0;31mThanks for using ChessAint's makefiles !\033[0m"
 .PHONY : default
 
-all : release debug tests doc
+all : release debug alltests doc
 .PHONY : all
 
 .SILENT :
@@ -37,9 +37,16 @@ debug :
 	$(MAKE) -C $(PROJECTDIR) all BUILDTYPE=debug
 .PHONY : debug
 
-tests :
-	$(MAKE) -C $(TESTSDIR) BUILDTYPE=tests
-.PHONY : tests
+alltests : releasetests debugtests
+.PHONY : alltests
+
+releasetests : release
+	$(MAKE) -C $(TESTSDIR) BUILDTYPE=release
+.PHONY : releasetests
+
+debugtests : debug
+	$(MAKE) -C $(TESTSDIR) BUILDTYPE=debug
+.PHONY : debugtests
 
 doc :
 	doxygen $(DOCDIR)/doxyfile
@@ -50,23 +57,20 @@ cleandoc :
 	echo "Deleting doc"
 .PHONY : cleandoc
 
-nodoc:
-.PHONY : nodoc
-
 cleanall : clean cleanbin cleandoc
 .PHONY : cleanall
 
 clean :
 	$(MAKE) -C $(PROJECTDIR) clean BUILDTYPE=release
 	$(MAKE) -C $(PROJECTDIR) clean BUILDTYPE=debug
-	$(MAKE) -C $(TESTSDIR) clean BUILDTYPE=tests
+	$(MAKE) -C $(TESTSDIR) clean BUILDTYPE=release
+	$(MAKE) -C $(TESTSDIR) clean BUILDTYPE=debug
 .PHONY : clean
 
 cleanbin :
 	$(MAKE) -C $(PROJECTDIR) cleanbin BUILDTYPE=release
 	$(MAKE) -C $(PROJECTDIR) cleanbin BUILDTYPE=debug
-	$(MAKE) -C $(TESTSDIR) cleanbin BUILDTYPE=tests
+	$(MAKE) -C $(TESTSDIR) cleanbin BUILDTYPE=release
+	$(MAKE) -C $(TESTSDIR) cleanbin BUILDTYPE=debug
 .PHONY : cleanbin
 
-noclean :
-.PHONY : noclean

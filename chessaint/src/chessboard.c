@@ -13,6 +13,8 @@
 
 #include <ctype.h>
 #include <unistd.h>
+#include <string.h>
+#include <regex.h>
 #include "../include/chessboard.h"
 
 int color[NBCASES] = {
@@ -76,24 +78,36 @@ void initBoardToStartPos(char *board) {
  *
  *
  *
- *|r|n|b|q|k|b|n|r|
- *|p|p|p|p|p|p|p|p|
- *| | | | | | | | |
- *| | | | | | | | |
- *| | | | | | | | |
- *| | | | | | | | |
- *|P|P|P|P|P|P|P|P|
- *|R|N|B|Q|K|B|N|R|
+ *8  |r|n|b|q|k|b|n|r|
+ *7  |p|p|p|p|p|p|p|p|
+ *6  | | | | | | | | |
+ *5  | | | | | | | | |
+ *4  | | | | | | | | |
+ *3  | | | | | | | | |
+ *2  |P|P|P|P|P|P|P|P|
+ *1  |R|N|B|Q|K|B|N|R|
+ *
+ *  a b c d e f g h
+ *
  */
 
 void printBoard(char *board) {
   int i;
+  printf("\n\n");
+
+  printf("8  ");
   for (i=0 ; i <= (NBCASES-1) ; ++i) {
     printf("|%c", board[i]);
     if ((i+1)%8 == 0) {
       printf("|\n");
+      if (i != 63)
+        printf("%d  ",8-i/8-1);
     }
   }
+  printf("\n");
+  printf("    a b c d e f g h\n");
+
+  printf("\n\n");
 }
 /** 
  *  @fn void fenToBoard(char *board, char *fenString)
@@ -131,4 +145,153 @@ void fenToBoard(char *board, char *fenString) {
       ++i;
       }
   }
+}
+/** 
+ *  @fn void humanVHuman()
+ *  @brief it's a human v human game
+ *
+ *  Currently it only moves pieces without restrictions until "exit"
+ *  (you can totally do invalid moves)
+ *  LATER THIS FUNCTION WILL CALL ANY FUNCTIONS IT NEEDS TO PLAY A TRUE GAME
+ *  (ex : check valid moves, check check position etc.)
+ *  IT AIMS ALSO TO USE GRAPH DATA STRUCTURES (without AI for sure)  
+ */
+
+void humanVHuman() {
+  char move[4]; /* move OR exit*/
+  strcpy(move, "0000");
+  printf("\n\n");
+  printf("Human v Human game !\n");
+  printf("To move a piece write starting position and ending position ex : e2e4 \n");
+  /* beacause first only Algebraic notation is implemented */
+  printf("At any moment you can go back to main menu by typing exit \n");
+  initBoardToStartPos(board);
+  printBoard(board);
+
+  while (strcmp(move,"exit") != 0) {
+    scanf("%s",&move);
+    moveBoard(move, board);
+    printBoard(board);
+  }
+}
+
+/** 
+ *  @fn void moveBoard(char *move, char *board)
+ *  @brief moves a piece on the board
+ *  @param[in,out] string : the move, the board
+ *   
+ *  Its current mission is to tranlate a string into a move
+ *  and to play it. This function will not check the accuracy of a move
+ */
+
+void moveBoard(char *move, char *board) {
+  int from,to;
+  /*We need to transform "d2" or "a3"... into the corresponding cases in the board*/
+  switch (move[1]) {
+    case '1':
+      from = 56;
+      break;
+    case '2':
+      from = 48;
+      break;
+    case '3':
+      from = 40;
+      break;
+    case '4':
+      from = 32;
+      break;
+    case '5':
+      from = 24;
+      break;
+    case '6':
+      from = 16;
+      break;
+    case '7':
+      from = 8;
+      break;
+    case '8':
+      from = 0;
+      break;
+  }
+  switch (move[0]) {
+    case 'a':
+      from += 0;
+      break;
+    case 'b':
+      from += 1;
+      break;
+    case 'c':
+      from += 2;
+      break;
+    case 'd':
+      from += 3;
+      break;
+    case 'e':
+      from += 4;
+      break;
+    case 'f':
+      from += 5;
+      break;
+    case 'g':
+      from += 6;
+      break;
+    case 'h':
+      from += 7;
+      break;    
+  }
+  switch (move[3]) {
+    case '1':
+      to = 56;
+      break;
+    case '2':
+      to = 48;
+      break;
+    case '3':
+      to = 40;
+      break;
+    case '4':
+      to = 32;
+      break;
+    case '5':
+      to = 24;
+      break;
+    case '6':
+      to = 16;
+      break;
+    case '7':
+      to = 8;
+      break;
+    case '8':
+      to = 0;
+      break;
+  }
+  switch (move[2]) {
+    case 'a':
+      to += 0;
+      break;
+    case 'b':
+      to += 1;
+      break;
+    case 'c':
+      to += 2;
+      break;
+    case 'd':
+      to += 3;
+      break;
+    case 'e':
+      to += 4;
+      break;
+    case 'f':
+      to += 5;
+      break;
+    case 'g':
+      to += 6;
+      break;
+    case 'h':
+      to += 7;
+      break;    
+  }
+  board[to]=board[from];
+  board[from]=' ';
+
 }

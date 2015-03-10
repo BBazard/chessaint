@@ -41,7 +41,15 @@ int main() {
   /* add the tests to the suite */
   /* all the functions in chessboard_suite.h must be added */
   if ((NULL == CU_add_test(pSuite,
-          "Checking chessboard", testNormalValues))) {
+          "Checking initialization and FEN reading for chessboard",
+          testInitAndFenChessboard))) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
+  
+  if ((NULL == CU_add_test(pSuite,
+          "Checking if a move given by human is correctly played on board",
+          testPieceMoving))) {
     CU_cleanup_registry();
     return CU_get_error();
   }

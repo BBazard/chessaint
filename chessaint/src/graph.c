@@ -1,9 +1,6 @@
 /** 
  *  @file graph.c
  *  @brief graph structure basic functions
- *  @author ALescouet
- *  @version 1.0
- *  @date 6 March 2015
  *
  *  This file implements functions to add or remove Arc from a linked list, totally suppress a list and print an Arc or a list
  *
@@ -103,11 +100,10 @@ void arc_print (Arc value) {
   else
     set="closed";
 
-  if (value.whoPlays)
+  if (value.activeColor == 'w')
     color="white";
   else
     color="black";
-
   printf("#%d| %s--%d->%s | Set : %s | Color : %s\n", value.id, value.from, value.score, value.to, set, color);
 }
 

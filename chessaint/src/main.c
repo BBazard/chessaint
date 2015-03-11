@@ -7,7 +7,7 @@ int main(void) {
   printf("**************************\n");
   int cur;
 
-  Arc arc;
+  /*Arc arc;
   arc.id=0;
   arc.from="e4";
   arc.to="e5";
@@ -26,26 +26,22 @@ int main(void) {
 
   Llist list=NULL;
   llist_add(arc,&list);
-  llist_add(arc2,&list);
+  llist_add(arc2,&list);*/
 
 
   while (1) {
     printf("\n\n");
     printf("---------------------------------------------\n");
-    printf("- 1 to print list of transitions\n");
-    printf("- 2 to play moves on a board (no rules yet :p)\n");
-    printf("- 3 to exit \n");
+    printf("- 1 to play moves on a board (no rules yet :p)\n");
+    printf("- 2 to exit \n");
     printf("----------------------------------------------\n\n");
 
     scanf("%d", &cur);
     switch (cur) {
       case 1:
-        llist_print(list);
-        break;
-      case 2:
         humanVHuman();
         break;
-      case 3:
+      case 2:
         return EXIT_SUCCESS;
         break;
     }

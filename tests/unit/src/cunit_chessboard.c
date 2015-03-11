@@ -1,5 +1,3 @@
-/* Copyright 2015 Hugo GANGLOFF */
-
 /*
  *  Simple example of a CUnit unit test.
  *
@@ -54,6 +52,26 @@ int main() {
     return CU_get_error();
   }
 
+  if ((NULL == CU_add_test(pSuite,
+          "Checking the move to arc function",
+          testMoveToArc))) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
+
+  if ((NULL == CU_add_test(pSuite,
+          "Checking the function that changes coordinates",
+          testLetterToNumberCoord))) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
+
+  if ((NULL == CU_add_test(pSuite,
+          "Testing legal moves",
+          testLegalMove))) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
   /* Run all tests using the CUnit Basic interface */
   CU_basic_set_mode(CU_BRM_VERBOSE);
   CU_basic_run_tests();

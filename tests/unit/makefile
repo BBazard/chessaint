@@ -17,22 +17,20 @@ endif
 DIRTOTEST=$(BUILDDIR)/$(BUILDTYPE)
 OUTPUTDIR=$(BUILDDIR)/tests
 
-TESTSOBJS=$(OUTPUTDIR)/cunit_chessboard.o $(OUTPUTDIR)/chessboard_suite.o
-PROJECTOBJS=$(DIRTOTEST)/chessboard.o
+PROJECTOBJS=$(filter-out $(DIRTOTEST)/main.o, $(wildcard $(DIRTOTEST)/*.o))
+TESTSOBJS=$(patsubst src/%.c,$(OUTPUTDIR)/%.o,$(wildcard src/*.c))
 
-all : $(TESTSOBJS)
+all : $(TESTSOBJS) $(PROJECTOBJS)
 	$(CC) $(CFLAGS) -o $(BINDIR)/${BUILDTYPE}${TESTSNAME} $(PROJECTOBJS) $(TESTSOBJS) $(LDFLAGS)
 	echo "Creating $(TESTSNAME)"
 .PHONY : all
 
-$(OUTPUTDIR)/cunit_chessboard.o : src/cunit_chessboard.c 
-	$(CC) $(CFLAGS) -o $(OUTPUTDIR)/cunit_chessboard.o -c src/cunit_chessboard.c
-	echo "Creating cunit_chessboard.o"
+-include $(DEPENDIR)/$(TESTSOBJS:.o=.d)
 
-$(OUTPUTDIR)/chessboard_suite.o : src/chessboard_suite.c include/chessboard_suite.h
-	$(CC) $(CFLAGS) -o $(OUTPUTDIR)/chessboard_suite.o -c src/chessboard_suite.c
-	echo "Creating chessboard_suite.o"
-
+$(OUTPUTDIR)/%.o : src/%.c
+	$(CC) -c $(CFLAGS) $< -o $@
+	$(CC) -MM $(CFLAGS) -MF $(DEPENDIR)/$*.d $< 
+	echo "Creating object file $(@F)"
 
 clean :
 	rm -f $(TESTSOBJS)

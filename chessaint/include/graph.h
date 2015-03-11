@@ -1,13 +1,12 @@
 /** 
  *  @file graph.h
  *  @brief graph structure header
- *  @author ALescouet
- *  @version 1.0
- *  @date 6 March 2015
  *
  * This file implements enumerations and structures for the graph item and the prototype of the functions developped in graph.c file
  *
  */
+#ifndef TRUNK_CHESSAINT_INCLUDE_GRAPH_H_
+#define TRUNK_CHESSAINT_INCLUDE_GRAPH_H_
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -26,33 +25,31 @@ enum Set {
   closed /**< Belongs to closed set */
 };
 
-/** 
- *  @enum Color
- *  @brief Which turn belongs the item
- *  
- *  This enumeration represents which player played this move.
- *
- */
-
-enum Color {
-  white, /**< Played during the white's turn */ 
-  black /**< Played during the black's turn */
-};
 
 /** 
  *  @struct Arc
  *  @brief Represents the arc between two nodes of a graph
  *
+ *  It stores the game data we need, according to the data contained
+ * in a FEN string (5 last attributes).
  */
 
 typedef struct Arc Arc;
 struct Arc {
   int id; /**< The id of the arc */
-  char* from; /**< from  */
-  char* to; /**< to */
+  char from[3]; /**< from  */
+  char to[3]; /**< to */
   int score; /**< The cumulated score of the move */
   enum Set whichSet; /**< The set in which is the arc for the astar calculation */
-  enum Color whoPlays; /**< The player by whom was played the move */
+  char activeColor; /**< "w" for white and "b" for black */
+  char* castlingAvailability; /**< "-" for none, "K"if castle on white King side available*/
+                              /** "Q" if castle on white Queen side */
+                              /** "k" and "q" for equivalent on black side */
+                              /** ex : "-" ;"KQkq";"K"... */
+  char* enPassant; /**< position behind the pawn which has just done 2 squares move*/
+                  /** or if none "-" */
+  int halfmoveClock; /**<number of half moves since last capture or pawn advance.*/
+  int fullmoveNumber; /**<the number of full move. Starts at one, +1 after a black's move */  
 };
 
 /** 
@@ -76,3 +73,6 @@ void llist_value_print (Arc value);
 
 void arc_print (Arc value);
 void llist_print (Llist list);
+
+#endif /*TRUNK_CHESSAINT_INCLUDE_GRAPH_H_*/
+

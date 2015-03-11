@@ -34,7 +34,7 @@ all : $(OBJS)
 
 $(OUTPUTDIR)/%.o : src/%.c
 	$(CC) -c $(CFLAGS) $< -o $@
-	$(CC) -MM $(CFLAGS) $< -o $(DEPENDIR)/$*.d
+	$(CC) -MM $(CFLAGS) -MF $(DEPENDIR)/$*.d $< 
 	echo "Creating object file $(@F)"
 
 clean :
@@ -46,3 +46,4 @@ cleanbin :
 	rm -f $(BINDIR)/${BUILDTYPE}$(EXECUTABLENAME)
 	echo "Suppressing $(BUILDTYPE) binary"
 .PHONY : cleanbin
+

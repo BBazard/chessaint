@@ -18,13 +18,13 @@ export MAKE=make -se
 
 export BUILDTYPE=debug
 
-default : debug tests
+default : debugtests
 	echo "All built"
 	echo ""
 	#echo -e "\033[0;31mThanks for using ChessAint's makefiles !\033[0m"
 .PHONY : default
 
-all : release debug alltests doc
+all : alltests doc
 .PHONY : all
 
 .SILENT :
@@ -48,16 +48,13 @@ debugtests : debug
 	$(MAKE) -C $(TESTSDIR) BUILDTYPE=debug
 .PHONY : debugtests
 
+
 doc :
 	doxygen $(DOCDIR)/doxyfile
 .PHONY : doc
 
-cleandoc :
-	rm -rf $(DOCDIR)/html
-	echo "Deleting doc"
-.PHONY : cleandoc
 
-cleanall : clean cleanbin cleandoc
+cleanall : cleandep cleanbin cleandoc
 .PHONY : cleanall
 
 clean :
@@ -73,4 +70,14 @@ cleanbin :
 	$(MAKE) -C $(TESTSDIR) cleanbin BUILDTYPE=release
 	$(MAKE) -C $(TESTSDIR) cleanbin BUILDTYPE=debug
 .PHONY : cleanbin
+
+cleandep : clean
+	rm -f $(DEPENDIR)/*.d
+	echo "Deleting dependencies"
+.PHONY : cleandep
+
+cleandoc :
+	rm -rf $(DOCDIR)/html
+	echo "Deleting doc"
+.PHONY : cleandoc
 

@@ -1,5 +1,3 @@
-/* Copyright 2015 Hugo GANGLOFF */
-
 #ifndef TRUNK_TESTS_UNIT_INCLUDE_CHESSBOARD_SUITE_H_
 #define TRUNK_TESTS_UNIT_INCLUDE_CHESSBOARD_SUITE_H_
 
@@ -15,7 +13,11 @@ void testInitAndFenChessboard(void);
 
 void testPieceMoving(void);
 
-/*void testErrorValues(void); */
+void testMoveToArc(void);
+
+void testLetterToNumberCoord(void);
+
+void testLegalMove(void);
 
 #endif /*TRUNK_TESTS_UNIT_INCLUDE_CHESSBOARD_SUITE_H_*/
 

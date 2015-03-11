@@ -1,20 +1,13 @@
-/* Copyright 2015 Hugo GANGLOFF */
+
 /** 
  *  @file chessboard.c
  *  @brief chessboard handling functions
- *  @author HGangloff
- *  @version 1.0
- *  @date 6 March 2015
  *
  *  This files implements chessboard handling functions 
  *  or placing pieces in a given position
  *
  */
 
-#include <ctype.h>
-#include <unistd.h>
-#include <string.h>
-#include <regex.h>
 #include "../include/chessboard.h"
 
 int color[NBCASES] = {
@@ -26,7 +19,7 @@ int color[NBCASES] = {
   9, 9, 9, 9, 9, 9, 9, 9,
   1, 1, 1, 1, 1, 1, 1, 1,
   1, 1, 1, 1, 1, 1, 1, 1
-}; /*WHITE BLACK or EMPTY*/
+}; /*WHITE BLACK or EMPTY (see #define in .h)*/
 
 int piece[NBCASES] = {
   3, 2, 1, 4, 5, 1, 2, 3,
@@ -37,7 +30,7 @@ int piece[NBCASES] = {
   9, 9, 9, 9, 9, 9, 9, 9,
   0, 0, 0, 0, 0, 0, 0, 0,
   3, 2, 1, 4, 5, 1, 2, 3
-}; /*PAWN BISHOP KNIGHT ROOK QUEEN KING or EMPTY */
+}; /*PAWN BISHOP KNIGHT ROOK QUEEN KING or EMPTY (see #define in .h)*/
 
 char pieceChar[12] = {
   'P', 'B', 'N', 'R', 'Q', 'K', 'p', 'b', 'n', 'r', 'q', 'k'
@@ -45,15 +38,21 @@ char pieceChar[12] = {
     /*upper case for white */
 
 /** 
- *  @fn void initBoardToStartPos(char *board)
- *  @brief Place pieces in the starting position
- *  @param[in,out] char pointer, the board
+ *  @fn void initBoardToStartPos(char *board, int *boardPiece, int *boardColor)
+ *  @brief Place the 3 boards in starting position
+ *  @param[in,out] char and int pointers : the boards
  *
  *  Starting from a8 to h1 
  */
 
-void initBoardToStartPos(char *board) {
+void initBoardToStartPos(char *board, int *boardPiece, int *boardColor) {
   int i;
+  for (i=0; i <= (NBCASES-1) ; i++) {
+    boardPiece[i] = piece[i];
+  }
+  for (i=0; i <= (NBCASES-1) ; i++) {
+    boardColor[i] = color[i];
+  }
   for (i=0 ; i <= (NBCASES-1) ; ++i) { 
     switch (color[i]) {
       case WHITE:
@@ -70,28 +69,13 @@ void initBoardToStartPos(char *board) {
 }
 
 /** 
- *  @fn void printBoard(char *board)
- *  @brief Print the array in a formated way
- *  @param[in] char pointer, the board
- *
- * This way for the starting position :
- *
- *
- *
- *8  |r|n|b|q|k|b|n|r|
- *7  |p|p|p|p|p|p|p|p|
- *6  | | | | | | | | |
- *5  | | | | | | | | |
- *4  | | | | | | | | |
- *3  | | | | | | | | |
- *2  |P|P|P|P|P|P|P|P|
- *1  |R|N|B|Q|K|B|N|R|
- *
- *  a b c d e f g h
+ *  @fn void printBoard(char *board, int *piece, int *color)
+ *  @brief Print the arrays in a formated way
+ *  @param[in] char and int pointers, the boards
  *
  */
 
-void printBoard(char *board) {
+void printBoard(char *board, int *piece, int *color) {
   int i;
   printf("\n\n");
 
@@ -108,7 +92,38 @@ void printBoard(char *board) {
   printf("    a b c d e f g h\n");
 
   printf("\n\n");
+  printf("\n\n");
+
+  printf("8  ");
+  for (i=0 ; i <= (NBCASES-1) ; ++i) {
+    printf("|%d", color[i]);
+    if ((i+1)%8 == 0) {
+      printf("|\n");
+      if (i != 63)
+        printf("%d  ",8-i/8-1);
+    }
+  }
+  printf("\n");
+  printf("    a b c d e f g h\n");
+
+  printf("\n\n");
+  printf("\n\n");
+
+  printf("8  ");
+  for (i=0 ; i <= (NBCASES-1) ; ++i) {
+    printf("|%d", piece[i]);
+    if ((i+1)%8 == 0) {
+      printf("|\n");
+      if (i != 63)
+        printf("%d  ",8-i/8-1);
+    }
+  }
+  printf("\n");
+  printf("    a b c d e f g h\n");
+
+  printf("\n\n");
 }
+
 /** 
  *  @fn void fenToBoard(char *board, char *fenString)
  *  @brief Place pieces in a given position
@@ -118,6 +133,8 @@ void printBoard(char *board) {
  *  FEN strings are describing position from a8...
  *  (b8... h8... a7...) ... h1 ans SO IS OUR BOARD 
  *  More details in the code
+ *
+ * THIS function doesn't modify yet the 2 other important arrays 
  */
 void fenToBoard(char *board, char *fenString) {
   int i = 0;
@@ -151,147 +168,217 @@ void fenToBoard(char *board, char *fenString) {
  *  @brief it's a human v human game
  *
  *  Currently it only moves pieces without restrictions until "exit"
- *  (you can totally do invalid moves)
- *  LATER THIS FUNCTION WILL CALL ANY FUNCTIONS IT NEEDS TO PLAY A TRUE GAME
- *  (ex : check valid moves, check check position etc.)
- *  IT AIMS ALSO TO USE GRAPH DATA STRUCTURES (without AI for sure)  
+ *  This function is getting more and more accurate 
  */
 
 void humanVHuman() {
+  int nbMoves = 0;
+
   char move[4]; /* move OR exit*/
   strcpy(move, "0000");
+
+  char activeColor;
+  activeColor = 'w';
+
+  Llist movesList = NULL;
+  Arc amove;
+
   printf("\n\n");
   printf("Human v Human game !\n");
   printf("To move a piece write starting position and ending position ex : e2e4 \n");
   /* beacause first only Algebraic notation is implemented */
   printf("At any moment you can go back to main menu by typing exit \n");
-  initBoardToStartPos(board);
-  printBoard(board);
+  initBoardToStartPos(boardChar, boardPiece, boardColor);
+  printBoard(boardChar, boardPiece, boardColor);
 
   while (strcmp(move,"exit") != 0) {
-    scanf("%s",&move);
-    moveBoard(move, board);
-    printBoard(board);
+    printf("Your move : ");
+    scanf("%s",move);
+    if ((activeColor == 'w' && isAWhiteLegalMove(move) )) { 
+      amove = getArcFromMove(move,'w',nbMoves);
+      llist_add(amove, &movesList);
+      moveBoard(move, boardChar, boardPiece, boardColor);
+      activeColor ='b';
+      ++nbMoves;
+    } else {
+      if (isABlackLegalMove(move)) {
+        amove = getArcFromMove(move, 'b', nbMoves);
+        llist_add(amove, &movesList);
+        moveBoard(move, boardChar, boardPiece, boardColor);
+        activeColor = 'w';
+        ++nbMoves;
+      } else {
+        printf("ILLEGAL MOVE\n");
+      }
+    } 
+    printBoard(boardChar, boardPiece, boardColor);
+    llist_print(movesList);
   }
 }
 
 /** 
- *  @fn void moveBoard(char *move, char *board)
+ *  @fn void moveBoard(char *move, char *board, int *piece, int *color)
  *  @brief moves a piece on the board
- *  @param[in,out] string : the move, the board
+ *  @param[in,out] string : the move, the boards
  *   
  *  Its current mission is to tranlate a string into a move
- *  and to play it. This function will not check the accuracy of a move
+ *  and to play it. On the 3 boards. This function will not check the accuracy of a move
  */
 
-void moveBoard(char *move, char *board) {
-  int from,to;
+void moveBoard(char *move, char *board, int *piece, int *color) {
   /*We need to transform "d2" or "a3"... into the corresponding cases in the board*/
-  switch (move[1]) {
-    case '1':
-      from = 56;
-      break;
-    case '2':
-      from = 48;
-      break;
-    case '3':
-      from = 40;
-      break;
-    case '4':
-      from = 32;
-      break;
-    case '5':
-      from = 24;
-      break;
-    case '6':
-      from = 16;
-      break;
-    case '7':
-      from = 8;
-      break;
-    case '8':
-      from = 0;
-      break;
-  }
-  switch (move[0]) {
-    case 'a':
-      from += 0;
-      break;
-    case 'b':
-      from += 1;
-      break;
-    case 'c':
-      from += 2;
-      break;
-    case 'd':
-      from += 3;
-      break;
-    case 'e':
-      from += 4;
-      break;
-    case 'f':
-      from += 5;
-      break;
-    case 'g':
-      from += 6;
-      break;
-    case 'h':
-      from += 7;
-      break;    
-  }
-  switch (move[3]) {
-    case '1':
-      to = 56;
-      break;
-    case '2':
-      to = 48;
-      break;
-    case '3':
-      to = 40;
-      break;
-    case '4':
-      to = 32;
-      break;
-    case '5':
-      to = 24;
-      break;
-    case '6':
-      to = 16;
-      break;
-    case '7':
-      to = 8;
-      break;
-    case '8':
-      to = 0;
-      break;
-  }
-  switch (move[2]) {
-    case 'a':
-      to += 0;
-      break;
-    case 'b':
-      to += 1;
-      break;
-    case 'c':
-      to += 2;
-      break;
-    case 'd':
-      to += 3;
-      break;
-    case 'e':
-      to += 4;
-      break;
-    case 'f':
-      to += 5;
-      break;
-    case 'g':
-      to += 6;
-      break;
-    case 'h':
-      to += 7;
-      break;    
-  }
+  char *fromC[3];
+  char *toC[3];
+  memcpy(fromC,&move[0],2);
+  fromC[2]='\0';
+  memcpy(toC,&move[2],2);
+  toC[2]='\0';
+  int from,to;
+  from = lettersCoordToNumberCoord(fromC);
+  to = lettersCoordToNumberCoord(toC);
+
+  /*Actually moves boards to play*/
   board[to]=board[from];
   board[from]=' ';
+  color[to]=color[from];
+  color[from]=9;
+  piece[to]=piece[from];
+  piece[from]=9;
+}
+/** 
+ *  @fn int lettersCoordToNumberCoord(char *square)
+ *  @brief from "a8" gives 0, from "b8" gives 1 etc..
+ *  @param[in] string : a square on the board (no verification yet)
+ *  @param[out] int : the number matching with the square in our array representation 
+ *
+ */
+int lettersCoordToNumberCoord(char *square) {
+  int correspondingTableSlot;
+  switch (square[1]) {
+    case '1':
+      correspondingTableSlot = 56;
+      break;
+    case '2':
+      correspondingTableSlot = 48;
+      break;
+    case '3':
+      correspondingTableSlot = 40;
+      break;
+    case '4':
+      correspondingTableSlot = 32;
+      break;
+    case '5':
+      correspondingTableSlot = 24;
+      break;
+    case '6':
+      correspondingTableSlot = 16;
+      break;
+    case '7':
+      correspondingTableSlot = 8;
+      break;
+    case '8':
+      correspondingTableSlot = 0;
+      break;
+  }
+  switch (square[0]) {
+    case 'a':
+      correspondingTableSlot += 0;
+      break;
+    case 'b':
+      correspondingTableSlot += 1;
+      break;
+    case 'c':
+      correspondingTableSlot += 2;
+      break;
+    case 'd':
+      correspondingTableSlot += 3;
+      break;
+    case 'e':
+      correspondingTableSlot += 4;
+      break;
+    case 'f':
+      correspondingTableSlot += 5;
+      break;
+    case 'g':
+      correspondingTableSlot += 6;
+      break;
+    case 'h':
+      correspondingTableSlot += 7;
+      break;    
+  }
+  return correspondingTableSlot;
+}
+/** 
+ *  @fn bool isAWhiteLegalMove(char *move)
+ *  @brief check for the validity of a move with the help of the 3 arrays
+ *  @param[in] string : the move
+ *  @param[out] bool : is this legal ?
+ *
+ *  THIS FUNCTION IS QUITE INCOMPLETE, it will change
+ */
+bool isAWhiteLegalMove(char *move) {
+/*We need to transform "d2" or "a3"... into the corresponding cases in the boardS*/
+  char *fromC[3];
+  char *toC[3];
+  memcpy(fromC,&move[0],2);
+  fromC[2]='\0';
+  memcpy(toC,&move[2],2);
+  int from,to;
+  from = lettersCoordToNumberCoord(fromC);
+  to = lettersCoordToNumberCoord(toC);
 
+  if (boardColor[from] == 1 && boardColor[to]==9) {
+    return true;
+  } else {
+    return false;
+  }
+}
+/** 
+ *  @fn bool isABlackLegalMove(char *move)
+ *  @brief check for the validity of a move with the help of the 3 arrays
+ *  @param[in] string : the move
+ *  @param[out] bool : is this legal ?
+ *
+ *  THIS FUNCTION IS QUITE INCOMPLETE, it will change
+ */
+bool isABlackLegalMove(char *move) {
+/*We need to transform "d2" or "a3"... into the corresponding cases in the boardS*/
+  char *fromC[3];
+  char *toC[3];
+  memcpy(fromC,&move[0],2);
+  fromC[2]='\0';
+  memcpy(toC,&move[2],2);
+  int from,to;
+  from = lettersCoordToNumberCoord(fromC);
+  to = lettersCoordToNumberCoord(toC);
+
+  if (boardColor[from] == 2 && boardColor[to]==9) {
+    return true;
+  } else {
+    return false;
+  }
+}
+/** 
+ *  @fn Arc getArcFromMove(char *move, char whoPlayed, int nbMoves)
+ *  @brief creates the arc corresponding to the human move
+ *  @param[in,out] string : the move ; char who played ( 'b' or 'w') ; int number of moves so far
+ * 
+ * THIS FUNCTION IS INCOMPLETE (so basic)
+ */
+Arc getArcFromMove(char *move, char whoPlayed, int nbMoves) {
+  Arc arc;
+  arc.id = nbMoves; /*No originality*/
+  memcpy(arc.from,&move[0],2);
+  arc.from[2]='\0';
+  memcpy(arc.to,&move[2],2);
+  arc.to[2]='\0';
+  arc.score = 0; /*Useless noAI yet */
+  arc.whichSet=none; /*useless no AI*/
+  arc.activeColor=whoPlayed;
+  arc.castlingAvailability = "xx"; /*Not suppoorted yet */
+  arc.enPassant = "xx"; /*Not supported yet*/
+  arc.halfmoveClock = 0; /*Not supported yet*/
+  arc.fullmoveNumber = nbMoves;
+
+  return arc;
 }

@@ -15,13 +15,14 @@ export EXECUTABLENAME="chessaint"
 export TESTSNAME="runtests"
 
 export MAKE=make -se
+export LOGS=2>&1 | tee -a $(BUILDDIR)/log
 
 export BUILDTYPE=debug
 
 default : debugtests
-	echo "All built"
+	echo -e "\033[0;31mAll built\033[0m"
 	echo ""
-	#echo -e "\033[0;31mThanks for using ChessAint's makefiles !\033[0m"
+	echo -e "\033[0;31mThanks for using ChessAint's makefiles !\033[0m"
 .PHONY : default
 
 all : alltests doc
@@ -30,22 +31,22 @@ all : alltests doc
 .SILENT :
 
 release :
-	$(MAKE) -C $(PROJECTDIR) all BUILDTYPE=release
+	$(MAKE) -C $(PROJECTDIR) all BUILDTYPE=release $(LOGS)
 .PHONY : release
 
 debug :
-	$(MAKE) -C $(PROJECTDIR) all BUILDTYPE=debug
+	$(MAKE) -C $(PROJECTDIR) all BUILDTYPE=debug $(LOGS)
 .PHONY : debug
 
 alltests : releasetests debugtests
 .PHONY : alltests
 
 releasetests : release
-	$(MAKE) -C $(TESTSDIR) BUILDTYPE=release
+	$(MAKE) -C $(TESTSDIR) BUILDTYPE=release $(LOGS)
 .PHONY : releasetests
 
 debugtests : debug
-	$(MAKE) -C $(TESTSDIR) BUILDTYPE=debug
+	$(MAKE) -C $(TESTSDIR) BUILDTYPE=debug $(LOGS)
 .PHONY : debugtests
 
 
@@ -54,7 +55,7 @@ doc :
 .PHONY : doc
 
 
-cleanall : cleandep cleanbin cleandoc
+cleanall : cleandep cleanbin cleandoc cleanlog
 .PHONY : cleanall
 
 clean :
@@ -71,13 +72,18 @@ cleanbin :
 	$(MAKE) -C $(TESTSDIR) cleanbin BUILDTYPE=debug
 .PHONY : cleanbin
 
+cleanlog :
+	rm -f $(BUILDDIR)/log
+	echo -e "\033[0;33mDeleting log file\033[0m"
+.PHONY : cleanlog
+
 cleandep : clean
 	rm -f $(DEPENDIR)/*.d
-	echo "Deleting dependencies"
+	echo -e "\033[0;33mDeleting dependencies\033[0m"
 .PHONY : cleandep
 
 cleandoc :
 	rm -rf $(DOCDIR)/html
-	echo "Deleting doc"
+	echo -e "\033[0;33mDeleting doc\033[0m"
 .PHONY : cleandoc
 

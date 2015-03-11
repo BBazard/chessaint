@@ -1,3 +1,4 @@
+/* This file is part of the ChessAInt project 2015 */
 /** 
  *  @file graph.h
  *  @brief graph structure header
@@ -5,8 +6,9 @@
  * This file implements enumerations and structures for the graph item and the prototype of the functions developped in graph.c file
  *
  */
-#ifndef TRUNK_CHESSAINT_INCLUDE_GRAPH_H_
-#define TRUNK_CHESSAINT_INCLUDE_GRAPH_H_
+
+#ifndef CHESSAINT_INCLUDE_GRAPH_H_
+#define CHESSAINT_INCLUDE_GRAPH_H_
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -40,16 +42,28 @@ struct Arc {
   char from[3]; /**< from  */
   char to[3]; /**< to */
   int score; /**< The cumulated score of the move */
-  enum Set whichSet; /**< The set in which is the arc for the astar calculation */
+  enum Set whichSet; /**< The set in which is the arc for astar */
   char activeColor; /**< "w" for white and "b" for black */
-  char* castlingAvailability; /**< "-" for none, "K"if castle on white King side available*/
-                              /** "Q" if castle on white Queen side */
-                              /** "k" and "q" for equivalent on black side */
-                              /** ex : "-" ;"KQkq";"K"... */
-  char* enPassant; /**< position behind the pawn which has just done 2 squares move*/
-                  /** or if none "-" */
-  int halfmoveClock; /**<number of half moves since last capture or pawn advance.*/
-  int fullmoveNumber; /**<the number of full move. Starts at one, +1 after a black's move */  
+  char* castlingAvailability; /**<
+                               * "-" for none,
+                               * "K" if castle on white King side available
+                               * "Q" if castle on white Queen side,
+                               * "k" and "q" for equivalent on black side
+                               * Ex : "-"; "KQkq"; "K"
+                               */
+  char* enPassant; /**<
+                    * position behind the pawn which
+                    * has just done 2 squares move
+                    * or if none "-"
+                    */
+  int halfmoveClock; /**<
+                      * number of half moves since
+                      * last capture or pawn advance
+                      */
+  int fullmoveNumber; /**<
+                       * the number of full movey
+                       * Starts at one, +1 after a black's move
+                       */
 };
 
 /** 
@@ -62,17 +76,16 @@ typedef struct Element Element;
 struct Element {
   Arc value; /**< The value of the element, an arc */
   struct Element *next; /**< The link to the next element of the list */
-}; 
+};
 
 typedef Element *Llist;
 
-void llist_add (Arc newvalue, Llist *list);
-Arc llist_suppr (Llist *list);
-void llist_free (Llist *list);
-void llist_value_print (Arc value);
+void llist_add(Arc newvalue, Llist *list);
+int llist_suppr(Llist *list);
+void llist_free(Llist *list);
 
-void arc_print (Arc value);
-void llist_print (Llist list);
+void arc_print(Arc value);
+void llist_print(Llist list);
 
-#endif /*TRUNK_CHESSAINT_INCLUDE_GRAPH_H_*/
+#endif /*CHESSAINT_INCLUDE_GRAPH_H_*/
 

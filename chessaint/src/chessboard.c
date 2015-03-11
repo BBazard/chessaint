@@ -201,7 +201,7 @@ void humanVHuman() {
       activeColor ='b';
       ++nbMoves;
     } else {
-      if (isABlackLegalMove(move)) {
+      if (isABlackLegalMove(move) && activeColor == 'b') {
         amove = getArcFromMove(move, 'b', nbMoves);
         llist_add(amove, &movesList);
         moveBoard(move, boardChar, boardPiece, boardColor);

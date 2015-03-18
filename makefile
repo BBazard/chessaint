@@ -1,89 +1,112 @@
-export CC=gcc
-export DEBUGCFLAGS=-g
-export CFLAGS=-Wall -Wextra -ansi -std=c99
-export LDFLAGS=-lcunit
+export CC?=gcc
+export CFLAGS+=-Wall -Wextra -std=c99
+export LDFLAGS+=-lcunit
 
-export TRUNK=$(shell pwd)
-export PROJECTDIR=$(TRUNK)/chessaint
-export TESTSDIR=$(TRUNK)/tests/unit
-export BINDIR=$(TRUNK)/bin
-export BUILDDIR=$(TRUNK)/build
-export DEPENDIR=$(BUILDDIR)/dependencies
-export DOCDIR=$(TRUNK)/docs
+export DEBUGCFLAGS:=-g
 
-export EXECUTABLENAME="chessaint"
-export TESTSNAME="runtests"
+TRUNK:=$(CURDIR)
+PROJECTDIR:=$(TRUNK)/chessaint
+TESTSDIR:=$(TRUNK)/tests/unit
+DOCDIR:=$(TRUNK)/docs
 
-export MAKE=make -se
-export LOGS=2>&1 | tee -a $(BUILDDIR)/log
+export BINDIR:=$(TRUNK)/bin
+export BUILDDIR:=$(TRUNK)/build
+export DEPENDIR:=$(BUILDDIR)/dependencies
 
-export BUILDTYPE=debug
+export EXECUTABLENAME:="chessaint"
+export TESTSNAME:="runtests"
 
-default : debugtests
-	echo -e "\033[0;31mAll built\033[0m"
-	echo ""
-	echo -e "\033[0;31mThanks for using ChessAint's makefiles !\033[0m"
+MAKE:=make -se
+LOGS:=2>&1 | tee -a $(BUILDDIR)/log
+LINT:=$(TRUNK)/../cpplint.py
+
+BUILDTYPE:=debug
+
+default : debugtests lint
+	printf "\033[0;30m"
+	printf "All built\n\n"
+	printf "Thanks for using ChessAInt's makefiles !\n"
+	printf "\033[0m"
 .PHONY : default
 
-all : alltests doc
+all : alltests doc lint
 .PHONY : all
 
 .SILENT :
 
 release :
-	$(MAKE) -C $(PROJECTDIR) all BUILDTYPE=release $(LOGS)
+	$(MAKE) -C $(PROJECTDIR) all BUILDTYPE:=release $(LOGS)
 .PHONY : release
 
 debug :
-	$(MAKE) -C $(PROJECTDIR) all BUILDTYPE=debug $(LOGS)
+	$(MAKE) -C $(PROJECTDIR) all BUILDTYPE:=debug $(LOGS)
 .PHONY : debug
 
 alltests : releasetests debugtests
 .PHONY : alltests
 
 releasetests : release
-	$(MAKE) -C $(TESTSDIR) BUILDTYPE=release $(LOGS)
+	$(MAKE) -C $(TESTSDIR) BUILDTYPE:=release $(LOGS)
 .PHONY : releasetests
 
 debugtests : debug
-	$(MAKE) -C $(TESTSDIR) BUILDTYPE=debug $(LOGS)
+	$(MAKE) -C $(TESTSDIR) BUILDTYPE:=debug $(LOGS)
 .PHONY : debugtests
 
 
 doc :
+	printf "\033[0;34m"
+	printf "Generating Documentation\n"
 	doxygen $(DOCDIR)/doxyfile
+	printf "\033[0m"
 .PHONY : doc
 
+lint :
+	printf "\033[0;36m"
+	printf "Lint in progress\n"
+	$(LINT) \
+	$(PROJECTDIR)/src/*.c \
+	$(PROJECTDIR)/include/*.h \
+	$(TESTSDIR)/src/*.c \
+	$(TESTSDIR)/include/*.h
+	printf "\033[0m"
+.PHONY : lint
 
 cleanall : cleandep cleanbin cleandoc cleanlog
 .PHONY : cleanall
 
 clean :
-	$(MAKE) -C $(PROJECTDIR) clean BUILDTYPE=release
-	$(MAKE) -C $(PROJECTDIR) clean BUILDTYPE=debug
-	$(MAKE) -C $(TESTSDIR) clean BUILDTYPE=release
-	$(MAKE) -C $(TESTSDIR) clean BUILDTYPE=debug
+	$(MAKE) -C $(PROJECTDIR) $@ BUILDTYPE:=release
+	$(MAKE) -C $(PROJECTDIR) $@ BUILDTYPE:=debug
+	$(MAKE) -C $(TESTSDIR) $@ BUILDTYPE:=release
+	$(MAKE) -C $(TESTSDIR) $@ BUILDTYPE:=debug
 .PHONY : clean
 
 cleanbin :
-	$(MAKE) -C $(PROJECTDIR) cleanbin BUILDTYPE=release
-	$(MAKE) -C $(PROJECTDIR) cleanbin BUILDTYPE=debug
-	$(MAKE) -C $(TESTSDIR) cleanbin BUILDTYPE=release
-	$(MAKE) -C $(TESTSDIR) cleanbin BUILDTYPE=debug
+	$(MAKE) -C $(PROJECTDIR) $@ BUILDTYPE:=release
+	$(MAKE) -C $(PROJECTDIR) $@ BUILDTYPE:=debug
+	$(MAKE) -C $(TESTSDIR) $@ BUILDTYPE:=release
+	$(MAKE) -C $(TESTSDIR) $@ BUILDTYPE:=debug
 .PHONY : cleanbin
 
 cleanlog :
+	printf "\033[0;33m"
+	printf "Deleting log file\n"
+	printf "\033[0m"
 	rm -f $(BUILDDIR)/log
-	echo -e "\033[0;33mDeleting log file\033[0m"
 .PHONY : cleanlog
 
 cleandep : clean
+	printf "\033[0;33m"
+	printf "Deleting dependencies\n"
+	printf "\033[0m"
 	rm -f $(DEPENDIR)/*.d
-	echo -e "\033[0;33mDeleting dependencies\033[0m"
 .PHONY : cleandep
 
 cleandoc :
+	printf "\033[0;33m"
+	printf "Deleting doc\n"
+	printf "\033[0m"
 	rm -rf $(DOCDIR)/html
-	echo -e "\033[0;33mDeleting doc\033[0m"
 .PHONY : cleandoc
 

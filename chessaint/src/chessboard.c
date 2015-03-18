@@ -1,4 +1,4 @@
-
+/*This file is part of the ChessAInt project 2015*/
 /** 
  *  @file chessboard.c
  *  @brief chessboard handling functions
@@ -8,7 +8,7 @@
  *
  */
 
-#include "../include/chessboard.h"
+#include "include/chessboard.h"
 
 int color[NBCASES] = {
   2, 2, 2, 2, 2, 2, 2, 2,
@@ -53,7 +53,7 @@ void initBoardToStartPos(char *board, int *boardPiece, int *boardColor) {
   for (i=0; i <= (NBCASES-1) ; i++) {
     boardColor[i] = color[i];
   }
-  for (i=0 ; i <= (NBCASES-1) ; ++i) { 
+  for (i=0 ; i <= (NBCASES-1) ; ++i) {
     switch (color[i]) {
       case WHITE:
         board[i] = pieceChar[piece[i]];
@@ -85,7 +85,7 @@ void printBoard(char *board, int *piece, int *color) {
     if ((i+1)%8 == 0) {
       printf("|\n");
       if (i != 63)
-        printf("%d  ",8-i/8-1);
+        printf("%d  ", 8-i/8-1);
     }
   }
   printf("\n");
@@ -100,7 +100,7 @@ void printBoard(char *board, int *piece, int *color) {
     if ((i+1)%8 == 0) {
       printf("|\n");
       if (i != 63)
-        printf("%d  ",8-i/8-1);
+        printf("%d  ", 8-i/8-1);
     }
   }
   printf("\n");
@@ -115,7 +115,7 @@ void printBoard(char *board, int *piece, int *color) {
     if ((i+1)%8 == 0) {
       printf("|\n");
       if (i != 63)
-        printf("%d  ",8-i/8-1);
+        printf("%d  ", 8-i/8-1);
     }
   }
   printf("\n");
@@ -138,7 +138,7 @@ void printBoard(char *board, int *piece, int *color) {
  */
 void fenToBoard(char *board, char *fenString) {
   int i = 0;
-  int j = 0; 
+  int j = 0;
   int k;
   while (fenString[i] != ' ') {
   /* While we're readind the field that interests us */
@@ -175,7 +175,7 @@ void humanVHuman() {
   int nbMoves = 0;
 
   char move[4]; /* move OR exit*/
-  strcpy(move, "0000");
+  snprintf(move, sizeof(4), "0000");
 
   char activeColor;
   activeColor = 'w';
@@ -185,34 +185,44 @@ void humanVHuman() {
 
   printf("\n\n");
   printf("Human v Human game !\n");
-  printf("To move a piece write starting position and ending position ex : e2e4 \n");
+  printf("To move a piece write starting position");
+  printf("and ending position ex : e2e4 \n");
   /* beacause first only Algebraic notation is implemented */
   printf("At any moment you can go back to main menu by typing exit \n");
   initBoardToStartPos(boardChar, boardPiece, boardColor);
   printBoard(boardChar, boardPiece, boardColor);
 
-  while (strcmp(move,"exit") != 0) {
+  while (strcmp(move, "exit") != 0) {
     printf("Your move : ");
-    scanf("%s",move);
-    if ((activeColor == 'w' && isAWhiteLegalMove(move) )) { 
-      amove = getArcFromMove(move,'w',nbMoves);
+    scanf("%s", move);
+    if ((activeColor == 'w') && isAWhiteLegalMove(move)) {
+      amove = getArcFromMove(move, 'w', nbMoves);
       llist_add(amove, &movesList);
       moveBoard(move, boardChar, boardPiece, boardColor);
-      activeColor ='b';
+      activeColor = 'b';
       ++nbMoves;
+
+      printBoard(boardChar, boardPiece, boardColor);
+      llist_print(movesList);
     } else {
-      if (isABlackLegalMove(move) && activeColor == 'b') {
-        amove = getArcFromMove(move, 'b', nbMoves);
-        llist_add(amove, &movesList);
-        moveBoard(move, boardChar, boardPiece, boardColor);
-        activeColor = 'w';
-        ++nbMoves;
-      } else {
-        printf("ILLEGAL MOVE\n");
-      }
-    } 
-    printBoard(boardChar, boardPiece, boardColor);
-    llist_print(movesList);
+        if (isABlackLegalMove(move) && activeColor == 'b') {
+          amove = getArcFromMove(move, 'b', nbMoves);
+          llist_add(amove, &movesList);
+          moveBoard(move, boardChar, boardPiece, boardColor);
+          activeColor = 'w';
+          ++nbMoves;
+
+          printBoard(boardChar, boardPiece, boardColor);
+          llist_print(movesList);
+        } else {
+          printf("ILLEGAL MOVE\n");
+        }
+    }
+  }
+  if (strcmp(move, "exit") == 0) {
+    while (movesList != NULL) {
+      llist_suppr(&movesList);
+    }
   }
 }
 
@@ -226,24 +236,25 @@ void humanVHuman() {
  */
 
 void moveBoard(char *move, char *board, int *piece, int *color) {
-  /*We need to transform "d2" or "a3"... into the corresponding cases in the board*/
-  char *fromC[3];
-  char *toC[3];
-  memcpy(fromC,&move[0],2);
-  fromC[2]='\0';
-  memcpy(toC,&move[2],2);
+  /*We need to transform "d2" or "a3"... */
+  /*into the corresponding cases in the board*/
+  char fromC[3];
+  char toC[3];
+  memcpy(fromC, &move[0], 2);
+  fromC[2] = '\0';
+  memcpy(toC, &move[2], 2);
   toC[2]='\0';
-  int from,to;
+  int from, to;
   from = lettersCoordToNumberCoord(fromC);
   to = lettersCoordToNumberCoord(toC);
 
   /*Actually moves boards to play*/
-  board[to]=board[from];
-  board[from]=' ';
-  color[to]=color[from];
-  color[from]=9;
-  piece[to]=piece[from];
-  piece[from]=9;
+  board[to] = board[from];
+  board[from] = ' ';
+  color[to] = color[from];
+  color[from] = 9;
+  piece[to] = piece[from];
+  piece[from] = 9;
 }
 /** 
  *  @fn int lettersCoordToNumberCoord(char *square)
@@ -304,7 +315,7 @@ int lettersCoordToNumberCoord(char *square) {
       break;
     case 'h':
       correspondingTableSlot += 7;
-      break;    
+      break;
   }
   return correspondingTableSlot;
 }
@@ -317,21 +328,57 @@ int lettersCoordToNumberCoord(char *square) {
  *  THIS FUNCTION IS QUITE INCOMPLETE, it will change
  */
 bool isAWhiteLegalMove(char *move) {
-/*We need to transform "d2" or "a3"... into the corresponding cases in the boardS*/
-  char *fromC[3];
-  char *toC[3];
-  memcpy(fromC,&move[0],2);
-  fromC[2]='\0';
-  memcpy(toC,&move[2],2);
-  int from,to;
+  bool answer;
+  /*We need to transform "d2" or "a3"...*/
+  /* into the corresponding cases in the boardS*/
+  char fromC[3];
+  char toC[3];
+  memcpy(fromC, &move[0], 2);
+  fromC[2] = '\0';
+  memcpy(toC, &move[2], 2);
+  int from, to;
   from = lettersCoordToNumberCoord(fromC);
   to = lettersCoordToNumberCoord(toC);
 
-  if (boardColor[from] == 1 && boardColor[to]==9) {
-    return true;
-  } else {
+  char activeColor = 'w';
+  if (boardColor[to] == 1) { /*You can't move on one of your pieces*/
     return false;
   }
+
+  if (boardColor[from] == 1) { /* First you need to grab one of your pieces...*/
+    switch (boardPiece[from]) {
+      case 0: /* If you grab a pawn */
+        if (isAPawnLegalMove(move, activeColor)) {
+          answer = true;
+        } else {
+          answer = false;
+        }
+        break;
+      case 1:
+        if (isABishopLegalMove(move, activeColor)) {
+          answer = true;
+        } else {
+          answer = false;
+        }
+        break;
+      case 2:
+          answer = true;
+        break;
+      case 3:
+          answer = true;
+        break;
+      case 4:
+          answer = true;
+        break;
+      case 5:
+          answer = true;
+        break;
+    }
+  } else {
+    answer = false;
+  }
+
+  return answer;
 }
 /** 
  *  @fn bool isABlackLegalMove(char *move)
@@ -342,21 +389,57 @@ bool isAWhiteLegalMove(char *move) {
  *  THIS FUNCTION IS QUITE INCOMPLETE, it will change
  */
 bool isABlackLegalMove(char *move) {
-/*We need to transform "d2" or "a3"... into the corresponding cases in the boardS*/
-  char *fromC[3];
-  char *toC[3];
-  memcpy(fromC,&move[0],2);
-  fromC[2]='\0';
-  memcpy(toC,&move[2],2);
-  int from,to;
+  bool answer;
+  /*We need to transform "d2" or "a3"...*/
+  /*into the corresponding cases in the boardS*/
+  char fromC[3];
+  char toC[3];
+  memcpy(fromC, &move[0], 2);
+  fromC[2] = '\0';
+  memcpy(toC, &move[2], 2);
+  int from, to;
   from = lettersCoordToNumberCoord(fromC);
   to = lettersCoordToNumberCoord(toC);
 
-  if (boardColor[from] == 2 && boardColor[to]==9) {
-    return true;
-  } else {
+  char activeColor = 'b';
+  if (boardColor[to] == 2) { /*You can't move on one of your pieces*/
     return false;
   }
+
+  if (boardColor[from] == 2) { /* First you need to grab one of your pieces...*/
+    switch (boardPiece[from]) {
+      case 0: /* If you grab a pawn */
+        if (isAPawnLegalMove(move, activeColor)) {
+          answer = true;
+        } else {
+          answer = false;
+        }
+        break;
+      case 1:
+        if (isABishopLegalMove(move, activeColor)) {
+          answer = true;
+        } else {
+          answer = false;
+        }
+        break;
+      case 2:
+          answer = true;
+        break;
+      case 3:
+          answer = true;
+        break;
+      case 4:
+          answer = true;
+        break;
+      case 5:
+          answer = true;
+        break;
+    }
+  } else {
+    answer = false;
+  }
+
+  return answer;
 }
 /** 
  *  @fn Arc getArcFromMove(char *move, char whoPlayed, int nbMoves)
@@ -368,17 +451,179 @@ bool isABlackLegalMove(char *move) {
 Arc getArcFromMove(char *move, char whoPlayed, int nbMoves) {
   Arc arc;
   arc.id = nbMoves; /*No originality*/
-  memcpy(arc.from,&move[0],2);
-  arc.from[2]='\0';
-  memcpy(arc.to,&move[2],2);
-  arc.to[2]='\0';
+  memcpy(arc.from, &move[0], 2);
+  arc.from[2] = '\0';
+  memcpy(arc.to, &move[2], 2);
+  arc.to[2] = '\0';
   arc.score = 0; /*Useless noAI yet */
-  arc.whichSet=none; /*useless no AI*/
-  arc.activeColor=whoPlayed;
+  arc.whichSet = none; /*useless no AI*/
+  arc.activeColor = whoPlayed;
   arc.castlingAvailability = "xx"; /*Not suppoorted yet */
   arc.enPassant = "xx"; /*Not supported yet*/
   arc.halfmoveClock = 0; /*Not supported yet*/
   arc.fullmoveNumber = nbMoves;
 
   return arc;
+}
+
+bool isAPawnLegalMove(char *move, char activeColor) {
+  bool answer = false;  /*if none of foolowing cases matches return false*/
+  char fromC[3];
+  char toC[3];
+  memcpy(fromC, &move[0], 2);
+  fromC[2] = '\0';
+  memcpy(toC, &move[2], 2);
+  int from, to;
+  from = lettersCoordToNumberCoord(fromC);
+  to = lettersCoordToNumberCoord(toC);
+
+
+  if (activeColor == 'w') { /*if it's a white pawn*/
+    if (move[0] == move[2]) { /*if we stay on the same column*/
+      if ((move[1] == '2') && (move[3] == '4')) {
+      /*if we do this double first move*/
+        if ((boardPiece[to] == 9) && (boardPiece[to+8] == 9)) {
+        /*if the 2 squares ahead are empty*/
+          answer = true;
+        }
+      } else {
+        if (from == to+8) { /*If we're really going only one square forward*/
+          if (boardPiece[to] == 9) { /*If the square desired is empty*/
+            answer = true;
+          }
+        }
+      }
+    } else { /*if we change column with our pawn*/
+      if ((from == to+7) || (from == to+9)) {
+      /*if we correctly going forward in case we change colmun*/
+        if (((move[0] == 'a') && (move[2] == 'b'))
+          || ((move[0] == 'h') && (move[2] == 'g'))
+          || ((move[0] == move[2]+1) || (move[0] == move[2]-1))) {
+        /*if we are correctly changing column (extreme cases and other)*/
+        /* we're doing some casts here*/
+          if (boardColor[to] == 2) {
+          /* yeah only if we're killing an opposite piece OR EN PASSANT*/
+          /* (to be implemented HERE) */
+            answer = true;
+          }
+        }
+      } else { /*all other cases are false*/
+        answer = false;
+      }
+    }
+  } else { /*if a black pawn wanna move */
+      if (move[0] == move[2]) { /*if we stay on the same column*/
+        if ((move[1] == '7') && (move[3] == '5')) {
+        /*if we do this double first move*/
+          if ((boardPiece[to] == 9) && (boardPiece[to-8] == 9)) {
+          /*if the 2 squares ahead are empty*/
+            answer = true;
+          }
+        } else {
+          if (from == to-8) { /*If we're really going only one square forward*/
+            if (boardPiece[to] == 9) { /*If the square desired is empty*/
+              answer = true;
+            }
+          }
+        }
+      } else { /*if we change column with our pawn*/
+        if ((from == to-7) || (from == to-9)) {
+        /*if we correctly going forward*/
+          if (((move[0] == 'a') && (move[2] == 'b'))
+            || ((move[0] == 'h') && (move[2] == 'g'))
+            || ((move[0] == move[2]+1) || (move[0] == move[2]-1))) {
+          /*if we are correctly changing column (extreme cases and other)*/
+          /* we're doing some casts here*/
+            if (boardColor[to] == 1) { /* yeah only if we're killing an */
+            /*opposite piece OR EN PASSANT (to be implemented HERE) */
+              answer = true;
+            }
+          }
+        } else { /*all other cases are false*/
+          answer = false;
+        }
+      }
+  }
+
+  return answer;
+}
+
+bool isABishopLegalMove(char *move, char activeColor) {
+  bool answer = false; /*if none of foolowing cases matches return false*/
+
+  char fromC[3];
+  memcpy(fromC, &move[0], 2);
+  fromC[2] = '\0';
+  int from;
+  from = lettersCoordToNumberCoord(fromC);
+
+  int i;
+  int diffColumns = move[0]-move[2];
+  int diffLines = atoi(&move[1])-atoi(&move[3]);
+
+  int ennemyNb, allyColor;
+  if (activeColor == 'w') {
+    ennemyNb = 2;
+    allyColor = 1;
+  } else {
+    ennemyNb = 1;
+    allyColor = 2;
+  }
+
+  if ((diffColumns > 0) && (diffLines < 0)) { /*if we wanna go to North-West */
+    if ((boardColor[from-8*diffColumns-diffColumns] == 9)
+      || (boardColor[from-8*diffColumns-diffColumns] == ennemyNb)) {
+      answer = true;
+    } /*Normalement on peut y aller sauf si ça contredit sur le chemin du for*/
+    for (i = 1 ; i <= diffColumns ; ++i) {
+      if ((boardColor[from-8*i-i] == allyColor)
+        || (boardColor[from-8*i-i] == ennemyNb)) {
+        answer = false;
+        break;
+      }
+    }
+  }
+  if ((diffColumns < 0) && (diffLines < 0)) { /*if we wanna go to North-East */
+    diffColumns = -diffColumns; /*get something positive */
+    if ((boardColor[from-8*diffColumns+diffColumns] == 9)
+      || (boardColor[from-8*diffColumns+diffColumns] == ennemyNb)) {
+      answer = true;
+    }
+    for (i = 1 ; i <= diffColumns ; ++i) {
+      if ((boardColor[from-8*i+i] == allyColor)
+        || (boardColor[from-8*i+i] == ennemyNb)) {
+        answer = false;
+        break;
+      }
+    }
+  }
+  if ((diffColumns < 0) && (diffLines > 0)) { /*if we wanna go to South-East */
+    diffColumns = -diffColumns; /*get something positive */
+    if ((boardColor[from+8*diffColumns+diffColumns] == 9)
+      || (boardColor[from+8*diffColumns+diffColumns] == ennemyNb)) {
+      answer = true;
+    }
+    for (i = 1 ; i <= diffColumns ; ++i) {
+      if ((boardColor[from+8*i+i] == allyColor)
+        || (boardColor[from+8*i+i] == ennemyNb)) {
+        answer = false;
+        break;
+      }
+    }
+  }
+  if ((diffColumns > 0) && (diffLines > 0)) { /*if we wanna go to South-West */
+    if ((boardColor[from+8*diffColumns-diffColumns] == 9)
+      || (boardColor[from+8*diffColumns-diffColumns] == ennemyNb)) {
+      answer = true;
+    }
+    for (i = 1 ; i <= diffColumns ; ++i) {
+      if ((boardColor[from+8*i-i] == allyColor)
+        || (boardColor[from+8*i-i] == ennemyNb)) {
+        answer = false;
+        break;
+      }
+    }
+  }
+
+  return answer;
 }

@@ -1,48 +1,69 @@
 ifeq ($(MAKELEVEL), 0)
 error:
-	@echo -e "\033[0;31mError : this makefile must be called from another makefile\033[0m"
+	printf "\033[0;31m"
+	printf "Error : this makefile must be called from another makefile\n"
+	printf "\033[0m"
 .PHONY : error
 else
+
+CFULLFLAGS:=$(CFLAGS)
+
 ifeq ($(BUILDTYPE), debug)
 
-CFLAGS+=$(DEBUGCFLAGS)
+CFULLFLAGS+=$(DEBUGCFLAGS)
+
 target: $(MAKECMDGOALS)
 .PHONY : target
 
 else
 ifeq ($(BUILDTYPE), release)
+
 target: $(MAKECMDGOALS)
 .PHONY : target
+
 else
 error:
-	@echo -e "\033[0;31mError : wrong buildtype : $(BUILDTYPE)\033[0m"
+	printf "\033[0;31m"
+	printf "Error : wrong buildtype : $(BUILDTYPE)\n"
+	printf "\033[0m"
 .PHONY : error
 endif
 endif
 endif
 
-OUTPUTDIR=$(BUILDDIR)/$(BUILDTYPE)
+OUTPUTDIR:=$(BUILDDIR)/$(BUILDTYPE)
 
-OBJS=$(patsubst src/%.c,$(OUTPUTDIR)/%.o,$(wildcard src/*.c))
+OBJS:=$(patsubst src/%.c,$(OUTPUTDIR)/%.o,$(wildcard src/*.c))
+
+CINCLUDE:=-I $(CURDIR) 
 
 all : $(OBJS)
-	$(CC) $(CFLAGS) -o $(BINDIR)/${BUILDTYPE}$(EXECUTABLENAME) $(OBJS)
-	echo -e "\033[0;32mCreating binary file in : $(BINDIR)\033[0m"
+	printf "\033[0;32m"
+	printf "Creating binary file in : $(BINDIR)\n"
+	printf "\033[0m"
+	$(CC) $(CFULLFLAGS) -o $(BINDIR)/${BUILDTYPE}$(EXECUTABLENAME) $(OBJS)
 .PHONY : all
 
 -include $(DEPENDIR)/$(OBJS:.o=.d)
 
 $(OUTPUTDIR)/%.o : src/%.c
-	$(CC) -c $(CFLAGS) $< -o $@
-	$(CC) -MM $(CFLAGS) -MF $(DEPENDIR)/$*.d $<
-	echo -e "\033[0;35mCreating object file $(@F)\033[0m"
+	printf "\033[0;35m"
+	printf "Creating object file $(@F)\n"
+	printf "\033[0m"
+	$(CC) $(CINCLUDE) $(CFULLFLAGS) -c $< -o $@
+	$(CC) $(CINCLUDE) -MM -MF $(DEPENDIR)/$*.d $<
 
 clean :
+	printf "\033[0;33m"
+	printf "Cleaning $(BUILDTYPE) directory\n"
+	printf "\033[0m"
 	rm -f $(OBJS)
-	echo -e "\033[0;33mCleaning $(BUILDTYPE) directory\033[0m"
 .PHONY : clean
 
 cleanbin :
+	printf "\033[0;33m"
+	printf "Suppressing $(BUILDTYPE) binary\n"
+	printf "\033[0m"
 	rm -f $(BINDIR)/${BUILDTYPE}$(EXECUTABLENAME)
-	echo -e "\033[0;33mSuppressing $(BUILDTYPE) binary\033[0m"
 .PHONY : cleanbin
+

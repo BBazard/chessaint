@@ -3,7 +3,7 @@
 
 #include "CUnit/Basic.h"
 
-#include "../../../chessaint/include/chessboard.h"
+#include "include/chessboard.h"
 
 int init_suite_chessboard(void);
 

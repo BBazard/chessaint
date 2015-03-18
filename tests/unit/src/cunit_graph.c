@@ -1,4 +1,4 @@
-/* Copyright 2015 <Copyright Owner> */
+/*  This file is part of the ChessAInt project 2015 */
 
 /*
  *  Simple example of a CUnit unit test.
@@ -12,10 +12,10 @@
 
 /* use the basic interface */
 #include "CUnit/Basic.h"
-//#include "CUnit/MyMem.h"
+/* #include "CUnit/MyMem.h" */
 
 /* the file to test */
-#include "../../../chessaint/include/graph.h"
+#include "include/graph.h"
 
 /* the suite to test */
 #include "../include/graph_suite.h"
@@ -42,9 +42,8 @@ int main() {
   /* add the tests to the suite */
   /* all the functions in fileA_suite.h must be added */
   if ((NULL == CU_add_test(pSuite,
-          "Test of the adding function in a linked list", test_llist_add)) ||
-     (NULL == CU_add_test(pSuite,
-          "", ))) {
+                           "Test of the adding function in a linked list",
+                           test_llist_add))
     CU_cleanup_registry();
     return CU_get_error();
   }

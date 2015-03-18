@@ -44,26 +44,34 @@ struct Arc {
   int score; /**< The cumulated score of the move */
   enum Set whichSet; /**< The set in which is the arc for astar */
   char activeColor; /**< "w" for white and "b" for black */
-  char* castlingAvailability; /**<
-                               * "-" for none,
-                               * "K" if castle on white King side available
-                               * "Q" if castle on white Queen side,
-                               * "k" and "q" for equivalent on black side
-                               * Ex : "-"; "KQkq"; "K"
-                               */
-  char* enPassant; /**<
-                    * position behind the pawn which
-                    * has just done 2 squares move
-                    * or if none "-"
-                    */
-  int halfmoveClock; /**<
-                      * number of half moves since
-                      * last capture or pawn advance
-                      */
-  int fullmoveNumber; /**<
-                       * the number of full movey
-                       * Starts at one, +1 after a black's move
-                       */
+
+  /** 
+   * "-" for none,
+   * "K" if castle on white King side available
+   * "Q" if castle on white Queen side,
+   * "k" and "q" for equivalent on black side
+   * Ex : "-"; "KQkq"; "K"
+   */
+  char* castlingAvailability;
+
+  /** 
+   * position behind the pawn which
+   * has just done 2 squares move
+   * or if none "-"
+   */
+  char* enPassant;
+
+  /** 
+   * number of half moves since
+   * last capture or pawn advance
+   */
+  int halfmoveClock;
+
+  /** 
+   * the number of full movey
+   * Starts at one, +1 after a black's move
+   */
+  int fullmoveNumber;
 };
 
 /** 

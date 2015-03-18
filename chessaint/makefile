@@ -33,7 +33,9 @@ endif
 
 OUTPUTDIR:=$(BUILDDIR)/$(BUILDTYPE)
 
-OBJS:=$(patsubst src/%.c,$(OUTPUTDIR)/%.o,$(wildcard src/*.c))
+SRC:=$(wildcard src/*.c)
+INCLUDE:=$(wildcard include/*.h)
+OBJS:=$(patsubst src/%.c,$(OUTPUTDIR)/%.o,$(SRC))
 
 CINCLUDE:=-I $(CURDIR) 
 
@@ -66,4 +68,9 @@ cleanbin :
 	printf "\033[0m"
 	rm -f $(BINDIR)/${BUILDTYPE}$(EXECUTABLENAME)
 .PHONY : cleanbin
+
+lint :
+	$(LINT) $(SRC) || true
+	$(LINT) $(INCLUDE) || true
+.PHONY : lint
 

@@ -22,7 +22,9 @@ DIRTOTEST:=$(BUILDDIR)/$(BUILDTYPE)
 OUTPUTDIR:=$(BUILDDIR)/tests
 
 PROJECTOBJS:=$(filter-out $(DIRTOTEST)/main.o, $(wildcard $(DIRTOTEST)/*.o))
-TESTSOBJS:=$(patsubst src/%.c,$(OUTPUTDIR)/%.o,$(wildcard src/*.c))
+TESTSSRC:=$(wildcard src/*.c)
+TESTSINCLUDE:=$(wildcard include/*.h)
+TESTSOBJS:=$(patsubst src/%.c,$(OUTPUTDIR)/%.o,$(TESTSSRC))
 
 CINCLUDE:=-I $(CURDIR) -I ../../chessaint
 
@@ -55,4 +57,9 @@ cleanbin :
 	printf "\033[0m"
 	rm -f $(BINDIR)/${BUILDTYPE}${TESTSNAME}
 .PHONY : cleanbin
+
+lint :
+	$(LINT) $(TESTSSRC) || true
+	$(LINT) $(TESTSINCLUDE) || true
+.PHONY : lint
 

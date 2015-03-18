@@ -18,7 +18,7 @@ export TESTSNAME:="runtests"
 
 MAKE:=make -se
 LOGS:=2>&1 | tee -a $(BUILDDIR)/log
-LINT:=$(TRUNK)/../cpplint.py
+export LINT:=$(TRUNK)/../cpplint.py
 
 BUILDTYPE:=debug
 
@@ -64,11 +64,8 @@ doc :
 lint :
 	printf "\033[0;36m"
 	printf "Lint in progress\n"
-	$(LINT) \
-	$(PROJECTDIR)/src/*.c \
-	$(PROJECTDIR)/include/*.h \
-	$(TESTSDIR)/src/*.c \
-	$(TESTSDIR)/include/*.h
+	$(MAKE) -C $(PROJECTDIR) $@ BUILDTYPE:=$(BUILDTYPE)
+	$(MAKE) -C $(TESTSDIR) $@ BUILDTYPE:=$(BUILDTYPE)
 	printf "\033[0m"
 .PHONY : lint
 

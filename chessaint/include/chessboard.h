@@ -8,8 +8,8 @@
  *
  */
 
-#ifndef TRUNK_CHESSAINT_INCLUDE_CHESSBOARD_H_
-#define TRUNK_CHESSAINT_INCLUDE_CHESSBOARD_H_
+#ifndef CHESSAINT_INCLUDE_CHESSBOARD_H_
+#define CHESSAINT_INCLUDE_CHESSBOARD_H_
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -73,4 +73,4 @@ bool isAPawnLegalMove(char *move, char activeColor);
 bool isABishopLegalMove(char *move, char activeColor);
 
 
-#endif /*TRUNK_CHESSAINT_INCLUDE_CHESSBOARD_H_*/
+#endif /*CHESSAINT_INCLUDE_CHESSBOARD_H_*/

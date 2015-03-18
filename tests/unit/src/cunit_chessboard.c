@@ -1,3 +1,4 @@
+/* This file is part of the ChessAInt project 2015 */
 #include <stdlib.h>
 
 #include "CUnit/Basic.h"
@@ -7,7 +8,7 @@
 #include "include/chessboard_suite.h"
 
 int add_chessboard_suite(CU_pSuite pSuite_chessboard) {
-  if(pSuite_chessboard != NULL)
+  if (pSuite_chessboard != NULL)
     return EXIT_FAILURE;
 
   /* add a suite to the registry */
@@ -26,7 +27,7 @@ int add_chessboard_suite(CU_pSuite pSuite_chessboard) {
     CU_cleanup_registry();
     return CU_get_error();
   }
-  
+
   if ((NULL == CU_add_test(pSuite_chessboard,
        "Checking if a move given by human is correctly played on board",
        testPieceMoving))) {

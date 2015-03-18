@@ -1,8 +1,7 @@
-#ifndef TRUNK_TESTS_UNIT_INCLUDE_CHESSBOARD_SUITE_H_
-#define TRUNK_TESTS_UNIT_INCLUDE_CHESSBOARD_SUITE_H_
+#ifndef TESTS_UNIT_INCLUDE_CHESSBOARD_SUITE_H_
+#define TESTS_UNIT_INCLUDE_CHESSBOARD_SUITE_H_
 
 #include "CUnit/Basic.h"
-
 #include "include/chessboard.h"
 
 int init_suite_chessboard(void);
@@ -19,6 +18,6 @@ void testLetterToNumberCoord(void);
 
 void testLegalMove(void);
 
-#endif /*TRUNK_TESTS_UNIT_INCLUDE_CHESSBOARD_SUITE_H_*/
+#endif /* TESTS_UNIT_INCLUDE_CHESSBOARD_SUITE_H_ */
 
 

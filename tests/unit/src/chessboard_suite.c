@@ -1,7 +1,10 @@
+/* This file is part of the ChessAInt project 2015 */
+
+#ifndef TESTS_UNIT_INCLUDE_CHESSBOARD_SUITE_H_
+#define TESTS_UNIT_INCLUDE_CHESSBOARD_SUITE_H_
+
 #include "include/chessboard_suite.h"
-
 #include "CUnit/Basic.h"
-
 #include "include/chessboard.h"
 
 int init_suite_chessboard(void) {
@@ -99,3 +102,4 @@ void testLegalMove(void) {
   CU_ASSERT_TRUE(isABishopLegalMove("c8d7",'w'));
 }
 
+#endif /* TESTS_UNIT_INCLUDE_CHESSBOARD_SUITE_H_ */

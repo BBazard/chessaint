@@ -7,8 +7,8 @@
  *
  */
 
-#ifndef CHESSAINT_INCLUDE_GRAPH_H_
-#define CHESSAINT_INCLUDE_GRAPH_H_
+#ifndef TRUNK_CHESSAINT_INCLUDE_GRAPH_H_
+#define TRUNK_CHESSAINT_INCLUDE_GRAPH_H_
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -95,5 +95,5 @@ void llist_free(Llist *list);
 void arc_print(Arc value);
 void llist_print(Llist list);
 
-#endif /*CHESSAINT_INCLUDE_GRAPH_H_*/
+#endif /*TRUNK_CHESSAINT_INCLUDE_GRAPH_H_*/
 

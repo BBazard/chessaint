@@ -70,7 +70,7 @@ cleanbin :
 .PHONY : cleanbin
 
 lint :
-	$(LINT) $(SRC) || true
-	$(LINT) $(INCLUDE) || true
+	$(LINT) $(SRC)
+	$(LINT) $(INCLUDE)
 .PHONY : lint
 

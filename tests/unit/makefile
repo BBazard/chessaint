@@ -59,7 +59,7 @@ cleanbin :
 .PHONY : cleanbin
 
 lint :
-	$(LINT) $(TESTSSRC) || true
-	$(LINT) $(TESTSINCLUDE) || true
+	$(LINT) $(TESTSSRC)
+	$(LINT) $(TESTSINCLUDE)
 .PHONY : lint
 

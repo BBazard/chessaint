@@ -64,8 +64,8 @@ doc :
 lint :
 	printf "\033[0;36m"
 	printf "Lint in progress\n"
-	$(MAKE) -C $(PROJECTDIR) $@ BUILDTYPE:=$(BUILDTYPE)
-	$(MAKE) -C $(TESTSDIR) $@ BUILDTYPE:=$(BUILDTYPE)
+	$(MAKE) -i -C $(PROJECTDIR) $@ BUILDTYPE:=$(BUILDTYPE)
+	$(MAKE) -i -C $(TESTSDIR) $@ BUILDTYPE:=$(BUILDTYPE)
 	printf "\033[0m"
 .PHONY : lint
 

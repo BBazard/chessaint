@@ -34,8 +34,8 @@ int main(void) {
   while (1) {
     printf("\n\n");
     printf("---------------------------------------------\n");
-    printf("- 1 to play moves on a board");
-    printf("only pawns movement (except promotions) are implemented");
+    printf("- 1 to play moves on a board ");
+    printf("only pawns movement (except promotions) are implemented ");
     printf("other pieces move where the fuck they want)\n");
     printf("- 2 to exit \n");
     printf("----------------------------------------------\n\n");

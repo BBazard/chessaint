@@ -1,8 +1,9 @@
-export CC?=gcc
-export CFLAGS+=-Wall -Wextra -std=c99
-export LDFLAGS+=-lcunit
+export CC:=gcc
+export LD:=$(CC)
+export MAKEDEPEND:=gcc
 
-export DEBUGCFLAGS:=-g
+export CFLAGS+=-Wall -Wextra -std=c99
+export LDFLAGS:=
 
 TRUNK:=$(CURDIR)
 PROJECTDIR:=$(TRUNK)/chessaint
@@ -12,15 +13,20 @@ DOCDIR:=$(TRUNK)/docs
 export BINDIR:=$(TRUNK)/bin
 export BUILDDIR:=$(TRUNK)/build
 export DEPENDIR:=$(BUILDDIR)/dependencies
+export LOGDIR:=$(BUILDDIR)/logs
 
 export EXECUTABLENAME:="chessaint"
 export TESTSNAME:="runtests"
 
 MAKE:=make -se
-LOGS:=2>&1 | tee -a $(BUILDDIR)/log
+export LOGS:=2>&1 | tee
+BUILDTYPE:=debug
 export LINT:=$(TRUNK)/../cpplint.py
 
-BUILDTYPE:=debug
+# Target-specific variables
+debug : CFLAGS+=-g
+release : CFLAGS+=-O3
+debugtests releasetests : LDFLAGS+=-lcunit
 
 default : debugtests lint
 	printf "\033[0;30m"
@@ -35,29 +41,29 @@ all : alltests doc lint
 .SILENT :
 
 release :
-	$(MAKE) -C $(PROJECTDIR) all BUILDTYPE:=release $(LOGS)
+	$(MAKE) -C $(PROJECTDIR) all BUILDTYPE:=release
 .PHONY : release
 
 debug :
-	$(MAKE) -C $(PROJECTDIR) all BUILDTYPE:=debug $(LOGS)
+	$(MAKE) -C $(PROJECTDIR) all BUILDTYPE:=debug
 .PHONY : debug
 
 alltests : releasetests debugtests
 .PHONY : alltests
 
 releasetests : release
-	$(MAKE) -C $(TESTSDIR) BUILDTYPE:=release $(LOGS)
+	$(MAKE) -C $(TESTSDIR) BUILDTYPE:=release
 .PHONY : releasetests
 
 debugtests : debug
-	$(MAKE) -C $(TESTSDIR) BUILDTYPE:=debug $(LOGS)
+	$(MAKE) -C $(TESTSDIR) BUILDTYPE:=debug
 .PHONY : debugtests
 
 
 doc :
 	printf "\033[0;34m"
 	printf "Generating Documentation\n"
-	doxygen $(DOCDIR)/doxyfile
+	doxygen $(DOCDIR)/doxyfile $(LOGS) $(LOGDIR)/docwarnings
 	printf "\033[0m"
 .PHONY : doc
 
@@ -88,9 +94,9 @@ cleanbin :
 
 cleanlog :
 	printf "\033[0;33m"
-	printf "Deleting log file\n"
+	printf "Deleting log files\n"
 	printf "\033[0m"
-	rm -f $(BUILDDIR)/log
+	rm -f $(LOGDIR)/*
 .PHONY : cleanlog
 
 cleandep : clean

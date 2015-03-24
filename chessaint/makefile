@@ -5,22 +5,9 @@ error:
 	printf "\033[0m"
 .PHONY : error
 else
-
-CFULLFLAGS:=$(CFLAGS)
-
 ifeq ($(BUILDTYPE), debug)
-
-CFULLFLAGS+=$(DEBUGCFLAGS)
-
-target: $(MAKECMDGOALS)
-.PHONY : target
-
 else
 ifeq ($(BUILDTYPE), release)
-
-target: $(MAKECMDGOALS)
-.PHONY : target
-
 else
 error:
 	printf "\033[0;31m"
@@ -37,13 +24,13 @@ SRC:=$(wildcard src/*.c)
 INCLUDE:=$(wildcard include/*.h)
 OBJS:=$(patsubst src/%.c,$(OUTPUTDIR)/%.o,$(SRC))
 
-CINCLUDE:=-I $(CURDIR) 
+INCLUDEFLAGS:=-I $(CURDIR) 
 
 all : $(OBJS)
 	printf "\033[0;32m"
 	printf "Creating binary file in : $(BINDIR)\n"
 	printf "\033[0m"
-	$(CC) $(CFULLFLAGS) -o $(BINDIR)/${BUILDTYPE}$(EXECUTABLENAME) $(OBJS)
+	$(LD) $(CFLAGS) -o $(BINDIR)/${BUILDTYPE}$(EXECUTABLENAME) $(OBJS) $(LDFLAGS)
 .PHONY : all
 
 -include $(DEPENDIR)/$(OBJS:.o=.d)
@@ -52,8 +39,8 @@ $(OUTPUTDIR)/%.o : src/%.c
 	printf "\033[0;35m"
 	printf "Creating object file $(@F)\n"
 	printf "\033[0m"
-	$(CC) $(CINCLUDE) $(CFULLFLAGS) -c $< -o $@
-	$(CC) $(CINCLUDE) -MM -MF $(DEPENDIR)/$*.d $<
+	$(CC) $(INCLUDEFLAGS) $(CFLAGS) -c $< -o $@ $(LOGS) -a $(LOGDIR)/ccwarnings
+	$(MAKEDEPEND) $(INCLUDEFLAGS) -MM -MF $(DEPENDIR)/$*.d $<
 
 clean :
 	printf "\033[0;33m"
@@ -70,7 +57,7 @@ cleanbin :
 .PHONY : cleanbin
 
 lint :
-	$(LINT) $(SRC)
-	$(LINT) $(INCLUDE)
+	$(LINT) $(SRC) $(LOGS) -a $(LOGDIR)/lint
+	$(LINT) $(INCLUDE) $(LOGS) -a $(LOGDIR)/lint
 .PHONY : lint
 

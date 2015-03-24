@@ -6,12 +6,15 @@ PROJECT_BRIEF = "This project is a chess engine"
 
 OUTPUT_DIRECTORY = docs
 
-INPUT = ../
-RECURSIVE = YES 
+INPUT = ./chessaint/src ./chessaint/include
+
+FULL_PATH_NAMES = NO
 
 GENERATE_HTML = YES
 
 GENERATE_LATEX = NO
+
+GENERATE_MAN = YES
 
 QUIET = YES
 

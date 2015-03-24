@@ -8,8 +8,8 @@
  *
  */
 
-#ifndef CHESSAINT_INCLUDE_CHESSBOARD_H_
-#define CHESSAINT_INCLUDE_CHESSBOARD_H_
+#ifndef TRUNK_CHESSAINT_INCLUDE_CHESSBOARD_H_
+#define TRUNK_CHESSAINT_INCLUDE_CHESSBOARD_H_
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -34,6 +34,7 @@
 #define QUEEN 4
 #define KING 5
 
+
 int color[NBCASES];
 
 int piece[NBCASES];
@@ -45,7 +46,7 @@ char boardChar[NBCASES]; /* K, Q, R, B, N, P and space for empty cases */
 int boardPiece[NBCASES]; /* Dynamic table with piece representation */
 int boardColor[NBCASES]; /*Dynamic table with color representation */
 
-void initBoardToStartPos(char *board, int *piece, int *color);
+void initBoardToStartPos(char *board, int *boardPiece, int *boardColor);
 /* Prepare a new board */
 
 void printBoard(char *board, int *piece, int *color);
@@ -68,9 +69,14 @@ Arc getArcFromMove(char *move, char whoPlayed, int nbMoves);
 
 int lettersCoordToNumberCoord(char *square);
 
+void numberCoordToLettersCoord(int number, char result[2]);
+
 bool isAPawnLegalMove(char *move, char activeColor);
 
 bool isABishopLegalMove(char *move, char activeColor);
 
+bool isARookLegalMove(char *move, char activeColor);
 
-#endif /*CHESSAINT_INCLUDE_CHESSBOARD_H_*/
+
+#endif /*TRUNK_CHESSAINT_INCLUDE_CHESSBOARD_H_*/
+

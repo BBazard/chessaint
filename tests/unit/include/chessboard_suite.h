@@ -1,5 +1,6 @@
-#ifndef TESTS_UNIT_INCLUDE_CHESSBOARD_SUITE_H_
-#define TESTS_UNIT_INCLUDE_CHESSBOARD_SUITE_H_
+/* This file is part of the ChessAInt project 2015 */
+#ifndef TRUNK_TESTS_UNIT_INCLUDE_CHESSBOARD_SUITE_H_
+#define TRUNK_TESTS_UNIT_INCLUDE_CHESSBOARD_SUITE_H_
 
 #include "CUnit/Basic.h"
 #include "include/chessboard.h"
@@ -18,6 +19,9 @@ void testLetterToNumberCoord(void);
 
 void testLegalMove(void);
 
-#endif /* TESTS_UNIT_INCLUDE_CHESSBOARD_SUITE_H_ */
+
+
+#endif /*TRUNK_TESTS_UNIT_INCLUDE_CHESSBOARD_SUITE_H_*/
+
 
 

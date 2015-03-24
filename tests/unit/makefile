@@ -32,7 +32,7 @@ all : $(TESTSOBJS) $(PROJECTOBJS)
 	printf "\033[0;32m"
 	printf "Creating $(TESTSNAME)\n"
 	printf "\033[0m"
-	$(CC) $(CFLAGS) -o $(BINDIR)/${BUILDTYPE}${TESTSNAME} $(PROJECTOBJS) $(TESTSOBJS) $(LDFLAGS)
+	$(LD) $(CFLAGS) -o $(BINDIR)/${BUILDTYPE}${TESTSNAME} $(PROJECTOBJS) $(TESTSOBJS) $(LDFLAGS)
 .PHONY : all
 
 -include $(DEPENDIR)/$(TESTSOBJS:.o=.d)
@@ -41,8 +41,8 @@ $(OUTPUTDIR)/%.o : src/%.c
 	printf "\033[0;35m"
 	printf "Creating object file $(@F)\n"
 	printf "\033[0m"
-	$(CC) $(CINCLUDE) $(CFLAGS) -c $< -o $@
-	$(CC) $(CINCLUDE) -MM -MF $(DEPENDIR)/$*.d $<
+	$(CC) $(CINCLUDE) $(CFLAGS) -c $< -o $@ $(LOGS) -a $(LOGDIR)/ccwarnings
+	$(MAKEDEPEND) $(CINCLUDE) -MM -MF $(DEPENDIR)/$*.d $<
 
 clean :
 	printf "\033[0;33m"
@@ -59,7 +59,7 @@ cleanbin :
 .PHONY : cleanbin
 
 lint :
-	$(LINT) $(TESTSSRC) || true
-	$(LINT) $(TESTSINCLUDE) || true
+	$(LINT) $(TESTSSRC) $(LOGS) -a $(LOGDIR)/lint
+	$(LINT) $(TESTSINCLUDE) $(LOGS) -a $(LOGDIR)/lint
 .PHONY : lint
 

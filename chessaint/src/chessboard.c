@@ -10,6 +10,7 @@
 
 #include "include/chessboard.h"
 
+
 int color[NBCASES] = {
   2, 2, 2, 2, 2, 2, 2, 2,
   2, 2, 2, 2, 2, 2, 2, 2,
@@ -175,7 +176,7 @@ void humanVHuman() {
   int nbMoves = 0;
 
   char move[4]; /* move OR exit*/
-  snprintf(move, sizeof(4), "0000");
+  snprintf(move, sizeof(move), "0000");
 
   char activeColor;
   activeColor = 'w';
@@ -319,6 +320,66 @@ int lettersCoordToNumberCoord(char *square) {
   }
   return correspondingTableSlot;
 }
+
+void numberCoordToLettersCoord(int number, char result[2]) {
+  printf("mod 8 %d\n", number % 8);
+  printf("/ 8 %d\n", number / 8);
+  snprintf(result, sizeof(result), "00");
+  switch (number % 8) {
+    case 0:
+      result[0] = 'a';
+      break;
+    case 1:
+      result[0] = 'b';
+      break;
+    case 2:
+      result[0] = 'c';
+      break;
+    case 3:
+      result[0] = 'd';
+      break;
+    case 4:
+      result[0] = 'e';
+      break;
+    case 5:
+      result[0] = 'f';
+      break;
+    case 6:
+      result[0] = 'g';
+      break;
+    case 7:
+      result[0] = 'h';
+      break;
+  }
+  switch (number / 8) {
+    case 0:
+      result[0] = '8';
+      break;
+    case 1:
+      result[0] = '7';
+      break;
+    case 2:
+      result[0] = '6';
+      break;
+    case 3:
+      result[0] = '5';
+      break;
+    case 4:
+      result[0] = '4';
+      break;
+    case 5:
+      result[0] = '3';
+      break;
+    case 6:
+      result[0] = '2';
+      break;
+    case 7:
+      result[0] = '1';
+      break;
+  }
+}
+
+
 /** 
  *  @fn bool isAWhiteLegalMove(char *move)
  *  @brief check for the validity of a move with the help of the 3 arrays
@@ -365,10 +426,19 @@ bool isAWhiteLegalMove(char *move) {
           answer = true;
         break;
       case 3:
+        if (isARookLegalMove(move, activeColor)) {
           answer = true;
+        } else {
+          answer = false;
+        }
         break;
       case 4:
+        if (isARookLegalMove(move, activeColor) ||
+          isABishopLegalMove(move, activeColor)) {
           answer = true;
+        } else {
+          answer = false;
+        }
         break;
       case 5:
           answer = true;
@@ -426,10 +496,19 @@ bool isABlackLegalMove(char *move) {
           answer = true;
         break;
       case 3:
+        if (isARookLegalMove(move, activeColor)) {
           answer = true;
+        } else {
+          answer = false;
+        }
         break;
       case 4:
+        if (isARookLegalMove(move, activeColor) ||
+          isABishopLegalMove(move, activeColor)) {
           answer = true;
+        } else {
+          answer = false;
+        }
         break;
       case 5:
           answer = true;
@@ -561,22 +640,22 @@ bool isABishopLegalMove(char *move, char activeColor) {
   int diffColumns = move[0]-move[2];
   int diffLines = atoi(&move[1])-atoi(&move[3]);
 
-  int ennemyNb, allyColor;
+  int ennemyNb, allyNb;
   if (activeColor == 'w') {
     ennemyNb = 2;
-    allyColor = 1;
+    allyNb = 1;
   } else {
     ennemyNb = 1;
-    allyColor = 2;
+    allyNb = 2;
   }
 
   if ((diffColumns > 0) && (diffLines < 0)) { /*if we wanna go to North-West */
-    if ((boardColor[from-8*diffColumns-diffColumns] == 9)
+    if ((boardColor[from-8*diffColumns-diffColumns] == 9) /*=boardColor[to]*/
       || (boardColor[from-8*diffColumns-diffColumns] == ennemyNb)) {
       answer = true;
     } /*Normalement on peut y aller sauf si ça contredit sur le chemin du for*/
     for (i = 1 ; i <= diffColumns ; ++i) {
-      if ((boardColor[from-8*i-i] == allyColor)
+      if ((boardColor[from-8*i-i] == allyNb)
         || (boardColor[from-8*i-i] == ennemyNb)) {
         answer = false;
         break;
@@ -590,7 +669,7 @@ bool isABishopLegalMove(char *move, char activeColor) {
       answer = true;
     }
     for (i = 1 ; i <= diffColumns ; ++i) {
-      if ((boardColor[from-8*i+i] == allyColor)
+      if ((boardColor[from-8*i+i] == allyNb)
         || (boardColor[from-8*i+i] == ennemyNb)) {
         answer = false;
         break;
@@ -604,7 +683,7 @@ bool isABishopLegalMove(char *move, char activeColor) {
       answer = true;
     }
     for (i = 1 ; i <= diffColumns ; ++i) {
-      if ((boardColor[from+8*i+i] == allyColor)
+      if ((boardColor[from+8*i+i] == allyNb)
         || (boardColor[from+8*i+i] == ennemyNb)) {
         answer = false;
         break;
@@ -617,10 +696,96 @@ bool isABishopLegalMove(char *move, char activeColor) {
       answer = true;
     }
     for (i = 1 ; i <= diffColumns ; ++i) {
-      if ((boardColor[from+8*i-i] == allyColor)
+      if ((boardColor[from+8*i-i] == allyNb)
         || (boardColor[from+8*i-i] == ennemyNb)) {
         answer = false;
         break;
+      }
+    }
+  }
+
+  return answer;
+}
+
+bool isARookLegalMove(char *move, char activeColor) {
+  bool answer = false;  /*if none of foolowing cases matches return false*/
+  char fromC[3];
+  char toC[3];
+  memcpy(fromC, &move[0], 2);
+  fromC[2] = '\0';
+  memcpy(toC, &move[2], 2);
+  int from, to;
+  from = lettersCoordToNumberCoord(fromC);
+  to = lettersCoordToNumberCoord(toC);
+
+  int i;
+
+  int diffColumns = move[0]-move[2];
+  int diffLines = atoi(&move[1])-atoi(&move[3]);
+
+  int ennemyNb, allyNb;
+  if (activeColor == 'w') {
+    ennemyNb = 2;
+    allyNb = 1;
+  } else {
+    ennemyNb = 1;
+    allyNb = 2;
+  }
+
+  if (move[1] == move[3]) { /*if were moving on a line...*/
+    if (diffColumns > 0) { /*... and to the left*/
+      if ((boardColor[to] == 9) || boardColor[to] == ennemyNb) {
+        answer = true;
+      }
+      /* So it should be true except if we find womething anormal on our road*/
+      for (i = 1 ; i <= diffColumns ; ++i) {
+        if ((boardColor[from-i] == ennemyNb)
+          || (boardColor[from-i] == allyNb)) {
+          answer = false;
+          break;
+        }
+      }
+    } else { /*if were going to the right*/
+      diffColumns = -diffColumns;
+      if ((boardColor[to] == 9) || boardColor[to] == ennemyNb) {
+        answer = true;
+      }
+      /* So it should be true except if we find womething anormal on our road*/
+      for (i = 1 ; i <= diffColumns ; ++i) {
+        if ((boardColor[from+i] == ennemyNb) ||
+          (boardColor[from+i] == allyNb)) {
+          answer = false;
+          break;
+        }
+      }
+    }
+  }
+  if (move[0] == move[2]) { /*if were moving on a column...*/
+    if (diffLines > 0) { /*... and down*/
+      if ((boardColor[to] == 9) ||
+        boardColor[to] == ennemyNb) {
+        answer = true;
+      }
+      /* So it should be true except if we find womething anormal on our road*/
+      for (i = 1 ; i <= diffLines ; ++i) {
+        if ((boardColor[from+8*i] == ennemyNb) ||
+          (boardColor[from+8*i] == allyNb)) {
+          answer = false;
+          break;
+        }
+      }
+    } else { /*if were going up*/
+      diffLines = -diffLines;
+      if ((boardColor[to] == 9) || boardColor[to] == ennemyNb) {
+        answer = true;
+      }
+      /* So it should be true except if we find womething anormal on our road*/
+      for (i = 1 ; i <= diffLines ; ++i) {
+        if ((boardColor[from-8*i] == ennemyNb) ||
+          (boardColor[from-8*i] == allyNb)) {
+          answer = false;
+          break;
+        }
       }
     }
   }

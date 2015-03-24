@@ -1,4 +1,4 @@
-/*  This file is part of the ChessAInt project 2015 */
+/* This file is part of the ChessAInt project 2015 */
 
 /*
  *  Simple example of a CUnit unit test.

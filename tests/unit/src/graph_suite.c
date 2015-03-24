@@ -45,3 +45,5 @@ void test_llist_add(void) {
   llist_add(arc, &list);
 
   CU_ASSERT_EQUAL(list->value, arc);
+
+}

@@ -1,7 +1,6 @@
 /* This file is part of the ChessAInt project 2015 */
 
-
-#include "CUnit/Basic/h"
+#include "CUnit/Basic.h"
 #include "include/graph.h"
 
 /* The suite initialization function.
@@ -27,12 +26,16 @@ int clean_suite_graph(void) {
 }
 
 void init_arc(Arc *arc) {
-  *arc.id = 0;
-  *arc.from = "e4";
-  *arc.to = "e5";
-  *arc.score = 5;
-  *arc.whichSet = none;
-  *arc.whoPlays = white;
+  arc->id = 0;
+  arc->from = "e4";
+  arc->to = "e5";
+  arc->score = 5;
+  arc->whichSet = none;
+  arc->activeColor = 'b';
+  arc->castlingAvailability = "-";
+  arc->enPassant = "-";
+  arc->halfmoveClock = 5;
+  arc->fullmoveNumber = 3;
 }
 
 void test_llist_add(void) {

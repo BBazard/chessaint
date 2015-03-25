@@ -39,8 +39,8 @@ enum Set {
 typedef struct Arc Arc;
 struct Arc {
   int id; /**< The id of the arc */
-  char from[3]; /**< from  */
-  char to[3]; /**< to */
+  char* from; /**< from  */
+  char* to; /**< to */
   int score; /**< The cumulated score of the move */
   enum Set whichSet; /**< The set in which is the arc for astar */
   char activeColor; /**< "w" for white and "b" for black */

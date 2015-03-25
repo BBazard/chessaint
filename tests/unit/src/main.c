@@ -8,6 +8,7 @@
 #include "CUnit/Basic.h"
 
 int add_chessboard_suite(CU_pSuite pSuite_chessboard);
+int add_graph_suite(CU_pSuite pSuite_graph);
 
 int main() {
   /* initialize the CUnit test registry */
@@ -16,9 +17,11 @@ int main() {
 
   /* create all the suites */
   CU_pSuite pSuite_chessboard = NULL;
+  CU_pSuite pSuite_graph = NULL;
 
   /* add the suites to the registry */
   add_chessboard_suite(pSuite_chessboard);
+  add_graph_suite(pSuite_graph);
 
   /* Run all tests using the CUnit Basic interface */
   CU_basic_set_mode(CU_BRM_VERBOSE);

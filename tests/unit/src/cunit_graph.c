@@ -25,32 +25,25 @@
  * Returns a CUE_SUCCESS on successful running, another
  * CUnit error code on failure.
  */
-int main() {
-  CU_pSuite pSuite = NULL;
+int add_graph_suite (CU_pSuite pSuite_graph) {
 
-  /* initialize the CUnit test registry */
-  if (CUE_SUCCESS != CU_initialize_registry())
-    return CU_get_error();
+  if (pSuite_graph != NULL) return 1;
 
   /* add a suite to the registry */
-  pSuite = CU_add_suite("Suite graph", init_suite_graph, clean_suite_graph);
-  if (NULL == pSuite) {
+  pSuite_graph = CU_add_suite("Suite graph", init_suite_graph, clean_suite_graph);
+  if (NULL == pSuite_graph) {
     CU_cleanup_registry();
     return CU_get_error();
   }
 
   /* add the tests to the suite */
-  /* all the functions in fileA_suite.h must be added */
-  if ((NULL == CU_add_test(pSuite,
+  if ((NULL == CU_add_test(pSuite_graph,
                            "Test of the adding function in a linked list",
-                           test_llist_add))
+                           test_llist_add))) {
     CU_cleanup_registry();
     return CU_get_error();
   }
 
-  /* Run all tests using the CUnit Basic interface */
-  CU_basic_set_mode(CU_BRM_VERBOSE);
-  CU_basic_run_tests();
-  CU_cleanup_registry();
-  return CU_get_error();
+  return 0;
+
 }

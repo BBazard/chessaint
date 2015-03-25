@@ -10,6 +10,6 @@ int init_suite_graph(void);
 
 int clean_suite_graph(void);
 
-int test_llist_add(void);
+void test_llist_add(void);
 
 #endif /* TESTS_UNIT_INCLUDE_GRAPH_SUITE_H_ */

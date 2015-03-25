@@ -8,6 +8,7 @@
  */
 
 #include <assert.h>
+#include <string.h>
 #include "../include/graph.h"
 
 /** 
@@ -72,6 +73,7 @@ int llist_suppr(Llist *list) {
 void llist_free(Llist *list) {
   while (*list != NULL)
     llist_suppr(list);
+  *list = NULL;
 }
 
 /** 

@@ -52,5 +52,19 @@ int add_graph_suite(CU_pSuite pSuite_graph) {
     return CU_get_error();
   }
 
+  if (NULL == CU_add_test(pSuite_graph,
+                           "Test of the deleting function in a linked list",
+                           test_llist_suppr)) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
+
+  if (NULL == CU_add_test(pSuite_graph,
+                           "Test of the freeing function in a linked list",
+                           test_llist_free)) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
+
   return 0;
 }

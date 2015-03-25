@@ -67,3 +67,50 @@ void test_llist_add(void) {
   /* Look if the data contained in the list are the same than the arc added */
   CU_ASSERT_TRUE(arc_equal(list->value, arc));
 }
+
+void test_llist_suppr(void) {
+  Llist list = NULL;
+  Arc arc1;
+  Arc arc2;
+  arc_init(&arc1);
+  arc_init(&arc2);
+  arc2.id++;
+
+  /* See if trying to suppress an element of an empty list works */
+  CU_ASSERT_TRUE(llist_suppr(&list));
+
+  /* Add something in order to suppress it later */
+  llist_add(arc1, &list);
+  llist_add(arc2, &list);
+
+  /* Suppress the first element of the list */
+  llist_suppr(&list);
+
+  /* See if the remaining list have arc2 has its first element */
+  CU_ASSERT_TRUE(arc_equal(list->value, arc2));
+
+  /* See deleting an element returns 0 */
+  CU_ASSERT_FALSE(llist_suppr(&list));
+
+  /* Confirm the list is now a NULL pointer */
+  CU_ASSERT_PTR_NULL(list);
+}
+
+void test_llist_free(void) {
+  Llist list = NULL;
+  Arc arc1;
+  Arc arc2;
+  arc_init(&arc1);
+  arc_init(&arc2);
+  arc2.id++;
+
+  /* Add something in order to suppress it later */
+  llist_add(arc1, &list);
+  llist_add(arc2, &list);
+
+  /* Free the list */
+  llist_free(&list);
+
+  /* Test if llist_free returns a NULL pointing list */
+  CU_ASSERT_PTR_NULL(list);
+}

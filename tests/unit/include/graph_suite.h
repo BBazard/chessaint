@@ -12,5 +12,7 @@ int clean_suite_graph(void);
 
 void test_arc_equal(void);
 void test_llist_add(void);
+void test_llist_suppr(void);
+void test_llist_free(void);
 
 #endif /* TESTS_UNIT_INCLUDE_GRAPH_SUITE_H_ */

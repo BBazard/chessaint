@@ -31,6 +31,7 @@ enum Set {
 /** 
  *  @struct Arc
  *  @brief Represents the arc between two nodes of a graph
+ *  @bug Problem of initialisation
  *
  *  It stores the game data we need, according to the data contained
  * in a FEN string (5 last attributes).
@@ -39,8 +40,8 @@ enum Set {
 typedef struct Arc Arc;
 struct Arc {
   int id; /**< The id of the arc */
-  char* from; /**< from  */
-  char* to; /**< to */
+  char from[3]; /**< from  */
+  char to[3]; /**< to */
   int score; /**< The cumulated score of the move */
   enum Set whichSet; /**< The set in which is the arc for astar */
   char activeColor; /**< "w" for white and "b" for black */
@@ -92,7 +93,9 @@ void llist_add(Arc newvalue, Llist *list);
 int llist_suppr(Llist *list);
 void llist_free(Llist *list);
 
+void arc_init(Arc *arc);
 void arc_print(Arc value);
+int arc_equal(Arc left, Arc right);
 void llist_print(Llist list);
 
 #endif /*TRUNK_CHESSAINT_INCLUDE_GRAPH_H_*/

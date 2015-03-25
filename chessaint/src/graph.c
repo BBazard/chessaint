@@ -104,6 +104,29 @@ void arc_print(Arc value) {
 }
 
 /** 
+ *  @fn int arc_equal(Arc left, Arc right)
+ *  @brief Test if to arc are equals
+ *  @param[in] left The left member of the equality
+ *  @param[in] right The right member of the equality
+ *  @return 1 if the two arcs are equal, O otherwise
+ *
+ *  Returns 1 if every component of the two arc are equal, 0 if not.
+ */
+
+int arc_equal(Arc left, Arc right) {
+  return (left.id == right.id &&
+          !strcmp(left.from, right.from) &&
+          !strcmp(left.to, right.to) &&
+          left.score == right.score &&
+          left.whichSet == right.whichSet &&
+          left.activeColor == right.activeColor &&
+          left.castlingAvailability == right.castlingAvailability &&
+          left.enPassant == right.enPassant &&
+          left.halfmoveClock == right.halfmoveClock &&
+          left.fullmoveNumber == right.fullmoveNumber);
+}
+
+/** 
  *  @fn void llist_print(Llist list)
  *  @brief Print a Llist
  *  @param[in] list Llist to print, can be NULL if the list is empty

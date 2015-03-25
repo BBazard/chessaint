@@ -530,9 +530,9 @@ bool isABlackLegalMove(char *move) {
 Arc getArcFromMove(char *move, char whoPlayed, int nbMoves) {
   Arc arc;
   arc.id = nbMoves; /*No originality*/
-  memcpy(arc.from, &move[0], 2);
+  memcpy(arc.from, move, 2);
   arc.from[2] = '\0';
-  memcpy(arc.to, &move[2], 2);
+  memcpy(arc.to, move+2, 2);
   arc.to[2] = '\0';
   arc.score = 0; /*Useless noAI yet */
   arc.whichSet = none; /*useless no AI*/

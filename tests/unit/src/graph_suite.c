@@ -25,10 +25,10 @@ int clean_suite_graph(void) {
   return 0;
 }
 
-void init_arc(Arc *arc) {
+void arc_init(Arc *arc) {
   arc->id = 0;
-  arc->from = "e4";
-  arc->to = "e5";
+  strcpy(arc->from, "e4");
+  strcpy(arc->to, "e5");
   arc->score = 5;
   arc->whichSet = none;
   arc->activeColor = 'b';
@@ -38,15 +38,32 @@ void init_arc(Arc *arc) {
   arc->fullmoveNumber = 3;
 }
 
+void test_arc_equal(void) {
+  Arc left, right;
+  arc_init(&left);
+  arc_init(&right);
+
+  /* When left and right are equal */
+  CU_ASSERT_TRUE(arc_equal(left, right));
+
+  /* change right to have different values in left and right */
+  right.id++;
+
+  /* When left and right are not equal */
+  CU_ASSERT_FALSE(arc_equal(left, right));
+}
+
 void test_llist_add(void) {
   Llist list = NULL;
   Arc arc;
-  init_arc(&arc);
+  arc_init(&arc);
 
+  /* list should be NULL */
   CU_ASSERT_PTR_NULL(list);
 
+  /* Add the arc to the list */
   llist_add(arc, &list);
 
-  CU_ASSERT_EQUAL(list->value, arc);
-
+  /* Look if the data contained in the list are the same than the arc added */
+  CU_ASSERT_TRUE(arc_equal(list->value, arc));
 }

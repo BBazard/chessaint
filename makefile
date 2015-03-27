@@ -35,7 +35,7 @@ default : debugtests lint
 	printf "\033[0m"
 .PHONY : default
 
-all : alltests doc lint
+all : alltests lint doc
 .PHONY : all
 
 .SILENT :
@@ -63,7 +63,8 @@ debugtests : debug
 doc :
 	printf "\033[0;34m"
 	printf "Generating Documentation\n"
-	doxygen $(DOCDIR)/doxyfile $(LOGS) $(LOGDIR)/docwarnings
+	doxygen $(DOCDIR)/doxyfile
+	cat $(LOGDIR)/docwarnings
 	printf "\033[0m"
 .PHONY : doc
 

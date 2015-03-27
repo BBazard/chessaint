@@ -39,14 +39,16 @@ enum Set {
 
 typedef struct Arc Arc;
 struct Arc {
-  int id; /**< The id of the arc */
-  char from[3]; /**< from  */
-  char to[3]; /**< to */
-  int score; /**< The cumulated score of the move */
-  enum Set whichSet; /**< The set in which is the arc for astar */
-  char activeColor; /**< "w" for white and "b" for black */
+  int id;                /**< The id of the arc */
+  char from[3];          /**< from  */
+  char to[3];            /**< to */
+  int score;             /**< The cumulated score of the move */
+  enum Set whichSet;     /**< The set in which is the arc for astar */
+  char activeColor;      /**< "w" for white and "b" for black */
 
   /** 
+   * @todo the documentation suggest an enumeration
+   *
    * "-" for none,
    * "K" if castle on white King side available
    * "Q" if castle on white Queen side,

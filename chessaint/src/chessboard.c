@@ -10,6 +10,11 @@
 
 #include "include/chessboard.h"
 
+/**
+ *  @todo create an enumeration \n
+ *  @note I'm not sure multiple matrix are necessary
+ *
+ */
 
 int color[NBCASES] = {
   2, 2, 2, 2, 2, 2, 2, 2,
@@ -32,6 +37,12 @@ int piece[NBCASES] = {
   0, 0, 0, 0, 0, 0, 0, 0,
   3, 2, 1, 4, 5, 1, 2, 3
 }; /*PAWN BISHOP KNIGHT ROOK QUEEN KING or EMPTY (see #define in .h)*/
+
+/**
+ *  @todo create an enumeration
+ *  @bug numeric value 12
+ *
+ */
 
 char pieceChar[12] = {
   'P', 'B', 'N', 'R', 'Q', 'K', 'p', 'b', 'n', 'r', 'q', 'k'
@@ -60,6 +71,7 @@ void initBoardToStartPos(char *board, int *boardPiece, int *boardColor) {
         board[i] = pieceChar[piece[i]];
         break;
       case BLACK:
+        /** @bug numeric value 6 */
         board[i] = pieceChar[piece[i]+6];
         break;
       case EMPTY:
@@ -73,6 +85,7 @@ void initBoardToStartPos(char *board, int *boardPiece, int *boardColor) {
  *  @fn void printBoard(char *board, int *piece, int *color)
  *  @brief Print the arrays in a formated way
  *  @param[in] char and int pointers, the boards
+ *  @bug multiple numeric values
  *
  */
 
@@ -136,6 +149,7 @@ void printBoard(char *board, int *piece, int *color) {
  *  More details in the code
  *
  * THIS function doesn't modify yet the 2 other important arrays 
+ *
  */
 void fenToBoard(char *board, char *fenString) {
   int i = 0;
@@ -170,11 +184,14 @@ void fenToBoard(char *board, char *fenString) {
  *
  *  Currently it only moves pieces without restrictions until "exit"
  *  This function is getting more and more accurate 
+ *
+ *  @bug could "else if" keyword
  */
 
 void humanVHuman() {
   int nbMoves = 0;
 
+  /** @bug numeric value */
   char move[4]; /* move OR exit*/
   snprintf(move, sizeof(move), "0000");
 
@@ -188,7 +205,7 @@ void humanVHuman() {
   printf("Human v Human game !\n");
   printf("To move a piece write starting position");
   printf("and ending position ex : e2e4 \n");
-  /* beacause first only Algebraic notation is implemented */
+  /* because first only Algebraic notation is implemented */
   printf("At any moment you can go back to main menu by typing exit \n");
   initBoardToStartPos(boardChar, boardPiece, boardColor);
   printBoard(boardChar, boardPiece, boardColor);
@@ -263,6 +280,8 @@ void moveBoard(char *move, char *board, int *piece, int *color) {
  *  @param[in] string : a square on the board (no verification yet)
  *  @param[out] int : the number matching with the square in our array representation 
  *
+ *  @bug numeric values like 56
+ *
  */
 int lettersCoordToNumberCoord(char *square) {
   int correspondingTableSlot;
@@ -320,6 +339,11 @@ int lettersCoordToNumberCoord(char *square) {
   }
   return correspondingTableSlot;
 }
+
+/**
+ * @todo can be refactored with "for" loops
+ *
+ */
 
 void numberCoordToLettersCoord(int number, char result[2]) {
   printf("mod 8 %d\n", number % 8);
@@ -387,6 +411,8 @@ void numberCoordToLettersCoord(int number, char result[2]) {
  *  @param[out] bool : is this legal ?
  *
  *  THIS FUNCTION IS QUITE INCOMPLETE, it will change
+ *
+ *  @todo add enumeration and bool functions
  */
 bool isAWhiteLegalMove(char *move) {
   bool answer;

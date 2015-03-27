@@ -6,9 +6,12 @@ PROJECT_BRIEF = "This project is a chess engine"
 
 OUTPUT_DIRECTORY = docs
 
-INPUT = ./chessaint/src ./chessaint/include
-
-FULL_PATH_NAMES = NO
+INPUT = ./chessaint/src        \
+        ./chessaint/include    \
+        ./docs/mainpage.c      \
+        ./docs/logs.c          \
+        ./../TODO              \
+        ./../BUGS
 
 GENERATE_HTML = YES
 
@@ -16,5 +19,13 @@ GENERATE_LATEX = NO
 
 GENERATE_MAN = YES
 
+WARN_LOGFILE = ./build/logs/docwarnings
+
 QUIET = YES
+
+WARN_LOGFILE = ./build/logs/docwarnings
+
+ALIASES = "doxlog=\xrefitem doxlog \"Logs\" \"Logs\"" 
+
+EXAMPLE_PATH = ./build/logs/ 
 

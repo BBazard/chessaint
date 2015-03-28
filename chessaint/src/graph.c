@@ -3,7 +3,8 @@
  *  @file graph.c
  *  @brief graph structure basic functions
  *
- *  This file implements functions to add or remove Arc from a linked list, totally suppress a list and print an Arc or a list
+ *  This file implements functions to add or remove Arc from a linked list,
+ *  totally suppress a list and print an Arc or a list
  *
  */
 

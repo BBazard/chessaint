@@ -39,8 +39,8 @@ int add_heuristic_suite(CU_pSuite pSuite_heuristic) {
 
   /* add the tests to the suite */
   if (NULL == CU_add_test(pSuite_heuristic,
-                           "Premier test sur l'heuristic",
-                           test_heuristic_1)) {
+                           "Testing the heuristic_fen function",
+                           test_heuristic_fen)) {
     CU_cleanup_registry();
     return CU_get_error();
   }

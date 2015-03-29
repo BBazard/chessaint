@@ -28,33 +28,5 @@ int add_chessboard_suite(CU_pSuite pSuite_chessboard) {
     return CU_get_error();
   }
 
-  if ((NULL == CU_add_test(pSuite_chessboard,
-       "Checking if a move given by human is correctly played on board",
-       testPieceMoving))) {
-    CU_cleanup_registry();
-    return CU_get_error();
-  }
-
-  if ((NULL == CU_add_test(pSuite_chessboard,
-       "Checking the move to arc function",
-       testMoveToArc))) {
-    CU_cleanup_registry();
-    return CU_get_error();
-  }
-
-  if ((NULL == CU_add_test(pSuite_chessboard,
-       "Checking the function that changes coordinates",
-       testLetterToNumberCoord))) {
-    CU_cleanup_registry();
-    return CU_get_error();
-  }
-
-  if ((NULL == CU_add_test(pSuite_chessboard,
-       "Testing legal moves",
-       testLegalMove))) {
-    CU_cleanup_registry();
-    return CU_get_error();
-  }
-
   return EXIT_SUCCESS;
 }

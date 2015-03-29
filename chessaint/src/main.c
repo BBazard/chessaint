@@ -34,16 +34,16 @@ int main(void) {
   while (1) {
     printf("\n\n");
     printf("---------------------------------------------\n");
-    printf("- 1 to play moves on a board ");
-    printf("only pawns movement (except promotions) are implemented ");
-    printf("other pieces move where the fuck they want)\n");
+    printf("- 1 to test fenToBoard with the beginning position \n");
     printf("- 2 to exit \n");
     printf("----------------------------------------------\n\n");
 
     scanf("%d", &cur);
     switch (cur) {
       case 1:
-        humanVHuman();
+        /*a test with the FEN string describing the starting position*/
+        fenToBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPP/RNBQKBNR w KQkq e3 0 1", &myGame);
+        printBoardAndData(myGame);
         break;
       case 2:
         return EXIT_SUCCESS;

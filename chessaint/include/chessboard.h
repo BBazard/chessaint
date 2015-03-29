@@ -20,62 +20,86 @@
 
 #include "include/graph.h"
 
-#define WHITE 1
-#define BLACK 2
+#define NBSQUARES 64
 
-#define NBCASES 64
+typedef struct Coord Coord;
+struct Coord {
+  char column;
+  int line;
+};
 
-#define EMPTY 9
+typedef enum Castling Castling;
+enum Castling {
+  K,
+  Q,
+  k,
+  q,
+  no
+};
 
-#define PAWN 0
-#define BISHOP 1
-#define KNIGHT 2
-#define ROOK 3
-#define QUEEN 4
-#define KING 5
+
+typedef enum Color Color;
+enum Color {
+  white,
+  black,
+  neuter
+};
+
+typedef enum Piece Piece;
+enum Piece {
+  pawn,
+  bishop,
+  knight,
+  rook,
+  queen,
+  king,
+  empty
+};
 
 
-int color[NBCASES];
+typedef struct square Square;
+struct square {
+  Color color;
+  Piece piece;
+};
 
-int piece[NBCASES];
 
-char pieceChar[12];
+typedef struct board Board;
+struct board {
+  Square square[NBSQUARES];
+  /* Next fields contain everything necessary to play
+  according to FEN notation */
+  Color activeColor;
+  Castling availableCastlings[4];
+  Coord enPassant;
+  int pliesSinceLastCaptureOrLastPawnMovement;
+  int nbMovesTotal;
+};
 
-char boardChar[NBCASES]; /* K, Q, R, B, N, P and space for empty cases */
-                         /*Dynamic table with char representation*/
-int boardPiece[NBCASES]; /* Dynamic table with piece representation */
-int boardColor[NBCASES]; /*Dynamic table with color representation */
+Color colorToInit[NBSQUARES];
+Piece piecesToInit[NBSQUARES];
 
-void initBoardToStartPos(char *board, int *boardPiece, int *boardColor);
-/* Prepare a new board */
 
-void printBoard(char *board, int *piece, int *color);
-/* Print the board in a given state */
+Board myGame;
 
-void fenToBoard(char *board, char *fenString);
-/* Get the board corresponding to a given FEN string has */
-/*in the UCI command "position [fen|startpos] moves ..." */
+void initAGame(Board *game);
 
-void humanVHuman(); /*Basic HumanVHuman game, this function must grow*/
+char **moveGenerator(Board game);
+char **pawnMoveGenerator(Board game);
+char **bishopMoveGenerator(Board game);
+char **knightMoveGenerator(Board game);
+char **rookMoveGenerator(Board game);
+char **queenMoveGenerator(Board game);
+char **kingMoveGenerator(Board game);
 
-void moveBoard(char *move, char *board, int *piece, int *color);
-/*Only plays a move */
+char **areTheseLegalMoves(char **listOfRawMoves, Board game);
 
-bool isAWhiteLegalMove(char *move);
+void fenToBoard(char *fen, Board *game);
 
-bool isABlackLegalMove(char *move);
+void printBoardAndData(Board game);
 
-Arc getArcFromMove(char *move, char whoPlayed, int nbMoves);
 
-int lettersCoordToNumberCoord(char *square);
 
-void numberCoordToLettersCoord(int number, char result[2]);
-
-bool isAPawnLegalMove(char *move, char activeColor);
-
-bool isABishopLegalMove(char *move, char activeColor);
-
-bool isARookLegalMove(char *move, char activeColor);
 
 
 #endif /*TRUNK_CHESSAINT_INCLUDE_CHESSBOARD_H_*/

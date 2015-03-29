@@ -11,14 +11,6 @@ int clean_suite_chessboard(void);
 
 void testInitAndFenChessboard(void);
 
-void testPieceMoving(void);
-
-void testMoveToArc(void);
-
-void testLetterToNumberCoord(void);
-
-void testLegalMove(void);
-
 
 
 #endif /*TRUNK_TESTS_UNIT_INCLUDE_CHESSBOARD_SUITE_H_*/

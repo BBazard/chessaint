@@ -13,7 +13,9 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
-int heuristic_fen(char* fen);
+int number_of_char(char *str, char chr);
+int heuristic_fen(char *fen);
 
 #endif /*TRUNK_CHESSAINT_INCLUDE_HEURISTIC_H_*/

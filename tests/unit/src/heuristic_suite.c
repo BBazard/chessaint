@@ -25,6 +25,27 @@ int clean_suite_heuristic(void) {
   return 0;
 }
 
+void test_tmp(void) {
+  char* white = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+  char* black = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1";
+
+  CU_ASSERT_EQUAL(heuristic_fen(white), 1);
+  CU_ASSERT_NOT_EQUAL(heuristic_fen(white), -1);
+
+  CU_ASSERT_EQUAL(heuristic_fen(black), -1);
+  CU_ASSERT_NOT_EQUAL(heuristic_fen(black), 1);  
+}
+
+void test_number_of_char(void) {
+
+  char *no_char = "aaaaaaaaa";
+  CU_ASSERT_EQUAL(number_of_char(no_char,'b'), 0);
+
+  char *two_char = "aabbaaaacccc";
+  CU_ASSERT_EQUAL(number_of_char(two_char, 'b'), 2);
+
+}
+
 void test_heuristic_fen(void) {
   /* heuristic_fen function should return 501 if the string is not a fen, 
      502 if the fen is not correct */
@@ -56,10 +77,11 @@ void test_heuristic_fen(void) {
      (replacing uppercase letters by lowercase ones) */
 
   char* white =
-    "rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2";
+    "rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 1 2";
   char* black =
-    "RNBQKBNR/PP1PPPPP/8/2P5/4p3/5n2/pppp1ppp/rnbqkn1r b KQkq - 1 2";
+    "RNBQKBNR/PP1PPPPP/8/2P5/4p3/5n2/pppp1ppp/rnbqkb1r b KQkq - 1 2";
 
+  printf("\n##%d;%d##\n", heuristic_fen(white), heuristic_fen(black));
   CU_ASSERT_EQUAL((heuristic_fen(white) + heuristic_fen(black)), 0);
 
   /* Assert that a piece in danger counts only half the value, with

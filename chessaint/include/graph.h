@@ -3,7 +3,8 @@
  *  @file graph.h
  *  @brief graph structure header
  *
- * This file implements enumerations and structures for the graph item and the prototype of the functions developped in graph.c file
+ *  This file implements enumerations and structures for the graph item and 
+ *  the prototype of the functions developped in graph.c file
  *
  */
 

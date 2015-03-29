@@ -25,34 +25,26 @@ int clean_suite_heuristic(void) {
   return 0;
 }
 
-void test_tmp(void) {
-  char* white = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-  char* black = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1";
-
-  CU_ASSERT_EQUAL(heuristic_fen(white), 1);
-  CU_ASSERT_NOT_EQUAL(heuristic_fen(white), -1);
-
-  CU_ASSERT_EQUAL(heuristic_fen(black), -1);
-  CU_ASSERT_NOT_EQUAL(heuristic_fen(black), 1);  
+/* @todo Write this test function */
+void test_is_mat(void) {
+  CU_ASSERT_TRUE(0);
 }
 
 void test_number_of_char(void) {
-
   char *no_char = "aaaaaaaaa";
-  CU_ASSERT_EQUAL(number_of_char(no_char,'b'), 0);
+  CU_ASSERT_EQUAL(number_of_char(no_char, 'b'), 0);
 
   char *two_char = "aabbaaaacccc";
   CU_ASSERT_EQUAL(number_of_char(two_char, 'b'), 2);
-
 }
 
 void test_heuristic_fen(void) {
-  /* heuristic_fen function should return 501 if the string is not a fen, 
+  /* heuristic_fen function should return 501 if the string is not a fen,
      502 if the fen is not correct */
 
   char* not_a_fen_at_all = "iamnotafenanditrytostickin";
   char* too_many_pawns =
-    "rnbqkbnr/pppppppp/8/8/8/P/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+    "rnbqkbnr/pppppppp/8/8/8/5P2/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
   CU_ASSERT_EQUAL(heuristic_fen(not_a_fen_at_all), 501);
   CU_ASSERT_EQUAL(heuristic_fen(too_many_pawns), 502);
@@ -76,12 +68,22 @@ void test_heuristic_fen(void) {
      to 0. In order to do this we just exchange the color of the fen
      (replacing uppercase letters by lowercase ones) */
 
-  char* white =
-    "rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 1 2";
-  char* black =
-    "RNBQKBNR/PP1PPPPP/8/2P5/4p3/5n2/pppp1ppp/rnbqkb1r b KQkq - 1 2";
+  char* white_normal =
+    "rnbqkbn1/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 1 2";
+  char* white_reverse =
+    "RNBQKBN1/PP1PPPPP/8/2P5/4p3/5n2/pppp1ppp/rnbqkb1r w KQkq - 1 2";
 
-  printf("\n##%d;%d##\n", heuristic_fen(white), heuristic_fen(black));
+  CU_ASSERT_EQUAL((heuristic_fen(white_normal) +
+                    heuristic_fen(white_reverse)), 0);
+
+  /* Doing the same but by inversing the turn (w or b at the and of the FEN)
+     rather than replacing uppercase by lowercase letters */
+
+  char* white =
+    "rnbqkb1r/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 1 2";
+  char* black =
+    "rnbqkb1r/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2";
+
   CU_ASSERT_EQUAL((heuristic_fen(white) + heuristic_fen(black)), 0);
 
   /* Assert that a piece in danger counts only half the value, with

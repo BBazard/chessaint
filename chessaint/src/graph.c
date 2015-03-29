@@ -40,7 +40,8 @@ void llist_add(Arc newvalue, Llist *list) {
  *  @fn int llist_suppr(Llist *list)
  *  @brief Suppress an element
  *  @param[in,out] list Pointer on the targeted Llist, not NULL normally
- *  @return 0 if the first element was suppressed succefully, 1 otherwise.
+ *  @return 0 if the first element was suppressed succefully
+ *  @return 1 otherwise
  *
  *  This function suppress the first element of the targeted Llist,
  *  returns 0 if processed normally.
@@ -111,7 +112,8 @@ void arc_print(Arc value) {
  *  @brief Test if to arc are equals
  *  @param[in] left The left member of the equality
  *  @param[in] right The right member of the equality
- *  @return 1 if the two arcs are equal, O otherwise
+ *  @return 1 if the two arcs are equal
+ *  @return 0 otherwise
  *
  *  Returns 1 if every component of the two arc are equal, 0 if not.
  */

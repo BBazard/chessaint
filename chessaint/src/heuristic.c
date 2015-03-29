@@ -68,8 +68,12 @@ int number_of_char(char *str, char chr) {
  *
  *  @bug When trying to replace strtok by strtok_r, seg fault, strtok_r seems
  *  undefined (Wimplicit)
+ *
  *  @todo Try to replace strtok by strtok_r, better for threading
  *  (source : cpplint)
+ *
+ *  @todo Add the capacity to halve the score of a piece if endangered by
+ *  another (currently, test is failed)
  *
  */
 

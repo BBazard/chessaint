@@ -89,8 +89,7 @@ void test_heuristic_fen(void) {
   /* Assert that a piece in danger counts only half the value, with
      two computations, one with the pawn safe, and the second in danger */
 
-  char* safe = "rnbqkb1r/pppppppp/5n2/8/3P4/8/PPP1PPPP/RNBQKBNR w - - 0 1";
-  char* danger = "r1bqkbnr/pppppppp/2n5/8/3P4/8/PPP1PPPP/RNBQKBNR w - - 0 1";
-
-  CU_ASSERT_EQUAL(heuristic_fen(safe), heuristic_fen(danger)/2);
+  char* safe = "rnbqkb1r/pppppppp/5n2/8/3P4/8/PPP1PPPP/RNBQKBN1 w - - 0 1";
+  char* danger = "r1bqkbnr/pppppppp/2n5/8/3P4/8/PPP1PPPP/RNBQKBN1 w - - 0 1";
+  CU_ASSERT_EQUAL(heuristic_fen(safe), heuristic_fen(danger) * 2);
 }

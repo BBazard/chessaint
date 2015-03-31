@@ -13,6 +13,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include "chessboard.h"
 
 /** 
  *  @enum Set
@@ -118,6 +119,30 @@ struct Element {
  */
 
 typedef Element *Llist;
+
+/** 
+ *  @typedef Graph
+ *  @brief Definition of the graph type
+ *
+ *  Defines struct Graph as the Graph type
+ *
+ */
+
+typedef struct Graph Graph;
+
+/** 
+ *  @struct Graph
+ *  @brief Represents a graph for astar computation
+ *
+ *  Stores the graph data
+ */
+
+struct Graph {
+  Board root;
+  Board current_node;
+  Llist links;
+}
+
 
 void llist_add(Arc newvalue, Llist *list);
 int llist_suppr(Llist *list);

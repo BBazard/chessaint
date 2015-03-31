@@ -8,15 +8,16 @@
  *
  */
 
+
 #include "include/chessboard.h"
 
 Color colorToInit[NBSQUARES] = {
   black, black, black, black, black, black, black, black,
   black, black, black, black, black, black, black, black,
-  neuter, neuter, neuter, neuter, neuter, neuter, neuter, neuter,
-  neuter, neuter, neuter, neuter, neuter, neuter, neuter, neuter,
-  neuter, neuter, neuter, neuter, neuter, neuter, neuter, neuter,
-  neuter, neuter, neuter, neuter, neuter, neuter, neuter, neuter,
+  neutral, neutral, neutral, neutral, neutral, neutral, neutral, neutral,
+  neutral, neutral, neutral, neutral, neutral, neutral, neutral, neutral,
+  neutral, neutral, neutral, neutral, neutral, neutral, neutral, neutral,
+  neutral, neutral, neutral, neutral, neutral, neutral, neutral, neutral,
   white, white, white, white, white, white, white, white,
   white, white, white, white, white, white, white, white,
 };
@@ -32,8 +33,15 @@ Piece piecesToInit[NBSQUARES] = {
   rook, knight, bishop, queen, king, bishop, knight, rook,
 };
 
+/** 
+ *  @fn void initAGame(Board *game)
+ *  @brief Put a board to the initial position
+ *  @param[in,out] Board pointer on the board to initialize
+ */
+
 void initAGame(Board *game) {
   int i;
+
   for (i = 0 ; i <= NBSQUARES - 1 ; ++i) {
     game->square[i].color = colorToInit[i];
     game->square[i].piece = piecesToInit[i];
@@ -49,7 +57,8 @@ void initAGame(Board *game) {
   game->nbMovesTotal = 1;
 }
 
-/*With a game given, it will generate all next moves possible*/
+
+/*With a game given, it will generate all next moves possible
 char **moveGenerator(Board game) {
   int i = 0;
   char **listOfRawMoves, **listOfCheckedMoves;
@@ -58,31 +67,31 @@ char **moveGenerator(Board game) {
     if (game.square[i].color == game.activeColor) {
       switch (game.square[i].piece) {
         case pawn:
-          listOfRawMoves = pawnMoveGenerator(game);
+        //  listOfRawMoves = pawnMoveGenerator(game);
           break;
         case bishop:
-          listOfRawMoves = bishopMoveGenerator(game);
+        //  listOfRawMoves = bishopMoveGenerator(game);
           break;
         case knight:
-          listOfRawMoves = knightMoveGenerator(game);
+        //  listOfRawMoves = knightMoveGenerator(game);
           break;
         case rook:
-          listOfRawMoves = rookMoveGenerator(game);
+        //  listOfRawMoves = rookMoveGenerator(game);
           break;
         case queen:
-          listOfRawMoves = queenMoveGenerator(game);
+        //  listOfRawMoves = queenMoveGenerator(game);
           break;
         case king:
-          listOfRawMoves = kingMoveGenerator(game);
+        //  listOfRawMoves = kingMoveGenerator(game);
           break;
         case empty:
-          /*we'll never happen bc activeColor will never be neuter*/
+          we'll never happen bc activeColor will never be neutral
           break;
       }
     }
   }
 
-  listOfCheckedMoves = areTheseLegalMoves(listOfRawMoves, game);
+  //listOfCheckedMoves = areTheseLegalMoves(listOfRawMoves, game);
 
   return listOfCheckedMoves;
 }
@@ -118,21 +127,35 @@ char **kingMoveGenerator(Board game) {
 
   return listOfRawMoves;
 }
+*/
 
-/* Its job is to delete illegal moves of the list previously proposed */
+/* Its job is to delete illegal moves of the list previously proposed 
 char **areTheseLegalMoves(char **listOfRawMoves, Board game) {
   char **listOfCheckedMoves=listOfRawMoves;
 
   return listOfCheckedMoves;
 }
+*/
 
-
+/** 
+ *  @fn void fenToBoard(char *fen, Board *game)
+ *  @brief Put a board to the position described by the FEN string
+ *  @param[in] char *fen : the fen string
+ *  @param[in,out] Board *game: the board to put in a certain position
+ *
+ *  @bug : found values where two last field of FEN weren't well parsed 
+ *  ex : 50 0 
+ *
+ *  Parsing function  
+ */
 
 
 void fenToBoard(char *fen, Board *game) {
   int i = 0;
   int j = 0;
   int k = 0;
+  char temp[3];
+
   while (fen[i] != ' ') {
     if (fen[i] == '/') {
       ++i;
@@ -192,7 +215,7 @@ void fenToBoard(char *fen, Board *game) {
       } else {
         for (k=1 ; k <= atoi(&fen[i]) ; ++k) {
           game->square[j].piece = empty;
-          game->square[j].color = neuter;
+          game->square[j].color = neutral;
           ++j;
         }
       }
@@ -247,24 +270,36 @@ void fenToBoard(char *fen, Board *game) {
       game->enPassant.column = fen[i];
       ++i;
       game->enPassant.line = atoi(&fen[i]);
-      ++i;
     }
-  }
-
-  ++i;
-
-  while (fen[i] != ' ') {
-    game->pliesSinceLastCaptureOrLastPawnMovement = atoi(&fen[i]);
     ++i;
   }
-
   ++i;
-
-  while (fen[i] != ' ') {
-    game->nbMovesTotal = atoi(&fen[i]);
-    ++i;
+  k = 0;
+  while (fen[i+k] != ' ') {
+    ++k;
+    printf("%c\n",fen[k] );
   }
+  memcpy(temp, &fen[i], k);
+  game->pliesSinceLastCaptureOrLastPawnMovement = atoi(temp);
+
+  i += k;
+  ++i;
+  k = 0;
+  while (fen[i+k] != '\0') {
+    ++k;
+    printf("%c\n",fen[k] );
+  }
+  memcpy(temp, &fen[i], k);
+  game->nbMovesTotal = atoi(temp);
 }
+
+/** 
+ *  @fn void printBoardAndData(Board game)
+ *  @brief Print the board and game data in a formatted way
+ *  @param[in] baord game: the board (and its data of its structure) to display
+ */
+
+
 
 void printBoardAndData(Board game) {
   int i;

@@ -9,27 +9,6 @@ int main(void) {
   printf("**************************\n");
   int cur;
 
-  /*Arc arc;
-  arc.id=0;
-  arc.from="e4";
-  arc.to="e5";
-  arc.score=5;
-  arc.whichSet=none;
-  arc.whoPlays=white;
-  
-  Arc arc2;
-  arc2.id=1;
-  arc2.from="d4";
-  arc2.to="d5";
-  arc2.score=6;
-  arc2.whichSet=open;
-  arc2.whoPlays=black;
-  
-
-  Llist list=NULL;
-  llist_add(arc,&list);
-  llist_add(arc2,&list);*/
-
 
   while (1) {
     printf("\n\n");
@@ -42,7 +21,7 @@ int main(void) {
     switch (cur) {
       case 1:
         /*a test with the FEN string describing the starting position*/
-        fenToBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPP/RNBQKBNR w KQkq e3 0 1", &myGame);
+        fenToBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPP/RNBQKBNR w KQkq e4 0 1", &myGame);
         printBoardAndData(myGame);
         break;
       case 2:

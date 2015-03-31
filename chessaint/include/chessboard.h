@@ -22,58 +22,126 @@
 
 #define NBSQUARES 64
 
+/** 
+ *  @typedef Coord
+ *  @brief Definition of the Coord type
+ *
+ *  Defines struct Coord as the Coord type
+ *
+ */
 typedef struct Coord Coord;
+
+/** 
+ *  @struct Coord
+ *  @brief Represents a point on the board
+ *
+ *  Will soon disappear
+ */
 struct Coord {
-  char column;
-  int line;
+  char column; /**< x coordinates*/
+  int line; /**< y coordinates*/
 };
 
+
+
 typedef enum Castling Castling;
+
+/** 
+ *  @enum Castling
+ *  @brief What are the availble castles ?
+ *
+ */
 enum Castling {
-  K,
-  Q,
-  k,
-  q,
-  no
+  K, /**< white castle on king's side */
+  Q, /**< white castle on queen's side */
+  k, /**< black castle on king's side */
+  q, /**< black castle on queen's side */
+  no /**<no castle available */
 };
 
 
 typedef enum Color Color;
+
+/** 
+ *  @enum Color
+ *  @brief Colors of pieces 
+ *
+ * To describe the state of a square for exemple
+ */
 enum Color {
-  white,
-  black,
-  neuter
+  white, /**< white player's possession*/
+  black, /**< black player's possession*/
+  neutral /**< For empty squares */
 };
+
 
 typedef enum Piece Piece;
+
+/** 
+ *  @enum Piece
+ *  @brief Pieces types
+ *
+ *  List all pieces
+ */
 enum Piece {
-  pawn,
-  bishop,
-  knight,
-  rook,
-  queen,
-  king,
-  empty
+  pawn, /**< pawn - pion (fr) */
+  bishop, /**< bishop - fou (fr) */
+  knight, /**< knight - cavalier (fr) */
+  rook, /**< rook - tour (fr) */
+  queen, /**< queen - dame (fr) */
+  king, /**< king - roi (fr) */
+  empty /*<< for empty squares */
 };
 
+ /** 
+ *  @typedef Square
+ *  @brief Definition of the Square type
+ *
+ *  Defines struct Square as the Square type
+ *
+ */
+typedef struct Square Square;
 
-typedef struct square Square;
-struct square {
-  Color color;
-  Piece piece;
+
+/** 
+ *  @struct Square
+ *  @brief Represents a square on the board
+ *
+ */
+
+struct Square {
+  Color color; /**< The color of the owner of the case, can be neutral*/
+  Piece piece; /**< The piece which is in the square, can be empty*/
 };
 
+ /** 
+ *  @typedef Board
+ *  @brief Definition of the Board type
+ *
+ *  Defines struct Board as the Board type
+ *
+ */
+typedef struct Board Board;
 
-typedef struct board Board;
-struct board {
-  Square square[NBSQUARES];
-  /* Next fields contain everything necessary to play
-  according to FEN notation */
-  Color activeColor;
-  Castling availableCastlings[4];
-  Coord enPassant;
-  int pliesSinceLastCaptureOrLastPawnMovement;
-  int nbMovesTotal;
+/** 
+ *  @struct Board
+ *  @brief Represents board + game data
+ *
+ *  All data required to play a game from a position is stored in a  board
+ *  according to FEN strings data (same fields tranlated in our structures)
+ *  When you got a board you know everything : the player to play, from 
+ *  which position, with which castles available...
+ */
+struct Board {
+  Square square[NBSQUARES]; /**< A board = 64 squares*/
+
+  Color activeColor; /**< Next to play from this position*/
+  Castling availableCastlings[4]; /**< What are the available castles can be 
+                                  no,no,no,no*/
+  Coord enPassant; /**< Which square can be taken en passant*/
+  int pliesSinceLastCaptureOrLastPawnMovement; /**< useful to think about draws
+                                              a ply = a white/black move only*/
+  int nbMovesTotal; /**<Total moves, starting to 1 (convention)*/
 };
 
 Color colorToInit[NBSQUARES];
@@ -84,15 +152,19 @@ Board myGame;
 
 void initAGame(Board *game);
 
-char **moveGenerator(Board game);
+//char **moveGenerator(Board game);
+
+/*
 char **pawnMoveGenerator(Board game);
 char **bishopMoveGenerator(Board game);
 char **knightMoveGenerator(Board game);
 char **rookMoveGenerator(Board game);
 char **queenMoveGenerator(Board game);
-char **kingMoveGenerator(Board game);
+char **kingMoveGenerator(Board game); */
 
-char **areTheseLegalMoves(char **listOfRawMoves, Board game);
+/*
+
+char **areTheseLegalMoves(char **listOfRawMoves, Board game); */
 
 void fenToBoard(char *fen, Board *game);
 

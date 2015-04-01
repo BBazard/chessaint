@@ -3,7 +3,7 @@ export LD:=$(CC)
 export MAKEDEPEND:=gcc
 
 export CFLAGS+=-Wall -Wextra -std=c99
-export LDFLAGS:=
+export LDFLAGS:=-lgmp
 
 TRUNK:=$(CURDIR)
 PROJECTDIR:=$(TRUNK)/chessaint

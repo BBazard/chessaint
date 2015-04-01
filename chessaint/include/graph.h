@@ -15,7 +15,13 @@
 #include "chessboard.h"
 #include "llist.h"
 
-
+/** 
+ *  @typedef Graph
+ *  @brief Definition of the Graph type
+ *
+ *  Defines struct Graph as the Graph type
+ *
+ */
 
 typedef struct Graph Graph;
 
@@ -33,7 +39,5 @@ struct Graph {
 };
 
 Llist arcsGenerator(Graph graph, int id);
-
-
 
 #endif /*TRUNK_CHESSAINT_INCLUDE_GRAPH_H_*/

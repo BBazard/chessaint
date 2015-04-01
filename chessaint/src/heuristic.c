@@ -126,16 +126,16 @@ int heuristic_fen(char* fen) {
   for (i = 0; (unsigned) i < strlen(board); i++) {
     switch (board[i]) {
     case 'k':
-      score -= turn * 90;
+      score -= turn * 130;
       break;
     case 'K':
-      score += turn * 90;
+      score += turn * 130;
       break;
     case 'q':
-      score -= turn * 50;
+      score -= turn * 70;
       break;
     case 'Q':
-      score += turn * 50;
+      score += turn * 70;
       break;
     case 'b':
       score -= turn * 30;
@@ -144,22 +144,22 @@ int heuristic_fen(char* fen) {
       score += turn * 30;
       break;
     case 'n':
-      score -= turn * 40;
-      break;
-    case 'N':
-      score += turn * 40;
-      break;
-    case 'r':
       score -= turn * 30;
       break;
-    case 'R':
+    case 'N':
       score += turn * 30;
       break;
+    case 'r':
+      score -= turn * 50;
+      break;
+    case 'R':
+      score += turn * 50;
+      break;
     case 'p':
-      score -= turn * 20;
+      score -= turn * 10;
       break;
     case 'P':
-      score += turn * 20;
+      score += turn * 10;
       break;
     }
   }

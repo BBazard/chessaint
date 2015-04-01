@@ -18,8 +18,10 @@
 #include <string.h>
 #include <stdbool.h>
 
-#include "include/graph.h"
 
+/**
+ * @comment should be SQUARES_NB
+ */
 #define NBSQUARES 64
 
 /** 
@@ -81,6 +83,8 @@ typedef enum Piece Piece;
  *  @enum Piece
  *  @brief Pieces types
  *
+ *  @comment comments could be aligned
+ *
  *  List all pieces
  */
 enum Piece {
@@ -90,7 +94,7 @@ enum Piece {
   rook, /**< rook - tour (fr) */
   queen, /**< queen - dame (fr) */
   king, /**< king - roi (fr) */
-  empty /*<< for empty squares */
+  empty /**< for empty squares */
 };
 
  /** 
@@ -136,11 +140,22 @@ struct Board {
   Square square[NBSQUARES]; /**< A board = 64 squares*/
 
   Color activeColor; /**< Next to play from this position*/
+  /**
+   * @bug numeric value 4
+   */
   Castling availableCastlings[4]; /**< What are the available castles can be 
                                   no,no,no,no*/
   Coord enPassant; /**< Which square can be taken en passant*/
+  /**
+   * @todo rename
+   * @note "halfmoveClock" according to wikipedia fen page
+   */
   int pliesSinceLastCaptureOrLastPawnMovement; /**< useful to think about draws
                                               a ply = a white/black move only*/
+  /**
+   * @comment "fullMoveNb" according to wikipedia fen page
+   * @note in any case "nb" is supposed to be last
+   */
   int nbMovesTotal; /**<Total moves, starting to 1 (convention)*/
 };
 
@@ -152,7 +167,7 @@ Board myGame;
 
 void initAGame(Board *game);
 
-//char **moveGenerator(Board game);
+
 
 /*
 char **pawnMoveGenerator(Board game);

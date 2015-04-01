@@ -17,8 +17,6 @@ GENERATE_HTML = YES
 
 GENERATE_LATEX = NO
 
-GENERATE_MAN = YES
-
 WARN_LOGFILE = ./build/logs/docwarnings
 
 QUIET = YES
@@ -26,6 +24,7 @@ QUIET = YES
 WARN_LOGFILE = ./build/logs/docwarnings
 
 ALIASES = "doxlog=\xrefitem doxlog \"Logs\" \"Logs\"" 
+ALIASES += "comment=\xrefitem comment \"Comments\" \"Comments\"" 
 
 EXAMPLE_PATH = ./build/logs/ 
 

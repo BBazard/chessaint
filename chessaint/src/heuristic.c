@@ -10,7 +10,7 @@
  *
  */
 
-#include "../include/heuristic.h"
+#include "include/heuristic.h"
 
 /** 
  *  @fn int is_mat(char *board, char player)

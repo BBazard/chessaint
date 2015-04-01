@@ -11,6 +11,10 @@
 
 #include "include/chessboard.h"
 
+/**
+ *  @comment is it really necessary ?
+ */
+
 Color colorToInit[NBSQUARES] = {
   black, black, black, black, black, black, black, black,
   black, black, black, black, black, black, black, black,
@@ -57,85 +61,6 @@ void initAGame(Board *game) {
   game->nbMovesTotal = 1;
 }
 
-
-/*With a game given, it will generate all next moves possible
-char **moveGenerator(Board game) {
-  int i = 0;
-  char **listOfRawMoves, **listOfCheckedMoves;
-
-  for (i = 0 ; i <= 63 ; ++i) {
-    if (game.square[i].color == game.activeColor) {
-      switch (game.square[i].piece) {
-        case pawn:
-        //  listOfRawMoves = pawnMoveGenerator(game);
-          break;
-        case bishop:
-        //  listOfRawMoves = bishopMoveGenerator(game);
-          break;
-        case knight:
-        //  listOfRawMoves = knightMoveGenerator(game);
-          break;
-        case rook:
-        //  listOfRawMoves = rookMoveGenerator(game);
-          break;
-        case queen:
-        //  listOfRawMoves = queenMoveGenerator(game);
-          break;
-        case king:
-        //  listOfRawMoves = kingMoveGenerator(game);
-          break;
-        case empty:
-          we'll never happen bc activeColor will never be neutral
-          break;
-      }
-    }
-  }
-
-  //listOfCheckedMoves = areTheseLegalMoves(listOfRawMoves, game);
-
-  return listOfCheckedMoves;
-}
-
-char **pawnMoveGenerator(Board game) {
-  char **listOfRawMoves;
-
-  return listOfRawMoves;
-}
-char **bishopMoveGenerator(Board game) {
-  char **listOfRawMoves;
-
-  return listOfRawMoves;
-}
-char **knightMoveGenerator(Board game) {
-  char **listOfRawMoves;
-  
-  return listOfRawMoves;
-
-}
-char **rookMoveGenerator(Board game) {
-  char **listOfRawMoves;
-
-  return listOfRawMoves;
-}
-char **queenMoveGenerator(Board game) {
-  char **listOfRawMoves;
-
-  return listOfRawMoves;
-}
-char **kingMoveGenerator(Board game) {
-  char **listOfRawMoves;
-
-  return listOfRawMoves;
-}
-*/
-
-/* Its job is to delete illegal moves of the list previously proposed 
-char **areTheseLegalMoves(char **listOfRawMoves, Board game) {
-  char **listOfCheckedMoves=listOfRawMoves;
-
-  return listOfCheckedMoves;
-}
-*/
 
 /** 
  *  @fn void fenToBoard(char *fen, Board *game)

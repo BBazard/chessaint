@@ -3,7 +3,7 @@
  *  @file heuristic.h
  *  @brief heuristic function header
  *
- *  This file contains the prototypes of the functiosns developped
+ *  This file contains the prototypes of the functions developped
  *  in heuristic.c file
  *
  */

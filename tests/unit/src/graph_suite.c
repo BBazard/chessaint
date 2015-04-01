@@ -24,3 +24,5 @@ int clean_suite_graph(void) {
  */
   return 0;
 }
+
+void test_graph(void) {}

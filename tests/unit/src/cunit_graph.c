@@ -39,8 +39,8 @@ int add_graph_suite(CU_pSuite pSuite_graph) {
 
   /* add the tests to the suite */
   if (NULL == CU_add_test(pSuite_graph,
-                           "",
-                           test_)) {
+                           "First test",
+                          test_graph)) {
     CU_cleanup_registry();
     return CU_get_error();
   }

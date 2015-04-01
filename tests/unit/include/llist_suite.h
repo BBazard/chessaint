@@ -6,9 +6,8 @@
 #include "CUnit/Basic.h"
 #include "include/llist.h"
 
-int init_suite_graph(void);
-
-int clean_suite_graph(void);
+int init_suite_llist(void);
+int clean_suite_llist(void);
 
 void test_arc_equal(void);
 void test_llist_add(void);

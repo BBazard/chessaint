@@ -110,18 +110,6 @@ struct Element {
 
 typedef Element *Llist;
 
-/** 
- *  @typedef Graph
- *  @brief Definition of the graph type
- *
- *  Defines struct Graph as the Graph type
- *
- */
-
-
-
-
-
 void llist_add(Arc newvalue, Llist *list);
 int llist_suppr(Llist *list);
 void llist_free(Llist *list);

@@ -8,7 +8,7 @@
 #include "CUnit/Basic.h"
 
 int add_chessboard_suite(CU_pSuite pSuite_chessboard);
-int add_graph_suite(CU_pSuite pSuite_graph);
+int add_llist_suite(CU_pSuite pSuite_llist);
 int add_heuristic_suite(CU_pSuite pSuite_heuristic);
 
 int main() {
@@ -18,12 +18,12 @@ int main() {
 
   /* create all the suites */
   CU_pSuite pSuite_chessboard = NULL;
-  CU_pSuite pSuite_graph = NULL;
+  CU_pSuite pSuite_llist = NULL;
   CU_pSuite pSuite_heuristic = NULL;
 
   /* add the suites to the registry */
   add_chessboard_suite(pSuite_chessboard);
-  add_graph_suite(pSuite_graph);
+  add_llist_suite(pSuite_llist);
   add_heuristic_suite(pSuite_heuristic);
 
   /* Run all tests using the CUnit Basic interface */

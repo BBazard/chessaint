@@ -27,9 +27,35 @@
 
 typedef mpz_t Identifier;
 
-int identifier_get_depth(Identifier id);
-void identifier_path(Identifier id, int* Path);
-void identifier_next(Identifier father_id, Identifier* son_id, int son_number); 
-int identifier_is_father(Identifier father_id, Identifier son_id);
+/** 
+ *  @typedef Path
+ *  @brief Definition of the Path type
+ *
+ *  Defines Path type as pointer on Path structure
+ *
+ */
+ 
+typedef struct Path Path;
+
+/** 
+ *  @struct Path_element
+ *  @brief Definition of the Path structure
+ *
+ *  Represents a path in a graph
+ *
+ */
+
+struct Path {
+  int depth; /**< The depth the path ends, also the size of the array */
+  unsigned long int * const array; /**< The array storing the data */
+  unsigned long int *current; /**< Pointer on a block of the array */
+};
+
+Path path_init(int init_depth);
+void path_reset(Path* path);
+
+void identifier_print(Identifier id);
+
+void identifier_path(Identifier id, Path* path);
 
 #endif /*TRUNK_CHESSAINT_INCLUDE_HEURISTIC_H_*/

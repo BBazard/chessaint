@@ -76,22 +76,21 @@ void identifier_print(Identifier id) {
  */
 
 void identifier_path(Identifier id, Path* path) {
-   if (mpz_cmp_ui(id, SON_MAX_NB) >= 0) {
+  if (mpz_cmp_ui(id, SON_MAX_NB) >= 0) {
     Identifier idsub;
     Identifier iddiv;
-    mpz_inits(idsub,iddiv,NULL);
+    mpz_inits(idsub, iddiv, NULL);
 
     unsigned long int r;
-    r=mpz_tdiv_ui(id,SON_MAX_NB);
-    mpz_sub_ui(idsub,id,r);
+    r = mpz_tdiv_ui(id, SON_MAX_NB);
+    mpz_sub_ui(idsub, id, r);
     mpz_divexact_ui(iddiv, idsub, SON_MAX_NB);
 
     identifier_path(iddiv, path);
 
     ++(path->current);
     *(path->current) = r;
-   }
-  else {
-    *(path->current)=mpz_tdiv_ui(id,SON_MAX_NB);
+  } else {
+    *(path->current) = mpz_tdiv_ui(id, SON_MAX_NB);
   }
 }

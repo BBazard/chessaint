@@ -39,8 +39,22 @@ int add_identifier_suite(CU_pSuite pSuite_identifier) {
 
   /* add the tests to the suite */
   if (NULL == CU_add_test(pSuite_identifier,
-                           "Testing identifier",
-                           test_)) {
+                           "Testing path_init",
+                           test_path_init)) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
+
+  if (NULL == CU_add_test(pSuite_identifier,
+                           "Testing identifier_print",
+                           test_identifier_print)) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
+
+  if (NULL == CU_add_test(pSuite_identifier,
+                           "Testing identifier_path",
+                           test_identifier_path)) {
     CU_cleanup_registry();
     return CU_get_error();
   }

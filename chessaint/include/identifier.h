@@ -20,7 +20,7 @@
 /** 
  *  @typedef Identifier
  *  @brief Definition of the Identifier type
- *  
+ *
  *  Rename type mpz_t from GNU Multi-Precision library
  *
  */
@@ -34,7 +34,7 @@ typedef mpz_t Identifier;
  *  Defines Path type as pointer on Path structure
  *
  */
- 
+
 typedef struct Path Path;
 
 /** 

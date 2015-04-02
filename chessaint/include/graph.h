@@ -12,8 +12,8 @@
 #define TRUNK_CHESSAINT_INCLUDE_GRAPH_H_
 
 
-#include "chessboard.h"
-#include "llist.h"
+#include "./chessboard.h"
+#include "./llist.h"
 
 /** 
  *  @typedef Graph

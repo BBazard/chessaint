@@ -9,4 +9,10 @@
 int init_suite_identifier(void);
 int clean_suite_identifier(void);
 
+void test_path_init(void);
+void test_path_reset(void);
+
+void test_identifier_print(void);
+void test_identifier_path(void);
+
 #endif /* TESTS_UNIT_INCLUDE_IDENTIFIER_SUITE_H_ */

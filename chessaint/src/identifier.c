@@ -168,7 +168,7 @@ int identifier_get_cast(Identifier id) {
 int identifier_get_halfmove(Identifier id) {
   int ret;
 
-  ret = mpz_tdiv_ui(id,100);
+  ret = mpz_tdiv_ui(id, 100);
   return ret;
 }
 

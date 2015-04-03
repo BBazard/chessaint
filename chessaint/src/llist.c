@@ -122,7 +122,8 @@ void arc_print(Arc value) {
  */
 
 int arc_is_equal(Arc left, Arc right) {
-  return (left.score == right.score && identifier_is_equal(left.data, right.data));
+  return (left.score == right.score &&
+          identifier_is_equal(left.data, right.data));
 }
 
 

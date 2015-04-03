@@ -11,8 +11,9 @@
 
 #include "include/chessboard.h"
 
+
 /**
- *  @comment is it really necessary ?
+ * @todo need to init in a function
  */
 
 Color colorToInit[NBSQUARES] = {

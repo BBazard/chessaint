@@ -20,7 +20,7 @@
 
 
 /**
- * @comment should be SQUARES_NB
+ * @bug should be SQUARES_NB
  */
 #define NBSQUARES 64
 
@@ -83,7 +83,7 @@ typedef enum Piece Piece;
  *  @enum Piece
  *  @brief Pieces types
  *
- *  @comment comments could be aligned
+ *  @todo comments could be aligned
  *
  *  List all pieces
  */
@@ -153,7 +153,7 @@ struct Board {
   int pliesSinceLastCaptureOrLastPawnMovement; /**< useful to think about draws
                                               a ply = a white/black move only*/
   /**
-   * @comment "fullMoveNb" according to wikipedia fen page
+   * @todo "fullMoveNb" according to wikipedia fen page
    * @note in any case "nb" is supposed to be last
    */
   int nbMovesTotal; /**<Total moves, starting to 1 (convention)*/

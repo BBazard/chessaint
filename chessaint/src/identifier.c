@@ -186,8 +186,10 @@ int identifier_get_halfmove(Identifier id) {
 int identifier_get_fullmove(Identifier id) {
   int ret;
 
-  ret = (mpz_sizeinbase(id, 10) -6);
-  return ret;
+  if ( (ret = (mpz_sizeinbase(id, 10) -6))%4 != 0)
+    return -1;
+  else
+    return ret/4;
 }
 
 int identifier_is_equal(Identifier left, Identifier right) {

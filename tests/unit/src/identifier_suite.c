@@ -49,8 +49,65 @@ void test_path_reset(void) {
 
 void test_identifier_print(void) {
   Identifier id;
+  mpz_init_set_str(id, "1010101010101010101010101010101010101010101010", 10);
 
   /* Prints an identifier */
-  mpz_init_set_str(id, "1010101010101010101010101010101010101010101010", 10);
   identifier_print(id);
+}
+
+void test_identifier_is_leaf(void) {
+  Identifier id_is_leaf;
+  mpz_init_set_str(id_is_leaf, "5254200045", 10);
+  Identifier id_not_leaf;
+  mpz_init_set_str(id_not_leaf, "5254100045", 10);
+
+  CU_ASSERT_TRUE(identifier_is_leaf(id_is_leaf));
+  CU_ASSERT_FALSE(identifier_is_leaf(id_not_leaf));
+}
+
+void test_identifier_is_white(void) {
+  Identifier id_is_white;
+  mpz_init_set_str(id_is_white, "5254100045", 10);
+  Identifier id_not_white;
+  mpz_init_set_str(id_not_white, "5254200045", 10);
+
+  CU_ASSERT_TRUE(identifier_is_white(id_is_white));
+  CU_ASSERT_FALSE(identifier_is_white(id_not_white));
+}
+
+void test_identifier_is_passant(void) {
+  Identifier id_is_passant;
+  mpz_init_set_str(id_is_passant, "5254010045", 10);
+  Identifier id_not_passant;
+  mpz_init_set_str(id_not_passant, "5254000045", 10);
+
+  CU_ASSERT_TRUE(identifier_is_passant(id_is_passant));
+  CU_ASSERT_FALSE(identifier_is_passant(id_not_passant));
+}
+
+void test_identifier_get_cast(void) {
+  Identifier id_no_cast;
+  mpz_init_set_str(id_no_cast, "5254000045", 10);
+  Identifier id_q;
+  mpz_init_set_str(id_q, "5254100145", 10);
+  Identifier id_KQkq;
+  mpz_init_set_str(id_KQkq, "5254101645", 10);
+
+  CU_ASSERT_EQUAL(identifier_get_cast(id_no_cast), 0);
+  CU_ASSERT_EQUAL(identifier_get_cast(id_q), 1);
+  CU_ASSERT_EQUAL(identifier_get_cast(id_KQkq), 16);
+}
+
+void test_identifier_get_halfmove(void) {
+  Identifier id_halfmove_45;
+  mpz_init_set_str(id_halfmove_45, "5254101645", 10);
+
+  CU_ASSERT_EQUAL(identifier_get_halfmove(id_halfmove_45), 45);
+}
+
+void test_identifier_get_fullmove(void) {
+  Identifier id_fullmove_5;
+  mpz_init_set_str(id_fullmove_5, "11112222333344445555101645", 10);
+
+  CU_ASSERT_EQUAL(identifier_get_fullmove(id_fullmove_5), 5);
 }

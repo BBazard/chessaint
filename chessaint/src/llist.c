@@ -106,22 +106,8 @@ void llist_print(Llist list) {
  */
 
 void arc_print(Arc value) {
-  char* set;
-  char* color;
-
-  if (value.whichSet == 0)
-    set = "none";
-  else if (value.whichSet == 1)
-    set = "open";
-  else
-    set = "closed";
-
-  if (value.activeColor == 'w')
-    color = "white";
-  else
-    color = "black";
-  printf("#%d| %s--%d->%s | Set : %s | Color : %s\n",
-         value.id, value.from, value.score, value.to, set, color);
+  printf("%d", value.score);
+  identifier_print(value.data);
 }
 
 /** 
@@ -135,17 +121,8 @@ void arc_print(Arc value) {
  *  Returns 1 if every component of the two arc are equal, 0 if not.
  */
 
-int arc_equal(Arc left, Arc right) {
-  return (left.id == right.id &&
-          !strcmp(left.from, right.from) &&
-          !strcmp(left.to, right.to) &&
-          left.score == right.score &&
-          left.whichSet == right.whichSet &&
-          left.activeColor == right.activeColor &&
-          left.castlingAvailability == right.castlingAvailability &&
-          left.enPassant == right.enPassant &&
-          left.halfmoveClock == right.halfmoveClock &&
-          left.fullmoveNumber == right.fullmoveNumber);
+int arc_is_equal(Arc left, Arc right) {
+  return (left.score == right.score && identifier_is_equal(left.data, right.data));
 }
 
 

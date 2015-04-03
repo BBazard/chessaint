@@ -15,8 +15,6 @@
 #include <stdio.h>
 #include <gmp.h>
 
-#define SON_MAX_NB 100
-
 /** 
  *  @typedef Identifier
  *  @brief Definition of the Identifier type
@@ -55,6 +53,15 @@ Path path_init(int init_depth);
 void path_reset(Path* path);
 
 void identifier_print(Identifier id);
+
+int identifier_is_leaf(Identifier id);
+int identifier_is_white(Identifier id);
+int identifier_is_passant(Identifier id);
+int identifier_get_cast(Identifier id);
+int identifier_get_halfmove(Identifier id);
+int identifier_get_fullmove(Identifier id);
+
+int identifier_is_equal(Identifier left, Identifier right);
 
 void identifier_path(Identifier id, Path* path);
 

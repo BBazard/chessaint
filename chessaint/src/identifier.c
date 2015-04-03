@@ -62,6 +62,137 @@ void identifier_print(Identifier id) {
 
   fclose(stdout);
 }
+/** 
+ *  @fn int identifier_is_leaf(Identifier id)
+ *  @brief Check if an arc is a leaf of the graph
+ *  @param[in] id The identifier used
+ *  @return 1 If the arc is a leaf
+ *  @return 0 Otherwise
+ *
+ *  This function check if a given arc is a leaf
+ *  or not, given it's Identifier
+ *
+ */
+
+int identifier_is_leaf(Identifier id) {
+  Identifier tmp;
+  int ret;
+  mpz_init(tmp);
+
+  mpz_tdiv_q_ui(tmp, id, 100000);
+  ret = (mpz_tdiv_ui(tmp, 10) > 1);
+  mpz_clear(tmp);
+  return ret;
+}
+
+/** 
+ *  @fn int identifier_is_white(Identifier id)
+ *  @brief Check if an arc is a white move
+ *  @param[in] id The identifier used
+ *  @return 1 If the arc is a white move
+ *  @return 0 Otherwise
+ *
+ *  This function check if a given arc is a white move
+ *  or not, given it's Identifier
+ *
+ */
+
+int identifier_is_white(Identifier id) {
+  Identifier tmp;
+  int ret;
+  mpz_init(tmp);
+
+  mpz_tdiv_q_ui(tmp, id, 100000);
+  ret = (mpz_tdiv_ui(tmp, 10) % 2);
+  mpz_clear(tmp);
+  return ret;
+}
+
+/** 
+ *  @fn int identifier_is_passant(Identifier id)
+ *  @brief Check if an arc contains a enpassant move
+ *  @param[in] id The identifier used
+ *  @return 1 If the arc contains enpassant
+ *  @return 0 Otherwise
+ *
+ *  This function check if a given arc contains a enpassant move
+ *  or not, given it's Identifier
+ *
+ */
+
+int identifier_is_passant(Identifier id) {
+  Identifier tmp;
+  int ret;
+  mpz_init(tmp);
+
+  mpz_tdiv_q_ui(tmp, id, 10000);
+  ret = mpz_tdiv_ui(tmp, 10);
+  mpz_clear(tmp);
+  return ret;
+}
+
+/** 
+ *  @fn int identifier_get_cast(Identifier id)
+ *  @brief Get the castling state
+ *  @param[in] id The identifier used
+ *  @return [|0;63|] Meaning a state of castling
+ *
+ *  This function check the castling state of an arc, given it's
+ *  Identifier
+ *
+ */
+
+int identifier_get_cast(Identifier id) {
+  Identifier tmp;
+  int ret;
+  mpz_init(tmp);
+
+  mpz_tdiv_q_ui(tmp, id, 100);
+  ret = mpz_tdiv_ui(tmp, 100);
+  mpz_clear(tmp);
+  return ret;
+}
+
+/** 
+ *  @fn int identifier_get_halfmove(Identifier id)
+ *  @brief Get the number of "half move clock"
+ *  @param[in] id The identifier used
+ *  @return [|0;51|] the number of half moves
+ *
+ *  This function returns the number of half moves done
+ *  since the last pawn move or capture, it is used for
+ *  the fifty-move rule.
+ *
+ */
+
+int identifier_get_halfmove(Identifier id) {
+  int ret;
+
+  ret = mpz_tdiv_ui(id,100);
+  return ret;
+}
+
+/** 
+ *  @fn int identifier_get_fullmove(Identifier id)
+ *  @brief Get the number of moves
+ *  @param[in] id The identifier used
+ *  @return (int) the number of moves
+ *
+ *  This function returns the number of moves done
+ *  since the game has started
+ *
+ */
+
+int identifier_get_fullmove(Identifier id) {
+  int ret;
+
+  ret = (mpz_sizeinbase(id, 10) -6);
+  return ret;
+}
+
+int identifier_is_equal(Identifier left, Identifier right) {
+  return !(mpz_cmp(left, right));
+}
 
 /** 
  *  @fn void identifier_path(Identifier id, int* path)
@@ -76,21 +207,21 @@ void identifier_print(Identifier id) {
  */
 
 void identifier_path(Identifier id, Path* path) {
-  if (mpz_cmp_ui(id, SON_MAX_NB) >= 0) {
+  if (mpz_cmp_ui(id, 100) >= 0) {
     Identifier idsub;
     Identifier iddiv;
     mpz_inits(idsub, iddiv, NULL);
 
     unsigned long int r;
-    r = mpz_tdiv_ui(id, SON_MAX_NB);
+    r = mpz_tdiv_ui(id, 100);
     mpz_sub_ui(idsub, id, r);
-    mpz_divexact_ui(iddiv, idsub, SON_MAX_NB);
+    mpz_divexact_ui(iddiv, idsub, 100);
 
     identifier_path(iddiv, path);
 
     ++(path->current);
     *(path->current) = r;
   } else {
-    *(path->current) = mpz_tdiv_ui(id, SON_MAX_NB);
+    *(path->current) = mpz_tdiv_ui(id, 100);
   }
 }

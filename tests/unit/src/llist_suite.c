@@ -26,16 +26,8 @@ int clean_suite_llist(void) {
 }
 
 void arc_init(Arc *arc) {
-  arc->id = 0;
-  strcpy(arc->from, "e4");
-  strcpy(arc->to, "e5");
-  arc->score = 5;
-  arc->whichSet = none;
-  arc->activeColor = 'b';
-  arc->castlingAvailability = "-";
-  arc->enPassant = "-";
-  arc->halfmoveClock = 5;
-  arc->fullmoveNumber = 3;
+  arc->score = 150;
+  mpz_init(arc->data);
 }
 
 void test_arc_equal(void) {
@@ -44,13 +36,13 @@ void test_arc_equal(void) {
   arc_init(&right);
 
   /* When left and right are equal */
-  CU_ASSERT_TRUE(arc_equal(left, right));
+  CU_ASSERT_TRUE(arc_is_equal(left, right));
 
   /* change right to have different values in left and right */
-  right.id++;
+  right.score++;
 
   /* When left and right are not equal */
-  CU_ASSERT_FALSE(arc_equal(left, right));
+  CU_ASSERT_FALSE(arc_is_equal(left, right));
 }
 
 void test_llist_add(void) {
@@ -65,7 +57,7 @@ void test_llist_add(void) {
   llist_add(arc, &list);
 
   /* Look if the data contained in the list are the same than the arc added */
-  CU_ASSERT_TRUE(arc_equal(list->value, arc));
+  CU_ASSERT_TRUE(arc_is_equal(list->value, arc));
 }
 
 void test_llist_suppr(void) {
@@ -74,7 +66,7 @@ void test_llist_suppr(void) {
   Arc arc2;
   arc_init(&arc1);
   arc_init(&arc2);
-  arc2.id++;
+  arc2.score++;
 
   /* See if trying to suppress an element of an empty list works */
   CU_ASSERT_TRUE(llist_suppr(&list));
@@ -87,7 +79,7 @@ void test_llist_suppr(void) {
   llist_suppr(&list);
 
   /* See if the remaining list have arc2 has its first element */
-  CU_ASSERT_TRUE(arc_equal(list->value, arc2));
+  CU_ASSERT_TRUE(arc_is_equal(list->value, arc2));
 
   /* See deleting an element returns 0 */
   CU_ASSERT_FALSE(llist_suppr(&list));
@@ -102,7 +94,7 @@ void test_llist_free(void) {
   Arc arc2;
   arc_init(&arc1);
   arc_init(&arc2);
-  arc2.id++;
+  arc2.score++;
 
   /* Add something in order to suppress it later */
   llist_add(arc1, &list);

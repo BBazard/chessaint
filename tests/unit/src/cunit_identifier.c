@@ -39,13 +39,6 @@ int add_identifier_suite(CU_pSuite pSuite_identifier) {
 
   /* add the tests to the suite */
   if (NULL == CU_add_test(pSuite_identifier,
-                           "Testing path_init",
-                           test_path_init)) {
-    CU_cleanup_registry();
-    return CU_get_error();
-  }
-
-  if (NULL == CU_add_test(pSuite_identifier,
                            "Testing stack_init",
                            test_stack_init)) {
     CU_cleanup_registry();

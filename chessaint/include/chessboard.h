@@ -36,12 +36,12 @@ typedef struct Coord Coord;
 /** 
  *  @struct Coord
  *  @brief Represents a point on the board
+ *  with (8,8) the system
  *
- *  Will soon disappear
  */
 struct Coord {
-  char column; /**< x coordinates*/
-  int line; /**< y coordinates*/
+  char column; /**< x coordinates */
+  int line; /**< y coordinates */
 };
 
 
@@ -71,8 +71,8 @@ typedef enum Color Color;
  * To describe the state of a square for exemple
  */
 enum Color {
-  white, /**< white player's possession*/
-  black, /**< black player's possession*/
+  white, /**< white player's possession */
+  black, /**< black player's possession */
   neutral /**< For empty squares */
 };
 
@@ -114,8 +114,8 @@ typedef struct Square Square;
  */
 
 struct Square {
-  Color color; /**< The color of the owner of the case, can be neutral*/
-  Piece piece; /**< The piece which is in the square, can be empty*/
+  Color color; /**< The color of the owner of the case, can be neutral */
+  Piece piece; /**< The piece which is in the square, can be empty */
 };
 
  /** 
@@ -137,26 +137,26 @@ typedef struct Board Board;
  *  which position, with which castles available...
  */
 struct Board {
-  Square square[NBSQUARES]; /**< A board = 64 squares*/
+  Square square[NBSQUARES]; /**< A board = 64 squares */
 
-  Color activeColor; /**< Next to play from this position*/
+  Color activeColor; /**< Next to play from this position */
   /**
    * @bug numeric value 4
    */
   Castling availableCastlings[4]; /**< What are the available castles can be 
                                   no,no,no,no*/
-  Coord enPassant; /**< Which square can be taken en passant*/
+  Coord enPassant; /**< Which square can be taken en passant */
   /**
    * @todo rename
    * @note "halfmoveClock" according to wikipedia fen page
    */
   int pliesSinceLastCaptureOrLastPawnMovement; /**< useful to think about draws
-                                              a ply = a white/black move only*/
+                                              a ply = a white/black move only */
   /**
    * @todo "fullMoveNb" according to wikipedia fen page
    * @note in any case "nb" is supposed to be last
    */
-  int nbMovesTotal; /**<Total moves, starting to 1 (convention)*/
+  int nbMovesTotal; /**<Total moves, starting to 1 (convention) */
 };
 
 Color colorToInit[NBSQUARES];
@@ -169,19 +169,10 @@ void initAGame(Board *game);
 
 
 
-/*
-char **pawnMoveGenerator(Board game);
-char **bishopMoveGenerator(Board game);
-char **knightMoveGenerator(Board game);
-char **rookMoveGenerator(Board game);
-char **queenMoveGenerator(Board game);
-char **kingMoveGenerator(Board game); */
-
-/*
-
-char **areTheseLegalMoves(char **listOfRawMoves, Board game); */
 
 void fenToBoard(char *fen, Board *game);
+
+int squareNumberTo77Sytem(int squareNumber);
 
 void printBoardAndData(Board game);
 

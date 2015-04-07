@@ -149,7 +149,7 @@ void fenToBoard(char *fen, Board *game) {
       }
     }
 
-  ++i; /*let's go to the next field*/
+  ++i; /* let's go to the next field */
 
   while (fen[i] != ' ') {
     if (fen[i] == 'w') {
@@ -160,7 +160,7 @@ void fenToBoard(char *fen, Board *game) {
     ++i;
   }
 
-  ++i; /*To the next field of the fen string*/
+  ++i; /* To the next field of the fen string */
 
   k = 0;
   while (fen[i] != ' ') {
@@ -185,7 +185,7 @@ void fenToBoard(char *fen, Board *game) {
     ++k;
   }
 
-  ++i; /*To the next field of the fen string*/
+  ++i; /* To the next field of the fen string */
 
   while (fen[i] != ' ') {
     if (fen[i] == '-') {
@@ -217,6 +217,18 @@ void fenToBoard(char *fen, Board *game) {
   }
   memcpy(temp, &fen[i], k);
   game->nbMovesTotal = atoi(temp);
+}
+
+/**
+ *  @fn int squareNumberTo88Sytem(int squareNumber)
+ *  @brief Change coordinates system
+ *  @param[in] int : the square number to convert from the array notation
+ *  @param[out] int : the square in the 7x7 system 
+ *  ex : a1->0 / a8->7 / b1-10 / h1 -> 70....
+ */
+
+int squareNumberTo77Sytem(int squareNumber) {
+  return (squareNumber % 8)*10 + 7-(squareNumber / 8);
 }
 
 /** 

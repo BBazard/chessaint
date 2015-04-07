@@ -15,6 +15,40 @@
 #include "./chessboard.h"
 #include "./llist.h"
 
+typedef enum  LimitTests LimitTests;
+/** 
+ *  @enum limitTests
+ *  @brief To test things with the limits of the board
+ *  
+ */
+enum LimitTests {
+  lastColumn = 68,
+  firstColumn = 9
+};
+
+
+
+typedef enum PawnMove PawnMove;
+/** 
+ *  @enum pawnMove
+ *  @brief all possible pawn moves
+ *
+ *  Useful in pawnMoveGenerator for code comprehension
+ */
+enum PawnMove {
+  noMove = 0,
+  twoSquaresUp = 2,
+  oneSquareUp = 1,
+  oneSquareUpAndLeft = 11,
+  oneSquareUpAndRight = -9,
+  twoSquaresDown = -2,
+  oneSquareDown = -1,
+  oneSquareDownAndLeft = 9,
+  oneSquareDownAndRight = -11
+};
+
+
+
 /** 
  *  @typedef Graph
  *  @brief Definition of the Graph type
@@ -38,6 +72,8 @@ struct Graph {
   Llist links;
 };
 
-Llist arcsGenerator(Graph graph, int id);
+void movesGenerator(Graph graph);
+void pawnMoveGenerator(int squareId, Color activeColor);
+void bishopMoveGenerator(int squareId);
 
 #endif /*TRUNK_CHESSAINT_INCLUDE_GRAPH_H_*/

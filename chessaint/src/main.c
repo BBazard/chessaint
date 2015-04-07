@@ -14,17 +14,21 @@ int main(void) {
     printf("\n\n");
     printf("---------------------------------------------\n");
     printf("- 1 to test fenToBoard with the beginning position \n");
-    printf("- 2 to exit \n");
+    printf("- 2 to test pawn move gen\n");
+    printf("- 3 to exit \n");
     printf("----------------------------------------------\n\n");
 
     scanf("%d", &cur);
     switch (cur) {
       case 1:
-        /*a test with the FEN string describing the starting position*/
+        /* a test with the FEN string describing the starting position */
         fenToBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPP/RNBQKBNR w KQkq e4 0 1", &myGame);
         printBoardAndData(myGame);
         break;
       case 2:
+        printf("What are the moves for a pawn on e2 == 31 ?\n");
+        pawnMoveGenerator(31, white); 
+      case 3:
         return EXIT_SUCCESS;
         break;
     }

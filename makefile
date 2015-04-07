@@ -63,7 +63,8 @@ debugtests : debug
 doc :
 	printf "\033[0;34m"
 	printf "Generating Documentation\n"
-	doxygen $(DOCDIR)/doxyfile
+	doxygen $(DOCDIR)/config/main.cfg
+	doxygen $(DOCDIR)/config/wrapper.cfg
 	cat $(LOGDIR)/docwarnings
 	printf "\033[0m"
 .PHONY : doc
@@ -71,8 +72,8 @@ doc :
 lint :
 	printf "\033[0;36m"
 	printf "Lint in progress\n"
-	$(MAKE) -i -C $(PROJECTDIR) $@ BUILDTYPE:=$(BUILDTYPE)
-	$(MAKE) -i -C $(TESTSDIR) $@ BUILDTYPE:=$(BUILDTYPE)
+	$(MAKE) -i -C $(PROJECTDIR) $@ BUILDTYPE:=$(BUILDTYPE) | grep -vE "^Done"
+	$(MAKE) -i -C $(TESTSDIR) $@ BUILDTYPE:=$(BUILDTYPE) | grep -vE "^Done"
 	printf "\033[0m"
 .PHONY : lint
 
@@ -111,7 +112,7 @@ cleandoc :
 	printf "\033[0;33m"
 	printf "Deleting doc\n"
 	printf "\033[0m"
+	rm -rf $(DOCDIR)/build/*
 	rm -rf $(DOCDIR)/html
-	rm -rf $(DOCDIR)/man
 .PHONY : cleandoc
 

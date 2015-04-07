@@ -13,7 +13,7 @@
 #include "include/heuristic.h"
 
 /** 
- *  @fn int is_mat(char *board, char player)
+ *  @fn int is_mate(char *board, char player)
  *  @brief Check if there is mat
  *  @param[in] board The string representing the board
  *  @param[in] player The char representing the player
@@ -27,7 +27,7 @@
  *
  */
 
-int is_mat(char *board, char player) {
+int is_mate(char *board, char player) {
   char* mat = "6rk/4pq2/3r4/8/8/8/8/B5KR";
   if (strcmp(mat, board) == 0 && player == 'b')
     return 1;
@@ -117,9 +117,9 @@ int heuristic_fen(char* fen) {
     return 502;
 
   /* Returns 500 or -500 directly if one of the kings is mat */
-  if (is_mat(board, 'w'))
+  if (is_mate(board, 'w'))
     return turn * -500;
-  else if (is_mat(board, 'b'))
+  else if (is_mate(board, 'b'))
     return turn * 500;
 
   /* Computes the score by adding the different values of each piece */

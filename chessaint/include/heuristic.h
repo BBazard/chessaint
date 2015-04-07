@@ -15,7 +15,7 @@
 #include <stdio.h>
 #include <string.h>
 
-int is_mat(char *board, char player);
+int is_mate(char *board, char player);
 int number_of_char(char *str, char chr);
 int heuristic_fen(char *fen);
 

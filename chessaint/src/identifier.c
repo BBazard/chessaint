@@ -56,7 +56,7 @@ void stack_push(Stack *s, int item) {
 }
 
 /** 
- *  @int stack_pop(Stack *s);
+ *  @fn int stack_pop(Stack *s);
  *  @brief Extract an item from the stack
  *  @return int the first element of the stack
  *
@@ -101,7 +101,7 @@ void identifier_print(Identifier id) {
  *  @return 0 Otherwise
  *
  *  This function check if a given arc is a leaf
- *  or not, given it's Identifier
+ *  or not, given its Identifier
  *
  */
 
@@ -124,7 +124,7 @@ int identifier_is_leaf(Identifier id) {
  *  @return 0 Otherwise
  *
  *  This function check if a given arc is a white move
- *  or not, given it's Identifier
+ *  or not, given its Identifier
  *
  */
 
@@ -147,7 +147,7 @@ int identifier_is_white(Identifier id) {
  *  @return 0 Otherwise
  *
  *  This function check if a given arc contains a enpassant move
- *  or not, given it's Identifier
+ *  or not, given its Identifier
  *
  */
 
@@ -168,7 +168,7 @@ int identifier_is_passant(Identifier id) {
  *  @param[in] id The identifier used
  *  @return [|0;63|] Meaning a state of castling
  *
- *  This function check the castling state of an arc, given it's
+ *  This function check the castling state of an arc, given its
  *  Identifier
  *
  */
@@ -222,6 +222,14 @@ int identifier_get_fullmove(Identifier id) {
   else
     return ret/4;
 }
+
+/** 
+ *  @fn int identifier_is_equal(Identifier left, Identifier right)
+ *  @brief Compares identifiers
+ *  @return 1 If identifier are equal
+ *  @return 0 Otherwise
+ *
+ */
 
 int identifier_is_equal(Identifier left, Identifier right) {
   return !(mpz_cmp(left, right));

@@ -111,7 +111,7 @@ void arc_print(Arc value) {
 }
 
 /** 
- *  @fn int arc_equal(Arc left, Arc right)
+ *  @fn int arc_is_equal(Arc left, Arc right)
  *  @brief Test if to arc are equals
  *  @param[in] left The left member of the equality
  *  @param[in] right The right member of the equality

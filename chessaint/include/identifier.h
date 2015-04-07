@@ -15,8 +15,6 @@
 #include <stdio.h>
 #include <gmp.h>
 
-#define SON_MAX_NB 100
-
 /** 
  *  @typedef Identifier
  *  @brief Definition of the Identifier type
@@ -26,6 +24,16 @@
  */
 
 typedef mpz_t Identifier;
+
+/** 
+ *  @typedef Stack
+ *  @brief Definition of the Stack type
+ *
+ *  Rename type mpz_t from GNU Multi-Precision library
+ *
+ */
+
+typedef mpz_t Stack;
 
 /** 
  *  @typedef Path
@@ -54,7 +62,21 @@ struct Path {
 Path path_init(int init_depth);
 void path_reset(Path* path);
 
+void stack_init(Stack *s);
+void stack_free(Stack *s);
+void stack_push(Stack *s, int item);
+int stack_pop(Stack *s);
+
 void identifier_print(Identifier id);
+
+int identifier_is_leaf(Identifier id);
+int identifier_is_white(Identifier id);
+int identifier_is_passant(Identifier id);
+int identifier_get_cast(Identifier id);
+int identifier_get_halfmove(Identifier id);
+int identifier_get_fullmove(Identifier id);
+
+int identifier_is_equal(Identifier left, Identifier right);
 
 void identifier_path(Identifier id, Path* path);
 

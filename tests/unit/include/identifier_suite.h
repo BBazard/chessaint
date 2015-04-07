@@ -12,7 +12,16 @@ int clean_suite_identifier(void);
 void test_path_init(void);
 void test_path_reset(void);
 
+void test_stack_init(void);
+void test_stack_pop(void);
+void test_stack_push(void);
+
 void test_identifier_print(void);
-void test_identifier_path(void);
+void test_identifier_is_leaf(void);
+void test_identifier_is_white(void);
+void test_identifier_is_passant(void);
+void test_identifier_get_cast(void);
+void test_identifier_get_halfmove(void);
+void test_identifier_get_fullmove(void);
 
 #endif /* TESTS_UNIT_INCLUDE_IDENTIFIER_SUITE_H_ */

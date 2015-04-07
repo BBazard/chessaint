@@ -46,6 +46,27 @@ int add_identifier_suite(CU_pSuite pSuite_identifier) {
   }
 
   if (NULL == CU_add_test(pSuite_identifier,
+                           "Testing stack_init",
+                           test_stack_init)) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
+
+  if (NULL == CU_add_test(pSuite_identifier,
+                           "Testing stack_pop",
+                           test_stack_pop)) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
+
+  if (NULL == CU_add_test(pSuite_identifier,
+                           "Testing stack_push",
+                           test_stack_push)) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
+
+  if (NULL == CU_add_test(pSuite_identifier,
                            "Testing identifier_print",
                            test_identifier_print)) {
     CU_cleanup_registry();
@@ -53,8 +74,43 @@ int add_identifier_suite(CU_pSuite pSuite_identifier) {
   }
 
   if (NULL == CU_add_test(pSuite_identifier,
-                           "Testing identifier_path",
-                           test_identifier_path)) {
+                           "Testing identifier_is_leaf",
+                           test_identifier_is_leaf)) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
+
+  if (NULL == CU_add_test(pSuite_identifier,
+                           "Testing identifier_is_white",
+                           test_identifier_is_white)) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
+
+  if (NULL == CU_add_test(pSuite_identifier,
+                           "Testing identifier_is_passant",
+                           test_identifier_is_passant)) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
+
+  if (NULL == CU_add_test(pSuite_identifier,
+                           "Testing identifier_get_cast",
+                           test_identifier_get_cast)) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
+
+  if (NULL == CU_add_test(pSuite_identifier,
+                           "Testing identifier_get_halfmove",
+                           test_identifier_get_halfmove)) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
+
+  if (NULL == CU_add_test(pSuite_identifier,
+                           "Testing identifier_get_fullmove",
+                           test_identifier_get_fullmove)) {
     CU_cleanup_registry();
     return CU_get_error();
   }

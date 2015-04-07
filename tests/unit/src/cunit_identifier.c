@@ -46,6 +46,27 @@ int add_identifier_suite(CU_pSuite pSuite_identifier) {
   }
 
   if (NULL == CU_add_test(pSuite_identifier,
+                           "Testing stack_init",
+                           test_stack_init)) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
+
+  if (NULL == CU_add_test(pSuite_identifier,
+                           "Testing stack_pop",
+                           test_stack_pop)) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
+
+  if (NULL == CU_add_test(pSuite_identifier,
+                           "Testing stack_push",
+                           test_stack_push)) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
+
+  if (NULL == CU_add_test(pSuite_identifier,
                            "Testing identifier_print",
                            test_identifier_print)) {
     CU_cleanup_registry();

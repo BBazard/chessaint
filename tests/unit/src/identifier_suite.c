@@ -47,6 +47,58 @@ void test_path_reset(void) {
   CU_ASSERT_PTR_EQUAL(path_to_reset.array, path_to_reset.current);
 }
 
+void test_stack_init(void) {
+  Stack s;
+  stack_init(&s);
+
+  CU_ASSERT_EQUAL(mpz_cmp_ui(s, 0), 0);
+
+  stack_free(&s);
+}
+
+void test_stack_push(void) {
+  Stack s;
+  stack_init(&s);
+
+  int to_push1 = 12345;
+  int to_push2 = 6789;
+  int to_push3 = 987654321;
+  mpz_t tmp;
+
+  mpz_init_set_str(tmp, "12345", 10);
+  stack_push(&s, to_push1);
+
+  CU_ASSERT_FALSE(mpz_cmp(tmp, s));
+
+  mpz_set_str(tmp, "12345000006789", 10);
+  stack_push(&s, to_push2);
+
+  CU_ASSERT_FALSE(mpz_cmp(tmp, s));
+
+  mpz_set_str(tmp, "12345000006789987654321", 10);
+  stack_push(&s, to_push3);
+
+  CU_ASSERT_FALSE(mpz_cmp(tmp, s));
+  stack_free(&s);
+  mpz_clear(tmp);
+}
+
+void test_stack_pop(void) {
+  Stack s;
+
+  int to_pop1 = 12345;
+  int to_pop2 = 6789;
+  int to_pop3 = 987654321;
+  mpz_init_set_str(s, "12345000006789987654321", 10);
+
+  CU_ASSERT_EQUAL(stack_pop(&s), to_pop3);
+  CU_ASSERT_EQUAL(stack_pop(&s), to_pop2);
+  CU_ASSERT_EQUAL(stack_pop(&s), to_pop1);
+
+  stack_free(&s);
+}
+
+
 void test_identifier_print(void) {
   Identifier id;
   mpz_init_set_str(id, "1010101010101010101010101010101010101010101010", 10);

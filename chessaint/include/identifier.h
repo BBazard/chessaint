@@ -26,6 +26,16 @@
 typedef mpz_t Identifier;
 
 /** 
+ *  @typedef Stack
+ *  @brief Definition of the Stack type
+ *
+ *  Rename type mpz_t from GNU Multi-Precision library
+ *
+ */
+
+typedef mpz_t Stack;
+
+/** 
  *  @typedef Path
  *  @brief Definition of the Path type
  *
@@ -51,6 +61,11 @@ struct Path {
 
 Path path_init(int init_depth);
 void path_reset(Path* path);
+
+void stack_init(Stack *s);
+void stack_free(Stack *s);
+void stack_push(Stack *s, int item);
+int stack_pop(Stack *s);
 
 void identifier_print(Identifier id);
 

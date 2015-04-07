@@ -45,6 +45,71 @@ void path_reset(Path *path) {
 }
 
 /** 
+ *  @fn void stack_init(Stack *s)
+ *  @brief Create a stack
+ *
+ *  Initialisation of a stack
+ *
+ */
+
+void stack_init(Stack *s) {
+  mpz_init_set_ui(*s, 0);
+}
+
+/** 
+ *  @fn void stack_free(Stack *s)
+ *  @brief Free a stack
+ *
+ *  Free the memory space allocated for stack pointed
+ *  by s
+ *
+ */
+
+void stack_free(Stack *s) {
+  mpz_clear(*s);
+  s = NULL;
+}
+
+/** 
+ *  @fn void stack_push(Stack *s, int item)
+ *  @brief add an item to the stack
+ *
+ *  This function adds an int to the stack
+ *
+ */
+
+void stack_push(Stack *s, int item) {
+  mpz_t tmp;
+  mpz_init_set(tmp, *s);
+
+  mpz_mul_si(*s, tmp, 1000000000);
+
+  mpz_set(tmp, *s);
+  mpz_add_ui(*s, tmp, (unsigned long int) item);
+  mpz_clear(tmp);
+}
+
+/** 
+ *  @int stack_pop(Stack *s);
+ *  @brief Extract an item from the stack
+ *  @return int the first element of the stack
+ *
+ *  This function extract an item from the stack
+ *  and returns it
+ *
+ */
+
+int stack_pop(Stack *s) {
+  mpz_t tmp;
+  int ret;
+  mpz_init_set(tmp, *s);
+
+  ret = (mpz_tdiv_q_ui(*s, tmp, 1000000000));
+  mpz_clear(tmp);
+  return ret;
+}
+
+/** 
  *  @fn void identifier_print(Identifier id)
  *  @brief Print an identifier
  *

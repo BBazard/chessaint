@@ -12,6 +12,10 @@ int clean_suite_identifier(void);
 void test_path_init(void);
 void test_path_reset(void);
 
+void test_stack_init(void);
+void test_stack_pop(void);
+void test_stack_push(void);
+
 void test_identifier_print(void);
 void test_identifier_is_leaf(void);
 void test_identifier_is_white(void);

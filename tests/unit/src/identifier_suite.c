@@ -40,22 +40,22 @@ void test_stack_push(void) {
   Stack s;
   stack_init(&s);
 
-  int to_push1 = 12345;
-  int to_push2 = 6789;
-  int to_push3 = 987654321;
+  int to_push1 = 2345;
+  int to_push2 = 3788;
+  int to_push3 = 1451;
   mpz_t tmp;
 
-  mpz_init_set_str(tmp, "12345", 10);
+  mpz_init_set_str(tmp, "2345", 10);
   stack_push(&s, to_push1);
 
   CU_ASSERT_FALSE(mpz_cmp(tmp, s));
 
-  mpz_set_str(tmp, "12345000006789", 10);
+  mpz_set_str(tmp, "9608908", 10);
   stack_push(&s, to_push2);
 
   CU_ASSERT_FALSE(mpz_cmp(tmp, s));
 
-  mpz_set_str(tmp, "12345000006789987654321", 10);
+  mpz_set_str(tmp, "39358088619", 10);
   stack_push(&s, to_push3);
 
   CU_ASSERT_FALSE(mpz_cmp(tmp, s));
@@ -66,15 +66,21 @@ void test_stack_push(void) {
 void test_stack_pop(void) {
   Stack s;
 
-  int to_pop1 = 12345;
-  int to_pop2 = 6789;
-  int to_pop3 = 987654321;
-  mpz_init_set_str(s, "12345000006789987654321", 10);
+  int to_pop1 = 2345;
+  int to_pop2 = 3788;
+  int to_pop3 = 1451;
+  mpz_init_set_str(s, "39358088619", 10);
 
+  identifier_print(s);
   CU_ASSERT_EQUAL(stack_pop(&s), to_pop3);
-  CU_ASSERT_EQUAL(stack_pop(&s), to_pop2);
-  CU_ASSERT_EQUAL(stack_pop(&s), to_pop1);
 
+  identifier_print(s);
+  CU_ASSERT_EQUAL(stack_pop(&s), to_pop2);
+
+  identifier_print(s);
+  int tmp = stack_pop(&s);
+  CU_ASSERT_EQUAL(tmp, to_pop1);
+  printf("## %d ##", tmp);
   stack_free(&s);
 }
 

@@ -18,6 +18,14 @@
  *
  */
 
+/** 
+ *  @brief 4096 represents 8*8 * 8*8 ie the number of pairs
+ *  of coords possible
+ *
+ */
+
+#define MAX_PAIRS 4096
+
 void stack_init(Stack *s) {
   mpz_init_set_ui(*s, 0);
 }
@@ -48,7 +56,7 @@ void stack_push(Stack *s, int item) {
   mpz_t tmp;
   mpz_init_set(tmp, *s);
 
-  mpz_mul_si(*s, tmp, 1000000000);
+  mpz_mul_si(*s, tmp, MAX_PAIRS);
 
   mpz_set(tmp, *s);
   mpz_add_ui(*s, tmp, (unsigned long int) item);
@@ -70,7 +78,7 @@ int stack_pop(Stack *s) {
   int ret;
   mpz_init_set(tmp, *s);
 
-  ret = (mpz_tdiv_q_ui(*s, tmp, 1000000000));
+  ret = (mpz_tdiv_q_ui(*s, tmp, MAX_PAIRS));
   mpz_clear(tmp);
   return ret;
 }

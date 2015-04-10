@@ -58,6 +58,23 @@ void test_llist_add(void) {
 
   /* Look if the data contained in the list are the same than the arc added */
   CU_ASSERT_TRUE(arc_is_equal(list->value, arc));
+
+  /* Add a new arc */
+  arc.score++;
+  llist_add(arc, &list);
+
+  /* Look if the arc has been added BEFORE the first one
+     (because his score is higher) */
+  CU_ASSERT_TRUE(arc_is_equal(list->value, arc));
+
+  /* Add another arc */
+  arc.score -= 2;
+  llist_add(arc, &list);
+
+  /* Look if the arc at the top has not changed
+     (because his score is lower) */
+  arc.score += 2;
+  CU_ASSERT_TRUE(arc_is_equal(list->value, arc));
 }
 
 void test_llist_suppr(void) {
@@ -79,7 +96,7 @@ void test_llist_suppr(void) {
   llist_suppr(&list);
 
   /* See if the remaining list have arc2 has its first element */
-  CU_ASSERT_TRUE(arc_is_equal(list->value, arc2));
+  CU_ASSERT_TRUE(arc_is_equal(list->value, arc1));
 
   /* See deleting an element returns 0 */
   CU_ASSERT_FALSE(llist_suppr(&list));

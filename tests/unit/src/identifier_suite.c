@@ -71,16 +71,13 @@ void test_stack_pop(void) {
   int to_pop3 = 1451;
   mpz_init_set_str(s, "39358088619", 10);
 
-  identifier_print(s);
   CU_ASSERT_EQUAL(stack_pop(&s), to_pop3);
 
-  identifier_print(s);
   CU_ASSERT_EQUAL(stack_pop(&s), to_pop2);
 
-  identifier_print(s);
   int tmp = stack_pop(&s);
   CU_ASSERT_EQUAL(tmp, to_pop1);
-  printf("## %d ##", tmp);
+
   stack_free(&s);
 }
 

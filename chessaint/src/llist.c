@@ -21,11 +21,16 @@ void llist_add(Arc newvalue, Llist *list) {
   if (*list == NULL) {
     *list = newelement;
   } else {
-    Element *tmp = *list;
-    while (tmp->next != NULL)
-      tmp = tmp->next;
-
-    tmp->next = newelement;
+    if ( ((*list)->value).score < newvalue.score ) {
+      newelement->next = *list;
+      *list = newelement;
+    } else {
+      Element *tmp = *list;
+      while (tmp->next != NULL && ((tmp->next)->value).score > newvalue.score)
+        tmp = tmp->next;
+      newelement->next = tmp->next;
+      tmp->next = newelement;
+    }
   }
 }
 

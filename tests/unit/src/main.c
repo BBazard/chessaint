@@ -22,12 +22,14 @@ int main() {
   CU_pSuite pSuite_llist = NULL;
   CU_pSuite pSuite_heuristic = NULL;
   CU_pSuite pSuite_identifier = NULL;
+  CU_pSuite pSuite_graph = NULL;
 
   /* add the suites to the registry */
   add_chessboard_suite(pSuite_chessboard);
   add_llist_suite(pSuite_llist);
   add_heuristic_suite(pSuite_heuristic);
   add_identifier_suite(pSuite_identifier);
+  add_graph_suite(pSuite_graph);
 
   /* Run all tests using the CUnit Basic interface */
   CU_basic_set_mode(CU_BRM_VERBOSE);

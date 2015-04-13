@@ -19,10 +19,11 @@
 #include <stdbool.h>
 
 
-/**
- * @bug should be SQUARES_NB
- */
-#define NBSQUARES 64
+#define SQUARES_NB 64
+/*Number of rowws and columns = 8*/
+#define ROWCOL_NB 8
+
+
 
 /** 
  *  @typedef Coord
@@ -36,11 +37,11 @@ typedef struct Coord Coord;
 /** 
  *  @struct Coord
  *  @brief Represents a point on the board
- *  with (8,8) the system
+ *  with (7,7) the system
  *
  */
 struct Coord {
-  char column; /**< x coordinates */
+  int column; /**< x coordinates */
   int line; /**< y coordinates */
 };
 
@@ -137,42 +138,29 @@ typedef struct Board Board;
  *  which position, with which castles available...
  */
 struct Board {
-  Square square[NBSQUARES]; /**< A board = 64 squares */
+  Square square[ROWCOL_NB][ROWCOL_NB]; /**< A board = 64 squares : 8x8 */
 
   Color activeColor; /**< Next to play from this position */
   /**
    * @bug numeric value 4
    */
-  Castling availableCastlings[4]; /**< What are the available castles can be 
-                                  no,no,no,no*/
+  Castling availableCastlings[4]; /**< What are the available castles can be
+                                  no, no, no, no */
   Coord enPassant; /**< Which square can be taken en passant */
-  /**
-   * @todo rename
-   * @note "halfmoveClock" according to wikipedia fen page
-   */
-  int pliesSinceLastCaptureOrLastPawnMovement; /**< useful to think about draws
-                                              a ply = a white/black move only */
-  /**
-   * @todo "fullMoveNb" according to wikipedia fen page
-   * @note in any case "nb" is supposed to be last
-   */
-  int nbMovesTotal; /**<Total moves, starting to 1 (convention) */
+  int halfMoveClock; /**< useful to think about draws */
+  int fullMoveNb; /**<Total moves, starting to 1 (convention) */
 };
 
-Color colorToInit[NBSQUARES];
-Piece piecesToInit[NBSQUARES];
+/* lines first, columns then */
+Color colorToInit[ROWCOL_NB][ROWCOL_NB];
+Piece piecesToInit[ROWCOL_NB][ROWCOL_NB];
 
 
 Board myGame;
 
 void initAGame(Board *game);
 
-
-
-
 void fenToBoard(char *fen, Board *game);
-
-int squareNumberTo77Sytem(int squareNumber);
 
 void printBoardAndData(Board game);
 

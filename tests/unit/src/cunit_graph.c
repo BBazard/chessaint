@@ -39,10 +39,68 @@ int add_graph_suite(CU_pSuite pSuite_graph) {
 
   /* add the tests to the suite */
   if (NULL == CU_add_test(pSuite_graph,
-                           "First test",
-                          test_graph)) {
+                           "Test isInBoardSquare function",
+                          test_isInBoardSquare)) {
     CU_cleanup_registry();
     return CU_get_error();
   }
+
+  if (NULL == CU_add_test(pSuite_graph,
+                           "Test the bishop move function",
+                          test_bishopMoveGenerator)) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
+
+  if (NULL == CU_add_test(pSuite_graph,
+                           "Test the rook move function",
+                          test_rookMoveGenerator)) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
+
+  if (NULL == CU_add_test(pSuite_graph,
+                           "Test the queen move function",
+                          test_queenMoveGenerator)) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
+
+  if (NULL == CU_add_test(pSuite_graph,
+                           "Test the knight move function",
+                          test_knightMoveGenerator)) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
+
+  if (NULL == CU_add_test(pSuite_graph,
+                           "Test the king move function",
+                          test_kingMoveGenerator)) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
+
+  if (NULL == CU_add_test(pSuite_graph,
+                           "Test 1 of the pawn move function",
+                          test_pawnMoveGenerator1)) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
+
+  if (NULL == CU_add_test(pSuite_graph,
+                           "Test 2 of the pawn move function",
+                          test_pawnMoveGenerator2)) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
+
+  if (NULL == CU_add_test(pSuite_graph,
+                           "Test of the move generator function",
+                          test_movesGenerator)) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
+
+
   return 0;
 }

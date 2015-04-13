@@ -5,7 +5,7 @@
 
 #include "include/chessboard.h"
 
-#include "include/chessboard_suite.h"
+#include "../include/chessboard_suite.h"
 
 int add_chessboard_suite(CU_pSuite pSuite_chessboard) {
   if (pSuite_chessboard != NULL)
@@ -20,13 +20,6 @@ int add_chessboard_suite(CU_pSuite pSuite_chessboard) {
     return CU_get_error();
   }
 
-  /* add the tests to the suites */
-  if ((NULL == CU_add_test(pSuite_chessboard,
-       "Checking initialization and FEN reading for chessboard",
-       testInitAndFenChessboard))) {
-    CU_cleanup_registry();
-    return CU_get_error();
-  }
 
   return EXIT_SUCCESS;
 }

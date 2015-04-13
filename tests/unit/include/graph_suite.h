@@ -9,6 +9,15 @@
 int init_suite_graph(void);
 int clean_suite_graph(void);
 
-void test_graph(void);
+void test_isInBoardSquare(void);
+void test_bishopMoveGenerator(void);
+void test_rookMoveGenerator(void);
+void test_queenMoveGenerator(void);
+void test_knightMoveGenerator(void);
+void test_kingMoveGenerator(void);
+void test_pawnMoveGenerator1(void);
+void test_pawnMoveGenerator2(void);
+
+void test_movesGenerator(void);
 
 #endif /* TESTS_UNIT_INCLUDE_LLIST_SUITE_H_ */

@@ -92,6 +92,7 @@ cleanbin :
 	$(MAKE) -C $(PROJECTDIR) $@ BUILDTYPE:=debug
 	$(MAKE) -C $(TESTSDIR) $@ BUILDTYPE:=release
 	$(MAKE) -C $(TESTSDIR) $@ BUILDTYPE:=debug
+	rm -f $(BINDIR)/uciLogs.txt
 .PHONY : cleanbin
 
 cleanlog :

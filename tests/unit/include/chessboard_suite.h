@@ -9,9 +9,6 @@ int init_suite_chessboard(void);
 
 int clean_suite_chessboard(void);
 
-void testInitAndFenChessboard(void);
-
-
 
 #endif /*TRUNK_TESTS_UNIT_INCLUDE_CHESSBOARD_SUITE_H_*/
 

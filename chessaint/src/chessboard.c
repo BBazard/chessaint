@@ -16,26 +16,26 @@
  * @todo need to init in a function
  */
 
-Color colorToInit[NBSQUARES] = {
-  black, black, black, black, black, black, black, black,
-  black, black, black, black, black, black, black, black,
-  neutral, neutral, neutral, neutral, neutral, neutral, neutral, neutral,
-  neutral, neutral, neutral, neutral, neutral, neutral, neutral, neutral,
-  neutral, neutral, neutral, neutral, neutral, neutral, neutral, neutral,
-  neutral, neutral, neutral, neutral, neutral, neutral, neutral, neutral,
-  white, white, white, white, white, white, white, white,
-  white, white, white, white, white, white, white, white,
+Color colorToInit[ROWCOL_NB][ROWCOL_NB] = {
+  {black, black, black, black, black, black, black, black},
+  {black, black, black, black, black, black, black, black},
+  {neutral, neutral, neutral, neutral, neutral, neutral, neutral, neutral},
+  {neutral, neutral, neutral, neutral, neutral, neutral, neutral, neutral},
+  {neutral, neutral, neutral, neutral, neutral, neutral, neutral, neutral},
+  {neutral, neutral, neutral, neutral, neutral, neutral, neutral, neutral},
+  {white, white, white, white, white, white, white, white},
+  {white, white, white, white, white, white, white, white},
 };
 
-Piece piecesToInit[NBSQUARES] = {
-  rook, knight, bishop, queen, king, bishop, knight, rook,
-  pawn, pawn, pawn, pawn, pawn, pawn, pawn, pawn,
-  empty, empty, empty, empty, empty, empty, empty, empty,
-  empty, empty, empty, empty, empty, empty, empty, empty,
-  empty, empty, empty, empty, empty, empty, empty, empty,
-  empty, empty, empty, empty, empty, empty, empty, empty,
-  pawn, pawn, pawn, pawn, pawn, pawn, pawn, pawn,
-  rook, knight, bishop, queen, king, bishop, knight, rook,
+Piece piecesToInit[ROWCOL_NB][ROWCOL_NB] = {
+  {rook, knight, bishop, queen, king, bishop, knight, rook},
+  {pawn, pawn, pawn, pawn, pawn, pawn, pawn, pawn},
+  {empty, empty, empty, empty, empty, empty, empty, empty},
+  {empty, empty, empty, empty, empty, empty, empty, empty},
+  {empty, empty, empty, empty, empty, empty, empty, empty},
+  {empty, empty, empty, empty, empty, empty, empty, empty},
+  {pawn, pawn, pawn, pawn, pawn, pawn, pawn, pawn},
+  {rook, knight, bishop, queen, king, bishop, knight, rook},
 };
 
 /** 
@@ -45,21 +45,23 @@ Piece piecesToInit[NBSQUARES] = {
  */
 
 void initAGame(Board *game) {
-  int i;
+  int i, j;
 
-  for (i = 0 ; i <= NBSQUARES - 1 ; ++i) {
-    game->square[i].color = colorToInit[i];
-    game->square[i].piece = piecesToInit[i];
+  for (i = 0 ; i <= ROWCOL_NB - 1 ; ++i) {
+    for (j = 0; j <= ROWCOL_NB - 1 ; ++j) {
+      game->square[i][j].color = colorToInit[i][j];
+      game->square[i][j].piece = piecesToInit[i][j];
+    }
   }
   game->activeColor = white;
   game->availableCastlings[0] = K;
   game->availableCastlings[1] = Q;
   game->availableCastlings[2] = k;
   game->availableCastlings[3] = q;
-  game->enPassant.column = 'x';
-  game->enPassant.line = 0;
-  game->pliesSinceLastCaptureOrLastPawnMovement = 0;
-  game->nbMovesTotal = 1;
+  game->enPassant.column = -1;
+  game->enPassant.line = -1;
+  game->halfMoveClock = 0;
+  game->fullMoveNb = 1;
 }
 
 
@@ -69,8 +71,8 @@ void initAGame(Board *game) {
  *  @param[in] char *fen : the fen string
  *  @param[in,out] Board *game: the board to put in a certain position
  *
- *  @bug : found values where two last field of FEN weren't well parsed 
- *  ex : 50 0 
+ *  @bug : i think the bug is : if no sqaure en passant, the end of the
+ *    string is badly parsed. I'll check that -hugo 
  *
  *  Parsing function  
  */
@@ -80,74 +82,77 @@ void fenToBoard(char *fen, Board *game) {
   int i = 0;
   int j = 0;
   int k = 0;
+  int m = 0;
   char temp[3];
 
   while (fen[i] != ' ') {
     if (fen[i] == '/') {
       ++i;
+      ++m;
+      j = 0;
     } else {
       if (isalpha(fen[i])) {
         switch (fen[i]) {
           case 'P':
-            game->square[j].color = white;
-            game->square[j].piece = pawn;
+            game->square[m][j].color = white;
+            game->square[m][j].piece = pawn;
             break;
           case 'p':
-            game->square[j].color = black;
-            game->square[j].piece = pawn;
+            game->square[m][j].color = black;
+            game->square[m][j].piece = pawn;
             break;
           case 'B':
-            game->square[j].color = white;
-            game->square[j].piece = bishop;
+            game->square[m][j].color = white;
+            game->square[m][j].piece = bishop;
             break;
           case 'b':
-            game->square[j].color = black;
-            game->square[j].piece = bishop;
+            game->square[m][j].color = black;
+            game->square[m][j].piece = bishop;
             break;
           case 'N':
-            game->square[j].color = white;
-            game->square[j].piece = knight;
+            game->square[m][j].color = white;
+            game->square[m][j].piece = knight;
             break;
           case 'n':
-            game->square[j].color = black;
-            game->square[j].piece = knight;
+            game->square[m][j].color = black;
+            game->square[m][j].piece = knight;
             break;
           case 'R':
-            game->square[j].color = white;
-            game->square[j].piece = rook;
+            game->square[m][j].color = white;
+            game->square[m][j].piece = rook;
             break;
           case 'r':
-            game->square[j].color = black;
-            game->square[j].piece = rook;
+            game->square[m][j].color = black;
+            game->square[m][j].piece = rook;
             break;
           case 'Q':
-            game->square[j].color = white;
-            game->square[j].piece = queen;
+            game->square[m][j].color = white;
+            game->square[m][j].piece = queen;
             break;
           case 'q':
-            game->square[j].color = black;
-            game->square[j].piece = queen;
+            game->square[m][j].color = black;
+            game->square[m][j].piece = queen;
             break;
           case 'K':
-            game->square[j].color = white;
-            game->square[j].piece = king;
+            game->square[m][j].color = white;
+            game->square[m][j].piece = king;
             break;
           case 'k':
-            game->square[j].color = black;
-            game->square[j].piece = king;
+            game->square[m][j].color = black;
+            game->square[m][j].piece = king;
             break;
         }
       ++j;
       } else {
         for (k=1 ; k <= atoi(&fen[i]) ; ++k) {
-          game->square[j].piece = empty;
-          game->square[j].color = neutral;
+          game->square[m][j].piece = empty;
+          game->square[m][j].color = neutral;
           ++j;
         }
       }
       ++i;
-      }
     }
+  }
 
   ++i; /* let's go to the next field */
 
@@ -189,13 +194,38 @@ void fenToBoard(char *fen, Board *game) {
 
   while (fen[i] != ' ') {
     if (fen[i] == '-') {
-      game->enPassant.column = 'x';
-      game->enPassant.line = 0;
+      game->enPassant.column = -1;
+      game->enPassant.line = -1;
       break;
     } else {
-      game->enPassant.column = fen[i];
+        switch (fen[i]) {
+          case 'a':
+            game->enPassant.column = 0;
+            break;
+          case 'b':
+            game->enPassant.column = 1;
+            break;
+          case 'c':
+            game->enPassant.column = 2;
+            break;
+          case 'd':
+            game->enPassant.column = 3;
+            break;
+          case 'e':
+            game->enPassant.column = 4;
+            break;
+          case 'f':
+            game->enPassant.column = 5;
+            break;
+          case 'g':
+            game->enPassant.column = 6;
+            break;
+          case 'h':
+            game->enPassant.column = 7;
+            break;
+        }
       ++i;
-      game->enPassant.line = atoi(&fen[i]);
+      game->enPassant.line = atoi(&fen[i]) - 1;
     }
     ++i;
   }
@@ -203,33 +233,20 @@ void fenToBoard(char *fen, Board *game) {
   k = 0;
   while (fen[i+k] != ' ') {
     ++k;
-    printf("%c\n",fen[k] );
   }
   memcpy(temp, &fen[i], k);
-  game->pliesSinceLastCaptureOrLastPawnMovement = atoi(temp);
+  game->halfMoveClock = atoi(temp);
 
   i += k;
   ++i;
   k = 0;
   while (fen[i+k] != '\0') {
     ++k;
-    printf("%c\n",fen[k] );
   }
   memcpy(temp, &fen[i], k);
-  game->nbMovesTotal = atoi(temp);
+  game->fullMoveNb = atoi(temp);
 }
 
-/**
- *  @fn int squareNumberTo88Sytem(int squareNumber)
- *  @brief Change coordinates system
- *  @param[in] int : the square number to convert from the array notation
- *  @param[out] int : the square in the 7x7 system 
- *  ex : a1->0 / a8->7 / b1-10 / h1 -> 70....
- */
-
-int squareNumberTo77Sytem(int squareNumber) {
-  return (squareNumber % 8)*10 + 7-(squareNumber / 8);
-}
 
 /** 
  *  @fn void printBoardAndData(Board game)
@@ -240,58 +257,58 @@ int squareNumberTo77Sytem(int squareNumber) {
 
 
 void printBoardAndData(Board game) {
-  int i;
+  int i, j;
   printf("\n\n");
 
   printf("8  ");
-  for (i=0 ; i <= (NBSQUARES-1) ; ++i) {
+  for (i = 0 ; i <= (ROWCOL_NB - 1) ; ++i) {
     printf("|");
-    switch (game.square[i].piece) {
-      case empty:
-        printf(" ");
-        break;
-      case pawn:
-        if (game.square[i].color == white)
-          printf("P");
-        else
-          printf("p");
-        break;
-      case bishop:
-        if (game.square[i].color == white)
-          printf("B");
-        else
-          printf("b");
-        break;
-      case knight:
-        if (game.square[i].color == white)
-          printf("N");
-        else
-          printf("n");
-        break;
-      case rook:
-        if (game.square[i].color == white)
-          printf("R");
-        else
-          printf("r");
-        break;
-      case queen:
-        if (game.square[i].color == white)
-          printf("Q");
-        else
-          printf("q");
-        break;
-      case king:
-        if (game.square[i].color == white)
-          printf("K");
-        else
-          printf("k");
-        break;
+    for (j = 0 ; j <= (ROWCOL_NB - 1) ; ++j) {
+      switch (game.square[i][j].piece) {
+        case empty:
+          printf(" ");
+          break;
+        case pawn:
+          if (game.square[i][j].color == white)
+            printf("P");
+          else
+            printf("p");
+          break;
+        case bishop:
+          if (game.square[i][j].color == white)
+            printf("B");
+          else
+            printf("b");
+          break;
+        case knight:
+          if (game.square[i][j].color == white)
+            printf("N");
+          else
+            printf("n");
+          break;
+        case rook:
+          if (game.square[i][j].color == white)
+            printf("R");
+          else
+            printf("r");
+          break;
+        case queen:
+          if (game.square[i][j].color == white)
+            printf("Q");
+          else
+            printf("q");
+          break;
+        case king:
+          if (game.square[i][j].color == white)
+            printf("K");
+          else
+            printf("k");
+          break;
+      }
+      printf("|");
     }
-    if ((i+1)%8 == 0) {
-      printf("|\n");
-      if (i != 63)
-        printf("%d  ", 8-i/8-1);
-    }
+    if (i != 7)
+      printf("\n%d  ", 7 - i);
   }
   printf("\n");
   printf("    a b c d e f g h\n\n");
@@ -314,15 +331,15 @@ void printBoardAndData(Board game) {
     }
   }
 
-  if (game.enPassant.column != 'x') {
-    printf("Square we can reach \"en passant\" : %c%d\n",
+  if (game.enPassant.column != -1) {
+    printf("Square we can reach \"en passant\" : %d%d\n",
       game.enPassant.column, game.enPassant.line);
   } else {
     printf("No square to reach \" en passant\" \n");
   }
 
   printf("Number of plies since last capture or pawn move : %d\n",
-    game.pliesSinceLastCaptureOrLastPawnMovement);
+    game.halfMoveClock);
   printf("Number of total moves (starting from 1) : %d\n",
-    game.nbMovesTotal);
+    game.fullMoveNb);
 }

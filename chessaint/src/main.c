@@ -1,39 +1,38 @@
 /* This file is part of the ChessAInt project 2015 */
 
-#include "include/graph.h"
-#include "include/chessboard.h"
+#include "include/uci.h"
 
-int main(void) {
-  printf("\n\n");
-  printf("Welcome in ChessAint !\n");
-  printf("**************************\n");
-  int cur;
+#include <stdlib.h>
+#include <stdio.h>
 
+int main() {
+  setbuf(stdout, NULL);
 
-  while (1) {
-    printf("\n\n");
-    printf("---------------------------------------------\n");
-    printf("- 1 to test fenToBoard with the beginning position \n");
-    printf("- 2 to test pawn move gen\n");
-    printf("- 3 to exit \n");
-    printf("----------------------------------------------\n\n");
+  char* logPath = "uciLogs.txt";
 
-    scanf("%d", &cur);
-    switch (cur) {
-      case 1:
-        /* a test with the FEN string describing the starting position */
-        fenToBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPP/RNBQKBNR w KQkq e4 0 1", &myGame);
-        printBoardAndData(myGame);
-        break;
-      case 2:
-        printf("What are the moves for a pawn on e2 == 31 ?\n");
-        pawnMoveGenerator(31, white); 
-      case 3:
-        return EXIT_SUCCESS;
-        break;
-    }
-  }
+  FILE* log = NULL;
+  log = fopen(logPath, "w");
+  if (log == NULL)
+    manageErrors("can't create log file");
 
-  return 0;
+  char buffer[BUFFER_SIZE];
+
+  receive(log, buffer); /* "uci" */
+  /* optional */
+  send(log,                "id name ChessAInt");
+  send(log,                "uciok");
+  receive(log, buffer); /* "isready" */
+  send(log,                "readyok");
+  receive(log, buffer); /* "ucinewgame" */
+  receive(log, buffer); /* "position <fen> moves <lan>" */
+  /* gui wait for at least an option */
+  send(log,                "option quelconque");
+  receive(log, buffer); /* "go <params>" */
+  send(log,                "bestmove f7f6");
+  receive(log, buffer); /* "quit"        */
+
+  fclose(log);
+
+  return EXIT_SUCCESS;
 }
 

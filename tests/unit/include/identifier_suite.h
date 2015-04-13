@@ -9,8 +9,7 @@
 int init_suite_identifier(void);
 int clean_suite_identifier(void);
 
-void test_path_init(void);
-void test_path_reset(void);
+void test_stack_exchange(void);
 
 void test_stack_init(void);
 void test_stack_pop(void);

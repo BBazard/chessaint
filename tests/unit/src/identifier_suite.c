@@ -27,6 +27,27 @@ int clean_suite_identifier(void) {
   return 0;
 }
 
+void test_stack_exchange(void) {
+  int a = 1;
+  int b = 2;
+  int c = 3;
+  int d = 4;
+  int ptr = -1;
+
+  stack_exchange(&a, &b, &c, &d, &ptr);
+  CU_ASSERT_EQUAL(1234, ptr);
+
+  a = 0; b = 0; c = 0; d = 13941039;
+
+  stack_exchange(&a, &b, &c, &d, &ptr);
+  printf("\n%d,%d,%d,%d,%d\n", a, b, c, d, ptr);
+  CU_ASSERT_EQUAL(a, 1);
+  CU_ASSERT_EQUAL(b, 2);
+  CU_ASSERT_EQUAL(c, 3);
+  CU_ASSERT_EQUAL(d, 4);
+  CU_ASSERT_EQUAL(ptr, -1);
+}
+
 void test_stack_init(void) {
   Stack s;
   stack_init(&s);

@@ -35,6 +35,7 @@ typedef mpz_t Identifier;
 
 typedef mpz_t Stack;
 
+void stack_exchange(int *p1, int *p2, int *p3, int *p4, int *ptr);
 void stack_init(Stack *s);
 void stack_free(Stack *s);
 void stack_push(Stack *s, int item);

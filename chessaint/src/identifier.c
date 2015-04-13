@@ -11,20 +11,46 @@
 #include "include/identifier.h"
 
 /** 
- *  @fn void stack_init(Stack *s)
- *  @brief Create a stack
- *
- *  Initialisation of a stack
- *
- */
-
-/** 
  *  @brief 4096 represents 8*8 * 8*8 ie the number of pairs
  *  of coords possible
  *
  */
 
 #define MAX_PAIRS 4096
+
+/** 
+ *  @fn void stack_exchange(int *p1, int *p2, int *p3, int *p4, int *ptr)
+ *  @brief Transform four int in one or one in four
+ *
+ *  Create one int (returned in ptr) from four (in p1...p4, MSB first)
+ *  Or four ints (returned in p1, p2, p3, p4) from one (in ptr)
+ *
+ *  !! Create one from four IF AND ONLY IF *ptr == -1!!
+ *
+ */
+
+void stack_exchange(int *p1, int *p2, int *p3, int *p4, int *ptr) {
+  if (*ptr == -1) {
+    *ptr = *p1*1000 + *p2*100 + *p3*10 + *p4;
+  } else {
+    *p4 = *ptr%10;
+    *ptr = (*ptr-*p4)/10;
+    *p3 = *ptr%10;
+    *ptr = (*ptr-*p3)/10;
+    *p2 = *ptr%10;
+    *ptr = (*ptr-*p2)/10;
+    *p1 = *ptr;
+    *ptr -= *p1+1;
+  }
+}
+
+/** 
+ *  @fn void stack_init(Stack *s)
+ *  @brief Create a stack
+ *
+ *  Initialisation of a stack
+ *
+ */
 
 void stack_init(Stack *s) {
   mpz_init_set_ui(*s, 0);

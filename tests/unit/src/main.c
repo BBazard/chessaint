@@ -11,6 +11,7 @@ int add_chessboard_suite(CU_pSuite pSuite_chessboard);
 int add_llist_suite(CU_pSuite pSuite_llist);
 int add_heuristic_suite(CU_pSuite pSuite_heuristic);
 int add_identifier_suite(CU_pSuite pSuite_identifier);
+int add_graph_suite(CU_pSuite pSuite_graph);
 
 int main() {
   /* initialize the CUnit test registry */

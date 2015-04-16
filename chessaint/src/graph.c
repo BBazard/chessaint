@@ -139,9 +139,9 @@ void pawnMoveGenerator(Stack *moves, int squareX, int squareY, Color activeColor
         (squareY == 6))
      ) {
     if (activeColor == white) {
-      stack_push(moves, stack_exchange(squareX, squareX, squareY + 2 * whiteMove);
+      stack_push(moves, stack_exchange(squareX, 1, squareX, squareY + 2 * whiteMove));
     } else {
-      stack_push(moves, stack_exchange(squareX, squareX, squareY + 2 * blackMove);
+      stack_push(moves, stack_exchange(squareX, 6, squareX, squareY + 2 * blackMove));
     }
   }
 }
@@ -353,8 +353,8 @@ void queenMoveGenerator(Stack *moves, int squareX, int squareY,
 
   printf("\n ///// QUEEN MOVE GENRATOR //// (contains bishop and rook)\n");
 
-  bishopMoveGenerator(Stack *moves, squareX, squareY, activeColor, board);
-  rookMoveGenerator(Stack *moves, squareX, squareY, activeColor, board);
+  bishopMoveGenerator(moves, squareX, squareY, activeColor, board);
+  rookMoveGenerator(moves, squareX, squareY, activeColor, board);
 }
 
 

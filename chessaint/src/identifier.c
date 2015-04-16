@@ -1,4 +1,4 @@
-/*This file is part of the ChessAInt project 2015*/
+/* his file is part of the ChessAInt project 2015 */
 /**
  *  @file identifier.c
  *  @brief identifier functions
@@ -30,7 +30,7 @@
  */
 
 int stack_exchange(int p1, int p2, int p3, int p4) {
-  return *p1*1000 + *p2*100 + *p3*10 + *p4;
+  return p1*1000 + p2*100 + p3*10 + p4;
 }
 
 /**

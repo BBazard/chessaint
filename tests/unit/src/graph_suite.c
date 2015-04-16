@@ -38,6 +38,9 @@ void test_isInBoardSquare(void) {
 void test_bishopMoveGenerator(void) {
   printf("\n---------------------------------\n");
   Board testBoardB;
+  Stack tmp;
+  stack_init(&tmp);
+
   printf("\n**Say a board with only a white bishop on e4[<=>(4,3)");
   printf(" in our system], a white pawn on d5<=>(3,4)\n");
   printf(" and a black rook on f3<=>(5,2)**\n");
@@ -47,12 +50,14 @@ void test_bishopMoveGenerator(void) {
   */
   printf("The moves of the bishop are :\n");
 
-  bishopMoveGenerator(4, 3, white, testBoardB);
+  bishopMoveGenerator(&tmp, 4, 3, white, testBoardB);
 }
 
 void test_rookMoveGenerator(void) {
   printf("\n---------------------------------\n");
   Board testBoardR;
+  Stack tmp;
+  stack_init(&tmp);
   printf("\n**Say we have a black rook on e4<=>(4,3), a black pawn");
   printf(" on e5<=>(4,4) and a white rook on b4<=>(0,3)**\n");
   fenToBoard("8/8/8/4p3/1R2r3/8/8/8 b - - 0 1", &testBoardR);
@@ -61,12 +66,14 @@ void test_rookMoveGenerator(void) {
   */
   printf("The moves of the rook are :\n");
 
-  rookMoveGenerator(4, 3, black, testBoardR);
+  rookMoveGenerator(&tmp, 4, 3, black, testBoardR);
 }
 
 void test_queenMoveGenerator(void) {
   printf("\n---------------------------------\n");
   Board testBoardQ;
+  Stack tmp;
+  stack_init(&tmp);
   printf("\n**Say we have a white queen on e4<=>(4,3), a black knight");
   printf(" on f5<=>(5,4) and a white pawn on e2<=>(4,1)**");
   fenToBoard("8/8/8/5n2/4Q3/8/4P3/8 w - - 0 1", &testBoardQ);
@@ -75,12 +82,14 @@ void test_queenMoveGenerator(void) {
   */
   printf("The moves of the queen are :\n");
 
-  queenMoveGenerator(4, 3, white, testBoardQ);
+  queenMoveGenerator(&tmp, 4, 3, white, testBoardQ);
 }
 
 void test_knightMoveGenerator(void) {
   printf("\n---------------------------------\n");
   Board testBoardN;
+  Stack tmp;
+  stack_init(&tmp);
   printf("\n**Say we have a white knight on e4<=>(4,3), a black pawn ");
   printf("on f6<=>(5,5) and a white king on d2<=>(3,1)**");
   fenToBoard("8/8/5p2/8/4N3/8/3K4/8 w - - 0 1", &testBoardN);
@@ -89,11 +98,13 @@ void test_knightMoveGenerator(void) {
   */
   printf("The moves of the knight are :\n");
 
-  knightMoveGenerator(4, 3, white, testBoardN);
+  knightMoveGenerator(&tmp, 4, 3, white, testBoardN);
 }
 void test_kingMoveGenerator(void) {
   printf("\n---------------------------------\n");
   Board testBoardK;
+  Stack tmp;
+  stack_init(&tmp);
   printf("\n**Say we have a black king on e4<=>(4,3), with black");
   printf("pawns all around except in f5<=>(5,4) (empty) and");
   printf("in d3<=>(3,2) (white pawn)**");
@@ -103,12 +114,14 @@ void test_kingMoveGenerator(void) {
   */
   printf("The moves of the king are :\n");
 
-  kingMoveGenerator(4, 3, black, testBoardK);
+  kingMoveGenerator(&tmp, 4, 3, black, testBoardK);
 }
 
 void test_pawnMoveGenerator1(void) {
   printf("\n---------------------------------\n");
   Board testBoardP;
+  Stack tmp;
+  stack_init(&tmp);
   printf("\n**Say we have a white pawn on a2<=>(0,1) with a black knight");
   printf("on b3<=>(1,2)**");
   fenToBoard("8/8/8/8/8/1n6/P7/8 w - - 0 1", &testBoardP);
@@ -117,12 +130,14 @@ void test_pawnMoveGenerator1(void) {
   */
   printf("The moves of the pawn are :\n");
 
-  pawnMoveGenerator(0, 1, white, testBoardP);
+  pawnMoveGenerator(&tmp, 0, 1, white, testBoardP);
 }
 
 void test_pawnMoveGenerator2(void) {
   printf("\n---------------------------------\n");
   Board testBoardP2;
+  Stack tmp;
+  stack_init(&tmp);
   printf("\n**Say we have a black pawn on e4<=>(4,3) with a white pawn");
   printf("on d4<=>(3,3) so that d2<=>(3,2) can be taken en passant**");
   fenToBoard("8/8/8/8/3Pp3/8/8/8 b - d3 0 1", &testBoardP2);
@@ -131,7 +146,7 @@ void test_pawnMoveGenerator2(void) {
   */
   printf("The moves of the pawn are :\n");
 
-  pawnMoveGenerator(4, 3, black, testBoardP2);
+  pawnMoveGenerator(&tmp, 4, 3, black, testBoardP2);
 }
 
 void test_movesGenerator(void) {

@@ -14,7 +14,7 @@
 /**
  * Print an error message
  * and stop the engine
- * 
+ *
  * @todo stop the engine
  * with uci "quit" or something
  */

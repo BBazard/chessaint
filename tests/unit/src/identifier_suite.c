@@ -46,7 +46,7 @@ void test_stack_push(void) {
 
   int to_push1 = 2345;
   int to_push2 = 3788;
-  int to_push3 = 1451;
+  int to_push3 = 8888;
   mpz_t tmp;
 
   mpz_init_set_str(tmp, "2345", 10);
@@ -54,12 +54,12 @@ void test_stack_push(void) {
 
   CU_ASSERT_FALSE(mpz_cmp(tmp, s));
 
-  mpz_set_str(tmp, "9608908", 10);
+  mpz_set_str(tmp, "20848493", 10);
   stack_push(&s, to_push2);
 
   CU_ASSERT_FALSE(mpz_cmp(tmp, s));
 
-  mpz_set_str(tmp, "39358088619", 10);
+  mpz_set_str(tmp, "185322263165", 10);
   stack_push(&s, to_push3);
 
   CU_ASSERT_FALSE(mpz_cmp(tmp, s));
@@ -70,15 +70,15 @@ void test_stack_push(void) {
 void test_stack_pop(void) {
   Stack s;
 
-  int to_pop1 = 2345;
+  int to_pop1 = 8888;
   int to_pop2 = 3788;
-  int to_pop3 = 1451;
-  mpz_init_set_str(s, "39358088619", 10);
+  int to_pop3 = 2345;
+  mpz_init_set_str(s, "185322263165", 10);
 
   /* Retrieving the three elements one by one */
-  CU_ASSERT_EQUAL(stack_pop(&s), to_pop3);
-  CU_ASSERT_EQUAL(stack_pop(&s), to_pop2);
   CU_ASSERT_EQUAL(stack_pop(&s), to_pop1);
+  CU_ASSERT_EQUAL(stack_pop(&s), to_pop2);
+  CU_ASSERT_EQUAL(stack_pop(&s), to_pop3);
 
   /* The stack should be empty by now */
   CU_ASSERT_EQUAL(stack_pop(&s), -1);

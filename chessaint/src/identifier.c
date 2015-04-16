@@ -16,7 +16,7 @@
  *
  */
 
-#define MAX_PAIRS 4096
+#define MAX_PAIRS 8889
 
 /**
  *  @fn int stack_exchange(int p1, int p2, int p3, int p4)

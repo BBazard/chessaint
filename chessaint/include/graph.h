@@ -38,10 +38,12 @@ struct Graph {
   Board root;
   Board current_node;
   Llist links;
+  Stack current_moves;
 };
 
-void movesGenerator(Graph graph);
+void graph_init(Graph *graph);
 
+void movesGenerator(Graph *graph);
 void pawnMoveGenerator(Stack *moves, int squareX, int squareY, Color activeColor,
                         Board board);
 void bishopMoveGenerator(Stack *moves, int squareX, int squareY, Color activeColor,

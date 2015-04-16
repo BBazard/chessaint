@@ -1,9 +1,9 @@
 /* This file is part of the ChessAInt project 2015 */
 
-#include "include/uci.h"
-
 #include <stdlib.h>
 #include <stdio.h>
+
+#include "include/uci.h"
 
 int main() {
   setbuf(stdout, NULL);
@@ -15,7 +15,7 @@ int main() {
   if (log == NULL)
     manageErrors("can't create log file");
 
-  char buffer[BUFFER_SIZE];
+  char buffer[UCI_SIZE];
 
   receive(log, buffer); /* "uci" */
   /* optional */

@@ -81,20 +81,27 @@ void stack_push(Stack *s, int item) {
 /**
  *  @fn int stack_pop(Stack *s);
  *  @brief Extract an item from the stack
+ *  @return -1 If the stack is empty
  *  @return int the first element of the stack
  *
  *  This function extract an item from the stack
  *  and returns it
+ *  @note If the stack contains 0 it means it is empty since
+ *  the moveGenerator will never add the a1a1 move.
  *
  */
 
 int stack_pop(Stack *s) {
   mpz_t tmp;
   int ret;
-  mpz_init_set(tmp, *s);
+  if (!mpz_cmp_ui(*s, 0)) {
+    ret = -1;
+  } else {
+    mpz_init_set(tmp, *s);
 
-  ret = (mpz_tdiv_q_ui(*s, tmp, MAX_PAIRS));
-  mpz_clear(tmp);
+    ret = (mpz_tdiv_q_ui(*s, tmp, MAX_PAIRS));
+    mpz_clear(tmp);
+  }
   return ret;
 }
 

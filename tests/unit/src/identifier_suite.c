@@ -75,12 +75,17 @@ void test_stack_pop(void) {
   int to_pop3 = 1451;
   mpz_init_set_str(s, "39358088619", 10);
 
+  /* Retrieving the three elements one by one */
   CU_ASSERT_EQUAL(stack_pop(&s), to_pop3);
-
   CU_ASSERT_EQUAL(stack_pop(&s), to_pop2);
+  CU_ASSERT_EQUAL(stack_pop(&s), to_pop1);
 
-  int tmp = stack_pop(&s);
-  CU_ASSERT_EQUAL(tmp, to_pop1);
+  /* The stack should be empty by now */
+  CU_ASSERT_EQUAL(stack_pop(&s), -1);
+
+  /* It is possible to pop as much as wanted, the result will
+     always be -1 */
+  CU_ASSERT_EQUAL(stack_pop(&s), -1);
 
   stack_free(&s);
 }

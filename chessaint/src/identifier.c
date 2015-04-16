@@ -1,4 +1,4 @@
-/* his file is part of the ChessAInt project 2015 */
+/* This file is part of the ChessAInt project 2015 */
 /**
  *  @file identifier.c
  *  @brief identifier functions

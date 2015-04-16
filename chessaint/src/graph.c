@@ -21,49 +21,52 @@
  */
 
 void graph_init(Graph *graph) {
-  graph->links=NULL;
+  graph->links = NULL;
   stack_init(&(graph->current_moves));
 }
 
 /**
  *  @fn void movesGenerator(Graph graph)
  *  @brief gives all moves from a graph
- *  @param[in, out] TO BE DETERMINED
+ *  @param[in, out] graph Pointer on the graph used to compute moves
  *
  *  @note  Need to add the en passant kill
+ *  @bug "root" (in graph->root and others) seems to refer to
+ *  current_node (in graph struct)
+ *  Need to change that
  *
  */
 
 void movesGenerator(Graph *graph) {
   int i = 0;
   int j = 0;
-  
+
   for (i = 0 ; i <= ROWCOL_NB - 1; ++i) {
     for (j = 0 ; j <= (ROWCOL_NB - 1) ; ++j) {
       if (graph->root.square[i][j].color == graph->root.activeColor) {
         switch (graph->root.square[i][j].piece) {
         case pawn:
-          pawnMoveGenerator(&(graph->current_moves), 7 - j,7 - i,
+          pawnMoveGenerator(&(graph->current_moves), 7 - j, 7 - i,
                             graph->root.activeColor, graph->root);
           break;
         case bishop:
-          bishopMoveGenerator(&(graph->current_moves), 7 - j,7 - i,
+          bishopMoveGenerator(&(graph->current_moves), 7 - j, 7 - i,
                               graph->root.activeColor, graph->root);
           break;
         case knight:
-          knightMoveGenerator(&(graph->current_moves), 7 - j,7 - i,
+          knightMoveGenerator(&(graph->current_moves), 7 - j, 7 - i,
                               graph->root.activeColor, graph->root);
           break;
         case rook:
-          rookMoveGenerator(&(graph->current_moves), 7 - j,7 - i,
+          rookMoveGenerator(&(graph->current_moves), 7 - j, 7 - i,
                             graph->root.activeColor, graph->root);
           break;
         case queen:
-          queenMoveGenerator(&(graph->current_moves), 7 - j,7 - i,
-                             graph->root.activeColor,graph->root);
+          queenMoveGenerator(&(graph->current_moves), 7 - j, 7 - i,
+                             graph->root.activeColor, graph->root);
           break;
         case king:
-          kingMoveGenerator(&(graph->current_moves), 7 - j,7 - i,
+          kingMoveGenerator(&(graph->current_moves), 7 - j, 7 - i,
                             graph->root.activeColor, graph->root);
           break;
         case empty:
@@ -130,12 +133,14 @@ void pawnMoveGenerator(Stack *moves, int squareX,
   if (isInBoardSquare(board.enPassant.line,
                       board.enPassant.column)) {
     nextSquareX = squareX + 1;
-    if ((nextSquareY == board.enPassant.line) && (nextSquareX == board.enPassant.column)) {
+    if ((nextSquareY == board.enPassant.line) &&
+        (nextSquareX == board.enPassant.column)) {
       stack_push(moves, stack_exchange(squareX, squareY,
                                        nextSquareX, nextSquareY));
     }
     nextSquareX = squareX - 1;
-    if ((nextSquareY == board.enPassant.line) && (nextSquareX == board.enPassant.column)) {
+    if ((nextSquareY == board.enPassant.line) &&
+        (nextSquareX == board.enPassant.column)) {
       stack_push(moves, stack_exchange(squareX, squareY,
                                        nextSquareX, nextSquareY));
     }
@@ -373,7 +378,6 @@ void rookMoveGenerator(Stack *moves, int squareX, int squareY,
 
 void queenMoveGenerator(Stack *moves, int squareX, int squareY,
                         Color activeColor, Board board) {
-
   bishopMoveGenerator(moves, squareX, squareY,
                       activeColor, board);
   rookMoveGenerator(moves, squareX, squareY,

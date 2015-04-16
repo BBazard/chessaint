@@ -175,12 +175,11 @@ void test_queenMoveGenerator(void) {
 }
 
 void test_knightMoveGenerator(void) {
-
   Board testBoardN;
   Stack tmp;
   stack_init(&tmp);
 
-  /* Say we have a white knight on e4<=>(4,3), a black pawn 
+  /* Say we have a white knight on e4<=>(4,3), a black pawn
      on f6<=>(5,5) and a white king on d2<=>(3,1) */
 
   fenToBoard("8/8/5p2/8/4N3/8/3K4/8 w - - 0 1", &testBoardN);
@@ -212,7 +211,7 @@ void test_kingMoveGenerator(void) {
   Stack tmp;
   stack_init(&tmp);
 
-  /* Say we have a black king on e4<=>(4,3), with black pawns 
+  /* Say we have a black king on e4<=>(4,3), with black pawns
      all around except in f5<=>(5,4) (empty) and in d3<=>(3,2) (white pawn) */
 
   fenToBoard("8/8/8/3pp3/3pkp2/3Ppp2/8/8 b - - 0 1", &testBoardK);
@@ -273,7 +272,7 @@ void test_pawnMoveGenerator2(void) {
 void test_movesGenerator(void) {
   Graph testGraph;
   graph_init(&testGraph);
-  
+
   /* We want all moves from the beginning position */
   initAGame(&(testGraph.root));
   initAGame(&(testGraph.current_node));

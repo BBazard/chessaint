@@ -20,6 +20,10 @@
  */
 #define MSG_SIZE 256
 
+struct uciRegex {
+  regex_t bla;
+};
+
 void manageErrors(char *msg);
 
 void regcompWrapper(regex_t *compiled, char *pattern);
@@ -30,6 +34,9 @@ int regexecWrapper(const regex_t *compiled, const char *string,
 void send(FILE* log, char buffer[UCI_SIZE]);
 
 void receive(FILE* log, char buffer[UCI_SIZE]);
+
+void initialiseRegexes(struct uciRegex *regexes);
+void freeRegexes(struct uciRegex *regexes);
 
 int isQuit(FILE *log, char toCompare[UCI_SIZE]);
 

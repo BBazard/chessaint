@@ -14,7 +14,7 @@
 /**
  * Print an error message
  * and stop the engine
- * 
+ *
  * @todo stop the engine
  * with uci "quit" or something
  */
@@ -73,6 +73,17 @@ void receive(FILE *log, char buffer[UCI_SIZE]) {
     manageErrors("can't read");
   if (log != NULL)
     fprintf(log, "received from gui : %s", buffer);
+}
+
+/**
+ * You need to call freeRegexes
+ */
+void initialiseRegexes(struct uciRegex *regexes) {
+  regcompWrapper(&regexes->bla, "qdsmljkf");
+}
+
+void freeRegexes(struct uciRegex *regexes) {
+  regfree(&regexes->bla);
 }
 
 int isQuit(FILE *log, char toCompare[UCI_SIZE]) {

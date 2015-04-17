@@ -15,6 +15,9 @@ int main() {
   if (log == NULL)
     manageErrors("can't create log file");
 
+  struct uciRegex regexes;
+  initialiseRegexes(&regexes);
+
   char buffer[UCI_SIZE];
 
   receive(log, buffer); /* "uci" */
@@ -31,6 +34,7 @@ int main() {
   send(log,                "bestmove f7f6");
   receive(log, buffer); /* "quit"        */
 
+  freeRegexes(&regexes);
   fclose(log);
 
   return EXIT_SUCCESS;

@@ -617,18 +617,18 @@ bool isInBoardSquare(int squareX, int squareY) {
  *  This function updates the current_node board of the graph according
  *  to the data contained in the arc identifier and the root board
  *  
- *  @note function up_board is recursive and called by update_board, and should never be
+ *  @note function update_moves is recursive and called by update_board, and should never be
  *  used in another way
  *
  */
 
-void up_board(Stack *s, Board *current){
+void update_moves(Stack *s, Board *current){
   int current_move = stack_pop(s);
   int a, b, c, d;
   stack_revexchange(&a, &b, &c, &d, current_move);
 
   if (current_move != -1)
-    up_board(s, current);
+    update_moves(s, current);
   current->square[c][d] = current->square[a][b];
   current->square[a][b].color = neutral;
   current->square[a][b].piece = empty;
@@ -638,5 +638,5 @@ void up_board(Stack *s, Board *current){
 void update_board(Arc father, Graph *graph) {
   Stack tmp;
   identifier_to_stack(father.data, &tmp);
-  up_board(&tmp, &(graph->current_node));
+  update_moves(&tmp, &(graph->current_node));
 }

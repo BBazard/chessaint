@@ -25,15 +25,12 @@ int clean_suite_llist(void) {
   return 0;
 }
 
-void arc_init(Arc *arc) {
-  arc->score = 150;
-  mpz_init(arc->data);
-}
-
 void test_arc_equal(void) {
   Arc left, right;
   arc_init(&left);
   arc_init(&right);
+  left.score = 150;
+  right.score = 150;
 
   /* When left and right are equal */
   CU_ASSERT_TRUE(arc_is_equal(left, right));
@@ -49,6 +46,7 @@ void test_llist_add(void) {
   Llist list = NULL;
   Arc arc;
   arc_init(&arc);
+  arc.score = 150;
 
   /* list should be NULL */
   CU_ASSERT_PTR_NULL(list);
@@ -83,7 +81,8 @@ void test_llist_suppr(void) {
   Arc arc2;
   arc_init(&arc1);
   arc_init(&arc2);
-  arc2.score++;
+  arc1.score = 150;
+  arc2.score = 151;
 
   /* See if trying to suppress an element of an empty list works */
   CU_ASSERT_TRUE(llist_suppr(&list));
@@ -111,7 +110,8 @@ void test_llist_free(void) {
   Arc arc2;
   arc_init(&arc1);
   arc_init(&arc2);
-  arc2.score++;
+  arc1.score = 150;
+  arc2.score = 151;
 
   /* Add something in order to suppress it later */
   llist_add(arc1, &list);

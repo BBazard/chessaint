@@ -6,6 +6,20 @@
 #include <string.h>
 
 /**
+ *  @fn void arc_init(Arc *arc)
+ *  @brief Inits an Arc
+ *  @param[out] arc The arc to init
+ *
+ *  Inits arc and set its score to 0
+ *
+ */
+
+void arc_init(Arc *arc) {
+  arc->score = 0;
+  mpz_init(arc->data);
+}
+
+/**
  *  @fn void llist_add(Arc newvalue, Llist *list)
  *  @brief Adds an Arc a specified Llist
  *  @param[in] newvalue The Arc value to add

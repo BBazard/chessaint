@@ -52,6 +52,8 @@ int identifier_get_halfmove(Identifier id);
 int identifier_get_fullmove(Identifier id);
 
 void identifier_to_stack(Identifier id, Stack *stack);
+void stack_to_identifier(Identifier *id, Stack stack);
+
 int identifier_is_equal(Identifier left, Identifier right);
 
 #endif /*TRUNK_CHESSAINT_INCLUDE_HEURISTIC_H_*/

@@ -278,7 +278,7 @@ int identifier_get_fullmove(Identifier id) {
 
 /**
  *  @fn void identifier_to_stack(Identifier id, Stack *stack)
- *  @brief Change the "history" part of id in a stack
+ *  @brief Puts the "history" part of id in a stack
  *  @param[in] id The identifier holding the data
  *  @param[out] stack The stack in which to store extracted data
  *
@@ -292,6 +292,21 @@ void identifier_to_stack(Identifier id, Stack *stack) {
   mpz_tdiv_q_ui(*stack, id, 1000000);
 }
 
+/**
+ *  @fn void stack_to_identifier(Identifier *id, Stack stack)
+ *  @brief Puts the content of a stack in the identifier id
+ *  @param[in] stack The stack in which to store extracted data
+ *  @param[out] id The identifier holding the data
+ *
+ *  Puts the data of the stack in the identifier, as the "history"
+ *  part of the identifier
+ *
+ */
+
+void stack_to_identifier(Identifier *id, Stack stack) {
+  mpz_init(*id);
+  mpz_mul_ui(*id, stack, 1000000);
+}  
 
 /**
  *  @fn int identifier_is_equal(Identifier left, Identifier right)

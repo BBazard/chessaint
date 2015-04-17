@@ -155,3 +155,12 @@ void test_identifier_get_fullmove(void) {
 
   CU_ASSERT_EQUAL(identifier_get_fullmove(id_fullmove_5), 5);
 }
+
+void test_identifier_to_stack(void) {
+  Stack stack;
+  Identifier id;
+  mpz_init_set_str(id, "12345678001122", 10);
+  identifier_to_stack(id, &stack);
+
+  CU_ASSERT_FALSE(mpz_cmp_ui(stack, 12345678));
+}

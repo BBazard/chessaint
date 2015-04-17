@@ -16,6 +16,7 @@
 /**
  *  @fn void graph_init(Graph *graph)
  *  @brief Initialisation of a graph item
+ *  @param[in, out] graph Pointer to the graph
  *
  *  Calls any necessary init function.
  */
@@ -604,4 +605,38 @@ void kingMoveGenerator(Stack *moves, int squareX,
 
 bool isInBoardSquare(int squareX, int squareY) {
   return (squareX >= 0) && (squareX <= 7) && (squareY >= 0) && (squareY <= 7);
+}
+
+/**
+ *  @fn void update_board(Arc father, Graph *graph)
+ *  @brief Update graph->current node
+ *  @param[in] father The arc in which the board will be updated
+ *  @param[in] graph->root The reference board
+ *  @param[out] graph->current_node The board updated
+ *
+ *  This function updates the current_node board of the graph according
+ *  to the data contained in the arc identifier and the root board
+ *  
+ *  @note function up_board is recursive and called by update_board, and should never be
+ *  used in another way
+ *
+ */
+
+void up_board(Stack *s, Board *current){
+  int current_move = stack_pop(s);
+  int a, b, c, d;
+  stack_revexchange(&a, &b, &c, &d, current_move);
+
+  if (current_move != -1)
+    up_board(s, current);
+  current->square[c][d] = current->square[a][b];
+  current->square[a][b].color = neutral;
+  current->square[a][b].piece = empty;
+}
+    
+
+void update_board(Arc father, Graph *graph) {
+  Stack tmp;
+  identifier_to_stack(father.data, &tmp);
+  up_board(&tmp, &(graph->current_node));
 }

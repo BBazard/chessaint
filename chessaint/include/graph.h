@@ -15,8 +15,6 @@
 #include "./chessboard.h"
 #include "./llist.h"
 
-
-
 /**
  *  @typedef Graph
  *  @brief Definition of the Graph type
@@ -58,5 +56,7 @@ void kingMoveGenerator(Stack *moves, int squareX, int squareY,
                        Color activeColor, Board board);
 
 bool isInBoardSquare(int squareX, int squareY);
+
+void update_board(Arc father, Graph *graph);
 
 #endif /* TRUNK_CHESSAINT_INCLUDE_GRAPH_H_ */

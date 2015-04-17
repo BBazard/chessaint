@@ -1,6 +1,6 @@
 /*This file is part of the ChessAInt project 2015*/
 
-/** 
+/**
  *  @file chessboard.h
  *  @brief chessboard header
  *
@@ -25,7 +25,7 @@
 
 
 
-/** 
+/**
  *  @typedef Coord
  *  @brief Definition of the Coord type
  *
@@ -34,7 +34,7 @@
  */
 typedef struct Coord Coord;
 
-/** 
+/**
  *  @struct Coord
  *  @brief Represents a point on the board
  *  with (7,7) the system
@@ -45,29 +45,11 @@ struct Coord {
   int line; /**< y coordinates */
 };
 
-
-
-typedef enum Castling Castling;
-
-/** 
- *  @enum Castling
- *  @brief What are the availble castles ?
- *
- */
-enum Castling {
-  K, /**< white castle on king's side */
-  Q, /**< white castle on queen's side */
-  k, /**< black castle on king's side */
-  q, /**< black castle on queen's side */
-  no /**<no castle available */
-};
-
-
 typedef enum Color Color;
 
-/** 
+/**
  *  @enum Color
- *  @brief Colors of pieces 
+ *  @brief Colors of pieces
  *
  * To describe the state of a square for exemple
  */
@@ -80,7 +62,7 @@ enum Color {
 
 typedef enum Piece Piece;
 
-/** 
+/**
  *  @enum Piece
  *  @brief Pieces types
  *
@@ -98,7 +80,7 @@ enum Piece {
   empty /**< for empty squares */
 };
 
- /** 
+ /**
  *  @typedef Square
  *  @brief Definition of the Square type
  *
@@ -108,7 +90,7 @@ enum Piece {
 typedef struct Square Square;
 
 
-/** 
+/**
  *  @struct Square
  *  @brief Represents a square on the board
  *
@@ -119,7 +101,7 @@ struct Square {
   Piece piece; /**< The piece which is in the square, can be empty */
 };
 
- /** 
+ /**
  *  @typedef Board
  *  @brief Definition of the Board type
  *
@@ -128,13 +110,13 @@ struct Square {
  */
 typedef struct Board Board;
 
-/** 
+/**
  *  @struct Board
  *  @brief Represents board + game data
  *
  *  All data required to play a game from a position is stored in a  board
  *  according to FEN strings data (same fields tranlated in our structures)
- *  When you got a board you know everything : the player to play, from 
+ *  When you got a board you know everything : the player to play, from
  *  which position, with which castles available...
  */
 struct Board {
@@ -144,7 +126,7 @@ struct Board {
   /**
    * @bug numeric value 4
    */
-  Castling availableCastlings[4]; /**< What are the available castles can be
+  char availableCastlings[4]; /**< What are the available castles can be
                                   no, no, no, no */
   Coord enPassant; /**< Which square can be taken en passant */
   int halfMoveClock; /**< useful to think about draws */

@@ -3,8 +3,7 @@
  *  @file graph.c
  *  @brief graph structure basic functions
  *
- *  This file implements functions to add or remove Arc from a linked list,
- *  totally suppress a list and print an Arc or a list
+ *  This file implements functions to manage graph and generate moves
  *
  */
 
@@ -620,6 +619,8 @@ bool isInBoardSquare(int squareX, int squareY) {
  *  @note function update_moves is recursive and called by update_board, and should never be
  *  used in another way
  *
+ *  @todo Coord enPassant not updated currently need to correct that
+ *
  */
 
 void update_moves(Stack *s, Board *current){
@@ -637,6 +638,16 @@ void update_moves(Stack *s, Board *current){
 
 void update_board(Arc father, Graph *graph) {
   Stack tmp;
+  int tmp;
+  int i;
   identifier_to_stack(father.data, &tmp);
   update_moves(&tmp, &(graph->current_node));
+  graph->current_node.activeColor = !identifier_is_white(father.data);
+  tmp = identifier_get_cast(father.data);
+  for (i = 0; i<3; i++) {
+    graph->current_node.availableCastlings[i] = tmp%2;
+    tmp /=2;
+  }
+  graph->current_node.halfMoveClock = identifier_get_helfmove(father.data);
+  graph->current_node.fullmoveNb = !identifier_get_fullmove(father.data);
 }

@@ -54,10 +54,10 @@ void initAGame(Board *game) {
     }
   }
   game->activeColor = white;
-  game->availableCastlings[0] = K;
-  game->availableCastlings[1] = Q;
-  game->availableCastlings[2] = k;
-  game->availableCastlings[3] = q;
+  game->availableCastlings[0] = 1;
+  game->availableCastlings[1] = 1;
+  game->availableCastlings[2] = 1;
+  game->availableCastlings[3] = 1;
   game->enPassant.column = -1;
   game->enPassant.line = -1;
   game->halfMoveClock = 0;
@@ -84,6 +84,8 @@ void fenToBoard(char *fen, Board *game) {
   int k = 0;
   int m = 0;
   char temp[3];
+  for (i = 0; i< 4; i++)
+    game->availableCastlings[i] = 0;
 
   while (fen[i] != ' ') {
     if (fen[i] == '/') {
@@ -167,27 +169,16 @@ void fenToBoard(char *fen, Board *game) {
 
   ++i; /* To the next field of the fen string */
 
-  k = 0;
   while (fen[i] != ' ') {
-    if (fen[i] == 'K') {
-      game->availableCastlings[k] = K;
-    } else {
-      if (fen[i] == 'k') {
-        game->availableCastlings[k] = k;
-      } else {
-        if (fen[i] == 'Q') {
-          game->availableCastlings[k] = Q;
-        } else {
-          if (fen[i] == 'q') {
-            game->availableCastlings[k] = q;
-          } else {
-            game->availableCastlings[k] = no;
-          }
-        }
-      }
-    }
-    ++i;
-    ++k;
+    if (fen[i] == 'K') 
+      game->availableCastlings[0] = 1;
+    else if (fen[i] == 'k') 
+      game->availableCastlings[2] = 1;
+    else if (fen[i] == 'Q') 
+      game->availableCastlings[1] = 1;
+    else if (fen[i] == 'q') 
+      game->availableCastlings[3] = 1;
+    i++;
   }
 
   ++i; /* To the next field of the fen string */
@@ -319,14 +310,14 @@ void printBoardAndData(Board game) {
     printf("Next Color to play : black\n");
 
   for (i = 0 ; i <= 3 ; ++i) {
-    if (game.availableCastlings[i] != no) {
-      if (game.availableCastlings[i] == K)
+    if (game.availableCastlings[i] != 0) {
+      if (game.availableCastlings[i] == 1)
         printf("White can castle on the king side\n");
-      if (game.availableCastlings[i] == k)
+      if (game.availableCastlings[i] == 1)
         printf("Black can castle on the king side\n");
-      if (game.availableCastlings[i] == Q)
+      if (game.availableCastlings[i] == 1)
         printf("White can castle on the queen side\n");
-      if (game.availableCastlings[i] == q)
+      if (game.availableCastlings[i] == 1)
         printf("Black can castle on the queen side\n");
     }
   }

@@ -43,31 +43,38 @@ void movesGenerator(Graph *graph) {
 
   for (i = 0 ; i <= ROWCOL_NB - 1; ++i) {
     for (j = 0 ; j <= (ROWCOL_NB - 1) ; ++j) {
-      if (graph->root.square[i][j].color == graph->root.activeColor) {
-        switch (graph->root.square[i][j].piece) {
+      if (graph->current_node.square[i][j].color ==
+          graph->current_node.activeColor) {
+        switch (graph->current_node.square[i][j].piece) {
         case pawn:
           pawnMoveGenerator(&(graph->current_moves), 7 - j, 7 - i,
-                            graph->root.activeColor, graph->root);
+                            graph->current_node.activeColor,
+                            graph->current_node);
           break;
         case bishop:
           bishopMoveGenerator(&(graph->current_moves), 7 - j, 7 - i,
-                              graph->root.activeColor, graph->root);
+                              graph->current_node.activeColor,
+                              graph->current_node);
           break;
         case knight:
           knightMoveGenerator(&(graph->current_moves), 7 - j, 7 - i,
-                              graph->root.activeColor, graph->root);
+                              graph->current_node.activeColor,
+                              graph->current_node);
           break;
         case rook:
           rookMoveGenerator(&(graph->current_moves), 7 - j, 7 - i,
-                            graph->root.activeColor, graph->root);
+                            graph->current_node.activeColor,
+                            graph->current_node);
           break;
         case queen:
           queenMoveGenerator(&(graph->current_moves), 7 - j, 7 - i,
-                             graph->root.activeColor, graph->root);
+                             graph->current_node.activeColor,
+                             graph->current_node);
           break;
         case king:
           kingMoveGenerator(&(graph->current_moves), 7 - j, 7 - i,
-                            graph->root.activeColor, graph->root);
+                            graph->current_node.activeColor,
+                            graph->current_node);
           break;
         case empty:
           break;

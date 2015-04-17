@@ -1,5 +1,5 @@
 /*This file is part of the ChessAInt project 2015*/
-/** 
+/**
  *  @file heuristic.c
  *  @brief heuristic functions
  *
@@ -12,7 +12,7 @@
 
 #include "include/heuristic.h"
 
-/** 
+/**
  *  @fn int is_mate(char *board, char player)
  *  @brief Check if there is mat
  *  @param[in] board The string representing the board
@@ -35,7 +35,7 @@ int is_mate(char *board, char player) {
     return 0;
 }
 
-/** 
+/**
  *  @fn int number_of_char(char *str, char chr)
  *  @brief Computes the number of char in a string
  *  @param[in] str The string in which to search
@@ -54,7 +54,7 @@ int number_of_char(char *str, char chr) {
     return number_of_char(ret+1, chr) + 1;
 }
 
-/** 
+/**
  *  @fn int heuristic_fen(char* fen)
  *  @brief Returns a score for a given board
  *  @param[in] fen The representation of the board

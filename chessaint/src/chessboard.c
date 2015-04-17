@@ -1,9 +1,9 @@
 /*This file is part of the ChessAInt project 2015*/
-/** 
+/**
  *  @file chessboard.c
  *  @brief chessboard handling functions
  *
- *  This files implements chessboard handling functions 
+ *  This files implements chessboard handling functions
  *  or placing pieces in a given position
  *
  */
@@ -38,7 +38,7 @@ Piece piecesToInit[ROWCOL_NB][ROWCOL_NB] = {
   {rook, knight, bishop, queen, king, bishop, knight, rook},
 };
 
-/** 
+/**
  *  @fn void initAGame(Board *game)
  *  @brief Put a board to the initial position
  *  @param[in,out] Board pointer on the board to initialize
@@ -65,16 +65,16 @@ void initAGame(Board *game) {
 }
 
 
-/** 
+/**
  *  @fn void fenToBoard(char *fen, Board *game)
  *  @brief Put a board to the position described by the FEN string
  *  @param[in] char *fen : the fen string
  *  @param[in,out] Board *game: the board to put in a certain position
  *
  *  @bug : i think the bug is : if no sqaure en passant, the end of the
- *    string is badly parsed. I'll check that -hugo 
+ *    string is badly parsed. I'll check that -hugo
  *
- *  Parsing function  
+ *  Parsing function
  */
 
 
@@ -248,7 +248,7 @@ void fenToBoard(char *fen, Board *game) {
 }
 
 
-/** 
+/**
  *  @fn void printBoardAndData(Board game)
  *  @brief Print the board and game data in a formatted way
  *  @param[in] baord game: the board (and its data of its structure) to display

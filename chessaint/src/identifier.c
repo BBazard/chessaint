@@ -1,5 +1,5 @@
-/*This file is part of the ChessAInt project 2015*/
-/** 
+/* This file is part of the ChessAInt project 2015 */
+/**
  *  @file identifier.c
  *  @brief identifier functions
  *
@@ -10,41 +10,30 @@
 
 #include "include/identifier.h"
 
-/** 
+/**
  *  @brief 4096 represents 8*8 * 8*8 ie the number of pairs
  *  of coords possible
  *
  */
 
-#define MAX_PAIRS 4096
+#define MAX_PAIRS 8889
 
-/** 
- *  @fn void stack_exchange(int *p1, int *p2, int *p3, int *p4, int *ptr)
- *  @brief Transform four int in one or one in four
+/**
+ *  @fn int stack_exchange(int p1, int p2, int p3, int p4)
+ *  @brief Transform four int in one
+ *  @param[in] p1 Most Signifiant Bit
+ *  @param[in] p2,p3,p4 Others bits
+ *  @return int "p1p2p3p4"
  *
- *  Create one int (returned in ptr) from four (in p1...p4, MSB first)
- *  Or four ints (returned in p1, p2, p3, p4) from one (in ptr)
- *
- *  !! Create one from four IF AND ONLY IF *ptr == -1!!
+ *  Return the int which is the "concatenation" of p1...p4, MSB first
  *
  */
 
-void stack_exchange(int *p1, int *p2, int *p3, int *p4, int *ptr) {
-  if (*ptr == -1) {
-    *ptr = *p1*1000 + *p2*100 + *p3*10 + *p4;
-  } else {
-    *p4 = *ptr%10;
-    *ptr = (*ptr-*p4)/10;
-    *p3 = *ptr%10;
-    *ptr = (*ptr-*p3)/10;
-    *p2 = *ptr%10;
-    *ptr = (*ptr-*p2)/10;
-    *p1 = *ptr;
-    *ptr -= *p1+1;
-  }
+int stack_exchange(int p1, int p2, int p3, int p4) {
+  return p1*1000 + p2*100 + p3*10 + p4;
 }
 
-/** 
+/**
  *  @fn void stack_init(Stack *s)
  *  @brief Create a stack
  *
@@ -56,7 +45,7 @@ void stack_init(Stack *s) {
   mpz_init_set_ui(*s, 0);
 }
 
-/** 
+/**
  *  @fn void stack_free(Stack *s)
  *  @brief Free a stack
  *
@@ -70,7 +59,7 @@ void stack_free(Stack *s) {
   s = NULL;
 }
 
-/** 
+/**
  *  @fn void stack_push(Stack *s, int item)
  *  @brief add an item to the stack
  *
@@ -89,27 +78,34 @@ void stack_push(Stack *s, int item) {
   mpz_clear(tmp);
 }
 
-/** 
+/**
  *  @fn int stack_pop(Stack *s);
  *  @brief Extract an item from the stack
+ *  @return -1 If the stack is empty
  *  @return int the first element of the stack
  *
  *  This function extract an item from the stack
  *  and returns it
+ *  @note If the stack contains 0 it means it is empty since
+ *  the moveGenerator will never add the a1a1 move.
  *
  */
 
 int stack_pop(Stack *s) {
   mpz_t tmp;
   int ret;
-  mpz_init_set(tmp, *s);
+  if (!mpz_cmp_ui(*s, 0)) {
+    ret = -1;
+  } else {
+    mpz_init_set(tmp, *s);
 
-  ret = (mpz_tdiv_q_ui(*s, tmp, MAX_PAIRS));
-  mpz_clear(tmp);
+    ret = (mpz_tdiv_q_ui(*s, tmp, MAX_PAIRS));
+    mpz_clear(tmp);
+  }
   return ret;
 }
 
-/** 
+/**
  *  @fn void identifier_print(Identifier id)
  *  @brief Print an identifier
  *
@@ -127,7 +123,7 @@ void identifier_print(Identifier id) {
 
   fclose(stdout);
 }
-/** 
+/**
  *  @fn int identifier_is_leaf(Identifier id)
  *  @brief Check if an arc is a leaf of the graph
  *  @param[in] id The identifier used
@@ -150,7 +146,7 @@ int identifier_is_leaf(Identifier id) {
   return ret;
 }
 
-/** 
+/**
  *  @fn int identifier_is_white(Identifier id)
  *  @brief Check if an arc is a white move
  *  @param[in] id The identifier used
@@ -173,7 +169,7 @@ int identifier_is_white(Identifier id) {
   return ret;
 }
 
-/** 
+/**
  *  @fn int identifier_is_passant(Identifier id)
  *  @brief Check if an arc contains a enpassant move
  *  @param[in] id The identifier used
@@ -196,7 +192,7 @@ int identifier_is_passant(Identifier id) {
   return ret;
 }
 
-/** 
+/**
  *  @fn int identifier_get_cast(Identifier id)
  *  @brief Get the castling state
  *  @param[in] id The identifier used
@@ -218,7 +214,7 @@ int identifier_get_cast(Identifier id) {
   return ret;
 }
 
-/** 
+/**
  *  @fn int identifier_get_halfmove(Identifier id)
  *  @brief Get the number of "half move clock"
  *  @param[in] id The identifier used
@@ -237,7 +233,7 @@ int identifier_get_halfmove(Identifier id) {
   return ret;
 }
 
-/** 
+/**
  *  @fn int identifier_get_fullmove(Identifier id)
  *  @brief Get the number of moves
  *  @param[in] id The identifier used
@@ -257,7 +253,7 @@ int identifier_get_fullmove(Identifier id) {
     return ret/4;
 }
 
-/** 
+/**
  *  @fn int identifier_is_equal(Identifier left, Identifier right)
  *  @brief Compares identifiers
  *  @return 1 If identifier are equal

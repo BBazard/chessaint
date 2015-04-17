@@ -1,5 +1,5 @@
 /*This file is part of the ChessAInt project 2015*/
-/** 
+/**
  *  @file identifier.h
  *  @brief identifier structure header
  *
@@ -15,7 +15,7 @@
 #include <stdio.h>
 #include <gmp.h>
 
-/** 
+/**
  *  @typedef Identifier
  *  @brief Definition of the Identifier type
  *
@@ -25,7 +25,7 @@
 
 typedef mpz_t Identifier;
 
-/** 
+/**
  *  @typedef Stack
  *  @brief Definition of the Stack type
  *
@@ -35,7 +35,7 @@ typedef mpz_t Identifier;
 
 typedef mpz_t Stack;
 
-void stack_exchange(int *p1, int *p2, int *p3, int *p4, int *ptr);
+int stack_exchange(int p1, int p2, int p3, int p4);
 void stack_init(Stack *s);
 void stack_free(Stack *s);
 void stack_push(Stack *s, int item);

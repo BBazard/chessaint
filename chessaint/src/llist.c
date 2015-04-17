@@ -5,7 +5,7 @@
 #include <assert.h>
 #include <string.h>
 
-/** 
+/**
  *  @fn void llist_add(Arc newvalue, Llist *list)
  *  @brief Adds an Arc a specified Llist
  *  @param[in] newvalue The Arc value to add
@@ -34,7 +34,7 @@ void llist_add(Arc newvalue, Llist *list) {
   }
 }
 
-/** 
+/**
  *  @fn int llist_suppr(Llist *list)
  *  @brief Suppress an element
  *  @param[in,out] list Pointer on the targeted Llist, not NULL normally
@@ -60,7 +60,7 @@ int llist_suppr(Llist *list) {
   }
 }
 
-/** 
+/**
  *  @fn void llist_free(Llist *list)
  *  @brief Suppress all elements
  *  @param[in,out] list Pointer on the targeted Llist
@@ -76,7 +76,7 @@ void llist_free(Llist *list) {
   *list = NULL;
 }
 
-/** 
+/**
  *  @fn void arc_print(Arc value)
  *  @brief Print an Arc
  *  @param[in] value Arc to print, all elements of the structure must be defined
@@ -99,7 +99,7 @@ void llist_print(Llist list) {
   }
 }
 
-/** 
+/**
  *  @fn void arc_print(Arc value)
  *  @brief Print an Arc
  *  @param[in] value Arc to print, all elements of the structure must be defined
@@ -115,7 +115,7 @@ void arc_print(Arc value) {
   identifier_print(value.data);
 }
 
-/** 
+/**
  *  @fn int arc_is_equal(Arc left, Arc right)
  *  @brief Test if to arc are equals
  *  @param[in] left The left member of the equality

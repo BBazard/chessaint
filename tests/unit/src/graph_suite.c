@@ -48,34 +48,60 @@ void test_bishopMoveGenerator(void) {
 
   /* Enable to see the situation : printBoardAndData(testBoardB); */
 
-
   bishopMoveGenerator(&tmp, 4, 3, white, testBoardB);
+  int x;
   /* (4,3) -> (0,7) */
-  CU_ASSERT_EQUAL(stack_pop(&tmp), 4307);
+  x = stack_pop(&tmp);
+  printf("%d\n", x);
+  CU_ASSERT_EQUAL(x, 4307);
   /* (4,3) -> (1,6) */
-  CU_ASSERT_EQUAL(stack_pop(&tmp), 4316);
+  x = stack_pop(&tmp);
+  printf("%d\n", x);
+  CU_ASSERT_EQUAL(x, 4316);
   /* (4,3) -> (2,5) */
-  CU_ASSERT_EQUAL(stack_pop(&tmp), 4325);
+  x = stack_pop(&tmp);
+  printf("%d\n", x);
+  CU_ASSERT_EQUAL(x, 4325);
   /* (4,3) -> (3,4) */
-  CU_ASSERT_EQUAL(stack_pop(&tmp), 4334);
+  x = stack_pop(&tmp);
+  printf("%d\n", x);
+  CU_ASSERT_EQUAL(x, 4334);
   /* (4,3) -> (1,0) */
-  CU_ASSERT_EQUAL(stack_pop(&tmp), 4310);
+  x = stack_pop(&tmp);
+  printf("%d\n", x);
+  CU_ASSERT_EQUAL(x, 4310);
   /* (4,3) -> (2,1) */
-  CU_ASSERT_EQUAL(stack_pop(&tmp), 4321);
+  x = stack_pop(&tmp);
+  printf("%d\n", x);
+  CU_ASSERT_EQUAL(x, 4321);
   /* (4,3) -> (3,2) */
-  CU_ASSERT_EQUAL(stack_pop(&tmp), 4332);
+  x = stack_pop(&tmp);
+  printf("%d\n", x);
+  CU_ASSERT_EQUAL(x, 4332);
   /* (4,3) -> (7,0) */
-  CU_ASSERT_EQUAL(stack_pop(&tmp), 4370);
+  x = stack_pop(&tmp);
+  printf("%d\n", x);
+  CU_ASSERT_EQUAL(x, 4370);
   /* (4,3) -> (6,1) */
-  CU_ASSERT_EQUAL(stack_pop(&tmp), 4361);
+  x = stack_pop(&tmp);
+  printf("%d\n", x);
+  CU_ASSERT_EQUAL(x, 4361);
   /* (4,3) -> (5,2) */
-  CU_ASSERT_EQUAL(stack_pop(&tmp), 4352);
+  x = stack_pop(&tmp);
+  printf("%d\n", x);
+  CU_ASSERT_EQUAL(x, 4352);
   /* (4,3) -> (7,6) */
-  CU_ASSERT_EQUAL(stack_pop(&tmp), 4376);
+  x = stack_pop(&tmp);
+  printf("%d\n", x);
+  CU_ASSERT_EQUAL(x, 4376);
   /* (4,3) -> (6,5) */
-  CU_ASSERT_EQUAL(stack_pop(&tmp), 4365);
+  x = stack_pop(&tmp);
+  printf("%d\n", x);
+  CU_ASSERT_EQUAL(x, 4365);
   /* (4,3) -> (5,4) */
-  CU_ASSERT_EQUAL(stack_pop(&tmp), 4354);
+  x = stack_pop(&tmp);
+  printf("%d\n", x);
+  CU_ASSERT_EQUAL(x, 4354);
 }
 
 void test_rookMoveGenerator(void) {
@@ -359,4 +385,27 @@ void test_movesGenerator(void) {
   CU_ASSERT_EQUAL(stack_pop(&(testGraph.current_moves)), 7173);
   /* (7,1) -> (7,2) */
   CU_ASSERT_EQUAL(stack_pop(&(testGraph.current_moves)), 7172);
+}
+
+void test_update_board(void) {
+  Graph graph;
+  Arc father;
+  graph_init(&graph);
+  arc_init(&father);
+
+  stack_push(&graph.current_moves, 4143);
+  stack_push(&graph.current_moves, 4344);
+  stack_push(&graph.current_moves, 4445);
+  stack_to_identifier(&father.data, graph.current_moves);
+
+  initAGame(&(graph.root));
+  initAGame(&(graph.current_node));
+
+  CU_ASSERT_EQUAL(graph.current_node.square[4][3].piece, empty);
+  CU_ASSERT_EQUAL(graph.current_node.square[4][4].piece, empty);
+  CU_ASSERT_EQUAL(graph.current_node.square[4][5].piece, empty);
+
+  update_board(father, &graph);
+
+  CU_ASSERT_EQUAL(graph.current_node.square[4][5].piece, pawn);
 }

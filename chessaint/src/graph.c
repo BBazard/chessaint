@@ -637,17 +637,17 @@ void update_moves(Stack *s, Board *current){
     
 
 void update_board(Arc father, Graph *graph) {
-  Stack tmp;
+  Stack stack;
   int tmp;
   int i;
-  identifier_to_stack(father.data, &tmp);
-  update_moves(&tmp, &(graph->current_node));
+  identifier_to_stack(father.data, &stack);
+  update_moves(&stack, &(graph->current_node));
   graph->current_node.activeColor = !identifier_is_white(father.data);
   tmp = identifier_get_cast(father.data);
   for (i = 0; i<3; i++) {
     graph->current_node.availableCastlings[i] = tmp%2;
     tmp /=2;
   }
-  graph->current_node.halfMoveClock = identifier_get_helfmove(father.data);
-  graph->current_node.fullmoveNb = !identifier_get_fullmove(father.data);
+  graph->current_node.halfMoveClock = identifier_get_halfmove(father.data);
+  graph->current_node.fullMoveNb = !identifier_get_fullmove(father.data);
 }

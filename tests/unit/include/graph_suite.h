@@ -20,4 +20,6 @@ void test_pawnMoveGenerator2(void);
 
 void test_movesGenerator(void);
 
+void test_update_board(void);
+
 #endif /* TESTS_UNIT_INCLUDE_LLIST_SUITE_H_ */

@@ -36,6 +36,7 @@ typedef mpz_t Identifier;
 typedef mpz_t Stack;
 
 int stack_exchange(int p1, int p2, int p3, int p4);
+void stack_revexchange(int *p1, int *p2, int *p3, int *p4, int todivide);
 void stack_init(Stack *s);
 void stack_free(Stack *s);
 void stack_push(Stack *s, int item);
@@ -50,6 +51,7 @@ int identifier_get_cast(Identifier id);
 int identifier_get_halfmove(Identifier id);
 int identifier_get_fullmove(Identifier id);
 
+void identifier_to_stack(Identifier id, Stack *stack);
 int identifier_is_equal(Identifier left, Identifier right);
 
 #endif /*TRUNK_CHESSAINT_INCLUDE_HEURISTIC_H_*/

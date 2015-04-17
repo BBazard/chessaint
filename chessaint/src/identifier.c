@@ -34,6 +34,29 @@ int stack_exchange(int p1, int p2, int p3, int p4) {
 }
 
 /**
+ *  @fn int stack_revexchange(int p1, int p2, int p3, int p4, int todivide)
+ *  @brief Transform an int in four
+ *  @param[out] p1,p2,p3,p4 Where p1 is todivide MSB and p4 todivide LSB
+ *  @param[in] todivide The integer (must be in [|0; 10000|]) to divide in four
+ *
+ *  Divide todivide in p1, p2, p3 and p4
+ *
+ */
+
+void stack_revexchange(int *p1, int *p2, int *p3, int *p4, int todivide) {
+  int tmp = todivide;
+
+  *p4 = tmp%10;
+  tmp = (tmp-*p4)/10;
+  *p3 = tmp%10;
+  tmp = (tmp-*p3)/10;
+  *p2 = tmp%10;
+  tmp = (tmp-*p2)/10;
+  *p1 = tmp%10;
+  tmp = (tmp-*p1)/10;
+}
+
+/**
  *  @fn void stack_init(Stack *s)
  *  @brief Create a stack
  *
@@ -42,7 +65,7 @@ int stack_exchange(int p1, int p2, int p3, int p4) {
  */
 
 void stack_init(Stack *s) {
-  mpz_init_set_ui(*s, 0);
+  mpz_init(*s);
 }
 
 /**
@@ -252,6 +275,23 @@ int identifier_get_fullmove(Identifier id) {
   else
     return ret/4;
 }
+
+/**
+ *  @fn void identifier_to_stack(Identifier id, Stack *stack)
+ *  @brief Change the "history" part of id in a stack
+ *  @param[in] id The identifier holding the data
+ *  @param[out] stack The stack in which to store extracted data
+ *
+ *  Extract the "history" part of the identifier (the moves since root board)
+ *  and store it in a stack
+ *
+ */
+
+void identifier_to_stack(Identifier id, Stack *stack) {
+  stack_init(stack);
+  mpz_tdiv_q_ui(*stack, id, 1000000);
+}
+
 
 /**
  *  @fn int identifier_is_equal(Identifier left, Identifier right)

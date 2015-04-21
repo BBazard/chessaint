@@ -46,19 +46,14 @@ void graph_init(Graph *graph);
 void movesGenerator(Graph *graph);
 void pawnMoveGenerator(Stack *moves, int squareX, int squareY,
                        Color activeColor, Board board);
-
 void bishopMoveGenerator(Stack *moves, int squareX, int squareY,
                          Color activeColor, Board board);
 void rookMoveGenerator(Stack *moves, int squareX, int squareY,
                        Color activeColor, Board board);
 void bishopAndRook4DirectionsGen(int incX, int incY, Stack *moves, int squareX,
                           int squareY, Color activeColor, Board board);
-
-
 void queenMoveGenerator(Stack *moves, int squareX, int squareY,
                         Color activeColor, Board board);
-
-
 void knightMoveGenerator(Stack *moves, int squareX, int squareY,
                          Color activeColor, Board board);
 void kingMoveGenerator(Stack *moves, int squareX, int squareY,
@@ -67,5 +62,7 @@ void knightAndKing4DirectionsGen(int incX, int incY, Stack *moves, int squareX,
                           int squareY, Color activeColor, Board board);
 
 bool isInBoardSquare(int squareX, int squareY);
+
+void update_board(Arc father, Graph *graph);
 
 #endif /* TRUNK_CHESSAINT_INCLUDE_GRAPH_H_ */

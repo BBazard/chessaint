@@ -312,3 +312,30 @@ void test_movesGenerator(void) {
   /* (1,0) -> (2,2) */
   CU_ASSERT_EQUAL(stack_pop(&(testGraph.current_moves)), 1022);
 }
+
+void test_update_board(void) {
+  Graph graph;
+  Arc father;
+  graph_init(&graph);
+  arc_init(&father);
+
+  stack_push(&graph.current_moves, 4143);
+  stack_push(&graph.current_moves, 4344);
+  stack_push(&graph.current_moves, 4445);
+  stack_to_identifier(&father.data, graph.current_moves);
+
+  int i,j;
+  for (i = 0; i < 8; i++)
+    for (j = 0; j < 8; j++)
+      graph.current_node.square[i][j].piece = empty;
+
+  graph.current_node.square[4][1].piece = pawn;
+
+  CU_ASSERT_EQUAL(graph.current_node.square[4][3].piece, empty);
+  CU_ASSERT_EQUAL(graph.current_node.square[4][4].piece, empty);
+  CU_ASSERT_EQUAL(graph.current_node.square[4][5].piece, empty);
+
+  update_board(father, &graph);
+
+  CU_ASSERT_EQUAL(graph.current_node.square[4][5].piece, pawn);
+}

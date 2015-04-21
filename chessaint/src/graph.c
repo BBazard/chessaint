@@ -3,8 +3,7 @@
  *  @file graph.c
  *  @brief graph structure basic functions
  *
- *  This file implements functions to add or remove Arc from a linked list,
- *  totally suppress a list and print an Arc or a list
+ *  This file implements functions to manage graph and generate moves
  *
  */
 
@@ -43,31 +42,31 @@ void movesGenerator(Graph *graph) {
 
   for (i = 0 ; i <= ROWCOL_NB - 1; ++i) {
     for (j = 0 ; j <= (ROWCOL_NB - 1) ; ++j) {
-      if (graph->root.square[i][j].color == graph->root.activeColor) {
-        switch (graph->root.square[i][j].piece) {
+      if (graph->current_node.square[i][j].color == graph->current_node.activeColor) {
+        switch (graph->current_node.square[i][j].piece) {
         case pawn:
           pawnMoveGenerator(&(graph->current_moves), j, i,
-                            graph->root.activeColor, graph->root);
+                            graph->current_node.activeColor, graph->current_node);
           break;
         case bishop:
           bishopMoveGenerator(&(graph->current_moves), j, i,
-                              graph->root.activeColor, graph->root);
+                              graph->current_node.activeColor, graph->current_node);
           break;
         case knight:
           knightMoveGenerator(&(graph->current_moves), j, i,
-                              graph->root.activeColor, graph->root);
+                              graph->current_node.activeColor, graph->current_node);
           break;
         case rook:
           rookMoveGenerator(&(graph->current_moves), j,  i,
-                            graph->root.activeColor, graph->root);
+                            graph->current_node.activeColor, graph->current_node);
           break;
         case queen:
           queenMoveGenerator(&(graph->current_moves), j, i,
-                             graph->root.activeColor, graph->root);
+                             graph->current_node.activeColor, graph->current_node);
           break;
         case king:
           kingMoveGenerator(&(graph->current_moves), j,  i,
-                            graph->root.activeColor, graph->root);
+                            graph->current_node.activeColor, graph->current_node);
           break;
         case empty:
           break;
@@ -470,4 +469,50 @@ void knightAndKing4DirectionsGen(int incX, int incY, Stack *moves, int squareX,
 
 bool isInBoardSquare(int squareX, int squareY) {
   return (squareX >= 0) && (squareX <= 7) && (squareY >= 0) && (squareY <= 7);
+}
+    
+/**
+ *  @fn void update_board(Arc father, Graph *graph)
+ *  @brief Update graph->current node
+ *  @param[in] father The arc in which the board will be updated
+ *  @param[in] graph->root The reference board
+ *  @param[out] graph->current_node The board updated
+ *
+ *  This function updates the current_node board of the graph according
+ *  to the data contained in the arc identifier and the root board
+ *  
+ *  @note function update_moves is recursive and called by update_board, and should never be
+ *  used in another way
+ *
+ *  @todo Coord enPassant not updated currently need to correct that
+ *
+ */
+
+void update_moves(Stack *s, Board *current){
+  int current_move = stack_pop(s);
+  int a, b, c, d;
+  stack_revexchange(&a, &b, &c, &d, current_move);
+
+  if (current_move != -1) {
+    update_moves(s, current);
+    current->square[c][d] = current->square[a][b];
+    current->square[a][b].color = neutral;
+    current->square[a][b].piece = empty;
+  }
+}
+
+void update_board(Arc father, Graph *graph) {
+  Stack stack;
+  int tmp;
+  int i;
+  identifier_to_stack(father.data, &stack);
+  update_moves(&stack, &(graph->current_node));
+  graph->current_node.activeColor = !identifier_is_white(father.data);
+  tmp = identifier_get_cast(father.data);
+  for (i = 0; i<3; i++) {
+    graph->current_node.availableCastlings[i] = tmp%2;
+    tmp /=2;
+  }
+  graph->current_node.halfMoveClock = identifier_get_halfmove(father.data);
+  graph->current_node.fullMoveNb = !identifier_get_fullmove(father.data);
 }

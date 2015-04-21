@@ -3,7 +3,8 @@
  *  @file graph.c
  *  @brief graph structure basic functions
  *
- *  This file implements functions to manage graph and generate moves
+ *  This file implements functions to add or remove Arc from a linked list,
+ *  totally suppress a list and print an Arc or a list
  *
  */
 
@@ -15,7 +16,6 @@
 /**
  *  @fn void graph_init(Graph *graph)
  *  @brief Initialisation of a graph item
- *  @param[in, out] graph Pointer to the graph
  *
  *  Calls any necessary init function.
  */
@@ -43,38 +43,31 @@ void movesGenerator(Graph *graph) {
 
   for (i = 0 ; i <= ROWCOL_NB - 1; ++i) {
     for (j = 0 ; j <= (ROWCOL_NB - 1) ; ++j) {
-      if (graph->current_node.square[i][j].color ==
-          graph->current_node.activeColor) {
-        switch (graph->current_node.square[i][j].piece) {
+      if (graph->root.square[i][j].color == graph->root.activeColor) {
+        switch (graph->root.square[i][j].piece) {
         case pawn:
-          pawnMoveGenerator(&(graph->current_moves), 7 - j, 7 - i,
-                            graph->current_node.activeColor,
-                            graph->current_node);
+          pawnMoveGenerator(&(graph->current_moves), j, i,
+                            graph->root.activeColor, graph->root);
           break;
         case bishop:
-          bishopMoveGenerator(&(graph->current_moves), 7 - j, 7 - i,
-                              graph->current_node.activeColor,
-                              graph->current_node);
+          bishopMoveGenerator(&(graph->current_moves), j, i,
+                              graph->root.activeColor, graph->root);
           break;
         case knight:
-          knightMoveGenerator(&(graph->current_moves), 7 - j, 7 - i,
-                              graph->current_node.activeColor,
-                              graph->current_node);
+          knightMoveGenerator(&(graph->current_moves), j, i,
+                              graph->root.activeColor, graph->root);
           break;
         case rook:
-          rookMoveGenerator(&(graph->current_moves), 7 - j, 7 - i,
-                            graph->current_node.activeColor,
-                            graph->current_node);
+          rookMoveGenerator(&(graph->current_moves), j,  i,
+                            graph->root.activeColor, graph->root);
           break;
         case queen:
-          queenMoveGenerator(&(graph->current_moves), 7 - j, 7 - i,
-                             graph->current_node.activeColor,
-                             graph->current_node);
+          queenMoveGenerator(&(graph->current_moves), j, i,
+                             graph->root.activeColor, graph->root);
           break;
         case king:
-          kingMoveGenerator(&(graph->current_moves), 7 - j, 7 - i,
-                            graph->current_node.activeColor,
-                            graph->current_node);
+          kingMoveGenerator(&(graph->current_moves), j,  i,
+                            graph->root.activeColor, graph->root);
           break;
         case empty:
           break;
@@ -111,6 +104,9 @@ void pawnMoveGenerator(Stack *moves, int squareX,
   nextSquareX = squareX;
   if (isInBoardSquare(nextSquareX, nextSquareY)) {
     if (board.square[nextSquareY][nextSquareX].color == neutral) {
+      /*
+      printf("(%d,%d)->(%d,%d)\n",squareX,squareY,nextSquareX,nextSquareY);
+      */
       stack_push(moves, stack_exchange(squareX, squareY,
                                        nextSquareX, nextSquareY));
     }
@@ -121,6 +117,9 @@ void pawnMoveGenerator(Stack *moves, int squareX,
   if (isInBoardSquare(nextSquareX, nextSquareY)) {
     if ((board.square[nextSquareY][nextSquareX].color != neutral) &&
         (board.square[nextSquareY][nextSquareX].color != activeColor)) {
+      /*
+      printf("(%d,%d)->(%d,%d)\n",squareX,squareY,nextSquareX,nextSquareY);
+      */
       stack_push(moves, stack_exchange(squareX, squareY,
                                        nextSquareX, nextSquareY));
     }
@@ -131,6 +130,9 @@ void pawnMoveGenerator(Stack *moves, int squareX,
   if (isInBoardSquare(nextSquareX, nextSquareY)) {
     if ((board.square[nextSquareY][nextSquareX].color != neutral) &&
         (board.square[nextSquareY][nextSquareX].color != activeColor)) {
+      /*
+      printf("(%d,%d)->(%d,%d)\n",squareX,squareY,nextSquareX,nextSquareY);
+      */
       stack_push(moves, stack_exchange(squareX, squareY,
                                        nextSquareX, nextSquareY));
     }
@@ -142,12 +144,18 @@ void pawnMoveGenerator(Stack *moves, int squareX,
     nextSquareX = squareX + 1;
     if ((nextSquareY == board.enPassant.line) &&
         (nextSquareX == board.enPassant.column)) {
+      /*
+      printf("(%d,%d)->(%d,%d)\n",squareX,squareY,nextSquareX,nextSquareY);
+      */
       stack_push(moves, stack_exchange(squareX, squareY,
                                        nextSquareX, nextSquareY));
     }
     nextSquareX = squareX - 1;
     if ((nextSquareY == board.enPassant.line) &&
         (nextSquareX == board.enPassant.column)) {
+      /*
+      printf("(%d,%d)->(%d,%d)\n",squareX,squareY,nextSquareX,nextSquareY);
+      */
       stack_push(moves, stack_exchange(squareX, squareY,
                                        nextSquareX, nextSquareY));
     }
@@ -168,9 +176,17 @@ void pawnMoveGenerator(Stack *moves, int squareX,
        (squareY == 6))
       ) {
     if (activeColor == white) {
+      /*
+      printf("(%d,%d)->(%d,%d)\n",squareX, 1, squareX,
+                                       squareY + 2 * whiteMove);
+      */
       stack_push(moves, stack_exchange(squareX, 1, squareX,
                                        squareY + 2 * whiteMove));
     } else {
+      /*
+      printf("(%d,%d)->(%d,%d)\n",squareX, 1, squareX,
+                                       squareY + 2 * whiteMove);
+      */
       stack_push(moves, stack_exchange(squareX, 6, squareX,
                                        squareY + 2 * blackMove));
     }
@@ -180,184 +196,103 @@ void pawnMoveGenerator(Stack *moves, int squareX,
 /**
  *  @fn void bishopMoveGenerator(Stack *moves, int squareX, int squareY,
  Color activeColor, Board board)
- *  @brief gives all moves for a bishop sitting on a given square
+ *  @brief gives all moves for a bishop sitting on a given square by calling
+           dedicated subfonctions
  *  @param[in] squareX and squareY are the position of the bishop (7,7) system
  *              activeColor is the color of the bishop
  *              board is the current board
+ *  @param[in, out] Stack *moves is a stack that keep track of the results
  *
- *
- *  This function gives all legal move for a colored bishop except
- *  those linked with chess position
- *  (just waiting for the stack structure)
  */
 
 void bishopMoveGenerator(Stack *moves, int squareX, int squareY,
                          Color activeColor, Board board) {
-  int nextSquareX, nextSquareY;
-
   /* Bishop going North-East */
-  nextSquareX = squareX + 1;
-  nextSquareY = squareY + 1;
-  while (isInBoardSquare(nextSquareX, nextSquareY)) {
-    if (board.square[nextSquareY][nextSquareX].color == activeColor) {
-      break;
-    }
-    if (board.square[nextSquareY][nextSquareX].color != activeColor) {
-      stack_push(moves, stack_exchange(squareX, squareY,
-                                       nextSquareX, nextSquareY));
-      if (board.square[nextSquareY][nextSquareX].color != neutral) {
-        break;
-      }
-    } else {
-      break;
-    }
-    ++nextSquareX;
-    ++nextSquareY;
-  }
+  bishopAndRook4DirectionsGen(1, 1, moves, squareX, squareY, activeColor,
+                             board);
 
   /* Bishop going South-East */
-  nextSquareX = squareX + 1;
-  nextSquareY = squareY - 1;
-  while (isInBoardSquare(nextSquareX, nextSquareY)) {
-    if (board.square[nextSquareY][nextSquareX].color == activeColor) {
-      break;
-    }
-    if (board.square[nextSquareY][nextSquareX].color != activeColor) {
-      stack_push(moves, stack_exchange(squareX, squareY,
-                                       nextSquareX, nextSquareY));
-      if (board.square[nextSquareY][nextSquareX].color != neutral) {
-        break;
-      }
-    } else {
-      break;
-    }
-    ++nextSquareX;
-    --nextSquareY;
-  }
+  bishopAndRook4DirectionsGen(1, -1, moves, squareX, squareY, activeColor,
+                               board);
 
   /* Bishop going South-West */
-  nextSquareX = squareX - 1;
-  nextSquareY = squareY - 1;
-  while (isInBoardSquare(nextSquareX, nextSquareY)) {
-    if (board.square[nextSquareY][nextSquareX].color == activeColor) {
-      break;
-    }
-    if (board.square[nextSquareY][nextSquareX].color != activeColor) {
-      stack_push(moves, stack_exchange(squareX, squareY,
-                                       nextSquareX, nextSquareY));
-      if (board.square[nextSquareY][nextSquareX].color != neutral) {
-        break;
-      }
-    } else {
-      break;
-    }
-    --nextSquareX;
-    --nextSquareY;
-  }
+  bishopAndRook4DirectionsGen(-1, -1, moves, squareX, squareY, activeColor,
+                             board);
 
   /* Bishop going North-West */
-  nextSquareX = squareX - 1;
-  nextSquareY = squareY + 1;
-  while (isInBoardSquare(nextSquareX, nextSquareY)) {
-    if (board.square[nextSquareY][nextSquareX].color == activeColor) {
-      break;
-    }
-    if (board.square[nextSquareY][nextSquareX].color != activeColor) {
-      stack_push(moves, stack_exchange(squareX, squareY,
-                                       nextSquareX, nextSquareY));
-      if (board.square[nextSquareY][nextSquareX].color != neutral) {
-        break;
-      }
-    } else {
-      break;
-    }
-    --nextSquareX;
-    ++nextSquareY;
+  bishopAndRook4DirectionsGen(-1, 1, moves, squareX, squareY, activeColor,
+                             board);
   }
-}
+
 
 /**
  *  @fn void rookMoveGenerator(Stack *moves, int squareX, int squareY,
  Color activeColor, Board board)
- *  @brief gives all moves for a rook sitting on a given square
+ *  @brief gives all moves for a rook sitting on a given square by calling
+           dedicated subfonctions
  *  @param[in] squareX and squareY are the position of the bishop (7,7) system
- *              activeColor is the color of the rook
+ *              activeColor is the color of the bishop
  *              board is the current board
+ *  @param[in, out] Stack *moves is a stack that keep track of the results
  *
- *  This function gives all legal move for a colored rook except those linked
- *  with chess position
- *  (just waiting for the stack structure)
  */
 
 void rookMoveGenerator(Stack *moves, int squareX, int squareY,
                        Color activeColor, Board board) {
-  int nextSquareX, nextSquareY;
-
   /* Rook going North */
-  nextSquareX = squareX;
-  nextSquareY = squareY + 1;
-  while (isInBoardSquare(nextSquareX, nextSquareY)) {
-    if (board.square[nextSquareY][nextSquareX].color == activeColor) {
-      break;
-    }
-    if (board.square[nextSquareY][nextSquareX].color != activeColor) {
-      stack_push(moves, stack_exchange(squareX, squareY,
-                                       nextSquareX, nextSquareY));
-      if (board.square[nextSquareY][nextSquareX].color != neutral) {
-        break;
-      }
-    } else {
-      break;
-    }
-    ++nextSquareY;
-  }
+  bishopAndRook4DirectionsGen(0, 1, moves, squareX, squareY, activeColor,
+                               board);
 
   /* Rook going South */
-  nextSquareX = squareX;
-  nextSquareY = squareY - 1;
-  while (isInBoardSquare(nextSquareX, nextSquareY)) {
-    if (board.square[nextSquareY][nextSquareX].color == activeColor) {
-      break;
-    }
-    if (board.square[nextSquareY][nextSquareX].color != activeColor) {
-      stack_push(moves, stack_exchange(squareX, squareY,
-                                       nextSquareX, nextSquareY));
-      if (board.square[nextSquareY][nextSquareX].color != neutral) {
-        break;
-      }
-    } else {
-      break;
-    }
-    --nextSquareY;
-  }
+  bishopAndRook4DirectionsGen(0, -1, moves, squareX, squareY, activeColor,
+                               board);
 
   /* Rook going East */
-  nextSquareX = squareX + 1;
-  nextSquareY = squareY;
-  while (isInBoardSquare(nextSquareX, nextSquareY)) {
-    if (board.square[nextSquareY][nextSquareX].color == activeColor) {
-      break;
-    }
-    if (board.square[nextSquareY][nextSquareX].color != activeColor) {
-      stack_push(moves, stack_exchange(squareX, squareY,
-                                       nextSquareX, nextSquareY));
-      if (board.square[nextSquareY][nextSquareX].color != neutral) {
-        break;
-      }
-    } else {
-      break;
-    }
-    ++nextSquareX;
-  }
+  bishopAndRook4DirectionsGen(1, 0, moves, squareX, squareY, activeColor,
+                             board);
 
   /* Rook going West */
-  nextSquareX = squareX - 1;
-  nextSquareY = squareY;
+  bishopAndRook4DirectionsGen(-1, 0, moves, squareX, squareY, activeColor,
+                             board);
+}
+
+/**
+ *  @fn void bishopAndRook4DirectionsGen(int incX, int incY, Stack *moves,
+ *                          int squareX, int squareY, Color activeColor,
+ *                         Board board)
+ *  @brief the subfonctions dealing with the 4 directions of movement
+ *  @param[in] squareX and squareY are the position of the bishop or 
+ *                rook (7,7) system
+ *              activeColor is the color of the bishop
+ *              board is the current board
+ *               incX and incY determines the directions we wanna move 
+ *  @param[in, out] Stack *moves is a stack that keep track of the results
+ *
+ *
+ *  This function gives all legal move for a colored bishop or rook except
+ *  those linked with chess position
+ */
+
+void bishopAndRook4DirectionsGen(int incX, int incY, Stack *moves, int squareX,
+                          int squareY, Color activeColor, Board board) {
+  int nextSquareX;
+  int nextSquareY;
+
+  nextSquareX = squareX + incX;
+  nextSquareY = squareY + incY;
   while (isInBoardSquare(nextSquareX, nextSquareY)) {
+    /* printf("\n------------\n");
+    printf("Next move :\n");
+    printf("activeColor : %d\n", activeColor );
+    printf("dest color : %d\n", board.square[nextSquareY][nextSquareX].color);
+    */
     if (board.square[nextSquareY][nextSquareX].color == activeColor) {
       break;
     }
     if (board.square[nextSquareY][nextSquareX].color != activeColor) {
+      /* Enable to see moves :
+      printf("(%d,%d)->(%d,%d)\n",squareX,squareY,nextSquareX,nextSquareY);
+      */
       stack_push(moves, stack_exchange(squareX, squareY,
                                        nextSquareX, nextSquareY));
       if (board.square[nextSquareY][nextSquareX].color != neutral) {
@@ -366,7 +301,8 @@ void rookMoveGenerator(Stack *moves, int squareX, int squareY,
     } else {
       break;
     }
-    --nextSquareX;
+    nextSquareX += incX;
+    nextSquareY += incY;
   }
 }
 
@@ -394,206 +330,136 @@ void queenMoveGenerator(Stack *moves, int squareX, int squareY,
 
 /**
  *  @fn void knightMoveGenerator(Stack *moves, int squareX, int squareY,
- Color activeColor, Board board)
- *  @brief gives all moves for a knight sitting on a given square
+ *      Color activeColor, Board board)
+ *  @brief gives all moves for a knight sitting on a given square by calling
+ *          subfunctions
  *  @param[in] squareX and squareY are the position of the knight (7,7) system
  *              activeColor is the color of the knight
  *              board is the current board
- *
- *  This function gives legal move for a colored knight except those linked
- *  with chess position
- *  (just waiting for the stack structure)
+ *  @param[in, out] a stack of moves to keep track of moves
  */
 void knightMoveGenerator(Stack *moves, int squareX,
                          int squareY, Color activeColor, Board board) {
-  int nextSquareX, nextSquareY;
-
   /* move : North then East
      | |F|  Finish
      | |
      |S|    Start */
-  nextSquareX = squareX + 1;
-  nextSquareY = squareY + 2;
-  if (isInBoardSquare(nextSquareX, nextSquareY)) {
-    if (board.square[nextSquareY][nextSquareX].color != activeColor) {
-      stack_push(moves, stack_exchange(squareX, squareY,
-                                       nextSquareX, nextSquareY));
-    }
-  }
+  knightAndKing4DirectionsGen(1, 2, moves, squareX, squareY,
+                              activeColor, board);
   /* move : North then West
      |F| |  Finish
      | |
      |S|    Start */
-  nextSquareX = squareX - 1;
-  nextSquareY = squareY + 2;
-  if (isInBoardSquare(nextSquareX, nextSquareY)) {
-    if (board.square[nextSquareY][nextSquareX].color != activeColor) {
-      stack_push(moves, stack_exchange(squareX, squareY,
-                                       nextSquareX, nextSquareY));
-    }
-  }
+  knightAndKing4DirectionsGen(-1, 2, moves, squareX, squareY,
+                              activeColor, board);
   /* move : East then North
      |F|  Finish
      |S| | |  Start */
-  nextSquareX = squareX + 2;
-  nextSquareY = squareY + 1;
-  if (isInBoardSquare(nextSquareX, nextSquareY)) {
-    if (board.square[nextSquareY][nextSquareX].color != activeColor) {
-      stack_push(moves, stack_exchange(squareX, squareY,
-                                       nextSquareX, nextSquareY));
-    }
-  }
+  knightAndKing4DirectionsGen(2, 1, moves, squareX, squareY,
+                              activeColor, board);
   /* move : East then South
      |S| | |  Start
      |F|  Finish */
-  nextSquareX = squareX + 2;
-  nextSquareY = squareY - 1;
-  if (isInBoardSquare(nextSquareX, nextSquareY)) {
-    if (board.square[nextSquareY][nextSquareX].color != activeColor) {
-      stack_push(moves, stack_exchange(squareX, squareY,
-                                       nextSquareX, nextSquareY));
-    }
-  }
+  knightAndKing4DirectionsGen(2, -1, moves, squareX, squareY,
+                              activeColor, board);
   /* move : South then West
      |S|  Start
      | |
      |F| |  Finish */
-  nextSquareX = squareX - 1;
-  nextSquareY = squareY - 2;
-  if (isInBoardSquare(nextSquareX, nextSquareY)) {
-    if (board.square[nextSquareY][nextSquareX].color != activeColor) {
-      stack_push(moves, stack_exchange(squareX, squareY,
-                                       nextSquareX, nextSquareY));
-    }
-  }
+  knightAndKing4DirectionsGen(-1, -2, moves, squareX, squareY,
+                              activeColor, board);
   /* move : South then East
      |S|    Start
      | |
      | |F|  Finish */
-  nextSquareX = squareX + 1;
-  nextSquareY = squareY - 2;
-  if (isInBoardSquare(nextSquareX, nextSquareY)) {
-    if (board.square[nextSquareY][nextSquareX].color != activeColor) {
-      stack_push(moves, stack_exchange(squareX, squareY,
-                                       nextSquareX, nextSquareY));
-    }
-  }
+  knightAndKing4DirectionsGen(1, -2, moves, squareX, squareY,
+                              activeColor, board);
   /* move : West then North
      |F|      Finish
      | | |S|  Start */
-  nextSquareX = squareX - 2;
-  nextSquareY = squareY + 1;
-  if (isInBoardSquare(nextSquareX, nextSquareY)) {
-    if (board.square[nextSquareY][nextSquareX].color != activeColor) {
-      stack_push(moves, stack_exchange(squareX, squareY,
-                                       nextSquareX, nextSquareY));
-    }
-  }
+  knightAndKing4DirectionsGen(-2, 1, moves, squareX, squareY,
+                              activeColor, board);
   /* move : West then South
      | | |S|  Start
      |F|      Finish */
-  nextSquareX = squareX - 2;
-  nextSquareY = squareY - 1;
-  if (isInBoardSquare(nextSquareX, nextSquareY)) {
-    if (board.square[nextSquareY][nextSquareX].color != activeColor) {
-      stack_push(moves, stack_exchange(squareX, squareY,
-                                       nextSquareX, nextSquareY));
-    }
-  }
+  knightAndKing4DirectionsGen(-2, -1, moves, squareX, squareY,
+                              activeColor, board);
 }
 
 /**
  *  @fn void kingMoveGenerator(Stack *moves, int squareX, int squareY,
- Color activeColor, Board board)
- *  @brief gives all moves for a king sitting on a given square
+ *      Color activeColor, Board board)
+ *  @brief gives all moves for a king sitting on a given square by calling
+ *          a subfunction
  *  @param[in] squareX and squareY are the position of the king (7,7) system
  *              activeColor is the color of the king
  *              board is the current board
+ *  @param[in, out] a stack of moves to keep track of moves
  *
  *  @note No chess position handling here !
  *  @note No castling handling yet !
  *
- *  This function gives legal move (except those linked with
- *  chess position for a colored king.
- *  (just waiting for the stack structure)
  */
 void kingMoveGenerator(Stack *moves, int squareX,
                        int squareY, Color activeColor, Board board) {
+  /* To the North */
+  knightAndKing4DirectionsGen(0, 1, moves, squareX, squareY,
+                              activeColor, board);
+  /* To the East */
+  knightAndKing4DirectionsGen(1, 0, moves, squareX, squareY,
+                              activeColor, board);
+  /* To the South */
+  knightAndKing4DirectionsGen(0, -1, moves, squareX, squareY,
+                              activeColor, board);
+  /* To the West */
+  knightAndKing4DirectionsGen(-1, 0, moves, squareX, squareY,
+                              activeColor, board);
+  /* To the North-East */
+  knightAndKing4DirectionsGen(1, 1, moves, squareX, squareY,
+                              activeColor, board);
+  /* To the South-East */
+  knightAndKing4DirectionsGen(1, -1, moves, squareX, squareY,
+                              activeColor, board);
+  /* To the South-West */
+  knightAndKing4DirectionsGen(-1, -1, moves, squareX, squareY,
+                              activeColor, board);
+  /* To the North-West */
+  knightAndKing4DirectionsGen(-1, 1, moves, squareX, squareY,
+                              activeColor, board);
+}
+
+/**
+ *  @fn void knightAndKing4DirectionsGen(int incX, int incY, Stack *moves,
+ *                  int squareX, int squareY, Color activeColor, Board board)
+ *  @brief the subfonctions dealing with the 4 directions of movement
+ *  @param[in] squareX and squareY are the position of the knight or king
+ *              activeColor is the color of the bishop
+ *              board is the current board
+ *               incX and incY determines the directions we wanna move 
+ *  @param[in, out] Stack *moves is a stack that keep track of the results
+ *
+ *
+ *  This function gives all legal move for a colored knight or king except
+ *  those linked with chess position
+ */
+void knightAndKing4DirectionsGen(int incX, int incY, Stack *moves, int squareX,
+                          int squareY, Color activeColor, Board board) {
   int nextSquareX, nextSquareY;
 
-  /* To the North */
-  nextSquareX = squareX;
-  nextSquareY = squareY + 1;
+  nextSquareX = squareX + incX;
+  nextSquareY = squareY + incY;
   if (isInBoardSquare(nextSquareX, nextSquareY)) {
     if (board.square[nextSquareY][nextSquareX].color != activeColor) {
-      stack_push(moves, stack_exchange(squareX, squareY,
-                                       nextSquareX, nextSquareY));
-    }
-  }
-  /* To the East */
-  nextSquareX = squareX + 1;
-  nextSquareY = squareY;
-  if (isInBoardSquare(nextSquareX, nextSquareY)) {
-    if (board.square[nextSquareY][nextSquareX].color != activeColor) {
-      stack_push(moves, stack_exchange(squareX, squareY,
-                                       nextSquareX, nextSquareY));
-    }
-  }
-  /* To the South */
-  nextSquareX = squareX;
-  nextSquareY = squareY - 1;
-  if (isInBoardSquare(nextSquareX, nextSquareY)) {
-    if (board.square[nextSquareY][nextSquareX].color != activeColor) {
-      stack_push(moves, stack_exchange(squareX, squareY,
-                                       nextSquareX, nextSquareY));
-    }
-  }
-  /* To the West */
-  nextSquareX = squareX - 1;
-  nextSquareY = squareY;
-  if (isInBoardSquare(nextSquareX, nextSquareY)) {
-    if (board.square[nextSquareY][nextSquareX].color != activeColor) {
-      stack_push(moves, stack_exchange(squareX, squareY,
-                                       nextSquareX, nextSquareY));
-    }
-  }
-  /* To the North-East */
-  nextSquareX = squareX + 1;
-  nextSquareY = squareY + 1;
-  if (isInBoardSquare(nextSquareX, nextSquareY)) {
-    if (board.square[nextSquareY][nextSquareX].color != activeColor) {
-      stack_push(moves, stack_exchange(squareX, squareY,
-                                       nextSquareX, nextSquareY));
-    }
-  }
-  /* To the South-East */
-  nextSquareX = squareX + 1;
-  nextSquareY = squareY - 1;
-  if (isInBoardSquare(nextSquareX, nextSquareY)) {
-    if (board.square[nextSquareY][nextSquareX].color != activeColor) {
-      stack_push(moves, stack_exchange(squareX, squareY,
-                                       nextSquareX, nextSquareY));
-    }
-  }
-  /* To the South-West */
-  nextSquareX = squareX - 1;
-  nextSquareY = squareY - 1;
-  if (isInBoardSquare(nextSquareX, nextSquareY)) {
-    if (board.square[nextSquareY][nextSquareX].color != activeColor) {
-      stack_push(moves, stack_exchange(squareX, squareY,
-                                       nextSquareX, nextSquareY));
-    }
-  }
-  /* To the North-West */
-  nextSquareX = squareX - 1;
-  nextSquareY = squareY + 1;
-  if (isInBoardSquare(nextSquareX, nextSquareY)) {
-    if (board.square[nextSquareY][nextSquareX].color != activeColor) {
+      /* Enable to see moves :
+      printf("(%d,%d)->(%d,%d)\n",squareX,squareY,nextSquareX,nextSquareY);
+      */
       stack_push(moves, stack_exchange(squareX, squareY,
                                        nextSquareX, nextSquareY));
     }
   }
 }
+
+
 
 /**
  *  @fn isInBoardSquare(int squareX, int squareY)
@@ -604,50 +470,4 @@ void kingMoveGenerator(Stack *moves, int squareX,
 
 bool isInBoardSquare(int squareX, int squareY) {
   return (squareX >= 0) && (squareX <= 7) && (squareY >= 0) && (squareY <= 7);
-}
-
-/**
- *  @fn void update_board(Arc father, Graph *graph)
- *  @brief Update graph->current node
- *  @param[in] father The arc in which the board will be updated
- *  @param[in] graph->root The reference board
- *  @param[out] graph->current_node The board updated
- *
- *  This function updates the current_node board of the graph according
- *  to the data contained in the arc identifier and the root board
- *  
- *  @note function update_moves is recursive and called by update_board, and should never be
- *  used in another way
- *
- *  @todo Coord enPassant not updated currently need to correct that
- *
- */
-
-void update_moves(Stack *s, Board *current){
-  int current_move = stack_pop(s);
-  int a, b, c, d;
-  stack_revexchange(&a, &b, &c, &d, current_move);
-
-  if (current_move != -1)
-    update_moves(s, current);
-  current->square[c][d] = current->square[a][b];
-  current->square[a][b].color = neutral;
-  current->square[a][b].piece = empty;
-}
-    
-
-void update_board(Arc father, Graph *graph) {
-  Stack stack;
-  int tmp;
-  int i;
-  identifier_to_stack(father.data, &stack);
-  update_moves(&stack, &(graph->current_node));
-  graph->current_node.activeColor = !identifier_is_white(father.data);
-  tmp = identifier_get_cast(father.data);
-  for (i = 0; i<3; i++) {
-    graph->current_node.availableCastlings[i] = tmp%2;
-    tmp /=2;
-  }
-  graph->current_node.halfMoveClock = identifier_get_halfmove(father.data);
-  graph->current_node.fullMoveNb = !identifier_get_fullmove(father.data);
 }

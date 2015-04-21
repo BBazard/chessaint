@@ -24,37 +24,6 @@ void manageErrors(char *msg) {
 }
 
 /**
- * Compile the regex "compiled"
- * according to "pattern"
- *
- * @todo \\see pattern
- */
-void regcompWrapper(regex_t *compiled, char *pattern) {
-  int res = regcomp(compiled, pattern, REG_EXTENDED);
-  if (res != 0)
-    manageErrors(pattern);
-}
-
-/**
- * Compare "input" with the pattern in "compiled" and
- * fill "matchptr" with the matches
- * @return 1 if match
- * @return 0 if no match
- */
-int regexecWrapper(const regex_t *compiled, const char *input,
-                   regmatch_t *matchptr) {
-  int res = regexec(compiled, input, compiled->re_nsub+1, matchptr, 0);
-
-  if (res == REG_ESPACE) {
-    char buffer[MSG_SIZE];
-    regerror(res, compiled, buffer, sizeof(buffer));
-    manageErrors(buffer);
-  }
-
-  return (res != REG_NOMATCH);
-}
-
-/**
  * Send uci string to the gui
  */
 void send(FILE *log, char buffer[UCI_SIZE]) {
@@ -76,40 +45,38 @@ void receive(FILE *log, char buffer[UCI_SIZE]) {
 }
 
 /**
- * You need to call freeRegexes
+ * return the first word of a string
+ *
+ * * if the string contains no whitespace, return the string
+ * * if the string contains at least a whitespace,
+ * return the first characters until the first whitespace excluded
+ *
+ * example :
+ * "word" -> "word"
+ * "long sentence" -> "long"
+ * 
+ * @see getNextWord
  */
-void initialiseRegexes(struct uciRegex *regexes) {
-  regcompWrapper(&regexes->bla, "qdsmljkf");
+char* getFirstWord(char* sentence) {
+  return strtok(sentence, " ");
 }
 
-void freeRegexes(struct uciRegex *regexes) {
-  regfree(&regexes->bla);
+/**
+ * apply getFirstWord on the last string
+ * called by getFistWord minus the return value of getFirstWord
+ * 
+ * examples :
+ * getFirstWord("very long sentence") -> "very"
+ * getNextWord() : "long"
+ *
+ * @see getFirstWord
+ */
+char* getNextWord() {
+  return strtok(NULL, " ");
 }
 
-int isQuit(FILE *log, char toCompare[UCI_SIZE]) {
-  regex_t general;
-
-  regcompWrapper(&general, "^(([^ ])+)\n$");
-
-  regmatch_t *matchptr = calloc((general.re_nsub + 1), sizeof(regex_t));
-
-  if (regexecWrapper(&general, toCompare, matchptr)) {
-    fprintf(log, "\ninput %s", toCompare);
-
-    for (size_t i = 0 ; i < general.re_nsub + 1 ; ++i) {
-      fprintf(log, "match %ld : %d %d\n",
-          i, matchptr[i].rm_so, matchptr[i].rm_eo);
-    }
-
-    fprintf(log, "\n");
-
-    free(matchptr);
-    regfree(&general);
-    return 1;
-  }
-
-  free(matchptr);
-  regfree(&general);
-  return 0;
+char getLastCharacter(char* input) {
+  char *bla = input + strlen(input) - 1;
+  return *bla;
 }
 

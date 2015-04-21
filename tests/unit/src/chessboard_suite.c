@@ -7,7 +7,6 @@
 #include "include/chessboard.h"
 
 int init_suite_chessboard(void) {
-
   return 0;
 }
 

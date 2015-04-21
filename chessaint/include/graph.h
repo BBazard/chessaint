@@ -63,6 +63,7 @@ void knightAndKing4DirectionsGen(int incX, int incY, Stack *moves, int squareX,
 
 bool isInBoardSquare(int squareX, int squareY);
 
+void play_move(int move, Board *board);
 void update_board(Arc father, Graph *graph);
 
 #endif /* TRUNK_CHESSAINT_INCLUDE_GRAPH_H_ */

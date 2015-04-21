@@ -313,6 +313,23 @@ void test_movesGenerator(void) {
   CU_ASSERT_EQUAL(stack_pop(&(testGraph.current_moves)), 1022);
 }
 
+void test_play_move(void) {
+  Board before;
+  Board after;
+
+  int i, j;
+  for (i = 0; i < 8; i++) {
+    for (j = 0; j < 8; j++) {
+      before.square[i][j].piece = empty;
+      after.square[i][j].piece = empty;
+    }
+  }
+  before.square[0][0].piece = pawn;
+  after.square[0][1].piece = pawn;
+
+  play_move(1, &before);
+}
+
 void test_update_board(void) {
   Graph graph;
   Arc father;
@@ -324,7 +341,7 @@ void test_update_board(void) {
   stack_push(&graph.current_moves, 4445);
   stack_to_identifier(&father.data, graph.current_moves);
 
-  int i,j;
+  int i, j;
   for (i = 0; i < 8; i++)
     for (j = 0; j < 8; j++)
       graph.current_node.square[i][j].piece = empty;

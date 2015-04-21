@@ -39,6 +39,13 @@ int add_graph_suite(CU_pSuite pSuite_graph) {
 
   /* add the tests to the suite */
   if (NULL == CU_add_test(pSuite_graph,
+                           "Test play_move function",
+                          test_play_move)) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
+
+  if (NULL == CU_add_test(pSuite_graph,
                            "Test update_board function",
                           test_update_board)) {
     CU_cleanup_registry();

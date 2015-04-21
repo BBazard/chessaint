@@ -42,31 +42,38 @@ void movesGenerator(Graph *graph) {
 
   for (i = 0 ; i <= ROWCOL_NB - 1; ++i) {
     for (j = 0 ; j <= (ROWCOL_NB - 1) ; ++j) {
-      if (graph->current_node.square[i][j].color == graph->current_node.activeColor) {
+      if (graph->current_node.square[i][j].color ==
+          graph->current_node.activeColor) {
         switch (graph->current_node.square[i][j].piece) {
         case pawn:
           pawnMoveGenerator(&(graph->current_moves), j, i,
-                            graph->current_node.activeColor, graph->current_node);
+                            graph->current_node.activeColor,
+                            graph->current_node);
           break;
         case bishop:
           bishopMoveGenerator(&(graph->current_moves), j, i,
-                              graph->current_node.activeColor, graph->current_node);
+                              graph->current_node.activeColor,
+                              graph->current_node);
           break;
         case knight:
           knightMoveGenerator(&(graph->current_moves), j, i,
-                              graph->current_node.activeColor, graph->current_node);
+                              graph->current_node.activeColor,
+                              graph->current_node);
           break;
         case rook:
           rookMoveGenerator(&(graph->current_moves), j,  i,
-                            graph->current_node.activeColor, graph->current_node);
+                            graph->current_node.activeColor,
+                            graph->current_node);
           break;
         case queen:
           queenMoveGenerator(&(graph->current_moves), j, i,
-                             graph->current_node.activeColor, graph->current_node);
+                             graph->current_node.activeColor,
+                             graph->current_node);
           break;
         case king:
           kingMoveGenerator(&(graph->current_moves), j,  i,
-                            graph->current_node.activeColor, graph->current_node);
+                            graph->current_node.activeColor,
+                            graph->current_node);
           break;
         case empty:
           break;
@@ -260,11 +267,11 @@ void rookMoveGenerator(Stack *moves, int squareX, int squareY,
  *                          int squareX, int squareY, Color activeColor,
  *                         Board board)
  *  @brief the subfonctions dealing with the 4 directions of movement
- *  @param[in] squareX and squareY are the position of the bishop or 
+ *  @param[in] squareX and squareY are the position of the bishop or
  *                rook (7,7) system
  *              activeColor is the color of the bishop
  *              board is the current board
- *               incX and incY determines the directions we wanna move 
+ *               incX and incY determines the directions we wanna move
  *  @param[in, out] Stack *moves is a stack that keep track of the results
  *
  *
@@ -434,7 +441,7 @@ void kingMoveGenerator(Stack *moves, int squareX,
  *  @param[in] squareX and squareY are the position of the knight or king
  *              activeColor is the color of the bishop
  *              board is the current board
- *               incX and incY determines the directions we wanna move 
+ *               incX and incY determines the directions we wanna move
  *  @param[in, out] Stack *moves is a stack that keep track of the results
  *
  *
@@ -470,7 +477,24 @@ void knightAndKing4DirectionsGen(int incX, int incY, Stack *moves, int squareX,
 bool isInBoardSquare(int squareX, int squareY) {
   return (squareX >= 0) && (squareX <= 7) && (squareY >= 0) && (squareY <= 7);
 }
-    
+
+/**
+ *  @fn void play_move(int move, Board *board)
+ *  @brief play a move on a board
+ *  @param[in] move the move to play, Ex : 4143 pour e2e4
+ *  @param[in,out] board the board on which to play the move
+ *
+ */
+
+void play_move(int move, Board *board) {
+  int a, b, c, d;
+  stack_revexchange(&a, &b, &c, &d, move);
+
+  board->square[c][d] = board->square[a][b];
+  board->square[a][b].color = neutral;
+  board->square[a][b].piece = empty;
+}
+
 /**
  *  @fn void update_board(Arc father, Graph *graph)
  *  @brief Update graph->current node
@@ -480,7 +504,7 @@ bool isInBoardSquare(int squareX, int squareY) {
  *
  *  This function updates the current_node board of the graph according
  *  to the data contained in the arc identifier and the root board
- *  
+ *
  *  @note function update_moves is recursive and called by update_board, and should never be
  *  used in another way
  *
@@ -488,16 +512,12 @@ bool isInBoardSquare(int squareX, int squareY) {
  *
  */
 
-void update_moves(Stack *s, Board *current){
+void update_moves(Stack *s, Board *current) {
   int current_move = stack_pop(s);
-  int a, b, c, d;
-  stack_revexchange(&a, &b, &c, &d, current_move);
 
   if (current_move != -1) {
     update_moves(s, current);
-    current->square[c][d] = current->square[a][b];
-    current->square[a][b].color = neutral;
-    current->square[a][b].piece = empty;
+    play_move(current_move, current);
   }
 }
 
@@ -509,7 +529,7 @@ void update_board(Arc father, Graph *graph) {
   update_moves(&stack, &(graph->current_node));
   graph->current_node.activeColor = !identifier_is_white(father.data);
   tmp = identifier_get_cast(father.data);
-  for (i = 0; i<3; i++) {
+  for (i = 0; i < 3; i++) {
     graph->current_node.availableCastlings[i] = tmp%2;
     tmp /=2;
   }

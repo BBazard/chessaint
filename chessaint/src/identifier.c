@@ -306,7 +306,7 @@ void identifier_to_stack(Identifier id, Stack *stack) {
 void stack_to_identifier(Identifier *id, Stack stack) {
   mpz_init(*id);
   mpz_mul_ui(*id, stack, 1000000);
-}  
+}
 
 /**
  *  @fn int identifier_is_equal(Identifier left, Identifier right)

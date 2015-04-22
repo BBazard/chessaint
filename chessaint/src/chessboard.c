@@ -17,14 +17,14 @@
  */
 
 Color colorToInit[ROWCOL_NB][ROWCOL_NB] = {
-  {black, black, black, black, black, black, black, black},
-  {black, black, black, black, black, black, black, black},
-  {neutral, neutral, neutral, neutral, neutral, neutral, neutral, neutral},
-  {neutral, neutral, neutral, neutral, neutral, neutral, neutral, neutral},
-  {neutral, neutral, neutral, neutral, neutral, neutral, neutral, neutral},
-  {neutral, neutral, neutral, neutral, neutral, neutral, neutral, neutral},
   {white, white, white, white, white, white, white, white},
   {white, white, white, white, white, white, white, white},
+  {neutral, neutral, neutral, neutral, neutral, neutral, neutral, neutral},
+  {neutral, neutral, neutral, neutral, neutral, neutral, neutral, neutral},
+  {neutral, neutral, neutral, neutral, neutral, neutral, neutral, neutral},
+  {neutral, neutral, neutral, neutral, neutral, neutral, neutral, neutral},
+  {black, black, black, black, black, black, black, black},
+  {black, black, black, black, black, black, black, black},
 };
 
 Piece piecesToInit[ROWCOL_NB][ROWCOL_NB] = {
@@ -49,15 +49,15 @@ void initAGame(Board *game) {
 
   for (i = 0 ; i <= ROWCOL_NB - 1 ; ++i) {
     for (j = 0; j <= ROWCOL_NB - 1 ; ++j) {
-      game->square[7 - i][j].color = colorToInit[i][j];
-      game->square[7 - i][j].piece = piecesToInit[i][j];
+      game->square[i][j].color = colorToInit[i][j];
+      game->square[i][j].piece = piecesToInit[i][j];
     }
   }
   game->activeColor = white;
-  game->availableCastlings[0] = K;
-  game->availableCastlings[1] = Q;
-  game->availableCastlings[2] = k;
-  game->availableCastlings[3] = q;
+  game->availableCastlings[0] = 1;
+  game->availableCastlings[1] = 1;
+  game->availableCastlings[2] = 1;
+  game->availableCastlings[3] = 1;
   game->enPassant.column = -1;
   game->enPassant.line = -1;
   game->halfMoveClock = 0;
@@ -84,6 +84,10 @@ void fenToBoard(char *fen, Board *game) {
   int k = 0;
   int m = 7;
   char temp[3];
+  for (i = 0 ; i < 4 ; ++i) {
+    game->availableCastlings[i] = 0;
+  }
+  i = 0;
 
   while (fen[i] != ' ') {
     if (fen[i] == '/') {
@@ -167,27 +171,20 @@ void fenToBoard(char *fen, Board *game) {
 
   ++i; /* To the next field of the fen string */
 
-  k = 0;
   while (fen[i] != ' ') {
     if (fen[i] == 'K') {
-      game->availableCastlings[k] = K;
-    } else {
-      if (fen[i] == 'k') {
-        game->availableCastlings[k] = k;
-      } else {
-        if (fen[i] == 'Q') {
-          game->availableCastlings[k] = Q;
-        } else {
-          if (fen[i] == 'q') {
-            game->availableCastlings[k] = q;
-          } else {
-            game->availableCastlings[k] = no;
-          }
-        }
-      }
+      game->availableCastlings[0] = 1;
+    }
+    if (fen[i] == 'k') {
+      game->availableCastlings[2] = 1;
+    }
+    if (fen[i] == 'Q') {
+      game->availableCastlings[1] = 1;
+    }
+    if (fen[i] == 'q') {
+      game->availableCastlings[3] = 1;
     }
     ++i;
-    ++k;
   }
 
   ++i; /* To the next field of the fen string */
@@ -252,6 +249,8 @@ void fenToBoard(char *fen, Board *game) {
  *  @fn void printBoardAndData(Board game)
  *  @brief Print the board and game data in a formatted way
  *  @param[in] baord game: the board (and its data of its structure) to display
+ *  @note : Never forget that a1 <-> (0,0) so this printing is kinda flipped
+ *  
  */
 
 
@@ -261,45 +260,45 @@ void printBoardAndData(Board game) {
   printf("\n\n");
 
   printf("8  ");
-  for (i = 0 ; i <= (ROWCOL_NB - 1) ; ++i) {
+  for (i = 7 ; i >= 0 ; --i) {
     printf("|");
     for (j = 0 ; j <= (ROWCOL_NB - 1) ; ++j) {
-      switch (game.square[7 - i][j].piece) {
+      switch (game.square[i][j].piece) {
         case empty:
           printf(" ");
           break;
         case pawn:
-          if (game.square[7 - i][j].color == white)
+          if (game.square[i][j].color == white)
             printf("P");
           else
             printf("p");
           break;
         case bishop:
-          if (game.square[7 - i][j].color == white)
+          if (game.square[i][j].color == white)
             printf("B");
           else
             printf("b");
           break;
         case knight:
-          if (game.square[7 - i][j].color == white)
+          if (game.square[i][j].color == white)
             printf("N");
           else
             printf("n");
           break;
         case rook:
-          if (game.square[7 - i][j].color == white)
+          if (game.square[i][j].color == white)
             printf("R");
           else
             printf("r");
           break;
         case queen:
-          if (game.square[7 - i][j].color == white)
+          if (game.square[i][j].color == white)
             printf("Q");
           else
             printf("q");
           break;
         case king:
-          if (game.square[7 - i][j].color == white)
+          if (game.square[i][j].color == white)
             printf("K");
           else
             printf("k");
@@ -307,19 +306,19 @@ void printBoardAndData(Board game) {
       }
       printf("|");
     }
-    if (i != 7)
-      printf("\n%d  ", 7 - i);
+    if (i != 0)
+      printf("\n%d  ", i);
   }
   printf("\n");
   printf("    a b c d e f g h\n\n");
 
 
-  /* Print the color array */
+  /* Print the color array 
   printf("8  ");
-  for (i = 0 ; i <= (ROWCOL_NB - 1) ; ++i) {
+  for (i = 7 ; i >= 0 ; --i) {
     printf("|");
     for (j = 0 ; j <= (ROWCOL_NB - 1) ; ++j) {
-      switch (game.square[7 - i][j].color) {
+      switch (game.square[i][j].color) {
         case white:
           printf("0");
           break;
@@ -332,11 +331,11 @@ void printBoardAndData(Board game) {
       }
       printf("|");
     }
-    if (i != 7)
-      printf("\n%d  ", 7 - i);
+    if (i != 0)
+      printf("\n%d  ", i);
   }
   printf("\n");
-  printf("    a b c d e f g h\n\n");
+  printf("    a b c d e f g h\n\n"); */
 
   /* Print the coords array 
   printf("8  ");
@@ -359,18 +358,14 @@ void printBoardAndData(Board game) {
   else
     printf("Next Color to play : black\n");
 
-  for (i = 0 ; i <= 3 ; ++i) {
-    if (game.availableCastlings[i] != no) {
-      if (game.availableCastlings[i] == K)
-        printf("White can castle on the king side\n");
-      if (game.availableCastlings[i] == k)
-        printf("Black can castle on the king side\n");
-      if (game.availableCastlings[i] == Q)
-        printf("White can castle on the queen side\n");
-      if (game.availableCastlings[i] == q)
-        printf("Black can castle on the queen side\n");
-    }
-  }
+  if (game.availableCastlings[0] == 1)
+    printf("White can castle on the king side\n");
+  if (game.availableCastlings[1] == 1)
+    printf("White can castle on the queen side\n");
+  if (game.availableCastlings[2] == 1)
+    printf("Black can castle on the king side\n");
+  if (game.availableCastlings[3] == 1)
+    printf("Black can castle on the queen side\n");
 
   if (game.enPassant.column != -1) {
     printf("Square we can reach \"en passant\" : %d%d\n",

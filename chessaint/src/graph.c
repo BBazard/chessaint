@@ -40,8 +40,8 @@ void movesGenerator(Graph *graph) {
   int i = 0;
   int j = 0;
 
-  for (i = 0 ; i <= ROWCOL_NB - 1; ++i) {
-    for (j = 0 ; j <= (ROWCOL_NB - 1) ; ++j) {
+  for (i = 0 ; i <= ROWCOL_NB - 1 ; ++i) {
+    for (j = 0 ; j <= ROWCOL_NB - 1 ; ++j) {
       if (graph->current_node.square[i][j].color ==
           graph->current_node.activeColor) {
         switch (graph->current_node.square[i][j].piece) {
@@ -107,7 +107,7 @@ void pawnMoveGenerator(Stack *moves, int squareX,
   }
 
   /* The simple move forward */
-  nextSquareX = squareX;
+  nextSquareX = squareX; 
   if (isInBoardSquare(nextSquareX, nextSquareY)) {
     if (board.square[nextSquareY][nextSquareX].color == neutral) {
       /*
@@ -534,5 +534,5 @@ void update_board(Arc father, Graph *graph) {
     tmp /=2;
   }
   graph->current_node.halfMoveClock = identifier_get_halfmove(father.data);
-  graph->current_node.fullMoveNb = !identifier_get_fullmove(father.data);
+  graph->current_node.fullMoveNb = identifier_get_fullmove(father.data);
 }

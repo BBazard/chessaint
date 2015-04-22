@@ -44,3 +44,18 @@ void test_whitespaces(void) {
   CU_ASSERT_STRING_EQUAL(word, "sentence\n");
 }
 
+void test_uciToMove(void) {
+  CU_ASSERT_EQUAL(uciToMove("b2b2"), 1111);
+  CU_ASSERT_EQUAL(uciToMove("c3b2"), 2211);
+  CU_ASSERT_EQUAL(uciToMove("h8h8"), 7777);
+  CU_ASSERT_EQUAL(uciToMove("e2e4"), 4143);
+}
+
+void test_rmUCILastCharacter(void) {
+  char buffer[5];
+  char* word = "e1e2\n";
+
+  rmUCILastCharacter(word, buffer);
+  CU_ASSERT_STRING_EQUAL(buffer, "e1e2");
+}
+

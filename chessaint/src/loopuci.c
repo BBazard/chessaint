@@ -47,8 +47,10 @@ int uciLoop(FILE* log, char* buffer) {
         // updateBoard(&graph.root, word);
         word = getNextWord();
       }
-        // todo : remove the '\n'
-        // then : updateBoard(&graph.root, word);
+
+      char buffer[5] = "zzzz";
+      rmUCILastCharacter(word, buffer);
+      // then : updateBoard(&graph.root, buffer);
 
   } else if (strcmp(firstWord, "go") == 0) {
       // ignore all these parameters but assume they exist
@@ -61,9 +63,11 @@ int uciLoop(FILE* log, char* buffer) {
 
       movesGenerator(&graph);
 
-      // todo : use stack_pop(&graph.current_moves)) to play a move
+      int move = stack_pop(&graph.current_moves);
+      // todo : convert move from integer to "a3g6"-like string
+      printf("move o #%d#\n", move);
 
-      // hack to change the move each turn
+      // temporary hack to change the move each turn
       static int count = 0;
       ++count;
       if (count % 8 == 1)

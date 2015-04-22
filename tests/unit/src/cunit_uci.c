@@ -52,6 +52,20 @@ int add_uci_suite(CU_pSuite pSuite_uci) {
     return CU_get_error();
   }
 
+  if (NULL == CU_add_test(pSuite_uci,
+                           "Testing uci into move conversion",
+                           test_uciToMove)) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
+
+  if (NULL == CU_add_test(pSuite_uci,
+                           "Testing rmLastCharacter",
+                           test_rmUCILastCharacter)) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
+
   return 0;
 }
 

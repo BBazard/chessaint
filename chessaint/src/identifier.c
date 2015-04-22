@@ -27,6 +27,8 @@
  *
  *  Return the int which is the "concatenation" of p1...p4, MSB first
  *
+ *  @todo Rename the function in stack_contract (and change in all files)
+ *
  */
 
 int stack_exchange(int p1, int p2, int p3, int p4) {
@@ -40,6 +42,8 @@ int stack_exchange(int p1, int p2, int p3, int p4) {
  *  @param[in] todivide The integer (must be in [|0; 10000|]) to divide in four
  *
  *  Divide todivide in p1, p2, p3 and p4
+ *
+ *  @todo Rename the function in stack_expand (and change in all files)
  *
  */
 

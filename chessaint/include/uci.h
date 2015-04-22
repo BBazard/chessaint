@@ -32,5 +32,10 @@ char* getNextWord();
 
 char getLastCharacter(char* input);
 
+int uciToMove(char* input);
+
+void rmUCILastCharacter(char* input, char output[5]);
+
+
 #endif /*TRUNK_CHESSAINT_INCLUDE_UCI_H_*/
 

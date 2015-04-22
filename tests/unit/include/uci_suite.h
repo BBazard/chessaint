@@ -13,5 +13,10 @@ void test_basic_case(void);
 
 void test_whitespaces(void);
 
+void test_uciToMove(void);
+
+void test_rmUCILastCharacter(void);
+
+
 #endif /* TESTS_UNIT_INCLUDE_UCI_SUITE_H_ */
 

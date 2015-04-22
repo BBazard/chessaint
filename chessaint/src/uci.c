@@ -75,8 +75,48 @@ char* getNextWord() {
   return strtok(NULL, " ");
 }
 
+/**
+ * example : "qmslqdjfk" -> 'k'
+ * @note for the uci string the line
+ * end with '\\n' and this is why this
+ * function was created originally
+ *
+ */
 char getLastCharacter(char* input) {
   char *bla = input + strlen(input) - 1;
   return *bla;
+}
+
+/**
+ * convert a uci string into an int
+ *
+ * example : "c3b2" -> 2211
+ */
+int uciToMove(char* input) {
+  int ans = 0;
+  int base = 10;
+  ans += input[0] - 'a';
+  ans *= base;
+  ans += input[1] - '1';
+  ans *= base;
+  ans += input[2] - 'a';
+  ans *= base;
+  ans += input[3] - '1';
+  return ans;
+}
+
+/**
+ * removes the trailing '\\n' in the end
+ * of a uci string "input" like "a3b4\n"
+ * and put it int the string "output" like "a3b4"
+ *
+ * example : "a3b4\n" -> "a3b4"
+ */
+void rmUCILastCharacter(char* input, char output[5]) {
+  if (strlen(input) != 5)
+    manageErrors("bad input in rmUCILastCharacter");
+
+  strncpy(output, input, 4);
+  output[4] = '\0';
 }
 

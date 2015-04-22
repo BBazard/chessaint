@@ -46,23 +46,6 @@ struct Coord {
 };
 
 
-
-typedef enum Castling Castling;
-
-/** 
- *  @enum Castling
- *  @brief What are the availble castles ?
- *
- */
-enum Castling {
-  K, /**< white castle on king's side */
-  Q, /**< white castle on queen's side */
-  k, /**< black castle on king's side */
-  q, /**< black castle on queen's side */
-  no /**<no castle available */
-};
-
-
 typedef enum Color Color;
 
 /** 
@@ -144,8 +127,12 @@ struct Board {
   /**
    * @bug numeric value 4
    */
-  Castling availableCastlings[4]; /**< What are the available castles can be
-                                  no, no, no, no */
+  int availableCastlings[4]; /**< What are the available castles
+                                  1st element : white king side castle
+				  2nd element : white queen side castle
+				  3rd element : black king side castle
+				  4th element : black queen side castle
+			       values 1 : for true 0 for false*/
   Coord enPassant; /**< Which square can be taken en passant */
   int halfMoveClock; /**< useful to think about draws */
   int fullMoveNb; /**<Total moves, starting to 1 (convention) */

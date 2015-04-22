@@ -32,6 +32,9 @@ typedef struct Graph Graph;
  *  @brief Represents a graph for astar computation
  *
  *  Stores the graph data
+ *
+ *  @todo Add doxy doc for struct members 
+ *
  */
 
 struct Graph {

@@ -13,10 +13,9 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <string.h>
+#include "graph.h"
 
-int is_mate(char *board, char player);
-int number_of_char(char *str, char chr);
-int heuristic_fen(char *fen);
+Color is_mate(Board board);
+int heuristic(Board* board);
 
 #endif /*TRUNK_CHESSAINT_INCLUDE_HEURISTIC_H_*/

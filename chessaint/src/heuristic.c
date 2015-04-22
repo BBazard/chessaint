@@ -13,155 +13,107 @@
 #include "include/heuristic.h"
 
 /**
- *  @fn int is_mate(char *board, char player)
+ *  @fn Color is_mate(Board board)
  *  @brief Check if there is mat
- *  @param[in] board The string representing the board
- *  @param[in] player The char representing the player
- *  @return 1 If king of the specified player is mat
- *  @return 0 Otherwise
- *  @bug THIS IS A FAKE FUNCTION TO COMPLIE WITH TEST
- *  @todo Create a true version of this function
+ *  @param[in] board The board
+ *  @return white/black If the specified king is mate
+ *  @return neutral If no king is mate
  *
- *  This function check if the king of the player specified by parameter
- *  player is mat in the configuration displayed by parameter board
+ *  @bug function not working until kingMoveGenerator is not taking
+ *  chess position into account
  *
- */
-
-int is_mate(char *board, char player) {
-  char* mat = "6rk/4pq2/3r4/8/8/8/8/B5KR";
-  if (strcmp(mat, board) == 0 && player == 'b')
-    return 1;
-  else
-    return 0;
-}
-
-/**
- *  @fn int number_of_char(char *str, char chr)
- *  @brief Computes the number of char in a string
- *  @param[in] str The string in which to search
- *  @param[in] chr The char to search
- *  @return The number of character obtained
- *
- *  This function computes the number of char chr in the char *str.
+ *  This function check if there is a mate in the 
+ *  configuration displayed by the board
  *
  */
 
-int number_of_char(char *str, char chr) {
-  char *ret = NULL;
-  if ((ret = strchr(str, chr)) == NULL)
-    return 0;
+Color is_mate(Board board) {
+  Stack white_king_moves;
+  Stack black_king_moves;
+  stack_init(&white_king_moves);
+  stack_init(&black_king_moves);
+  
+  for (int i = 0; i < 8; ++i) {
+    for (int j = 0; j < 8; ++j) {
+      if (board.square[i][j].piece == king) {
+        if (board.square[i][j].color == white)
+          kingMoveGenerator(white_king_moves, i, j, white, board);
+        else
+          kingMoveGenerator(black_king_moves, i, j, black, board);
+      }
+    }
+  }
+  if (stack_pop(&white_king_moves) == -1)
+    return white;
+  else if (stack_pop(&black_king_moves) == -1)
+    return black;
   else
-    return number_of_char(ret+1, chr) + 1;
+    return neutral;
 }
 
 /**
- *  @fn int heuristic_fen(char* fen)
+ *  @fn int heuristic(Board* board)
  *  @brief Returns a score for a given board
- *  @param[in] fen The representation of the board
+ *  @param[in] board The representation of the board
  *  @return [|-500;500|] The value of the computed score if working well
- *  @return 501 The char* is not a FEN
- *  @return 502 The FEN is not correct (Ex : 9 pawns)
- *
- *  Given a board, in a FEN string format, this function compute a score
+ *  
+ *  Given a board, this function compute a score
  *  giving an idea of which player has an advantage this turn and tries to
  *  quantify it.
- *
- *  @bug When trying to replace strtok by strtok_r, seg fault, strtok_r seems
- *  undefined (Wimplicit)
- *
- *  @todo Try to replace strtok by strtok_r, better for threading
- *  (source : cpplint)
  *
  *  @todo Add the capacity to halve the score of a piece if endangered by
  *  another (currently, test is failed)
  *
  */
 
-int heuristic_fen(char* fen) {
-  int i = 0;
+int heuristic(Board* board) {
+  int i, j;
   int score = 0;
-  int turn = 1;
-
-  char* chrret = NULL;
-  char copy[strlen(fen)];
-  char *board;
-
-  /* Check the FEN contains at least a space and that the first space
-     is followed by 'b' or 'w' */
-  if ( (chrret = strchr(fen, ' ')) == NULL )
-    return 501;
-  else if (*(chrret+1) == 'b')
-    turn = -1;
-  else if (*(chrret+1) != 'w')
-    return 501;
-
-  /* Copy the original FEN and take only the first part,
-     containing the board informations */
-  strcpy(copy, fen);
-  board = strtok(copy, " ");
-
-  /* Check there is exactly 8 rows and never more pieces than possible */
-  if (number_of_char(board, 'p') > 8 ||
-      number_of_char(board, 'P') > 8 ||
-      number_of_char(board, 'r') > 2 ||
-      number_of_char(board, 'R') > 2 ||
-      number_of_char(board, 'n') > 2 ||
-      number_of_char(board, 'N') > 2 ||
-      number_of_char(board, 'b') > 2 ||
-      number_of_char(board, 'B') > 2 ||
-      number_of_char(board, 'q') > 1 ||
-      number_of_char(board, 'Q') > 1 ||
-      number_of_char(board, 'k') > 1 ||
-      number_of_char(board, 'K') > 1 ||
-      number_of_char(board, '/') != 7)
-    return 502;
-
+  int scoreindex[ROWCOL_NB][ROWCOL_NB];
+  
   /* Returns 500 or -500 directly if one of the kings is mat */
-  if (is_mate(board, 'w'))
-    return turn * -500;
-  else if (is_mate(board, 'b'))
-    return turn * 500;
-
-  /* Computes the score by adding the different values of each piece */
-  for (i = 0; (unsigned) i < strlen(board); i++) {
-    switch (board[i]) {
-    case 'k':
-      score -= turn * 130;
-      break;
-    case 'K':
-      score += turn * 130;
-      break;
-    case 'q':
-      score -= turn * 70;
-      break;
-    case 'Q':
-      score += turn * 70;
-      break;
-    case 'b':
-      score -= turn * 30;
-      break;
-    case 'B':
-      score += turn * 30;
-      break;
-    case 'n':
-      score -= turn * 30;
-      break;
-    case 'N':
-      score += turn * 30;
-      break;
-    case 'r':
-      score -= turn * 50;
-      break;
-    case 'R':
-      score += turn * 50;
-      break;
-    case 'p':
-      score -= turn * 10;
-      break;
-    case 'P':
-      score += turn * 10;
-      break;
+  if (is_mate(*board) != neutral) {
+    if (is_mate(*board) == board->activeColor)
+      return -500;
+    else
+      return 500;
+  }
+  
+  /* Computes the score for each square of the board */
+  for (i = 0; i < 8; ++i) {
+    for (j = 0; j < 8; ++j) {
+      switch (board->square[i][j].piece) {
+      case empty:
+        scoreindex[i][j] = 0;
+        break;
+      case pawn:
+        scoreindex[i][j] = 10;
+        break;
+      case rook:
+        scoreindex[i][j] = 50;
+        break;
+      case knight:
+        scoreindex[i][j] = 30;
+        break;
+      case bishop:
+        scoreindex[i][j] = 30;
+        break;
+      case queen:
+        scoreindex[i][j] = 70;
+        break;
+      case king:
+        scoreindex[i][j] = 130;
+        break;
+      }
+      if (board->activeColor != board->square[i][j].color)
+        scoreindex[i][j] *= -1;
     }
   }
+
+  /* Sums all the scores to obtain the score of the board */
+  for (i = 0; i < 8; ++i)
+    for (j = 0; j < 8; ++j)
+      score += scoreindex[i][j];
+
   return score;
 }

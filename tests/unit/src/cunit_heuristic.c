@@ -39,23 +39,16 @@ int add_heuristic_suite(CU_pSuite pSuite_heuristic) {
 
   /* add the tests to the suite */
   if (NULL == CU_add_test(pSuite_heuristic,
-                           "Testing the is_mat function",
-                           test_is_mat)) {
+                           "Testing the is_mate function",
+                           test_is_mate)) {
     CU_cleanup_registry();
     return CU_get_error();
   }
 
   /* add the tests to the suite */
   if (NULL == CU_add_test(pSuite_heuristic,
-                           "Testing the number_of_char function",
-                           test_number_of_char)) {
-    CU_cleanup_registry();
-    return CU_get_error();
-  }
-
-  if (NULL == CU_add_test(pSuite_heuristic,
-                           "Testing the heuristic_fen function",
-                           test_heuristic_fen)) {
+                           "Testing the heuristic function",
+                           test_heuristic)) {
     CU_cleanup_registry();
     return CU_get_error();
   }

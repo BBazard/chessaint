@@ -30,9 +30,7 @@ void graph_init(Graph *graph) {
  *  @param[in, out] graph Pointer on the graph used to compute moves
  *
  *  @note  Need to add the en passant kill
- *  @bug "root" (in graph->root and others) seems to refer to
- *  current_node (in graph struct)
- *  Need to change that
+ *  @todo  Need to add the chess position handling for king !!!
  *
  */
 

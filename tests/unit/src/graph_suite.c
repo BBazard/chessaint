@@ -79,7 +79,7 @@ void test_rookMoveGenerator(void) {
   fenToBoard("8/8/8/4p3/1R2r3/8/8/8 b - - 0 1", &testBoardR);
 
   /* Enable to see the situation : */
-  printBoardAndData(testBoardR);
+  /* printBoardAndData(testBoardR); */
 
   rookMoveGenerator(&tmp, 4, 3, black, testBoardR);
 
@@ -269,7 +269,7 @@ void test_movesGenerator(void) {
   initAGame(&(testGraph.current_node));
 
   movesGenerator(&testGraph);
-  printBoardAndData(testGraph.current_node);
+  /* printBoardAndData(testGraph.current_node); */
 
   /* (7,1) -> (7,3) */
   CU_ASSERT_EQUAL(stack_pop(&(testGraph.current_moves)), 7173);
@@ -328,6 +328,10 @@ void test_play_move(void) {
   after.square[0][1].piece = pawn;
 
   play_move(1, &before);
+
+  for (i = 0; i < 8; i++)
+    for (j = 0; j < 8; j++)
+      CU_ASSERT_EQUAL(before.square[i][j].piece, after.square[i][j].piece);
 }
 
 void test_update_board(void) {
@@ -345,14 +349,22 @@ void test_update_board(void) {
   for (i = 0; i < 8; i++)
     for (j = 0; j < 8; j++)
       graph.current_node.square[i][j].piece = empty;
-
+  
   graph.current_node.square[4][1].piece = pawn;
 
+  /* initAGame(&(graph.root)); */
+  /* initAGame(&(graph.current_node)); */
+
+  CU_ASSERT_EQUAL(graph.current_node.square[4][1].piece, pawn);
   CU_ASSERT_EQUAL(graph.current_node.square[4][3].piece, empty);
   CU_ASSERT_EQUAL(graph.current_node.square[4][4].piece, empty);
   CU_ASSERT_EQUAL(graph.current_node.square[4][5].piece, empty);
 
+  /* printBoardAndData(graph.current_node); */
+
   update_board(father, &graph);
+
+  /* printBoardAndData(graph.current_node); */
 
   CU_ASSERT_EQUAL(graph.current_node.square[4][5].piece, pawn);
 }

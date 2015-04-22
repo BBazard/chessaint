@@ -250,7 +250,8 @@ void fenToBoard(char *fen, Board *game) {
  *  @brief Print the board and game data in a formatted way
  *  @param[in] baord game: the board (and its data of its structure) to display
  *  @note : Never forget that a1 <-> (0,0) so this printing is kinda flipped
- *  
+ *  @bug : Previous note is FALSE actually it works only for a1, b2 etc since 
+ *  board is symmetrized ( ie e2 is not (4,1), but (1,4) with current code)
  */
 
 

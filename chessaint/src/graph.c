@@ -30,7 +30,9 @@ void graph_init(Graph *graph) {
  *  @param[in, out] graph Pointer on the graph used to compute moves
  *
  *  @note  Need to add the en passant kill
- *  @todo  Need to add the chess position handling for king !!!
+ *  @bug "root" (in graph->root and others) seems to refer to
+ *  current_node (in graph struct)
+ *  Need to change that
  *
  */
 
@@ -38,38 +40,38 @@ void movesGenerator(Graph *graph) {
   int i = 0;
   int j = 0;
 
-  for (i = 0 ; i <= ROWCOL_NB - 1 ; ++i) {
-    for (j = 0 ; j <= ROWCOL_NB - 1 ; ++j) {
+  for (j = 0 ; j <= ROWCOL_NB - 1 ; ++j) {
+    for (i = 0 ; i <= ROWCOL_NB - 1 ; ++i) {
       if (graph->current_node.square[i][j].color ==
           graph->current_node.activeColor) {
         switch (graph->current_node.square[i][j].piece) {
         case pawn:
-          pawnMoveGenerator(&(graph->current_moves), j, i,
+          pawnMoveGenerator(&(graph->current_moves), i, j,
                             graph->current_node.activeColor,
                             graph->current_node);
           break;
         case bishop:
-          bishopMoveGenerator(&(graph->current_moves), j, i,
+          bishopMoveGenerator(&(graph->current_moves), i, j,
                               graph->current_node.activeColor,
                               graph->current_node);
           break;
         case knight:
-          knightMoveGenerator(&(graph->current_moves), j, i,
+          knightMoveGenerator(&(graph->current_moves), i, j,
                               graph->current_node.activeColor,
                               graph->current_node);
           break;
         case rook:
-          rookMoveGenerator(&(graph->current_moves), j,  i,
+          rookMoveGenerator(&(graph->current_moves), i,  j,
                             graph->current_node.activeColor,
                             graph->current_node);
           break;
         case queen:
-          queenMoveGenerator(&(graph->current_moves), j, i,
+          queenMoveGenerator(&(graph->current_moves), i, j,
                              graph->current_node.activeColor,
                              graph->current_node);
           break;
         case king:
-          kingMoveGenerator(&(graph->current_moves), j,  i,
+          kingMoveGenerator(&(graph->current_moves), i,  j,
                             graph->current_node.activeColor,
                             graph->current_node);
           break;
@@ -107,10 +109,10 @@ void pawnMoveGenerator(Stack *moves, int squareX,
   /* The simple move forward */
   nextSquareX = squareX; 
   if (isInBoardSquare(nextSquareX, nextSquareY)) {
-    if (board.square[nextSquareY][nextSquareX].color == neutral) {
-      /*
+    if (board.square[nextSquareX][nextSquareY].color == neutral) {
+    /*
       printf("(%d,%d)->(%d,%d)\n",squareX,squareY,nextSquareX,nextSquareY);
-      */
+    */
       stack_push(moves, stack_exchange(squareX, squareY,
                                        nextSquareX, nextSquareY));
     }
@@ -119,11 +121,11 @@ void pawnMoveGenerator(Stack *moves, int squareX,
   /* The classic capture of pieces towards left of the board */
   nextSquareX = squareX + 1;
   if (isInBoardSquare(nextSquareX, nextSquareY)) {
-    if ((board.square[nextSquareY][nextSquareX].color != neutral) &&
-        (board.square[nextSquareY][nextSquareX].color != activeColor)) {
-      /*
+    if ((board.square[nextSquareX][nextSquareY].color != neutral) &&
+        (board.square[nextSquareX][nextSquareY].color != activeColor)) {
+   /*
       printf("(%d,%d)->(%d,%d)\n",squareX,squareY,nextSquareX,nextSquareY);
-      */
+  */
       stack_push(moves, stack_exchange(squareX, squareY,
                                        nextSquareX, nextSquareY));
     }
@@ -132,11 +134,11 @@ void pawnMoveGenerator(Stack *moves, int squareX,
   /* The classic capture of pieces towards right of the board */
   nextSquareX = squareX - 1;
   if (isInBoardSquare(nextSquareX, nextSquareY)) {
-    if ((board.square[nextSquareY][nextSquareX].color != neutral) &&
-        (board.square[nextSquareY][nextSquareX].color != activeColor)) {
-      /*
+    if ((board.square[nextSquareX][nextSquareY].color != neutral) &&
+        (board.square[nextSquareX][nextSquareY].color != activeColor)) {
+ /*
       printf("(%d,%d)->(%d,%d)\n",squareX,squareY,nextSquareX,nextSquareY);
-      */
+*/
       stack_push(moves, stack_exchange(squareX, squareY,
                                        nextSquareX, nextSquareY));
     }
@@ -148,18 +150,18 @@ void pawnMoveGenerator(Stack *moves, int squareX,
     nextSquareX = squareX + 1;
     if ((nextSquareY == board.enPassant.line) &&
         (nextSquareX == board.enPassant.column)) {
-      /*
+    /*
       printf("(%d,%d)->(%d,%d)\n",squareX,squareY,nextSquareX,nextSquareY);
-      */
+    */
       stack_push(moves, stack_exchange(squareX, squareY,
                                        nextSquareX, nextSquareY));
     }
     nextSquareX = squareX - 1;
     if ((nextSquareY == board.enPassant.line) &&
         (nextSquareX == board.enPassant.column)) {
-      /*
+    /*
       printf("(%d,%d)->(%d,%d)\n",squareX,squareY,nextSquareX,nextSquareY);
-      */
+    */
       stack_push(moves, stack_exchange(squareX, squareY,
                                        nextSquareX, nextSquareY));
     }
@@ -171,16 +173,16 @@ void pawnMoveGenerator(Stack *moves, int squareX,
   blackMove = -1;
   if (
       ((activeColor == white) &&
-       (board.square[squareY + 1 * whiteMove][squareX].color == neutral) &&
-       (board.square[squareY + 2 * whiteMove][squareX].color != activeColor) &&
+       (board.square[squareX][squareY + 1 * whiteMove].color == neutral) &&
+       (board.square[squareX][squareY + 2 * whiteMove].color != activeColor) &&
        (squareY == 1)) ||
       ((activeColor == black) &&
-       (board.square[squareY + 1 * blackMove][squareX].color == neutral) &&
-       (board.square[squareY + 2 * blackMove][squareX].color != activeColor) &&
+       (board.square[squareX][squareY + 1 * blackMove].color == neutral) &&
+       (board.square[squareX][squareY + 2 * blackMove].color != activeColor) &&
        (squareY == 6))
       ) {
     if (activeColor == white) {
-      /*
+     /* 
       printf("(%d,%d)->(%d,%d)\n",squareX, 1, squareX,
                                        squareY + 2 * whiteMove);
       */
@@ -290,16 +292,15 @@ void bishopAndRook4DirectionsGen(int incX, int incY, Stack *moves, int squareX,
     printf("activeColor : %d\n", activeColor );
     printf("dest color : %d\n", board.square[nextSquareY][nextSquareX].color);
     */
-    if (board.square[nextSquareY][nextSquareX].color == activeColor) {
+    if (board.square[nextSquareX][nextSquareY].color == activeColor) {
       break;
     }
-    if (board.square[nextSquareY][nextSquareX].color != activeColor) {
-      /* Enable to see moves :
-      printf("(%d,%d)->(%d,%d)\n",squareX,squareY,nextSquareX,nextSquareY);
-      */
+    if (board.square[nextSquareX][nextSquareY].color != activeColor) {
+      /* Enable to see moves 
+      printf("(%d,%d)->(%d,%d)\n",squareX,squareY,nextSquareX,nextSquareY);*/
       stack_push(moves, stack_exchange(squareX, squareY,
                                        nextSquareX, nextSquareY));
-      if (board.square[nextSquareY][nextSquareX].color != neutral) {
+      if (board.square[nextSquareX][nextSquareY].color != neutral) {
         break;
       }
     } else {
@@ -453,7 +454,7 @@ void knightAndKing4DirectionsGen(int incX, int incY, Stack *moves, int squareX,
   nextSquareX = squareX + incX;
   nextSquareY = squareY + incY;
   if (isInBoardSquare(nextSquareX, nextSquareY)) {
-    if (board.square[nextSquareY][nextSquareX].color != activeColor) {
+    if (board.square[nextSquareX][nextSquareY].color != activeColor) {
       /* Enable to see moves :
       printf("(%d,%d)->(%d,%d)\n",squareX,squareY,nextSquareX,nextSquareY);
       */

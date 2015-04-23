@@ -49,8 +49,8 @@ void initAGame(Board *game) {
 
   for (i = 0 ; i <= ROWCOL_NB - 1 ; ++i) {
     for (j = 0; j <= ROWCOL_NB - 1 ; ++j) {
-      game->square[i][j].color = colorToInit[i][j];
-      game->square[i][j].piece = piecesToInit[i][j];
+      game->square[i][j].color = colorToInit[j][i];
+      game->square[i][j].piece = piecesToInit[j][i];
     }
   }
   game->activeColor = white;
@@ -98,59 +98,59 @@ void fenToBoard(char *fen, Board *game) {
       if (isalpha(fen[i])) {
         switch (fen[i]) {
           case 'P':
-            game->square[m][j].color = white;
-            game->square[m][j].piece = pawn;
+            game->square[j][m].color = white;
+            game->square[j][m].piece = pawn;
             break;
           case 'p':
-            game->square[m][j].color = black;
-            game->square[m][j].piece = pawn;
+            game->square[j][m].color = black;
+            game->square[j][m].piece = pawn;
             break;
           case 'B':
-            game->square[m][j].color = white;
-            game->square[m][j].piece = bishop;
+            game->square[j][m].color = white;
+            game->square[j][m].piece = bishop;
             break;
           case 'b':
-            game->square[m][j].color = black;
-            game->square[m][j].piece = bishop;
+            game->square[j][m].color = black;
+            game->square[j][m].piece = bishop;
             break;
           case 'N':
-            game->square[m][j].color = white;
-            game->square[m][j].piece = knight;
+            game->square[j][m].color = white;
+            game->square[j][m].piece = knight;
             break;
           case 'n':
-            game->square[m][j].color = black;
-            game->square[m][j].piece = knight;
+            game->square[j][m].color = black;
+            game->square[j][m].piece = knight;
             break;
           case 'R':
-            game->square[m][j].color = white;
-            game->square[m][j].piece = rook;
+            game->square[j][m].color = white;
+            game->square[j][m].piece = rook;
             break;
           case 'r':
-            game->square[m][j].color = black;
-            game->square[m][j].piece = rook;
+            game->square[j][m].color = black;
+            game->square[j][m].piece = rook;
             break;
           case 'Q':
-            game->square[m][j].color = white;
-            game->square[m][j].piece = queen;
+            game->square[j][m].color = white;
+            game->square[j][m].piece = queen;
             break;
           case 'q':
-            game->square[m][j].color = black;
-            game->square[m][j].piece = queen;
+            game->square[j][m].color = black;
+            game->square[j][m].piece = queen;
             break;
           case 'K':
-            game->square[m][j].color = white;
-            game->square[m][j].piece = king;
+            game->square[j][m].color = white;
+            game->square[j][m].piece = king;
             break;
           case 'k':
-            game->square[m][j].color = black;
-            game->square[m][j].piece = king;
+            game->square[j][m].color = black;
+            game->square[j][m].piece = king;
             break;
         }
       ++j;
       } else {
         for (k=1 ; k <= atoi(&fen[i]) ; ++k) {
-          game->square[m][j].piece = empty;
-          game->square[m][j].color = neutral;
+          game->square[j][m].piece = empty;
+          game->square[j][m].color = neutral;
           ++j;
         }
       }
@@ -261,9 +261,9 @@ void printBoardAndData(Board game) {
   printf("\n\n");
 
   printf("8  ");
-  for (i = 7 ; i >= 0 ; --i) {
+  for (j = 7 ; j >= 0 ; --j) {
     printf("|");
-    for (j = 0 ; j <= (ROWCOL_NB - 1) ; ++j) {
+    for (i = 0 ; i <= (ROWCOL_NB - 1) ; ++i) {
       switch (game.square[i][j].piece) {
         case empty:
           printf(" ");
@@ -307,18 +307,18 @@ void printBoardAndData(Board game) {
       }
       printf("|");
     }
-    if (i != 0)
-      printf("\n%d  ", i);
+    if (j != 0)
+      printf("\n%d  ", j);
   }
   printf("\n");
   printf("    a b c d e f g h\n\n");
 
 
-  /* Print the color array 
+  /* Print the color array
   printf("8  ");
-  for (i = 7 ; i >= 0 ; --i) {
+  for (j = 7 ; j >= 0 ; --j) {
     printf("|");
-    for (j = 0 ; j <= (ROWCOL_NB - 1) ; ++j) {
+    for (i = 0 ; i <= (ROWCOL_NB - 1) ; ++i) {
       switch (game.square[i][j].color) {
         case white:
           printf("0");
@@ -332,12 +332,12 @@ void printBoardAndData(Board game) {
       }
       printf("|");
     }
-    if (i != 0)
+    if (j != 0)
       printf("\n%d  ", i);
   }
   printf("\n");
-  printf("    a b c d e f g h\n\n"); */
-
+  printf("    a b c d e f g h\n\n"); 
+  */ 
   /* Print the coords array 
   printf("8  ");
   for (i = 0 ; i <= (ROWCOL_NB - 1) ; ++i) {

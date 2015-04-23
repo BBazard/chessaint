@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "include/identifier.h"
+#include "./identifier.h"
 
 /** 
  *  @typedef Arc

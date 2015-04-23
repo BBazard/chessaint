@@ -7,7 +7,7 @@
  * Returns zero on success, non-zero otherwise.
  */
 int init_suite_concatenate(void) {
-/* 
+/*
  *   if (problem during initialisation)
  *     return -1; // this number can be used to explicit the problem
  */
@@ -18,7 +18,7 @@ int init_suite_concatenate(void) {
  * Returns zero on success, non-zero otherwise.
  */
 int clean_suite_concatenate(void) {
-/* 
+/*
  *   if (problem during cleaning)
  *     return -1; // this number can be used to explicit the problem
  */
@@ -26,11 +26,7 @@ int clean_suite_concatenate(void) {
 }
 
 void test_concatenate(void) {
-  char str[5] ;
-  getUciString(0,1,2,3, str); 
-  CU_ASSERT_EQUAL(str[0],'a');
-  CU_ASSERT_EQUAL(str[1],1);
-  CU_ASSERT_EQUAL(str[2],'c');
-  CU_ASSERT_EQUAL(str[3],3);
- 
+   char str[5] ;
+   getUciString(0, 1, 2, 3, str);
+   CU_ASSERT_STRING_EQUAL(str, "a2c4");
 }

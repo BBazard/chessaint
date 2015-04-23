@@ -3,7 +3,7 @@
  *  @todo Correct syntax to have lint cleared
  *
  *  @todo If last bug is solved there's no need for second function anymore
- *  
+ *
  *  @todo english pls (even comments not in doxygen)
  *
  *  @bug 'a'-'0' = 49 (= '1') why adding 49 to b ?
@@ -24,12 +24,13 @@
 #include "../include/concatenate.h"
 
 void getUciString(int a, int b, int c, int d, char str[5]) {
-  str[0]=correspondancelettrechiffre(a) ;
-  str[1]= b + 'a'-'0' ;
-  str[2]=correspondancelettrechiffre(c) ;
-  str[3]= d+'a'-'0' ;
-  str[4]= '\0';
+   str[0]=correspondancelettrechiffre(a);
+   str[1]= b + '0' + 1;
+   str[2]=correspondancelettrechiffre(c);
+   str[3]= d + '0' + 1;
+   str[4]= '\0';
 }
+
 
 char correspondancelettrechiffre (int a) {
   /* mode bourrin */

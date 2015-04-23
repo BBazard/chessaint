@@ -37,9 +37,9 @@ Color is_mate(Board board) {
     for (int j = 0; j < 8; ++j) {
       if (board.square[i][j].piece == king) {
         if (board.square[i][j].color == white)
-          kingMoveGenerator(white_king_moves, i, j, white, board);
+          kingMoveGenerator(&white_king_moves, i, j, white, board);
         else
-          kingMoveGenerator(black_king_moves, i, j, black, board);
+          kingMoveGenerator(&black_king_moves, i, j, black, board);
       }
     }
   }

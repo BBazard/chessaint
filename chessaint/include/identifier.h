@@ -8,8 +8,8 @@
  *
  */
 
-#ifndef TRUNK_CHESSAINT_INCLUDE_HEURISTIC_H_
-#define TRUNK_CHESSAINT_INCLUDE_HEURISTIC_H_
+#ifndef TRUNK_CHESSAINT_INCLUDE_IDENTIFIER_H_
+#define TRUNK_CHESSAINT_INCLUDE_IDENTIFIER_H_
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -56,4 +56,4 @@ void stack_to_identifier(Identifier *id, Stack stack);
 
 int identifier_is_equal(Identifier left, Identifier right);
 
-#endif /*TRUNK_CHESSAINT_INCLUDE_HEURISTIC_H_*/
+#endif /*TRUNK_CHESSAINT_INCLUDE_IDENTIFIER_H_*/

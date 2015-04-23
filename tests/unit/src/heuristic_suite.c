@@ -30,13 +30,13 @@ void test_is_mate(void) {
   char* white_mate_fen = "6rk/4pq2/3r4/8/8/8/8/B5KR w - - 0 1";
   char* black_mate_fen = "6RK/4PQ2/3R4/8/8/8/8/b5kr b - - 0 1";
 
-  fenToBoard(white_mate_fen, &white_mate);
-  fenToBoard(black_mate_fen, &black_mate);
-
   Board white_mate;
   Board black_mate;
   Board no_mate;
   
+  fenToBoard(white_mate_fen, &white_mate);
+  fenToBoard(black_mate_fen, &black_mate);
+
   CU_ASSERT_EQUAL(is_mate(white_mate), white);
   CU_ASSERT_EQUAL(is_mate(black_mate), black);
   CU_ASSERT_EQUAL(is_mate(no_mate), neutral);

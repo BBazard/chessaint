@@ -9,8 +9,11 @@
 
 #include "include/loopuci.h"
 
+#include <time.h>
+
 #include "include/uci.h"
 #include "include/graph.h"
+#include "include/concatenate.h"
 
 /**
  * receive a uci string and act accordingly
@@ -19,6 +22,7 @@
  * @return 1 otherwise
  */
 int uciLoop(FILE* log, char* buffer) {
+  char uciBuffer[5] = "zzzz";
   char* word = NULL;
   Graph graph;
   graph_init(&graph);
@@ -44,13 +48,17 @@ int uciLoop(FILE* log, char* buffer) {
 
 
       while (getLastCharacter(word) != '\n') {
-        // updateBoard(&graph.root, word);
+
+        // updateBoard
+        play_move(uciToMove(word), &graph.root);
+        
+
         word = getNextWord();
       }
 
-      char buffer[5] = "zzzz";
-      rmUCILastCharacter(word, buffer);
-      // then : updateBoard(&graph.root, buffer);
+      rmUCILastCharacter(word, uciBuffer);
+      // updateBoard
+      play_move(uciToMove(word), &graph.root);
 
   } else if (strcmp(firstWord, "go") == 0) {
       // ignore all these parameters but assume they exist
@@ -61,31 +69,35 @@ int uciLoop(FILE* log, char* buffer) {
       word = getNextWord();  // "movestogo"
       word = getNextWord();  // number
 
+      graph.current_node = graph.root;
+      graph.current_node.activeColor = black;
       movesGenerator(&graph);
 
-      int move = stack_pop(&graph.current_moves);
-      // todo : convert move from integer to "a3g6"-like string
-      printf("move o #%d#\n", move);
+      srand(time(NULL));
+      int rd = rand() % 10;
 
-      // temporary hack to change the move each turn
-      static int count = 0;
-      ++count;
-      if (count % 8 == 1)
-        send(log, "bestmove a7a6");
-      else if (count % 8 == 2)
-        send(log, "bestmove b7b6");
-      else if (count % 8 == 3)
-        send(log, "bestmove c7c6");
-      else if (count % 8 == 4)
-        send(log, "bestmove d7d6");
-      else if (count % 8 == 5)
-        send(log, "bestmove e7e6");
-      else if (count % 8 == 6)
-        send(log, "bestmove f7f6");
-      else if (count % 8 == 7)
-        send(log, "bestmove g7g6");
-      else
-        send(log, "bestmove h7h6");
+      int move = 0;
+      for (int i = 0 ; i < rd + 1 ; ++i)
+        move = stack_pop(&graph.current_moves);
+
+      // todo : convert move from integer to "a3g6"-like string
+      // printf("move o #%d#\n", move);
+      int a = move / 1000;
+      int b = (move / 100) % 10;
+      int c = (move / 10) % 10;
+      int d = move % 10;
+      // printf("abcd #%d %d %d %d#\n", a, b, c, d);
+      getUciString(a, b, c, d, uciBuffer);
+
+      // printf("string o #%s#\n", uciBuffer);
+
+      char bestmoveString[20];
+      strcpy(bestmoveString, "bestmove ");
+      strcat(bestmoveString, uciBuffer);
+
+      // printf("string 2 o #%s#\n", bestmoveString);
+
+      send(log, bestmoveString);
 
   } else if (strcmp(firstWord, "quit\n") == 0) {
       return 0;

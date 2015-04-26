@@ -13,7 +13,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include "graph.h"
+#include "./graph.h"
 
 Color is_mate(Board board);
 

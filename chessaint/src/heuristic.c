@@ -97,11 +97,13 @@ void update_protection(int threat[][ROWCOL_NB], int index[][ROWCOL_NB],
 
   for (p1 = 0; p1 < ROWCOL_NB; ++p1) {
     for (p2 = 0; p2 < ROWCOL_NB; ++p2) {
-      if (graph.current_node.square[p1][p2].color == protection && threat[p1][p2] > 0) {
+      if (graph.current_node.square[p1][p2].color == protection &&
+          threat[p1][p2] > 0) {
         index[p1][p2] = 0;
         graph.current_node.square[p1][p2].color = (protection + 1) % 2;
-      } else
+      } else {
         index[p1][p2] = -1;
+      }
     }
   }
 

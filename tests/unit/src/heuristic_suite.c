@@ -72,8 +72,9 @@ void test_update_threat(void) {
         CU_ASSERT_EQUAL(threat[i][j], 1);
       } else if (i == 6 && j == 3) {
         CU_ASSERT_EQUAL(threat[i][j], 2);
-      } else
+      } else {
         CU_ASSERT_EQUAL(threat[i][j], 0);
+      }
     }
   }
 }
@@ -117,8 +118,9 @@ void test_update_protection(void) {
         CU_ASSERT_EQUAL(protect[i][j], 1);
       } else if (i == 6 && j == 3) {
         CU_ASSERT_EQUAL(protect[i][j], 2);
-      } else
+      } else {
         CU_ASSERT_EQUAL(protect[i][j], -1);
+      }
     }
   }
 }
@@ -193,10 +195,10 @@ void test_heuristic(void) {
 
   /* Assert that a piece in danger but protected is worth the original value */
 
-  char* protected_fen = "r1bqkbnr/pppppppp/2n5/8/3P4/5N2/PPP1PPPP/RNBQKB1R w - - 0 1";
+  char* p_fen = "r1bqkbnr/pppppppp/2n5/8/3P4/5N2/PPP1PPPP/RNBQKB1R w - - 0 1";
 
   Board protected;
-  fenToBoard(protected_fen, &protected);
+  fenToBoard(p_fen, &protected);
 
   CU_ASSERT_EQUAL(heuristic(safe), heuristic(protected)-10*1/2);
 }

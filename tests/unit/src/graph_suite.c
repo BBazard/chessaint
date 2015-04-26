@@ -269,7 +269,7 @@ void test_movesGenerator(void) {
   initAGame(&(testGraph.current_node));
 
   movesGenerator(&testGraph);
-  printBoardAndData(testGraph.current_node); 
+  /* printBoardAndData(testGraph.current_node);  */
 
   /* (7,1) -> (7,3) */
   CU_ASSERT_EQUAL(stack_pop(&(testGraph.current_moves)), 7173);

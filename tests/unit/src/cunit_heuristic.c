@@ -45,7 +45,20 @@ int add_heuristic_suite(CU_pSuite pSuite_heuristic) {
     return CU_get_error();
   }
 
-  /* add the tests to the suite */
+  if (NULL == CU_add_test(pSuite_heuristic,
+                           "Testing the update_threat function",
+                           test_update_threat)) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
+
+    if (NULL == CU_add_test(pSuite_heuristic,
+                           "Testing the update_protection function",
+                           test_update_protection)) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
+
   if (NULL == CU_add_test(pSuite_heuristic,
                            "Testing the heuristic function",
                            test_heuristic)) {

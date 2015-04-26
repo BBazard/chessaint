@@ -260,6 +260,23 @@ void test_pawnMoveGenerator2(void) {
   CU_ASSERT_EQUAL(stack_pop(&tmp), 4342);
 }
 
+void test_castlesMoveGenerator(void) {
+  Board testBoardCastles;
+  Stack tmp;
+  stack_init(&tmp);
+
+  /* In this situation, all castles might be okay, but still
+   a kight on b2 disturb the white castle on queen side*/
+
+  fenToBoard("8/8/8/8/8/8/8/RN2K2R w KQkq - 0 1", &testBoardCastles);
+
+  /* Enable to see the situation :*/
+  printBoardAndData(testBoardCastles);
+
+  /* Let castleMoveGenerator be called by kingMoveGenerator (more accurate)*/
+  kingMoveGenerator(&tmp, 4, 0, white, testBoardCastles);
+}
+
 void test_movesGenerator(void) {
   Graph testGraph;
   graph_init(&testGraph);

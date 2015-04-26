@@ -63,6 +63,8 @@ void kingMoveGenerator(Stack *moves, int squareX, int squareY,
                        Color activeColor, Board board);
 void knightAndKing4DirectionsGen(int incX, int incY, Stack *moves, int squareX,
                           int squareY, Color activeColor, Board board);
+void castlesMoveGenerator(int incX, int squareX, int squareY, Stack *moves,
+                           Board board);
 
 bool isInBoardSquare(int squareX, int squareY);
 

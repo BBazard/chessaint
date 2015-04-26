@@ -407,6 +407,7 @@ void knightMoveGenerator(Stack *moves, int squareX,
  */
 void kingMoveGenerator(Stack *moves, int squareX,
                        int squareY, Color activeColor, Board board) {
+  int i;
   /* To the North */
   knightAndKing4DirectionsGen(0, 1, moves, squareX, squareY,
                               activeColor, board);
@@ -431,8 +432,64 @@ void kingMoveGenerator(Stack *moves, int squareX,
   /* To the North-West */
   knightAndKing4DirectionsGen(-1, 1, moves, squareX, squareY,
                               activeColor, board);
+
+  for (i = 0 ; i < 4 ; ++i) {
+    if (board.availableCastlings[i] == 1) {
+      switch (i) {
+        case 0:
+          if (activeColor == white)
+            castlesMoveGenerator(1, squareX, squareY, moves, board);
+          break;
+        case 1:
+          if (activeColor == white)
+            castlesMoveGenerator(-1, squareX, squareY, moves, board);
+          break;
+        case 2:
+          if (activeColor == black)
+            castlesMoveGenerator(1, squareX, squareY, moves, board);
+          break;
+        case 3:
+          if (activeColor == black)
+            castlesMoveGenerator(-1, squareX, squareY, moves, board);  
+          break;
+      }
+    }  
+  } 
 }
 
+/**
+ *  @fn void castlesMoveGenerator(int incX, int squareX, int squareY,
+ *                         Stack *moves, Board board) {
+ *  @brief Checks if castle is possible and add the move to stack if it is 
+ *  @param[in] incX used to determine what castle we are checking
+ *  @param[in] sqaureX original position of the king who wanna castle
+ *  @param[in] sqaureY original position of the king who wanna castle
+ *  @param[in, out] Stack *moves is a stack that keep track of the results
+ *  @param[in] board is the board of the game 
+ */
+void castlesMoveGenerator(int incX, int squareX, int squareY, Stack *moves,
+                           Board board) {
+  int nextSquareX;
+  bool canCastle = true;
+  int testSquare = squareX;
+  nextSquareX = 2 * incX + squareX;
+
+  if (incX < 0) {
+    if (board.square[1][squareY].color != neutral)
+      canCastle = false;
+  }  
+  
+  do {
+    testSquare += incX;
+    if(board.square[testSquare][squareY].color != neutral) {
+      canCastle = false;
+    }
+  } while(testSquare != nextSquareX);
+
+  if (canCastle) {
+    printf("(%d,%d)->(%d,%d)\n", squareX, squareY, nextSquareX, squareY); 
+  }  
+}
 /**
  *  @fn void knightAndKing4DirectionsGen(int incX, int incY, Stack *moves,
  *                  int squareX, int squareY, Color activeColor, Board board)

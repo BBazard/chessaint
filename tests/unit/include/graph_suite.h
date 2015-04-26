@@ -17,6 +17,7 @@ void test_knightMoveGenerator(void);
 void test_kingMoveGenerator(void);
 void test_pawnMoveGenerator1(void);
 void test_pawnMoveGenerator2(void);
+void test_castlesMoveGenerator(void);
 
 void test_movesGenerator(void);
 

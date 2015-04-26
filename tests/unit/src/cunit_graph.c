@@ -109,6 +109,13 @@ int add_graph_suite(CU_pSuite pSuite_graph) {
   }
 
   if (NULL == CU_add_test(pSuite_graph,
+                           "Test of castlings moves",
+                          test_castlesMoveGenerator)) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
+
+  if (NULL == CU_add_test(pSuite_graph,
                            "Test of the move generator function",
                           test_movesGenerator)) {
     CU_cleanup_registry();

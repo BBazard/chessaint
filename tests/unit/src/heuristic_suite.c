@@ -25,7 +25,6 @@ int clean_suite_heuristic(void) {
   return 0;
 }
 
-/* @todo Write this test function */
 void test_is_mate(void) {
   char* white_mate_fen = "6rk/4pq2/3r4/8/8/8/8/B5KR w - - 0 1";
   char* black_mate_fen = "6RK/4PQ2/3R4/8/8/8/8/b5kr b - - 0 1";

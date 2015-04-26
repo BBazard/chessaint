@@ -1,3 +1,4 @@
+/* This file is part of the ChessAInt project 2015 */
 /**
  *  @todo Need to add proper documentation
  *  @todo Correct syntax to have lint cleared
@@ -24,36 +25,35 @@
 #include "../include/concatenate.h"
 
 void getUciString(int a, int b, int c, int d, char str[5]) {
-   str[0]=correspondancelettrechiffre(a);
-   str[1]= b + '0' + 1;
-   str[2]=correspondancelettrechiffre(c);
-   str[3]= d + '0' + 1;
-   str[4]= '\0';
+  str[0] = correspondancelettrechiffre(a);
+  str[1] = b + '0' + 1;
+  str[2] = correspondancelettrechiffre(c);
+  str[3] = d + '0' + 1;
+  str[4] = '\0';
 }
 
 
-char correspondancelettrechiffre (int a) {
+char correspondancelettrechiffre(int a) {
   /* mode bourrin */
 
-  switch(a){
+  switch (a) {
   case 0:
-    return 'a' ;
+    return 'a';
   case 1:
-    return 'b' ;
+    return 'b';
   case 2:
-    return 'c' ;
+    return 'c';
   case 3:
-    return 'd' ;
+    return 'd';
   case 4:
-    return 'e' ;
+    return 'e';
   case 5:
-    return 'f' ;
+    return 'f';
   case 6:
-    return 'g' ;
+    return 'g';
   case 7:
-    return 'h' ;
+    return 'h';
   default :
     return 'z';
   }
 }
-

@@ -12,7 +12,7 @@
 
 #include <string.h>
 
-char correspondancelettrechiffre (int a);
+char correspondancelettrechiffre(int a);
 
 void getUciString(int a, int b, int c, int d, char str[5]);
 

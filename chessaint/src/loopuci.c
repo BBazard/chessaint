@@ -48,10 +48,8 @@ int uciLoop(FILE* log, char* buffer) {
 
 
       while (getLastCharacter(word) != '\n') {
-
         // updateBoard
         play_move(uciToMove(word), &graph.root);
-        
 
         word = getNextWord();
       }

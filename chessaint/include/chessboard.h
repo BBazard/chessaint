@@ -81,7 +81,7 @@ enum Piece {
   empty /**< for empty squares */
 };
 
- /** 
+/** 
  *  @typedef Square
  *  @brief Definition of the Square type
  *
@@ -102,7 +102,7 @@ struct Square {
   Piece piece; /**< The piece which is in the square, can be empty */
 };
 
- /** 
+/** 
  *  @typedef Board
  *  @brief Definition of the Board type
  *
@@ -128,11 +128,11 @@ struct Board {
    * @bug numeric value 4
    */
   int availableCastlings[4]; /**< What are the available castles
-                                  1st element : white king side castle
-				  2nd element : white queen side castle
-				  3rd element : black king side castle
-				  4th element : black queen side castle
-			       values 1 : for true 0 for false*/
+                                1st element : white king side castle
+                                2nd element : white queen side castle
+                                3rd element : black king side castle
+                                4th element : black queen side castle
+                                values 1 : for true 0 for false*/
   Coord enPassant; /**< Which square can be taken en passant */
   int halfMoveClock; /**< useful to think about draws */
   int fullMoveNb; /**<Total moves, starting to 1 (convention) */
@@ -151,9 +151,4 @@ void fenToBoard(char *fen, Board *game);
 
 void printBoardAndData(Board game);
 
-
-
-
-
 #endif /*TRUNK_CHESSAINT_INCLUDE_CHESSBOARD_H_*/
-

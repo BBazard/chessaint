@@ -7,7 +7,7 @@
  * Returns zero on success, non-zero otherwise.
  */
 int init_suite_heuristic(void) {
-/* 
+/*
  *   if (problem during initialisation)
  *     return -1; // this number can be used to explicit the problem
  */
@@ -18,7 +18,7 @@ int init_suite_heuristic(void) {
  * Returns zero on success, non-zero otherwise.
  */
 int clean_suite_heuristic(void) {
-/* 
+/*
  *   if (problem during cleaning)
  *     return -1; // this number can be used to explicit the problem
  */
@@ -33,7 +33,7 @@ void test_is_mate(void) {
   Board white_mate;
   Board black_mate;
   Board no_mate;
-  
+
   fenToBoard(white_mate_fen, &white_mate);
   fenToBoard(black_mate_fen, &black_mate);
 
@@ -42,23 +42,104 @@ void test_is_mate(void) {
   CU_ASSERT_EQUAL(is_mate(no_mate), neutral);
 }
 
+void test_update_threat(void) {
+  Board board;
+  int threat[8][8];
+
+  for (int i = 0; i < 8; ++i) {
+    for (int j = 0; j < 8; ++j) {
+      board.square[i][j].piece = empty;
+      board.square[i][j].color = neutral;
+    }
+  }
+
+  board.square[3][3].piece = pawn;
+  board.square[3][3].color = white;
+  board.square[4][5].piece = knight;
+  board.square[4][5].color = black;
+  board.square[6][3].piece = pawn;
+  board.square[6][3].color = white;
+  board.square[6][5].piece = rook;
+  board.square[6][5].color = black;
+  board.square[7][4].piece = pawn;
+  board.square[7][4].color = black;
+
+  update_threat(threat, black, board);
+
+  for (int i = 0; i < 8; ++i) {
+    for (int j = 0; j < 8; ++j) {
+      if (i == 3 && j == 3) {
+        CU_ASSERT_EQUAL(threat[i][j], 1);
+      } else if (i == 6 && j == 3) {
+        CU_ASSERT_EQUAL(threat[i][j], 2);
+      } else
+        CU_ASSERT_EQUAL(threat[i][j], 0);
+    }
+  }
+}
+
+void test_update_protection(void) {
+  Board board;
+  int threat[8][8];
+  int protect[8][8];
+
+  for (int i = 0; i < 8; ++i) {
+    for (int j = 0; j < 8; ++j) {
+      board.square[i][j].piece = empty;
+      board.square[i][j].color = neutral;
+    }
+  }
+
+  board.square[3][3].piece = pawn;
+  board.square[3][3].color = white;
+  board.square[4][5].piece = knight;
+  board.square[4][5].color = black;
+  board.square[6][3].piece = pawn;
+  board.square[6][3].color = white;
+  board.square[6][5].piece = rook;
+  board.square[6][5].color = black;
+  board.square[7][4].piece = pawn;
+  board.square[7][4].color = black;
+
+  board.square[2][2].piece = pawn;
+  board.square[2][2].color = white;
+  board.square[6][1].piece = rook;
+  board.square[6][1].color = white;
+  board.square[5][2].piece = pawn;
+  board.square[5][2].color = white;
+
+  update_threat(threat, black, board);
+  update_protection(threat, protect, white, board);
+
+  for (int i = 0; i < 8; ++i) {
+    for (int j = 0; j < 8; ++j) {
+      if (i == 3 && j == 3) {
+        CU_ASSERT_EQUAL(protect[i][j], 1);
+      } else if (i == 6 && j == 3) {
+        CU_ASSERT_EQUAL(protect[i][j], 2);
+      } else
+        CU_ASSERT_EQUAL(protect[i][j], -1);
+    }
+  }
+}
+
 void test_heuristic(void) {
   /* heuristic function should return 0 with the fen representing
      the initial position */
 
   Board start;
   initAGame(&start);
-  CU_ASSERT_EQUAL(heuristic(&start), 0);
+  CU_ASSERT_EQUAL(heuristic(start), 0);
 
   /* When mat function should returns 500 (which is a little exception to
-     the rule of computation only with current position) and not 
+     the rule of computation only with current position) and not
      the normal score */
 
   char* mate_fen = "6rk/4pq2/3r4/8/8/8/8/B5KR w - - 0 1";
   Board mate;
-  
+
   fenToBoard(mate_fen, &mate);
-  CU_ASSERT_EQUAL(heuristic(&mate), 500);
+  CU_ASSERT_EQUAL(heuristic(mate), 500);
 
   /* Score is computed with white as reference meaning a good score (above 0)
      represents a advantage for white.
@@ -73,12 +154,12 @@ void test_heuristic(void) {
 
   Board white_normal;
   Board white_reverse;
-  
+
   fenToBoard(white_normal_fen, &white_normal);
   fenToBoard(white_reverse_fen, &white_reverse);
-  
-  CU_ASSERT_EQUAL((heuristic(&white_normal) +
-                    heuristic(&white_reverse)), 0);
+
+  CU_ASSERT_EQUAL((heuristic(white_normal) +
+                    heuristic(white_reverse)), 0);
 
   /* Doing the same but by inversing the turn (w or b at the and of the FEN)
      rather than replacing uppercase by lowercase letters */
@@ -90,23 +171,32 @@ void test_heuristic(void) {
 
   Board white;
   Board black;
-  
+
   fenToBoard(white_fen, &white);
   fenToBoard(black_fen, &black);
-  
-  CU_ASSERT_EQUAL((heuristic(&white) + heuristic(&black)), 0);
+
+  CU_ASSERT_EQUAL((heuristic(white) + heuristic(black)), 0);
 
   /* Assert that a piece in danger counts only half the value, with
      two computations, one with the pawn safe, and the second in danger */
 
-  char* safe_fen = "rnbqkb1r/pppppppp/5n2/8/3P4/8/PPP1PPPP/RNBQKBN1 w - - 0 1";
-  char* danger_fen = "r1bqkbnr/pppppppp/2n5/8/3P4/8/PPP1PPPP/RNBQKBN1 w - - 0 1";
+  char* safe_fen = "rnbqkb1r/pppppppp/5n2/8/3P4/8/PPP1PPPP/RNBQKBNR w - - 0 1";
+  char* danger_fen = "r1bqkbnr/pppppppp/n7/8/1P4/8/P1PPPPPP/RNBQKBNR w - - 0 1";
 
   Board safe;
   Board danger;
-  
+
   fenToBoard(safe_fen, &safe);
   fenToBoard(danger_fen, &danger);
 
-  CU_ASSERT_EQUAL(heuristic(&safe), heuristic(&danger) * 2);
+  CU_ASSERT_EQUAL(heuristic(safe), heuristic(danger) + 10/2);
+
+  /* Assert that a piece in danger but protected is worth the original value */
+
+  char* protected_fen = "r1bqkbnr/pppppppp/2n5/8/3P4/5N2/PPP1PPPP/RNBQKB1R w - - 0 1";
+
+  Board protected;
+  fenToBoard(protected_fen, &protected);
+
+  CU_ASSERT_EQUAL(heuristic(safe), heuristic(protected)-10*1/2);
 }

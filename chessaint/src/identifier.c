@@ -36,7 +36,7 @@ int stack_exchange(int p1, int p2, int p3, int p4) {
 }
 
 /**
- *  @fn int stack_revexchange(int p1, int p2, int p3, int p4, int todivide)
+ *  @fn void stack_revexchange(int *p1, int *p2, int *p3, int *p4, int todivide)
  *  @brief Transform an int in four
  *  @param[out] p1,p2,p3,p4 Where p1 is todivide MSB and p4 todivide LSB
  *  @param[in] todivide The integer (must be in [|0; 10000|]) to divide in four

@@ -271,7 +271,7 @@ void test_castlesMoveGenerator(void) {
   fenToBoard("8/8/8/8/8/8/8/RN2K2R w KQkq - 0 1", &testBoardCastles);
 
   /* Enable to see the situation :*/
-  printBoardAndData(testBoardCastles);
+  /* printBoardAndData(testBoardCastles); */
 
   /* Let castleMoveGenerator be called by kingMoveGenerator (more accurate)*/
   kingMoveGenerator(&tmp, 4, 0, white, testBoardCastles);

@@ -137,10 +137,10 @@ int heuristic(Board board) {
   int i, j;
   float score = 0;
   float scoreindex[ROWCOL_NB][ROWCOL_NB];
-  int white_thrindex[ROWCOL_NB][ROWCOL_NB];
-  int black_thrindex[ROWCOL_NB][ROWCOL_NB];
-  int white_proindex[ROWCOL_NB][ROWCOL_NB];
-  int black_proindex[ROWCOL_NB][ROWCOL_NB];
+  int white_thrIdx[ROWCOL_NB][ROWCOL_NB];
+  int black_thrIdx[ROWCOL_NB][ROWCOL_NB];
+  int white_proIdx[ROWCOL_NB][ROWCOL_NB];
+  int black_proIdx[ROWCOL_NB][ROWCOL_NB];
 
   /* Returns 500 or -500 directly if one of the kings is mat */
   if (is_mate(board) != neutral && check_mate) {
@@ -151,10 +151,10 @@ int heuristic(Board board) {
   }
 
   /* Divides by 2 if a piece is threatened */
-  update_threat(white_thrindex, white, board);
-  update_threat(black_thrindex, black, board);
-  update_protection(black_thrindex, white_proindex, white, board);
-  update_protection(white_thrindex, black_proindex, black, board);
+  update_threat(white_thrIdx, white, board);
+  update_threat(black_thrIdx, black, board);
+  update_protection(black_thrIdx, white_proIdx, white, board);
+  update_protection(white_thrIdx, black_proIdx, black, board);
 
   /* Computes the score for each square of the board */
   for (i = 0; i < 8; ++i) {
@@ -187,16 +187,16 @@ int heuristic(Board board) {
         scoreindex[i][j] *= -1;
 
       /* Manage threats */
-      if (board.square[i][j].color == white && black_thrindex[i][j] > 0)
-        scoreindex[i][j] /= black_thrindex[i][j]+1;
-      if (board.square[i][j].color == black && white_thrindex[i][j] > 0)
-        scoreindex[i][j] /= white_thrindex[i][j]+1;
+      if (board.square[i][j].color == white && black_thrIdx[i][j] > 0)
+        scoreindex[i][j] /= black_thrIdx[i][j]+1;
+      if (board.square[i][j].color == black && white_thrIdx[i][j] > 0)
+        scoreindex[i][j] /= white_thrIdx[i][j]+1;
 
       /* Manage protections */
-      if (board.square[i][j].color == white && white_proindex[i][j] > 0)
-        scoreindex[i][j] *= white_proindex[i][j]+1;
-      if (board.square[i][j].color == black && black_proindex[i][j] > 0)
-        scoreindex[i][j] *= black_proindex[i][j]+1;
+      if (board.square[i][j].color == white && white_proIdx[i][j] > 0)
+        scoreindex[i][j] *= white_proIdx[i][j]+1;
+      if (board.square[i][j].color == black && black_proIdx[i][j] > 0)
+        scoreindex[i][j] *= black_proIdx[i][j]+1;
     }
   }
 

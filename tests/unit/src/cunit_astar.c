@@ -39,8 +39,8 @@ int add_astar_suite(CU_pSuite pSuite_astar) {
 
   /* add the tests to the suite */
   if (NULL == CU_add_test(pSuite_astar,
-                           "",
-                          test_)) {
+                           "Testing move_to_node function",
+                          test_move_to_node)) {
     CU_cleanup_registry();
     return CU_get_error();
   }

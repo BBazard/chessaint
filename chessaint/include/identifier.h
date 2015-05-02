@@ -20,6 +20,14 @@
  *  @brief Definition of the Identifier type
  *
  *  Rename type mpz_t from GNU Multi-Precision library
+ *  Type Identifier contains :
+ *  - 4N digits for previous moves
+ *  - 1 digit for active color
+ *  - 1 digit for passant
+ *  - 2 digits for castling
+ *  - 2 digits for halfmove number
+ *
+ *  The form is : xxxx ... xxxx x x xx xx
  *
  */
 

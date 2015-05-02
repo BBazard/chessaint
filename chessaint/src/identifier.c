@@ -223,7 +223,7 @@ int identifier_is_passant(Identifier id) {
  *  @fn int identifier_get_cast(Identifier id)
  *  @brief Get the castling state
  *  @param[in] id The identifier used
- *  @return [|0;63|] Meaning a state of castling
+ *  @return [|0;15|] Meaning a state of castling
  *
  *  This function check the castling state of an arc, given its
  *  Identifier

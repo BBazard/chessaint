@@ -1,5 +1,10 @@
-/*This file is part of the ChessAInt project 2015*/
-#ifndef TRUNK_CHESSAINT_INCLUDE_ASTAR_H_
-#define TRUNK_CHESSAINT_INCLUDE_ASTAR_H_
+/* This file is part of the ChessAInt project 2015 */
+/**
+ *  @file
+ */
 
-#endif /*TRUNK_CHESSAINT_INCLUDE_ASTAR_H_*/
+#ifndef CHESSAINT_INCLUDE_ASTAR_H_
+#define CHESSAINT_INCLUDE_ASTAR_H_
+
+#endif /* CHESSAINT_INCLUDE_ASTAR_H_ */
+

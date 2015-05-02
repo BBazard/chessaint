@@ -25,3 +25,4 @@ void test_play_move(void);
 void test_update_board(void);
 
 #endif /* TESTS_UNIT_INCLUDE_GRAPH_SUITE_H_ */
+

@@ -1,4 +1,7 @@
-/*This file is part of the ChessAInt project 2015*/
+/* This file is part of the ChessAInt project 2015 */
+/**
+ *  @file
+ */
 
 #include "include/llist.h"
 

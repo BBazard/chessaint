@@ -3,25 +3,11 @@
 #include "CUnit/Basic.h"
 #include "include/graph.h"
 
-/* The suite initialization function.
- * Returns zero on success, non-zero otherwise.
- */
 int init_suite_graph(void) {
-/*
- *   if (problem during initialisation)
- *     return -1; // this number can be used to explicit the problem
- */
   return 0;
 }
 
-/* The suite cleanup function.
- * Returns zero on success, non-zero otherwise.
- */
 int clean_suite_graph(void) {
-/*
- *   if (problem during cleaning)
- *     return -1; // this number can be used to explicit the problem
- */
   return 0;
 }
 
@@ -371,3 +357,4 @@ void test_update_board(void) {
 
   CU_ASSERT_EQUAL(graph.current_node.square[4][5].piece, pawn);
 }
+

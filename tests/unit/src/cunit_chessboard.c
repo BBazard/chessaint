@@ -1,11 +1,12 @@
 /* This file is part of the ChessAInt project 2015 */
+
 #include <stdlib.h>
 
 #include "CUnit/Basic.h"
 
 #include "include/chessboard.h"
 
-#include "../include/chessboard_suite.h"
+#include "include/chessboard_suite.h"
 
 int add_chessboard_suite(CU_pSuite pSuite_chessboard) {
   if (pSuite_chessboard != NULL)
@@ -23,3 +24,4 @@ int add_chessboard_suite(CU_pSuite pSuite_chessboard) {
 
   return EXIT_SUCCESS;
 }
+

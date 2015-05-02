@@ -1,5 +1,4 @@
 /* This file is part of the ChessAInt project 2015 */
-
 /**
  * @file
  * @todo handle error with a real stderr file
@@ -118,5 +117,20 @@ void rmUCILastCharacter(char* input, char output[5]) {
 
   strncpy(output, input, 4);
   output[4] = '\0';
+}
+
+/**
+ * convert 4 int in a uci string
+ * put the result in "str"
+ *
+ * example : (1, 2, 3, 4) -> "b3d5"
+ *
+ */
+void getUciString(int a, int b, int c, int d, char str[5]) {
+  str[0] = a + 'a';
+  str[1] = b + '1';
+  str[2] = c + 'a';
+  str[3] = d + '1';
+  str[4] = '\0';
 }
 

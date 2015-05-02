@@ -59,3 +59,9 @@ void test_rmUCILastCharacter(void) {
   CU_ASSERT_STRING_EQUAL(buffer, "e1e2");
 }
 
+void test_getUciString(void) {
+  char str[5];
+  getUciString(0, 1, 2, 3, str);
+  CU_ASSERT_STRING_EQUAL(str, "a2c4");
+}
+

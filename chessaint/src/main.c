@@ -4,8 +4,7 @@
 #include <stdio.h>
 
 #include "include/uci.h"
-
-int uciLoop(FILE* log, char* buffer);
+#include "include/loopuci.h"
 
 int main() {
   setbuf(stdout, NULL);
@@ -17,7 +16,7 @@ int main() {
   if (log == NULL)
     manageErrors("can't create log file");
 
-  char buffer[UCI_SIZE];
+  char buffer[UCI_SIZE] = "";
 
   while (uciLoop(log, buffer)) {}
 

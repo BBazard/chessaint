@@ -48,7 +48,7 @@ clean :
 	printf "\033[0;33m"
 	printf "Cleaning $(BUILDTYPE) directory\n"
 	printf "\033[0m"
-	rm -f $(TESTSOBJS)
+	rm -f $(OUTPUTDIR)/*.o
 .PHONY : clean
 
 cleanbin :
@@ -60,6 +60,6 @@ cleanbin :
 
 lint :
 	$(LINT) $(TESTSSRC) $(LOGS) -a $(LOGDIR)/lint
-	$(LINT) $(TESTSINCLUDE) $(LOGS) -a $(LOGDIR)/lint
+	$(LINT) --root=trunk $(TESTSINCLUDE) $(LOGS) -a $(LOGDIR)/lint
 .PHONY : lint
 

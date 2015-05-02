@@ -1,15 +1,10 @@
-/*This file is part of the ChessAInt project 2015*/
-
+/* This file is part of the ChessAInt project 2015 */
 /** 
- *  @file chessboard.h
- *  @brief chessboard header
- *
- *  This files regroups prototypes and some data for the chessboard
- *
+ *  @file
  */
 
-#ifndef TRUNK_CHESSAINT_INCLUDE_CHESSBOARD_H_
-#define TRUNK_CHESSAINT_INCLUDE_CHESSBOARD_H_
+#ifndef CHESSAINT_INCLUDE_CHESSBOARD_H_
+#define CHESSAINT_INCLUDE_CHESSBOARD_H_
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -18,12 +13,9 @@
 #include <string.h>
 #include <stdbool.h>
 
-
 #define SQUARES_NB 64
 /*Number of rowws and columns = 8*/
 #define ROWCOL_NB 8
-
-
 
 /** 
  *  @typedef Coord
@@ -124,9 +116,6 @@ struct Board {
   Square square[ROWCOL_NB][ROWCOL_NB]; /**< A board = 64 squares : 8x8 */
 
   Color activeColor; /**< Next to play from this position */
-  /**
-   * @bug numeric value 4
-   */
   int availableCastlings[4]; /**< What are the available castles
                                 1st element : white king side castle
                                 2nd element : white queen side castle
@@ -142,7 +131,6 @@ struct Board {
 Color colorToInit[ROWCOL_NB][ROWCOL_NB];
 Piece piecesToInit[ROWCOL_NB][ROWCOL_NB];
 
-
 Board myGame;
 
 void initAGame(Board *game);
@@ -151,4 +139,7 @@ void fenToBoard(char *fen, Board *game);
 
 void printBoardAndData(Board game);
 
-#endif /*TRUNK_CHESSAINT_INCLUDE_CHESSBOARD_H_*/
+enum Piece charToPiece(char c);
+
+#endif /* CHESSAINT_INCLUDE_CHESSBOARD_H_ */
+

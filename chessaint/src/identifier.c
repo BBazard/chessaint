@@ -1,11 +1,6 @@
 /* This file is part of the ChessAInt project 2015 */
 /**
- *  @file identifier.c
- *  @brief identifier functions
- *
- *  This file contains the functions to manipulate
- *  Identifier type
- *
+ *  @file
  */
 
 #include "include/identifier.h"
@@ -19,7 +14,7 @@
 #define MAX_PAIRS 8889
 
 /**
- *  @fn int stack_exchange(int p1, int p2, int p3, int p4)
+ *  @fn int stack_contract(int p1, int p2, int p3, int p4)
  *  @brief Transform four int in one
  *  @param[in] p1 Most Signifiant Bit
  *  @param[in] p2,p3,p4 Others bits
@@ -27,27 +22,24 @@
  *
  *  Return the int which is the "concatenation" of p1...p4, MSB first
  *
- *  @todo Rename the function in stack_contract (and change in all files)
- *
  */
 
-int stack_exchange(int p1, int p2, int p3, int p4) {
+int stack_contract(int p1, int p2, int p3, int p4) {
   return p1*1000 + p2*100 + p3*10 + p4;
 }
 
 /**
- *  @fn void stack_revexchange(int *p1, int *p2, int *p3, int *p4, int todivide)
+ *  @fn void stack_expand(int *p1, int *p2, int *p3, int *p4, int todivide)
  *  @brief Transform an int in four
  *  @param[out] p1,p2,p3,p4 Where p1 is todivide MSB and p4 todivide LSB
  *  @param[in] todivide The integer (must be in [|0; 10000|]) to divide in four
+ *  @bug last "tmp =" is useless
  *
  *  Divide todivide in p1, p2, p3 and p4
  *
- *  @todo Rename the function in stack_expand (and change in all files)
- *
  */
 
-void stack_revexchange(int *p1, int *p2, int *p3, int *p4, int todivide) {
+void stack_expand(int *p1, int *p2, int *p3, int *p4, int todivide) {
   int tmp = todivide;
 
   *p4 = tmp%10;
@@ -65,6 +57,7 @@ void stack_revexchange(int *p1, int *p2, int *p3, int *p4, int todivide) {
  *  @brief Create a stack
  *
  *  Initialisation of a stack
+ *  @note need stack_free afterwards
  *
  */
 
@@ -323,3 +316,4 @@ void stack_to_identifier(Identifier *id, Stack stack) {
 int identifier_is_equal(Identifier left, Identifier right) {
   return !(mpz_cmp(left, right));
 }
+

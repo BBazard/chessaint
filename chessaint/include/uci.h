@@ -1,9 +1,9 @@
 /* This file is part of the ChessAInt project 2015 */
 /**
- * @file
+ *  @file
  */
-#ifndef TRUNK_CHESSAINT_INCLUDE_UCI_H_
-#define TRUNK_CHESSAINT_INCLUDE_UCI_H_
+#ifndef CHESSAINT_INCLUDE_UCI_H_
+#define CHESSAINT_INCLUDE_UCI_H_
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -36,6 +36,7 @@ int uciToMove(char* input);
 
 void rmUCILastCharacter(char* input, char output[5]);
 
+void getUciString(int a, int b, int c, int d, char str[5]);
 
-#endif /*TRUNK_CHESSAINT_INCLUDE_UCI_H_*/
+#endif /*CHESSAINT_INCLUDE_UCI_H_*/
 

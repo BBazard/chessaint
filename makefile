@@ -26,7 +26,9 @@ export LINT:=$(TRUNK)/../cpplint.py
 # Target-specific variables
 debug : CFLAGS+=-g
 release : CFLAGS+=-O3
-debugtests releasetests : LDFLAGS+=-lcunit
+debugtests : LDFLAGS+=-lcunit 
+debugtests : CFLAGS+=-g
+releasetests : LDFLAGS+=-lcunit 
 
 default : debugtests lint
 	printf "\033[0;30m"

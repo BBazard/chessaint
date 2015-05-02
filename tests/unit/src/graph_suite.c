@@ -32,8 +32,8 @@ void test_bishopMoveGenerator(void) {
 
   fenToBoard("8/8/8/3P4/4B3/5r2/8/8 w - - 0 1", &testBoardB);
 
-  /* Enable to see the situation : 
-  printBoardAndData(testBoardB);*/
+  /* Enable to see the situation : */
+  printBoardAndData(testBoardB);
 
 
   bishopMoveGenerator(&tmp, 4, 3, white, testBoardB);

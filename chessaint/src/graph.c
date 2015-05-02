@@ -526,6 +526,8 @@ bool isInBoardSquare(int squareX, int squareY) {
  *  @param[in] move the move to play, Ex : 4143 pour e2e4
  *  @param[in,out] board the board on which to play the move
  *
+ *  @todo Need to update others parameters in board
+ *
  */
 void play_move(int move, Board *board) {
   int a, b, c, d;

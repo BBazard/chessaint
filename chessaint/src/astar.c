@@ -14,13 +14,18 @@
  *  @param[in] move The move to convert
  *  @param[in] father The father of the arc to be
  *  @param[out] current The pointer in which to save created arc
- *
+ *  the arc MUST be initialized before 
+ * 
  *  This function computes the new value of score and data of a
  *  son arc.
  *
  */
 
 void move_to_node(int move, Arc father, Arc *current) {
+  Stack tmp;
+  stack_init(&tmp);
+  identifier_to_stack(father.data, &tmp);
+  stack_push(&tmp, move);
 }
 
 /**

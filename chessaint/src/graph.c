@@ -562,12 +562,21 @@ bool isInBoardSquare(int squareX, int squareY) {
  *  @param[in] move the move to play, Ex : 4143 pour e2e4
  *  @param[in,out] board the board on which to play the move
  *
- *  @todo Need to update others parameters in board
+ *  @todo Need to update castling in board
  *
  */
 void play_move(int move, Board *board) {
   int a, b, c, d;
   stack_expand(&a, &b, &c, &d, move);
+
+  if (board->square[a][b].piece == pawn || board->square[c][d].piece != empty)
+    board->halfMoveClock += 1;
+  board->activeColor = (board->activeColor + 1) % 2;
+  if (board->square[a][b].piece == pawn && d == b + 2)
+    board->enPassant.column = 1; /* means there is enpassant */
+  else
+    board->enPassant.column = 0; /* means there is no enpassant */
+  board->fullMoveNb += 1;
 
   board->square[c][d] = board->square[a][b];
   board->square[a][b].color = neutral;

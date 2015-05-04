@@ -3,25 +3,11 @@
 #include "CUnit/Basic.h"
 #include "include/graph.h"
 
-/* The suite initialization function.
- * Returns zero on success, non-zero otherwise.
- */
 int init_suite_graph(void) {
-/*
- *   if (problem during initialisation)
- *     return -1; // this number can be used to explicit the problem
- */
   return 0;
 }
 
-/* The suite cleanup function.
- * Returns zero on success, non-zero otherwise.
- */
 int clean_suite_graph(void) {
-/*
- *   if (problem during cleaning)
- *     return -1; // this number can be used to explicit the problem
- */
   return 0;
 }
 
@@ -230,14 +216,14 @@ void test_pawnMoveGenerator1(void) {
 
   /* Enable to see the situation : printBoardAndData(testBoardP); */
 
-  pawnMoveGenerator(&tmp, 0, 1, white, testBoardP);
-
+  pawnMoveGeneratorCapture(&tmp, 0, 1, white, testBoardP);
+  pawnMoveGeneratorNoCapture(&tmp, 0, 1, white, testBoardP);
   /* (0,1) -> (0,3) */
   CU_ASSERT_EQUAL(stack_pop(&tmp), 103);
-  /* (0,1) -> (1,2) */
-  CU_ASSERT_EQUAL(stack_pop(&tmp), 112);
   /* (0,1) -> (0,2) */
   CU_ASSERT_EQUAL(stack_pop(&tmp), 102);
+  /* (0,1) -> (1,2) */
+  CU_ASSERT_EQUAL(stack_pop(&tmp), 112);
 }
 
 void test_pawnMoveGenerator2(void) {
@@ -252,12 +238,12 @@ void test_pawnMoveGenerator2(void) {
 
   /* Enable to see the situation :  printBoardAndData(testBoardP2); */
 
-  pawnMoveGenerator(&tmp, 4, 3, black, testBoardP2);
-
-  /* (4,3) -> (3,2) */
-  CU_ASSERT_EQUAL(stack_pop(&tmp), 4332);
+  pawnMoveGeneratorCapture(&tmp, 4, 3, black, testBoardP2);
+  pawnMoveGeneratorNoCapture(&tmp, 4, 3, black, testBoardP2);
   /* (4,3) -> (4,2) */
   CU_ASSERT_EQUAL(stack_pop(&tmp), 4342);
+  /* (4,3) -> (3,2) */
+  CU_ASSERT_EQUAL(stack_pop(&tmp), 4332);
 }
 
 void test_castlesMoveGenerator(void) {
@@ -371,3 +357,4 @@ void test_update_board(void) {
 
   CU_ASSERT_EQUAL(graph.current_node.square[4][5].piece, pawn);
 }
+

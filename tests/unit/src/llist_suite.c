@@ -3,25 +3,11 @@
 #include "CUnit/Basic.h"
 #include "include/llist.h"
 
-/* The suite initialization function.
- * Returns zero on success, non-zero otherwise.
- */
 int init_suite_llist(void) {
-/* 
- *   if (problem during initialisation)
- *     return -1; // this number can be used to explicit the problem
- */
   return 0;
 }
 
-/* The suite cleanup function.
- * Returns zero on success, non-zero otherwise.
- */
 int clean_suite_llist(void) {
-/* 
- *   if (problem during cleaning)
- *     return -1; // this number can be used to explicit the problem
- */
   return 0;
 }
 
@@ -123,3 +109,4 @@ void test_llist_free(void) {
   /* Test if llist_free returns a NULL pointing list */
   CU_ASSERT_PTR_NULL(list);
 }
+

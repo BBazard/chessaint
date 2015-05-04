@@ -1,15 +1,10 @@
-/*This file is part of the ChessAInt project 2015*/
+/* This file is part of the ChessAInt project 2015 */
 /**
- *  @file identifier.h
- *  @brief identifier structure header
- *
- *  This file contains the prototypes of the functions developped
- *  in identifier.c file
- *
+ *  @file
  */
 
-#ifndef TRUNK_CHESSAINT_INCLUDE_IDENTIFIER_H_
-#define TRUNK_CHESSAINT_INCLUDE_IDENTIFIER_H_
+#ifndef CHESSAINT_INCLUDE_IDENTIFIER_H_
+#define CHESSAINT_INCLUDE_IDENTIFIER_H_
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -20,6 +15,14 @@
  *  @brief Definition of the Identifier type
  *
  *  Rename type mpz_t from GNU Multi-Precision library
+ *  Type Identifier contains :
+ *  - 4N digits for previous moves
+ *  - 1 digit for active color
+ *  - 1 digit for passant
+ *  - 2 digits for castling
+ *  - 2 digits for halfmove number
+ *
+ *  The form is : xxxx ... xxxx x x xx xx
  *
  */
 
@@ -35,8 +38,8 @@ typedef mpz_t Identifier;
 
 typedef mpz_t Stack;
 
-int stack_exchange(int p1, int p2, int p3, int p4);
-void stack_revexchange(int *p1, int *p2, int *p3, int *p4, int todivide);
+int stack_contract(int p1, int p2, int p3, int p4);
+void stack_expand(int *p1, int *p2, int *p3, int *p4, int todivide);
 void stack_init(Stack *s);
 void stack_free(Stack *s);
 void stack_push(Stack *s, int item);
@@ -56,4 +59,5 @@ void stack_to_identifier(Identifier *id, Stack stack);
 
 int identifier_is_equal(Identifier left, Identifier right);
 
-#endif /*TRUNK_CHESSAINT_INCLUDE_IDENTIFIER_H_*/
+#endif /* CHESSAINT_INCLUDE_IDENTIFIER_H_ */
+

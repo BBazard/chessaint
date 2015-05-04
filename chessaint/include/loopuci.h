@@ -1,15 +1,18 @@
 /* This file is part of the ChessAInt project 2015 */
 /**
- * @file
+ *  @file
  */
-#ifndef TRUNK_CHESSAINT_INCLUDE_LOOPUCI_H_
-#define TRUNK_CHESSAINT_INCLUDE_LOOPUCI_H_
+#ifndef CHESSAINT_INCLUDE_LOOPUCI_H_
+#define CHESSAINT_INCLUDE_LOOPUCI_H_
 
 #include <stdio.h>
 #include <stdlib.h>
 
-int uciLoop(FILE* log, char* buffer);
+#include "include/graph.h"
 
-#endif /*TRUNK_CHESSAINT_INCLUDE_LOOPUCI_H_*/
+int pickBestMove(Stack *current_moves);
 
+int uciLoop(FILE* log, char* buffer, Graph *graph);
+
+#endif /* CHESSAINT_INCLUDE_LOOPUCI_H_ */
 

@@ -2,10 +2,11 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 
 #include "include/uci.h"
-
-int uciLoop(FILE* log, char* buffer);
+#include "include/loopuci.h"
+#include "include/graph.h"
 
 int main() {
   setbuf(stdout, NULL);
@@ -17,10 +18,16 @@ int main() {
   if (log == NULL)
     manageErrors("can't create log file");
 
-  char buffer[UCI_SIZE];
+  srand(time(NULL));
 
-  while (uciLoop(log, buffer)) {}
+  char buffer[UCI_SIZE] = "";
 
+  Graph graph;
+  graph_init(&graph);
+
+  while (uciLoop(log, buffer, &graph)) {}
+
+  graph_free(&graph);
   fclose(log);
 
   return EXIT_SUCCESS;

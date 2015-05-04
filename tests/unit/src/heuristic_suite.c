@@ -3,32 +3,19 @@
 #include "CUnit/Basic.h"
 #include "include/heuristic.h"
 
-/* The suite initialization function.
- * Returns zero on success, non-zero otherwise.
- */
 int init_suite_heuristic(void) {
-/*
- *   if (problem during initialisation)
- *     return -1; // this number can be used to explicit the problem
- */
   return 0;
 }
 
-/* The suite cleanup function.
- * Returns zero on success, non-zero otherwise.
- */
 int clean_suite_heuristic(void) {
-/*
- *   if (problem during cleaning)
- *     return -1; // this number can be used to explicit the problem
- */
   return 0;
 }
 
-/* @todo Write this test function */
 void test_is_mate(void) {
   char* white_mate_fen = "6rk/4pq2/3r4/8/8/8/8/B5KR w - - 0 1";
   char* black_mate_fen = "6RK/4PQ2/3R4/8/8/8/8/b5kr b - - 0 1";
+  char* initial_fen =
+    "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
   Board white_mate;
   Board black_mate;
@@ -36,6 +23,7 @@ void test_is_mate(void) {
 
   fenToBoard(white_mate_fen, &white_mate);
   fenToBoard(black_mate_fen, &black_mate);
+  fenToBoard(initial_fen, &no_mate);
 
   CU_ASSERT_EQUAL(is_mate(white_mate), white);
   CU_ASSERT_EQUAL(is_mate(black_mate), black);
@@ -45,11 +33,14 @@ void test_is_mate(void) {
 void test_update_threat(void) {
   Board board;
   int threat[8][8];
+  initAGame(&board);
 
   for (int i = 0; i < 8; ++i) {
     for (int j = 0; j < 8; ++j) {
       board.square[i][j].piece = empty;
       board.square[i][j].color = neutral;
+      // todo initialise this value
+      threat[i][j] = 123454626;
     }
   }
 
@@ -81,6 +72,7 @@ void test_update_threat(void) {
 
 void test_update_protection(void) {
   Board board;
+  initAGame(&board);
   int threat[8][8];
   int protect[8][8];
 
@@ -88,6 +80,9 @@ void test_update_protection(void) {
     for (int j = 0; j < 8; ++j) {
       board.square[i][j].piece = empty;
       board.square[i][j].color = neutral;
+      // todo initialise these values
+      threat[i][j] = 21334;
+      protect[i][j] = 13256;
     }
   }
 
@@ -139,6 +134,7 @@ void test_heuristic(void) {
 
   char* mate_fen = "6rk/4pq2/3r4/8/8/8/8/B5KR w - - 0 1";
   Board mate;
+  initAGame(&mate);
 
   fenToBoard(mate_fen, &mate);
   CU_ASSERT_EQUAL(heuristic(mate), 500);
@@ -155,7 +151,9 @@ void test_heuristic(void) {
     "RNBQKBN1/PP1PPPPP/8/2P5/4p3/5n2/pppp1ppp/rnbqkb1r w KQkq - 1 2";
 
   Board white_normal;
+  initAGame(&white_normal);
   Board white_reverse;
+  initAGame(&white_reverse);
 
   fenToBoard(white_normal_fen, &white_normal);
   fenToBoard(white_reverse_fen, &white_reverse);
@@ -172,7 +170,9 @@ void test_heuristic(void) {
     "rnbqkb1r/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2";
 
   Board white;
+  initAGame(&white);
   Board black;
+  initAGame(&black);
 
   fenToBoard(white_fen, &white);
   fenToBoard(black_fen, &black);
@@ -186,7 +186,9 @@ void test_heuristic(void) {
   char* danger_fen = "r1bqkbnr/pppppppp/n7/8/1P4/8/P1PPPPPP/RNBQKBNR w - - 0 1";
 
   Board safe;
+  initAGame(&safe);
   Board danger;
+  initAGame(&danger);
 
   fenToBoard(safe_fen, &safe);
   fenToBoard(danger_fen, &danger);
@@ -198,7 +200,9 @@ void test_heuristic(void) {
   char* p_fen = "r1bqkbnr/pppppppp/2n5/8/3P4/5N2/PPP1PPPP/RNBQKB1R w - - 0 1";
 
   Board protected;
+  initAGame(&protected);
   fenToBoard(p_fen, &protected);
 
   CU_ASSERT_EQUAL(heuristic(safe), heuristic(protected)-10*1/2);
 }
+

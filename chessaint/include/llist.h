@@ -1,12 +1,15 @@
 /* This file is part of the ChessAInt project 2015 */
+/**
+ *  @file
+ */
 
-#ifndef TRUNK_CHESSAINT_INCLUDE_LLIST_H_
-#define TRUNK_CHESSAINT_INCLUDE_LLIST_H_
+#ifndef CHESSAINT_INCLUDE_LLIST_H_
+#define CHESSAINT_INCLUDE_LLIST_H_
 
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "./identifier.h"
+#include "include/identifier.h"
 
 /** 
  *  @typedef Arc
@@ -77,4 +80,5 @@ void llist_print(Llist list);
 
 
 
-#endif /*TRUNK_CHESSAINT_INCLUDE_LLIST_H_*/
+#endif /* CHESSAINT_INCLUDE_LLIST_H_ */
+

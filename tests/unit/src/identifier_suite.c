@@ -3,32 +3,16 @@
 #include "CUnit/Basic.h"
 #include "include/identifier.h"
 
-
-
-/* The suite initialization function.
- * Returns zero on success, non-zero otherwise.
- */
 int init_suite_identifier(void) {
-/* 
- *   if (problem during initialisation)
- *     return -1; // this number can be used to explicit the problem
- */
   return 0;
 }
 
-/* The suite cleanup function.
- * Returns zero on success, non-zero otherwise.
- */
 int clean_suite_identifier(void) {
-/* 
- *   if (problem during cleaning)
- *     return -1; // this number can be used to explicit the problem
- */
   return 0;
 }
 
-void test_stack_exchange(void) {
-  CU_ASSERT_EQUAL(1234, stack_exchange(1, 2, 3, 4));
+void test_stack_contract(void) {
+  CU_ASSERT_EQUAL(1234, stack_contract(1, 2, 3, 4));
 }
 
 void test_stack_init(void) {
@@ -164,3 +148,4 @@ void test_identifier_to_stack(void) {
 
   CU_ASSERT_FALSE(mpz_cmp_ui(stack, 12345678));
 }
+

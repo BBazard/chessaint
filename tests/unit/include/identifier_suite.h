@@ -9,7 +9,7 @@
 int init_suite_identifier(void);
 int clean_suite_identifier(void);
 
-void test_stack_exchange(void);
+void test_stack_contract(void);
 
 void test_stack_init(void);
 void test_stack_pop(void);
@@ -26,3 +26,4 @@ void test_identifier_get_fullmove(void);
 void test_identifier_to_stack(void);
 
 #endif /* TESTS_UNIT_INCLUDE_IDENTIFIER_SUITE_H_ */
+

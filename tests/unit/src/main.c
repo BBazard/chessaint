@@ -12,8 +12,8 @@ int add_llist_suite(CU_pSuite pSuite_llist);
 int add_heuristic_suite(CU_pSuite pSuite_heuristic);
 int add_identifier_suite(CU_pSuite pSuite_identifier);
 int add_graph_suite(CU_pSuite pSuite_graph);
-int add_concatenate_suite(CU_pSuite pSuite_contenate);
 int add_uci_suite(CU_pSuite pSuite_uci);
+int add_astar_suite(CU_pSuite pSuite_astar);
 
 int main() {
   /* initialize the CUnit test registry */
@@ -26,8 +26,8 @@ int main() {
   CU_pSuite pSuite_heuristic = NULL;
   CU_pSuite pSuite_identifier = NULL;
   CU_pSuite pSuite_graph = NULL;
-  CU_pSuite pSuite_concatenate = NULL;
   CU_pSuite pSuite_uci = NULL;
+  CU_pSuite pSuite_astar = NULL;
 
   /* add the suites to the registry */
   add_chessboard_suite(pSuite_chessboard);
@@ -35,8 +35,8 @@ int main() {
   add_heuristic_suite(pSuite_heuristic);
   add_identifier_suite(pSuite_identifier);
   add_graph_suite(pSuite_graph);
-  add_concatenate_suite(pSuite_concatenate);
   add_uci_suite(pSuite_uci);
+  add_astar_suite(pSuite_astar);
 
   /* Run all tests using the CUnit Basic interface */
   CU_basic_set_mode(CU_BRM_VERBOSE);

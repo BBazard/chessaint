@@ -1,16 +1,12 @@
 /*This file is part of the ChessAInt project 2015*/
 /**
- *  @file chessboard.c
- *  @brief chessboard handling functions
+ *  @file
  *
  *  This files implements chessboard handling functions
  *  or placing pieces in a given position
- *
  */
 
-
 #include "include/chessboard.h"
-
 
 /**
  * @todo need to init in a function
@@ -43,12 +39,9 @@ Piece piecesToInit[ROWCOL_NB][ROWCOL_NB] = {
  *  @brief Put a board to the initial position
  *  @param[in,out] Board pointer on the board to initialize
  */
-
 void initAGame(Board *game) {
-  int i, j;
-
-  for (i = 0 ; i <= ROWCOL_NB - 1 ; ++i) {
-    for (j = 0; j <= ROWCOL_NB - 1 ; ++j) {
+  for (int i = 0; i < ROWCOL_NB; i++) {
+    for (int j = 0; j < ROWCOL_NB; j++) {
       game->square[i][j].color = colorToInit[j][i];
       game->square[i][j].piece = piecesToInit[j][i];
     }
@@ -71,199 +64,124 @@ void initAGame(Board *game) {
  *  @param[in] char *fen : the fen string
  *  @param[in,out] Board *game: the board to put in a certain position
  *
- *  @bug : i think the bug is : if no sqaure en passant, the end of the
+ *  @bug : i think the bug is : if no square en passant, the end of the
  *    string is badly parsed. I'll check that -hugo
  *
  *  Parsing function
  */
-
-
 void fenToBoard(char *fen, Board *game) {
-  int i = 0;
-  int j = 0;
-  int k = 0;
-  int m = 7;
-  char temp[3];
-  for (i = 0 ; i < 4 ; ++i) {
+  for (int i = 0; i < 4; ++i) {
     game->availableCastlings[i] = 0;
   }
-  i = 0;
 
-  while (fen[i] != ' ') {
-    if (fen[i] == '/') {
-      ++i;
-      --m;
-      j = 0;
+  int idx = 0;
+  int x = 0;
+  int y = 7;
+  int k = 0;
+
+  while (fen[idx] != ' ') {
+    if (fen[idx] == '/') {
+      ++idx;
+      --y;
+      x = 0;
     } else {
-      if (isalpha(fen[i])) {
-        switch (fen[i]) {
-          case 'P':
-            game->square[j][m].color = white;
-            game->square[j][m].piece = pawn;
-            break;
-          case 'p':
-            game->square[j][m].color = black;
-            game->square[j][m].piece = pawn;
-            break;
-          case 'B':
-            game->square[j][m].color = white;
-            game->square[j][m].piece = bishop;
-            break;
-          case 'b':
-            game->square[j][m].color = black;
-            game->square[j][m].piece = bishop;
-            break;
-          case 'N':
-            game->square[j][m].color = white;
-            game->square[j][m].piece = knight;
-            break;
-          case 'n':
-            game->square[j][m].color = black;
-            game->square[j][m].piece = knight;
-            break;
-          case 'R':
-            game->square[j][m].color = white;
-            game->square[j][m].piece = rook;
-            break;
-          case 'r':
-            game->square[j][m].color = black;
-            game->square[j][m].piece = rook;
-            break;
-          case 'Q':
-            game->square[j][m].color = white;
-            game->square[j][m].piece = queen;
-            break;
-          case 'q':
-            game->square[j][m].color = black;
-            game->square[j][m].piece = queen;
-            break;
-          case 'K':
-            game->square[j][m].color = white;
-            game->square[j][m].piece = king;
-            break;
-          case 'k':
-            game->square[j][m].color = black;
-            game->square[j][m].piece = king;
-            break;
-        }
-      ++j;
+      if (isalpha(fen[idx])) {
+        if (islower(fen[idx]))
+          game->square[x][y].color = black;
+        else
+          game->square[x][y].color = white;
+
+        game->square[x][y].piece = charToPiece(fen[idx]);
+
+      ++x;
       } else {
-        for (k=1 ; k <= atoi(&fen[i]) ; ++k) {
-          game->square[j][m].piece = empty;
-          game->square[j][m].color = neutral;
-          ++j;
+        for (int i = 0; i < atoi(&fen[idx]); ++i) {
+          game->square[x][y].piece = empty;
+          game->square[x][y].color = neutral;
+          ++x;
         }
       }
-      ++i;
+      ++idx;
     }
   }
 
-  ++i; /* let's go to the next field */
+  ++idx; /* let's go to the next field */
 
-  while (fen[i] != ' ') {
-    if (fen[i] == 'w') {
+  while (fen[idx] != ' ') {
+    if (fen[idx] == 'w') {
       game->activeColor = white;
     } else {
       game->activeColor = black;
     }
-    ++i;
+    ++idx;
   }
 
-  ++i; /* To the next field of the fen string */
+  ++idx; /* To the next field of the fen string */
 
-  while (fen[i] != ' ') {
-    if (fen[i] == 'K') {
+  while (fen[idx] != ' ') {
+    if (fen[idx] == 'K') {
       game->availableCastlings[0] = 1;
     }
-    if (fen[i] == 'k') {
+    if (fen[idx] == 'k') {
       game->availableCastlings[2] = 1;
     }
-    if (fen[i] == 'Q') {
+    if (fen[idx] == 'Q') {
       game->availableCastlings[1] = 1;
     }
-    if (fen[i] == 'q') {
+    if (fen[idx] == 'q') {
       game->availableCastlings[3] = 1;
     }
-    ++i;
+    ++idx;
   }
 
-  ++i; /* To the next field of the fen string */
+  ++idx; /* To the next field of the fen string */
 
-  while (fen[i] != ' ') {
-    if (fen[i] == '-') {
+  while (fen[idx] != ' ') {
+    if (fen[idx] == '-') {
       game->enPassant.column = -1;
       game->enPassant.line = -1;
       break;
     } else {
-        switch (fen[i]) {
-          case 'a':
-            game->enPassant.column = 0;
-            break;
-          case 'b':
-            game->enPassant.column = 1;
-            break;
-          case 'c':
-            game->enPassant.column = 2;
-            break;
-          case 'd':
-            game->enPassant.column = 3;
-            break;
-          case 'e':
-            game->enPassant.column = 4;
-            break;
-          case 'f':
-            game->enPassant.column = 5;
-            break;
-          case 'g':
-            game->enPassant.column = 6;
-            break;
-          case 'h':
-            game->enPassant.column = 7;
-            break;
-        }
-      ++i;
-      game->enPassant.line = atoi(&fen[i]) - 1;
+      game->enPassant.column = fen[idx] - 'a';
+      ++idx;
+      game->enPassant.line = atoi(&fen[idx]) - 1;
     }
-    ++i;
+    ++idx;
   }
-  ++i;
+  ++idx;
   k = 0;
-  while (fen[i+k] != ' ') {
+  while (fen[idx+k] != ' ') {
     ++k;
   }
-  memcpy(temp, &fen[i], k);
+  char temp[256] = "";
+  memcpy(temp, &fen[idx], k*sizeof(char));
   game->halfMoveClock = atoi(temp);
 
-  i += k;
-  ++i;
+  idx += k;
+  ++idx;
   k = 0;
-  while (fen[i+k] != '\0') {
+  while (fen[idx+k] != '\0') {
     ++k;
   }
-  memcpy(temp, &fen[i], k);
+  memcpy(temp, &fen[idx], k*sizeof(char));
   game->fullMoveNb = atoi(temp);
 }
-
 
 /**
  *  @fn void printBoardAndData(Board game)
  *  @brief Print the board and game data in a formatted way
- *  @param[in] baord game: the board (and its data of its structure) to display
+ *  @param[in] board game: the board (and its data of its structure) to display
  *  @note : Never forget that a1 <-> (0,0) so this printing is kinda flipped
  *  @bug : Previous note is FALSE actually it works only for a1, b2 etc since 
  *  board is symmetrized ( ie e2 is not (4,1), but (1,4) with current code)
  */
-
-
-
 void printBoardAndData(Board game) {
-  int i, j;
   printf("\n\n");
 
   printf("8  ");
-  for (j = 7 ; j >= 0 ; --j) {
+  for (int j = 7 ; j >= 0 ; --j) {
     printf("|");
-    for (i = 0 ; i <= (ROWCOL_NB - 1) ; ++i) {
+    for (int i = 0 ; i < ROWCOL_NB ; ++i) {
       switch (game.square[i][j].piece) {
         case empty:
           printf(" ");
@@ -312,7 +230,6 @@ void printBoardAndData(Board game) {
   }
   printf("\n");
   printf("    a b c d e f g h\n\n");
-
 
   /* Print the color array
   printf("8  ");
@@ -380,3 +297,21 @@ void printBoardAndData(Board game) {
   printf("Number of total moves (starting from 1) : %d\n",
     game.fullMoveNb);
 }
+
+enum Piece charToPiece(char c) {
+  c = toupper(c);
+  if (c == 'P')
+    return pawn;
+  if (c == 'B')
+    return bishop;
+  if (c == 'N')
+    return knight;
+  if (c == 'R')
+    return rook;
+  if (c == 'Q')
+    return queen;
+  if (c ==  'K')
+    return king;
+  return empty;
+}
+

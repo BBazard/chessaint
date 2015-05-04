@@ -1,7 +1,6 @@
-/*This file is part of the ChessAInt project 2015*/
+/* This file is part of the ChessAInt project 2015 */
 /**
- *  @file heuristic.c
- *  @brief heuristic functions
+ *  @file
  *
  *  This file implements functions to compute the score of a position of
  *  the board at a given time, in order to quantify the advantage of one
@@ -14,7 +13,7 @@
 
 /**
  *  @fn Color is_mate(Board board)
- *  @brief Check if there is mat
+ *  @brief Check if there is mate
  *  @param[in] board The board
  *  @return white/black If the specified king is mate
  *  @return neutral If no king is mate
@@ -73,14 +72,18 @@ void update_threat(int index[][ROWCOL_NB], Color threat, Board board) {
   graph.current_node = board;
   graph.current_node.activeColor = threat;
 
-  for (p1 = 0; p1 < ROWCOL_NB; ++p1)
-    for (p2 = 0; p2 < ROWCOL_NB; ++p2)
-      index[p1][p2] = 0;
+  for (int i = 0; i < ROWCOL_NB; ++i)
+    for (int j = 0; j < ROWCOL_NB; ++j)
+      index[i][j] = 0;
+
+  // todo initialise these values
+  board.enPassant.line = 1234;
+  board.enPassant.column = 132;
 
   movesGenerator(&graph);
 
   while ((poped = stack_pop(&(graph.current_moves))) != -1) {
-    stack_revexchange(&p1, &p2, &p3, &p4, poped);
+    stack_expand(&p1, &p2, &p3, &p4, poped);
     if (board.square[p3][p4].color == (threat + 1) % 2)
       index[p3][p4] += 1;
   }
@@ -95,14 +98,14 @@ void update_protection(int threat[][ROWCOL_NB], int index[][ROWCOL_NB],
   graph.current_node = board;
   graph.current_node.activeColor = protection;
 
-  for (p1 = 0; p1 < ROWCOL_NB; ++p1) {
-    for (p2 = 0; p2 < ROWCOL_NB; ++p2) {
-      if (graph.current_node.square[p1][p2].color == protection &&
-          threat[p1][p2] > 0) {
-        index[p1][p2] = 0;
-        graph.current_node.square[p1][p2].color = (protection + 1) % 2;
+  for (int i = 0; i < ROWCOL_NB; ++i) {
+    for (int j = 0; j < ROWCOL_NB; ++j) {
+      Color *color = &(graph.current_node.square[i][j].color);
+      if (*color == protection && threat[i][j] > 0) {
+        index[i][j] = 0;
+        *color = (protection + 1) % 2;
       } else {
-        index[p1][p2] = -1;
+        index[i][j] = -1;
       }
     }
   }
@@ -110,14 +113,12 @@ void update_protection(int threat[][ROWCOL_NB], int index[][ROWCOL_NB],
   movesGenerator(&graph);
 
   while ((poped = stack_pop(&(graph.current_moves))) != -1) {
-    stack_revexchange(&p1, &p2, &p3, &p4, poped);
+    stack_expand(&p1, &p2, &p3, &p4, poped);
     if (index[p3][p4] >= 0)
       index[p3][p4] += 1;
   }
 }
-
-/**
- *  @fn int heuristic(Board board)
+/** @fn int heuristic(Board board)
  *  @brief Returns a score for a given board
  *  @param[in] board The representation of the board
  *  @return [|-500;500|] The value of the computed score if working well
@@ -134,7 +135,6 @@ void update_protection(int threat[][ROWCOL_NB], int index[][ROWCOL_NB],
 #define check_mate 0
 
 int heuristic(Board board) {
-  int i, j;
   float score = 0;
   float scoreindex[ROWCOL_NB][ROWCOL_NB];
   int white_thrIdx[ROWCOL_NB][ROWCOL_NB];
@@ -142,7 +142,7 @@ int heuristic(Board board) {
   int white_proIdx[ROWCOL_NB][ROWCOL_NB];
   int black_proIdx[ROWCOL_NB][ROWCOL_NB];
 
-  /* Returns 500 or -500 directly if one of the kings is mat */
+  /* Returns 500 or -500 directly if one of the kings is mate */
   if (is_mate(board) != neutral && check_mate) {
     if (is_mate(board) == board.activeColor)
       return -500;
@@ -157,8 +157,8 @@ int heuristic(Board board) {
   update_protection(white_thrIdx, black_proIdx, black, board);
 
   /* Computes the score for each square of the board */
-  for (i = 0; i < 8; ++i) {
-    for (j = 0; j < 8; ++j) {
+  for (int i = 0; i < 8; ++i) {
+    for (int j = 0; j < 8; ++j) {
       switch (board.square[i][j].piece) {
       case empty:
         scoreindex[i][j] = 0;
@@ -200,12 +200,11 @@ int heuristic(Board board) {
     }
   }
 
-
-
   /* Sums all the scores to obtain the score of the board */
-  for (i = 0; i < 8; ++i)
-    for (j = 0; j < 8; ++j)
+  for (int i = 0; i < 8; ++i)
+    for (int j = 0; j < 8; ++j)
       score += scoreindex[i][j];
 
   return score;
 }
+

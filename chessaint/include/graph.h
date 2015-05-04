@@ -43,6 +43,7 @@ void movesGenerator(Graph *graph);
 
 void pawnMoveGeneratorCapture(Stack *moves, int squareX, int squareY,
                        Color activeColor, Board board);
+
 void pawnMoveGeneratorNoCapture(Stack *moves, int squareX, int squareY,
                        Color activeColor, Board board);
 

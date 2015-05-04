@@ -16,4 +16,5 @@ void next_gen(Graph *graph);
 
 int get_halfMoveClock(Board board);
 int get_castles(Board board);
+
 #endif /* CHESSAINT_INCLUDE_ASTAR_H_ */

@@ -94,7 +94,7 @@ void stack_push(Stack *s, int item) {
   mpz_mul_si(*s, tmp, MAX_PAIRS);
 
   mpz_set(tmp, *s);
-  mpz_add_ui(*s, tmp, (unsigned long int) item);
+  mpz_add_ui(*s, tmp, item);
   mpz_clear(tmp);
 }
 

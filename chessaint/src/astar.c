@@ -19,6 +19,7 @@
  *  son arc.
  *
  */
+
 void move_to_node(int move, Arc father, Arc *current) {
 }
 
@@ -55,4 +56,3 @@ int get_castles(Board board) {
   }
   return atoi(ans);
 }
-

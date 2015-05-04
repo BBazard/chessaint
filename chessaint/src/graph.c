@@ -99,6 +99,7 @@ void movesGenerator(Graph *graph) {
  *  This function gives all move for a colored pawn except the chess
  *  position handling.
  */
+
 void pawnMoveGeneratorCapture(Stack *moves,
                      int squareX, int squareY,
                      Color activeColor, Board board) {
@@ -158,6 +159,7 @@ void pawnMoveGeneratorCapture(Stack *moves,
     }
   }
 }
+
 
 /**
  *  @fn void pawnMoveGeneratorNoCapture(Stack *moves, int squareX, int squareY,
@@ -612,6 +614,7 @@ void update_board(Arc father, Graph *graph) {
   graph->current_node.halfMoveClock = identifier_get_halfmove(father.data);
   graph->current_node.fullMoveNb = identifier_get_fullmove(father.data);
 }
+
 /**
  *  @fn void copy_board(Board *src, Board *dest)
  *  @brief copies element by element a source board in a dest board
@@ -632,4 +635,3 @@ void copy_board(Board *src, Board *dest) {
   dest->halfMoveClock = src->halfMoveClock;
   dest->fullMoveNb = src->fullMoveNb;
 }
-

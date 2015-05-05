@@ -3,26 +3,11 @@
 #include "CUnit/Basic.h"
 #include "include/astar.h"
 
-/* The suite initialization function.
- * Returns zero on success, non-zero otherwise.
- */
-
 int init_suite_astar(void) {
-/*
- *   if (problem during initialisation)
- *     return -1; // this number can be used to explicit the problem
- */
   return 0;
 }
 
-/* The suite cleanup function.
- * Returns zero on success, non-zero otherwise.
- */
 int clean_suite_astar(void) {
-/*
- *   if (problem during cleaning)
- *     return -1; // this number can be used to explicit the problem
- */
   return 0;
 }
 
@@ -32,7 +17,6 @@ void test_move_to_node(void) {
   Arc son;
   Arc test;
   Graph graph;
-
 
   graph_init(&graph);
   initAGame(&graph.root);
@@ -55,4 +39,6 @@ void test_move_to_node(void) {
   move_to_node(move, father, &son);
 
   CU_ASSERT_EQUAL(son.score, test.score)
+  graph_free(&graph);
 }
+

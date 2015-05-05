@@ -6,7 +6,6 @@
  * @todo parse uci strings
  */
 
-#include <time.h>
 #include "include/loopuci.h"
 #include "include/uci.h"
 #include "include/graph.h"
@@ -77,7 +76,6 @@ int uciLoop(FILE* log, char* buffer, Graph *graph) {
       send(log, bestmoveString);
 
   } else if (strcmp(firstWord, "quit\n") == 0) {
-      graph_free(graph);
       return 0;
   } else {}
   return 1;
@@ -88,7 +86,6 @@ int uciLoop(FILE* log, char* buffer, Graph *graph) {
  * generateMoves
  */
 int pickBestMove(Stack *current_moves) {
-    srand(time(NULL));
     int move = 0;
     for (int i = 0, rd = rand() % 10 ; i < rd + 1 ; ++i) // NOLINT
       move = stack_pop(current_moves);

@@ -26,6 +26,7 @@ void move_to_node(int move, Arc father, Arc *current) {
   stack_init(&tmp);
   identifier_to_stack(father.data, &tmp);
   stack_push(&tmp, move);
+  stack_free(&tmp);
 }
 
 /**

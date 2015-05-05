@@ -99,7 +99,6 @@ void movesGenerator(Graph *graph) {
  *  This function gives all move for a colored pawn except the chess
  *  position handling.
  */
-
 void pawnMoveGeneratorCapture(Stack *moves,
                      int squareX, int squareY,
                      Color activeColor, Board board) {
@@ -159,7 +158,6 @@ void pawnMoveGeneratorCapture(Stack *moves,
     }
   }
 }
-
 
 /**
  *  @fn void pawnMoveGeneratorNoCapture(Stack *moves, int squareX, int squareY,

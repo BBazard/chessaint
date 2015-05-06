@@ -19,7 +19,18 @@
 
 void arc_init(Arc *arc) {
   arc->score = 0;
-  mpz_init(arc->data);
+  stack_init(&(arc->data));
+}
+
+/**
+ *  @fn void arc_free(Arc *arc)
+ *  @brief Free an Arc
+ *  @param[out] arc The arc to free
+ *
+ */
+
+void arc_free(Arc *arc) {
+  stack_free(&(arc->data));
 }
 
 /**
@@ -27,11 +38,18 @@ void arc_init(Arc *arc) {
  *  @brief Adds an Arc a specified Llist
  *  @param[in] newvalue The Arc value to add
  *  @param[in,out] list Pointer on the targeted list, must be NULL if the list is empty
+ *
+ *  @bug Should the function init the newelement->value arc or not ? 
+ *  As newvalue is an arc yet initialized before adding it into the list
+ *  if so need to free it in llist_suppr ?
+ *
  *  The *Llist can be Null pointer, in this case, the list take newvalue as the first element
+ *
  */
 
 void llist_add(Arc newvalue, Llist *list) {
   Element *newelement = malloc(sizeof(Element));
+  /* arc_init(&(newelement->value)); look at bug*/
   newelement->value = newvalue;
   newelement->next = NULL;
 
@@ -70,6 +88,7 @@ int llist_suppr(Llist *list) {
       return 1;
   } else {
     tmp = **list;
+    /* arc_free(&((*list)->value)); look at llist_add function*/
     free(*list);
     *list = tmp.next;
 

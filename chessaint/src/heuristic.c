@@ -42,12 +42,19 @@ Color is_mate(Board board) {
       }
     }
   }
-  if (stack_pop(&white_king_moves) == -1)
+  if (stack_pop(&white_king_moves) == -1) {
+    stack_free(&white_king_moves);
+    stack_free(&black_king_moves);
     return white;
-  else if (stack_pop(&black_king_moves) == -1)
+  } else if (stack_pop(&black_king_moves) == -1) {
+    stack_free(&white_king_moves);
+    stack_free(&black_king_moves);
     return black;
-  else
+  } else {
+    stack_free(&white_king_moves);
+    stack_free(&black_king_moves);
     return neutral;
+  }
 }
 
 /**
@@ -87,6 +94,7 @@ void update_threat(int index[][ROWCOL_NB], Color threat, Board board) {
     if (board.square[p3][p4].color == (threat + 1) % 2)
       index[p3][p4] += 1;
   }
+  graph_free(&graph);
 }
 
 void update_protection(int threat[][ROWCOL_NB], int index[][ROWCOL_NB],
@@ -117,6 +125,7 @@ void update_protection(int threat[][ROWCOL_NB], int index[][ROWCOL_NB],
     if (index[p3][p4] >= 0)
       index[p3][p4] += 1;
   }
+  graph_free(&graph);
 }
 /** @fn int heuristic(Board board)
  *  @brief Returns a score for a given board

@@ -629,6 +629,7 @@ void update_moves(Stack *s, Board *current) {
  */
 void update_board(Arc father, Graph *graph) {
   Stack stack;
+  stack_init(&stack);
   identifier_to_stack(father.data, &stack);
   update_moves(&stack, &(graph->current_node));
   graph->current_node.activeColor = !identifier_is_white(father.data);
@@ -640,6 +641,7 @@ void update_board(Arc father, Graph *graph) {
   }
   graph->current_node.halfMoveClock = identifier_get_halfmove(father.data);
   graph->current_node.fullMoveNb = identifier_get_fullmove(father.data);
+  stack_free(&stack);
 }
 
 /**

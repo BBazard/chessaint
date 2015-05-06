@@ -301,7 +301,7 @@ int identifier_to_stack(Identifier id, Stack *stack) {
 
 void stack_to_identifier(Identifier *id, Stack stack, int status) {
   Identifier tmp;
-  mpz_inits(*id, tmp, NULL);
+  mpz_init(tmp);
   mpz_mul_ui(*id, stack, 1000000);
   mpz_set(tmp, *id);
   mpz_add_ui(*id, tmp, status);

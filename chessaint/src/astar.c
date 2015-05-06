@@ -27,9 +27,9 @@ void move_to_node(int move, Arc father, Arc *current) {
   int father_stat = identifier_to_stack(father.data, &tmp);
   stack_push(&tmp, move);
   /* father_stat ^= 0b100000; not working, father not taken as a binary */
-  
+
   stack_to_identifier(&(current->data), tmp, 0);
-  
+
 
 
   stack_free(&tmp);

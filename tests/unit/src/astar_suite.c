@@ -38,7 +38,12 @@ void test_move_to_node(void) {
 
   move_to_node(move, father, &son);
 
-  CU_ASSERT_EQUAL(son.score, test.score)
+  CU_ASSERT_EQUAL(son.score, test.score);
+
+  arc_free(&father);
+  arc_free(&son);
+  arc_free(&test);
+
   graph_free(&graph);
 }
 

@@ -231,46 +231,6 @@ void printBoardAndData(Board game) {
   printf("\n");
   printf("    a b c d e f g h\n\n");
 
-  /* Print the color array
-  printf("8  ");
-  for (j = 7 ; j >= 0 ; --j) {
-    printf("|");
-    for (i = 0 ; i <= (ROWCOL_NB - 1) ; ++i) {
-      switch (game.square[i][j].color) {
-        case white:
-          printf("0");
-          break;
-        case black:
-          printf("1");
-          break;
-        case neutral:
-          printf("2");
-          break;
-      }
-      printf("|");
-    }
-    if (j != 0)
-      printf("\n%d  ", i);
-  }
-  printf("\n");
-  printf("    a b c d e f g h\n\n"); 
-  */ 
-  /* Print the coords array 
-  printf("8  ");
-  for (i = 0 ; i <= (ROWCOL_NB - 1) ; ++i) {
-    printf("|");
-    for (j = 0 ; j <= (ROWCOL_NB - 1) ; ++j) {
-      printf("(%d,%d)",7 - i,j );
-      printf("|");
-    }
-    if (i != 7)
-      printf("\n%d  ", 7 - i);
-  }
-  printf("\n");
-  printf("    a b c d e f g h\n\n"); */
-
-  /* Text data */
-
   if (game.activeColor == white)
     printf("Next color to play : white\n");
   else

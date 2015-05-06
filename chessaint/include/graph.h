@@ -39,45 +39,54 @@ struct Graph {
 void graph_init(Graph *graph);
 void graph_free(Graph *graph);
 
-void movesGenerator(Graph *graph);
-
-void pawnMoveGeneratorCapture(Stack *moves, int squareX, int squareY,
-                       Color activeColor, Board board);
-
-void pawnMoveGeneratorNoCapture(Stack *moves, int squareX, int squareY,
-                       Color activeColor, Board board);
-
-void bishopMoveGenerator(Stack *moves, int squareX, int squareY,
-                         Color activeColor, Board board);
-
-void rookMoveGenerator(Stack *moves, int squareX, int squareY,
-                       Color activeColor, Board board);
-
-void bishopAndRook4DirectionsGen(int incX, int incY, Stack *moves, int squareX,
-                                 int squareY, Color activeColor, Board board);
-
-void queenMoveGenerator(Stack *moves, int squareX, int squareY,
-                        Color activeColor, Board board);
-
-void knightMoveGenerator(Stack *moves, int squareX, int squareY,
-                         Color activeColor, Board board);
-
-void kingMoveGenerator(Stack *moves, int squareX, int squareY,
-                       Color activeColor, Board board);
-
-void knightAndKing4DirectionsGen(int incX, int incY, Stack *moves, int squareX,
-                                 int squareY, Color activeColor, Board board);
-
-void castlesMoveGenerator(int incX, int squareX, int squareY,
-                          Stack *moves, Board board);
-
-bool isInBoardSquare(int squareX, int squareY);
-
 void play_move(int move, Board *board);
 
 void update_board(Arc father, Graph *graph);
-
 void copy_board(Board *src, Board *dest);
+
+
+
+
+void findPinnings(Board *board, Color activeColor, bool pinned[8][8]);
+void findKingThreats(Board *board, Color activeColor, bool threats[8][8]);
+
+void movesGenerator(Graph *graph);
+
+  void pawnMoveGeneratorCapture(Stack *moves, int squareX, int squareY,
+                         Color activeColor, Board board);
+
+  void pawnMoveGeneratorNoCapture(Stack *moves, int squareX, int squareY,
+                         Color activeColor, Board board);
+
+  void bishopMoveGenerator(Stack *moves, int squareX, int squareY,
+                           Color activeColor, Board board);
+
+  void rookMoveGenerator(Stack *moves, int squareX, int squareY,
+                         Color activeColor, Board board);
+
+  void bishopAndRook4DirectionsGen(int incX, int incY, Stack *moves,
+                                   int squareX, int squareY,
+                                   Color activeColor, Board board);
+
+  void queenMoveGenerator(Stack *moves, int squareX, int squareY,
+                          Color activeColor, Board board);
+
+  void knightMoveGenerator(Stack *moves, int squareX, int squareY,
+                           Color activeColor, Board board);
+
+  void kingMoveGenerator(Stack *moves, int squareX, int squareY,
+                         Color activeColor, Board board);
+
+  void knightAndKing4DirectionsGen(int incX, int incY, Stack *moves,
+                                   int squareX, int squareY,
+                                   Color activeColor, Board board);
+
+  void castlesMoveGenerator(int incX, int squareX, int squareY,
+                          Stack *moves, Board board);
+
+  bool isInBoardSquare(int squareX, int squareY);
+
+
 
 #endif /* CHESSAINT_INCLUDE_GRAPH_H_ */
 

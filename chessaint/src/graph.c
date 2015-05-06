@@ -40,43 +40,32 @@ void graph_free(Graph *graph) {
  *
  */
 void movesGenerator(Graph *graph) {
+  Board board = graph->current_node;
+  Stack *stack = &(graph->current_moves);
+
   for (int j = 0 ; j < ROWCOL_NB ; ++j) {
     for (int i = 0 ; i < ROWCOL_NB ; ++i) {
-      if (graph->current_node.square[i][j].color ==
-          graph->current_node.activeColor) {
-        switch (graph->current_node.square[i][j].piece) {
+      if ((board.square[i][j].color == board.activeColor) &&
+          1 /** todo the piece is not pinned */ ) {
+        switch (board.square[i][j].piece) {
         case pawn:
-          pawnMoveGeneratorCapture(&(graph->current_moves), i, j,
-                            graph->current_node.activeColor,
-                            graph->current_node);
-          pawnMoveGeneratorNoCapture(&(graph->current_moves), i, j,
-                            graph->current_node.activeColor,
-                            graph->current_node);
+          pawnMoveGeneratorCapture(stack, i, j, board.activeColor, board);
+          pawnMoveGeneratorNoCapture(stack, i, j, board.activeColor, board);
           break;
         case bishop:
-          bishopMoveGenerator(&(graph->current_moves), i, j,
-                              graph->current_node.activeColor,
-                              graph->current_node);
+          bishopMoveGenerator(stack, i, j, board.activeColor, board);
           break;
         case knight:
-          knightMoveGenerator(&(graph->current_moves), i, j,
-                              graph->current_node.activeColor,
-                              graph->current_node);
+          knightMoveGenerator(stack, i, j, board.activeColor, board);
           break;
         case rook:
-          rookMoveGenerator(&(graph->current_moves), i,  j,
-                            graph->current_node.activeColor,
-                            graph->current_node);
+          rookMoveGenerator(stack, i,  j, board.activeColor, board);
           break;
         case queen:
-          queenMoveGenerator(&(graph->current_moves), i, j,
-                             graph->current_node.activeColor,
-                             graph->current_node);
+          queenMoveGenerator(stack, i, j, board.activeColor, board);
           break;
         case king:
-          kingMoveGenerator(&(graph->current_moves), i,  j,
-                            graph->current_node.activeColor,
-                            graph->current_node);
+          kingMoveGenerator(stack, i,  j, board.activeColor, board);
           break;
         case empty:
           break;
@@ -102,61 +91,47 @@ void movesGenerator(Graph *graph) {
 void pawnMoveGeneratorCapture(Stack *moves,
                      int squareX, int squareY,
                      Color activeColor, Board board) {
-  int nextSquareX, nextSquareY;
+  int X, Y;
+  Color adverseColor;
   if (activeColor == white) {
-    nextSquareY = squareY + 1;
+    adverseColor = black;
+    Y = squareY + 1;
   } else {
-    nextSquareY = squareY - 1;
+    adverseColor = white;
+    Y = squareY - 1;
   }
 
   /* The classic capture of pieces towards left of the board */
-  nextSquareX = squareX + 1;
-  if (isInBoardSquare(nextSquareX, nextSquareY)) {
-    if ((board.square[nextSquareX][nextSquareY].color != neutral) &&
-        (board.square[nextSquareX][nextSquareY].color != activeColor)) {
-   /*
-      printf("(%d,%d)->(%d,%d)\n",squareX,squareY,nextSquareX,nextSquareY);
-  */
-      stack_push(moves, stack_contract(squareX, squareY,
-                                       nextSquareX, nextSquareY));
-    }
+  X = squareX + 1;
+  if (isInBoardSquare(X, Y)) {
+    if (board.square[X][Y].color == adverseColor)
+      stack_push(moves, stack_contract(squareX, squareY, X, Y));
   }
 
   /* The classic capture of pieces towards right of the board */
-  nextSquareX = squareX - 1;
-  if (isInBoardSquare(nextSquareX, nextSquareY)) {
-    if ((board.square[nextSquareX][nextSquareY].color != neutral) &&
-        (board.square[nextSquareX][nextSquareY].color != activeColor)) {
- /*
-      printf("(%d,%d)->(%d,%d)\n",squareX,squareY,nextSquareX,nextSquareY);
-*/
-      stack_push(moves, stack_contract(squareX, squareY,
-                                       nextSquareX, nextSquareY));
-    }
+  X = squareX - 1;
+  if (isInBoardSquare(X, Y)) {
+    if (board.square[X][Y].color == adverseColor)
+      stack_push(moves, stack_contract(squareX, squareY, X, Y));
   }
 
-  /* The capture en passant */
+  /** @todo en passant 
+   * The capture en passant
+   *
   if (isInBoardSquare(board.enPassant.line,
                       board.enPassant.column)) {
-    nextSquareX = squareX + 1;
-    if ((nextSquareY == board.enPassant.line) &&
-        (nextSquareX == board.enPassant.column)) {
-    /*
-      printf("(%d,%d)->(%d,%d)\n",squareX,squareY,nextSquareX,nextSquareY);
-    */
-      stack_push(moves, stack_contract(squareX, squareY,
-                                       nextSquareX, nextSquareY));
+    X = squareX + 1;
+    if ((Y == board.enPassant.line) &&
+        (X == board.enPassant.column)) {
+      stack_push(moves, stack_contract(squareX, squareY, X, Y));
     }
-    nextSquareX = squareX - 1;
-    if ((nextSquareY == board.enPassant.line) &&
-        (nextSquareX == board.enPassant.column)) {
-    /*
-      printf("(%d,%d)->(%d,%d)\n",squareX,squareY,nextSquareX,nextSquareY);
-    */
-      stack_push(moves, stack_contract(squareX, squareY,
-                                       nextSquareX, nextSquareY));
+    X = squareX - 1;
+    if ((Y == board.enPassant.line) &&
+        (X == board.enPassant.column)) {
+      stack_push(moves, stack_contract(squareX, squareY, X, Y));
     }
   }
+  */
 }
 
 /**
@@ -173,53 +148,40 @@ void pawnMoveGeneratorCapture(Stack *moves,
  *  position handling.
  *  @note  Need promotion handling
  */
-void pawnMoveGeneratorNoCapture(Stack *moves,
-                     int squareX, int squareY,
-                     Color activeColor, Board board) {
-  int whiteMove, blackMove;
-  int nextSquareX, nextSquareY;
-  if (activeColor == white) {
-    nextSquareY = squareY + 1;
-  } else {
-    nextSquareY = squareY - 1;
-  }
+void pawnMoveGeneratorNoCapture(Stack *moves, int squareX, int squareY,
+                                Color activeColor, Board board) {
   /* The simple move forward */
-  nextSquareX = squareX;
-  if (isInBoardSquare(nextSquareX, nextSquareY)) {
-    if (board.square[nextSquareX][nextSquareY].color == neutral) {
-    /*
-      printf("(%d,%d)->(%d,%d)\n",squareX,squareY,nextSquareX,nextSquareY);
-    */
-      stack_push(moves, stack_contract(squareX, squareY,
-                                       nextSquareX, nextSquareY));
+  int whiteMove, blackMove;
+  int X = squareX;
+  int Y = squareY;
+  whiteMove = 1;
+  blackMove = -1;
+  if (activeColor == white)
+    Y = squareY + 1;
+  else
+    Y = squareY - 1;
+
+  if (isInBoardSquare(X, Y)) {
+    if (board.square[X][Y].color == neutral) {
+      stack_push(moves, stack_contract(squareX, squareY, X, Y));
     }
   }
 
   /* Pawn moving 2 squares UP only from 2th row for white and 7th for black */
-  whiteMove = 1;
-  blackMove = -1;
   if (
-      ((activeColor == white) &&
+      ((activeColor == white) && (squareY == 1) &&
        (board.square[squareX][squareY + 1 * whiteMove].color == neutral) &&
-       (board.square[squareX][squareY + 2 * whiteMove].color != activeColor) &&
-       (squareY == 1)) ||
-      ((activeColor == black) &&
+       (board.square[squareX][squareY + 2 * whiteMove].color == neutral))
+      ||
+      ((activeColor == black) && (squareY == 6) &&
        (board.square[squareX][squareY + 1 * blackMove].color == neutral) &&
-       (board.square[squareX][squareY + 2 * blackMove].color != activeColor) &&
-       (squareY == 6))
+       (board.square[squareX][squareY + 2 * blackMove].color == neutral)
+       )
       ) {
     if (activeColor == white) {
-     /*
-      printf("(%d,%d)->(%d,%d)\n",squareX, 1, squareX,
-                                       squareY + 2 * whiteMove);
-      */
       stack_push(moves, stack_contract(squareX, 1, squareX,
                                        squareY + 2 * whiteMove));
     } else {
-      /*
-      printf("(%d,%d)->(%d,%d)\n",squareX, 1, squareX,
-                                       squareY + 2 * whiteMove);
-      */
       stack_push(moves, stack_contract(squareX, 6, squareX,
                                        squareY + 2 * blackMove));
     }
@@ -304,32 +266,39 @@ void rookMoveGenerator(Stack *moves, int squareX, int squareY,
  *  those linked with chess position
  */
 void bishopAndRook4DirectionsGen(int incX, int incY, Stack *moves, int squareX,
-                          int squareY, Color activeColor, Board board) {
-  int nextSquareX;
-  int nextSquareY;
+                                 int squareY, Color activeColor, Board board) {
+  int X = squareX;
+  int Y = squareY;
 
-  nextSquareX = squareX + incX;
-  nextSquareY = squareY + incY;
-  while (isInBoardSquare(nextSquareX, nextSquareY)) {
-    /* printf("\n------------\n");
-    printf("Next move :\n");
-    printf("activeColor : %d\n", activeColor );
-    printf("dest color : %d\n", board.square[nextSquareY][nextSquareX].color);
-    */
-    if (board.square[nextSquareX][nextSquareY].color != activeColor) {
-      /* Enable to see moves
-      printf("(%d,%d)->(%d,%d)\n",squareX,squareY,nextSquareX,nextSquareY);*/
-      stack_push(moves, stack_contract(squareX, squareY,
-                                       nextSquareX, nextSquareY));
-      if (board.square[nextSquareX][nextSquareY].color != neutral) {
-        break;
+  X += incX;
+  Y += incY;
+  while ((isInBoardSquare(X, Y) && (board.square[X][Y].color == neutral))) {
+        stack_push(moves, stack_contract(squareX, squareY, X, Y));
+        X += incX;
+        Y += incY;
       }
-    } else {
-      break;
-    }
-    nextSquareX += incX;
-    nextSquareY += incY;
-  }
+
+  if (isInBoardSquare(X, Y) && (board.square[X][Y].color != activeColor))
+    stack_push(moves, stack_contract(squareX, squareY, X, Y));
+}
+
+/**
+ *  find the piece which cannot move
+ *  because of pinnings
+ *
+ *  fill pinned array
+ *
+ */
+void findPinnings(Board *board, Color activeColor, bool pinned[8][8]) {
+}
+
+/**
+ *  find if the square next to the king are threated
+ *  and if the king itself is threated
+ *
+ *  fill threats array
+ */
+void findKingThreats(Board *board, Color activeColor, bool threats[8][8]) {
 }
 
 /**
@@ -527,20 +496,14 @@ void castlesMoveGenerator(int incX, int squareX, int squareY, Stack *moves,
  *  This function gives all legal move for a colored knight or king except
  *  those linked with chess position
  */
-void knightAndKing4DirectionsGen(int incX, int incY, Stack *moves, int squareX,
-                          int squareY, Color activeColor, Board board) {
-  int nextSquareX = squareX + incX;
-  int nextSquareY = squareY + incY;
+void knightAndKing4DirectionsGen(int incX, int incY, Stack *moves,
+                                 int squareX, int squareY,
+                                 Color activeColor, Board board) {
+  int X = squareX + incX;
+  int Y = squareY + incY;
 
-  if (isInBoardSquare(nextSquareX, nextSquareY)) {
-    if (board.square[nextSquareX][nextSquareY].color != activeColor) {
-      /* Enable to see moves :
-      printf("(%d,%d)->(%d,%d)\n",squareX,squareY,nextSquareX,nextSquareY);
-      */
-      stack_push(moves, stack_contract(squareX, squareY,
-                                       nextSquareX, nextSquareY));
-    }
-  }
+  if (isInBoardSquare(X, Y) && (board.square[X][Y].color != activeColor))
+      stack_push(moves, stack_contract(squareX, squareY, X, Y));
 }
 
 /**
@@ -642,3 +605,4 @@ void copy_board(Board *src, Board *dest) {
   dest->halfMoveClock = src->halfMoveClock;
   dest->fullMoveNb = src->fullMoveNb;
 }
+

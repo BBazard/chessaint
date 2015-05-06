@@ -343,7 +343,7 @@ void test_update_board(void) {
   stack_push(&graph.current_moves, 4143);
   stack_push(&graph.current_moves, 4344);
   stack_push(&graph.current_moves, 4445);
-  stack_to_identifier(&father.data, graph.current_moves);
+  stack_to_identifier(&father.data, graph.current_moves, 0);
 
   initAGame(&(graph.root));
   initAGame(&(graph.current_node));

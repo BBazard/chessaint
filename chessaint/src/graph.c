@@ -576,6 +576,26 @@ void play_move(int move, Board *board) {
     board->enPassant.column = 0; /* means there is no enpassant */
   board->fullMoveNb += 1;
 
+  /* Castling */
+  if (board->activeColor == white) {
+    if (a == 7 && b == 0)
+      board->availableCastlings[0] = 0;
+    if (a == 0 && b == 0)
+      board->availableCastlings[1] = 0;
+    if (a == 4 && b == 0) {
+      board->availableCastlings[0] = 0;
+      board->availableCastlings[1] = 0;
+    }
+  } else if (board->activeColor == black) {
+    if (a == 7 && b == 7)
+        board->availableCastlings[2] = 0;
+    if (a == 0 && b == 7)
+      board->availableCastlings[3] = 0;
+    if (a == 4 && b == 7) {
+      board->availableCastlings[2] = 0;
+      board->availableCastlings[3] = 0;
+    }
+  }
   board->square[c][d] = board->square[a][b];
   board->square[a][b].color = neutral;
   board->square[a][b].piece = empty;
@@ -627,6 +647,8 @@ void update_board(Arc father, Graph *graph) {
  *  @brief copies element by element a source board in a dest board
  *  @param[in, out] src the board to copy
  *  @param[in, out] dest the board that receives data
+ *
+ *  @todo DELETE THIS USELESS FUNCTION (equivalent to *dest = *src)
  */
 void copy_board(Board *src, Board *dest) {
   for (int i = 0 ; i < ROWCOL_NB ; ++i) {

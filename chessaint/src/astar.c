@@ -14,8 +14,8 @@
  *  @param[in] move The move to convert
  *  @param[in] father The father of the arc to be
  *  @param[out] current The pointer in which to save created arc
- *  the arc MUST be initialized before 
- * 
+ *  the arc MUST be initialized before
+ *
  *  This function computes the new value of score and data of a
  *  son arc.
  *
@@ -24,8 +24,14 @@
 void move_to_node(int move, Arc father, Arc *current) {
   Stack tmp;
   stack_init(&tmp);
-  identifier_to_stack(father.data, &tmp);
+  int father_stat = identifier_to_stack(father.data, &tmp);
   stack_push(&tmp, move);
+  /* father_stat ^= 0b100000; not working, father not taken as a binary */
+  
+  stack_to_identifier(&(current->data), tmp, 0);
+  
+
+
   stack_free(&tmp);
 }
 
@@ -46,7 +52,7 @@ int get_halfMoveClock(Board board) {
  *  @param[in] board the board in which we check castles
  *  @param[out] the formatted int
  *
- *  The int returned is formatted this way : 
+ *  The int returned is formatted this way :
  *  K*2^3 + Q*2^2 + k*2 + q with K,k,Q,q between 0 or 1
  *  if castle is available or not
  *

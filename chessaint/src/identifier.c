@@ -284,9 +284,8 @@ int identifier_get_fullmove(Identifier id) {
  *
  */
 
-void identifier_to_stack(Identifier id, Stack *stack) {
-  stack_init(stack);
-  mpz_tdiv_q_ui(*stack, id, 1000000);
+int identifier_to_stack(Identifier id, Stack *stack) {
+  return mpz_tdiv_q_ui(*stack, id, 1000000);
 }
 
 /**
@@ -294,15 +293,19 @@ void identifier_to_stack(Identifier id, Stack *stack) {
  *  @brief Puts the content of a stack in the identifier id
  *  @param[in] stack The stack in which to store extracted data
  *  @param[out] id The identifier holding the data
- *
+ *  @param[in] status binary number of 6
  *  Puts the data of the stack in the identifier, as the "history"
  *  part of the identifier
  *
  */
 
-void stack_to_identifier(Identifier *id, Stack stack) {
-  mpz_init(*id);
+void stack_to_identifier(Identifier *id, Stack stack, int status) {
+  Identifier tmp;
+  mpz_init(tmp);
   mpz_mul_ui(*id, stack, 1000000);
+  mpz_set(tmp, *id);
+  mpz_add_ui(*id, tmp, status);
+  mpz_clear(tmp);
 }
 
 /**

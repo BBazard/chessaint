@@ -54,8 +54,8 @@ int identifier_get_cast(Identifier id);
 int identifier_get_halfmove(Identifier id);
 int identifier_get_fullmove(Identifier id);
 
-void identifier_to_stack(Identifier id, Stack *stack);
-void stack_to_identifier(Identifier *id, Stack stack);
+int identifier_to_stack(Identifier id, Stack *stack);
+void stack_to_identifier(Identifier *id, Stack stack, int status);
 
 int identifier_is_equal(Identifier left, Identifier right);
 

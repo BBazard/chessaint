@@ -81,6 +81,8 @@ void test_identifier_print(void) {
 
   /* Prints an identifier */
   identifier_print(id);
+
+  stack_free(&id);
 }
 
 void test_identifier_is_leaf(void) {
@@ -91,6 +93,9 @@ void test_identifier_is_leaf(void) {
 
   CU_ASSERT_TRUE(identifier_is_leaf(id_is_leaf));
   CU_ASSERT_FALSE(identifier_is_leaf(id_not_leaf));
+
+  stack_free(&id_is_leaf);
+  stack_free(&id_not_leaf);
 }
 
 void test_identifier_is_white(void) {
@@ -101,6 +106,9 @@ void test_identifier_is_white(void) {
 
   CU_ASSERT_TRUE(identifier_is_white(id_is_white));
   CU_ASSERT_FALSE(identifier_is_white(id_not_white));
+
+  stack_free(&id_is_white);
+  stack_free(&id_not_white);
 }
 
 void test_identifier_is_passant(void) {
@@ -111,6 +119,9 @@ void test_identifier_is_passant(void) {
 
   CU_ASSERT_TRUE(identifier_is_passant(id_is_passant));
   CU_ASSERT_FALSE(identifier_is_passant(id_not_passant));
+
+  stack_free(&id_is_passant);
+  stack_free(&id_not_passant);
 }
 
 void test_identifier_get_cast(void) {
@@ -124,6 +135,10 @@ void test_identifier_get_cast(void) {
   CU_ASSERT_EQUAL(identifier_get_cast(id_no_cast), 0);
   CU_ASSERT_EQUAL(identifier_get_cast(id_q), 1);
   CU_ASSERT_EQUAL(identifier_get_cast(id_KQkq), 16);
+
+  stack_free(&id_no_cast);
+  stack_free(&id_q);
+  stack_free(&id_KQkq);
 }
 
 void test_identifier_get_halfmove(void) {
@@ -131,6 +146,7 @@ void test_identifier_get_halfmove(void) {
   mpz_init_set_str(id_halfmove_45, "5254101645", 10);
 
   CU_ASSERT_EQUAL(identifier_get_halfmove(id_halfmove_45), 45);
+  stack_free(&id_halfmove_45);
 }
 
 void test_identifier_get_fullmove(void) {
@@ -138,14 +154,18 @@ void test_identifier_get_fullmove(void) {
   mpz_init_set_str(id_fullmove_5, "11112222333344445555101645", 10);
 
   CU_ASSERT_EQUAL(identifier_get_fullmove(id_fullmove_5), 5);
+  stack_free(&id_fullmove_5);
 }
 
 void test_identifier_to_stack(void) {
   Stack stack;
   Identifier id;
+  stack_init(&stack);
   mpz_init_set_str(id, "12345678001122", 10);
   identifier_to_stack(id, &stack);
 
   CU_ASSERT_FALSE(mpz_cmp_ui(stack, 12345678));
+  stack_free(&stack);
+  stack_free(&id);
 }
 

@@ -539,6 +539,26 @@ void play_move(int move, Board *board) {
     board->enPassant.column = 0; /* means there is no enpassant */
   board->fullMoveNb += 1;
 
+  /* Castling */
+  if (board->activeColor == white) {
+    if (a == 7 && b == 0)
+      board->availableCastlings[0] = 0;
+    if (a == 0 && b == 0)
+      board->availableCastlings[1] = 0;
+    if (a == 4 && b == 0) {
+      board->availableCastlings[0] = 0;
+      board->availableCastlings[1] = 0;
+    }
+  } else if (board->activeColor == black) {
+    if (a == 7 && b == 7)
+        board->availableCastlings[2] = 0;
+    if (a == 0 && b == 7)
+      board->availableCastlings[3] = 0;
+    if (a == 4 && b == 7) {
+      board->availableCastlings[2] = 0;
+      board->availableCastlings[3] = 0;
+    }
+  }
   board->square[c][d] = board->square[a][b];
   board->square[a][b].color = neutral;
   board->square[a][b].piece = empty;
@@ -574,6 +594,7 @@ void update_moves(Stack *s, Board *current) {
  */
 void update_board(Arc father, Board *board) {
   Stack stack;
+  stack_init(&stack);
   identifier_to_stack(father.data, &stack);
   update_moves(&stack, board);
   board->activeColor = !identifier_is_white(father.data);
@@ -585,5 +606,5 @@ void update_board(Arc father, Board *board) {
   }
   board->halfMoveClock = identifier_get_halfmove(father.data);
   board->fullMoveNb = identifier_get_fullmove(father.data);
+  stack_free(&stack);
 }
-

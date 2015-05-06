@@ -33,7 +33,7 @@ void test_bishopMoveGenerator(void) {
   fenToBoard("8/8/8/3P4/4B3/5r2/8/8 w - - 0 1", &testBoardB);
 
   /* Enable to see the situation : */
-  printBoardAndData(testBoardB);
+  /* printBoardAndData(testBoardB); */
 
 
   bishopMoveGenerator(&tmp, 4, 3, white, testBoardB);
@@ -52,6 +52,8 @@ void test_bishopMoveGenerator(void) {
   CU_ASSERT_EQUAL(stack_pop(&tmp), 4365);
   /* (4,3) -> (5,4) */
   CU_ASSERT_EQUAL(stack_pop(&tmp), 4354);
+
+  stack_free(&tmp);
 }
 
 void test_rookMoveGenerator(void) {
@@ -87,6 +89,8 @@ void test_rookMoveGenerator(void) {
   CU_ASSERT_EQUAL(stack_pop(&tmp), 4341);
   /* (4,3) -> (4,2) */
   CU_ASSERT_EQUAL(stack_pop(&tmp), 4342);
+
+  stack_free(&tmp);
 }
 
 void test_queenMoveGenerator(void) {
@@ -151,6 +155,8 @@ void test_queenMoveGenerator(void) {
   CU_ASSERT_EQUAL(stack_pop(&tmp), 4352);
   /* (4,3) -> (5,4) */
   CU_ASSERT_EQUAL(stack_pop(&tmp), 4354);
+
+  stack_free(&tmp);
 }
 
 void test_knightMoveGenerator(void) {
@@ -182,6 +188,8 @@ void test_knightMoveGenerator(void) {
   CU_ASSERT_EQUAL(stack_pop(&tmp), 4335);
   /* (4,3) -> (5,5) */
   CU_ASSERT_EQUAL(stack_pop(&tmp), 4355);
+
+  stack_free(&tmp);
 }
 
 void test_kingMoveGenerator(void) {
@@ -203,6 +211,8 @@ void test_kingMoveGenerator(void) {
   CU_ASSERT_EQUAL(stack_pop(&tmp), 4332);
   /* (4,3) -> (5,4) */
   CU_ASSERT_EQUAL(stack_pop(&tmp), 4354);
+
+  stack_free(&tmp);
 }
 
 void test_pawnMoveGenerator1(void) {
@@ -224,6 +234,8 @@ void test_pawnMoveGenerator1(void) {
   CU_ASSERT_EQUAL(stack_pop(&tmp), 102);
   /* (0,1) -> (1,2) */
   CU_ASSERT_EQUAL(stack_pop(&tmp), 112);
+
+  stack_free(&tmp);
 }
 
 void test_pawnMoveGenerator2(void) {
@@ -244,6 +256,8 @@ void test_pawnMoveGenerator2(void) {
   CU_ASSERT_EQUAL(stack_pop(&tmp), 4342);
   /* (4,3) -> (3,2) */
   CU_ASSERT_EQUAL(stack_pop(&tmp), 4332);
+
+  stack_free(&tmp);
 }
 
 void test_castlesMoveGenerator(void) {
@@ -261,6 +275,8 @@ void test_castlesMoveGenerator(void) {
 
   /* Let castleMoveGenerator be called by kingMoveGenerator (more accurate)*/
   kingMoveGenerator(&tmp, 4, 0, white, testBoardCastles);
+
+  stack_free(&tmp);
 }
 
 void test_movesGenerator(void) {
@@ -314,6 +330,8 @@ void test_movesGenerator(void) {
   CU_ASSERT_EQUAL(stack_pop(&(testGraph.current_moves)), 1002);
   /* (1,0) -> (2,2) */
   CU_ASSERT_EQUAL(stack_pop(&(testGraph.current_moves)), 1022);
+
+  graph_free(&testGraph);
 }
 
 void test_play_move(void) {
@@ -343,7 +361,7 @@ void test_update_board(void) {
   stack_push(&graph.current_moves, 4143);
   stack_push(&graph.current_moves, 4344);
   stack_push(&graph.current_moves, 4445);
-  stack_to_identifier(&father.data, graph.current_moves);
+  stack_to_identifier(&(father.data), graph.current_moves, 0);
 
   initAGame(&(graph.root));
   initAGame(&(graph.current_node));
@@ -356,5 +374,8 @@ void test_update_board(void) {
   update_board(father, &graph.current_node);
 
   CU_ASSERT_EQUAL(graph.current_node.square[4][5].piece, pawn);
+
+  graph_free(&graph);
+  arc_free(&father);
 }
 

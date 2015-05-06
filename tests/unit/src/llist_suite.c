@@ -26,6 +26,9 @@ void test_arc_equal(void) {
 
   /* When left and right are not equal */
   CU_ASSERT_FALSE(arc_is_equal(left, right));
+
+  arc_free(&left);
+  arc_free(&right);
 }
 
 void test_llist_add(void) {
@@ -59,6 +62,8 @@ void test_llist_add(void) {
      (because his score is lower) */
   arc.score += 2;
   CU_ASSERT_TRUE(arc_is_equal(list->value, arc));
+
+  arc_free(&arc);
 }
 
 void test_llist_suppr(void) {
@@ -88,6 +93,9 @@ void test_llist_suppr(void) {
 
   /* Confirm the list is now a NULL pointer */
   CU_ASSERT_PTR_NULL(list);
+
+  arc_free(&arc1);
+  arc_free(&arc2);
 }
 
 void test_llist_free(void) {
@@ -108,5 +116,8 @@ void test_llist_free(void) {
 
   /* Test if llist_free returns a NULL pointing list */
   CU_ASSERT_PTR_NULL(list);
+
+  arc_free(&arc1);
+  arc_free(&arc2);
 }
 

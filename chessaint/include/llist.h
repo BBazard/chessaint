@@ -69,6 +69,7 @@ struct Element {
 typedef Element *Llist;
 
 void arc_init(Arc *arc);
+void arc_free(Arc *arc);
 
 void llist_add(Arc newvalue, Llist *list);
 int llist_suppr(Llist *list);

@@ -15,23 +15,25 @@
  *  @param[in] father The father of the arc to be
  *  @param[out] current The pointer in which to save created arc
  *  the arc MUST be initialized before
+ *  @param[in] oldboard the board at the father state
  *
  *  This function computes the new value of score and data of a
  *  son arc.
  *
  */
 
-void move_to_node(int move, Arc father, Arc *current) {
+void move_to_node(int move, Arc father, Arc *current, Board oldboard) {
   Stack tmp;
+  Board newboard = oldboard;
   stack_init(&tmp);
   int father_stat = identifier_to_stack(father.data, &tmp);
   stack_push(&tmp, move);
-  /* father_stat ^= 0b100000; not working, father not taken as a binary */
 
-  stack_to_identifier(&(current->data), tmp, 0);
+  father_stat = (father_stat + 100000) % 200000 + 1;
+  stack_to_identifier(&(current->data), tmp, father_stat);
 
-
-
+  play_move(move, &newboard);
+  current->score = heuristic(newboard);
   stack_free(&tmp);
 }
 

@@ -596,6 +596,7 @@ void update_board(Arc father, Board *board) {
   Stack stack;
   stack_init(&stack);
   identifier_to_stack(father.data, &stack);
+
   update_moves(&stack, board);
   board->activeColor = !identifier_is_white(father.data);
 

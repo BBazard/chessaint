@@ -568,41 +568,22 @@ void update_moves(Stack *s, Board *current) {
  *  to the data contained in the arc identifier and the root board
  *
  *  @todo Coord enPassant not updated currently need to correct that
+ *  @todo For Alexis :
+ *  change idendifier_is_white by a getColor or something meaningful Alexis
  *
  */
-void update_board(Arc father, Graph *graph) {
+void update_board(Arc father, Board *board) {
   Stack stack;
   identifier_to_stack(father.data, &stack);
-  update_moves(&stack, &(graph->current_node));
-  graph->current_node.activeColor = !identifier_is_white(father.data);
+  update_moves(&stack, board);
+  board->activeColor = !identifier_is_white(father.data);
 
   int tmp = identifier_get_cast(father.data);
   for (int i = 0; i < 3; ++i) {
-    graph->current_node.availableCastlings[i] = tmp%2;
+    board->availableCastlings[i] = tmp%2;
     tmp /= 2;
   }
-  graph->current_node.halfMoveClock = identifier_get_halfmove(father.data);
-  graph->current_node.fullMoveNb = identifier_get_fullmove(father.data);
-}
-
-/**
- *  @fn void copy_board(Board *src, Board *dest)
- *  @brief copies element by element a source board in a dest board
- *  @param[in, out] src the board to copy
- *  @param[in, out] dest the board that receives data
- */
-void copy_board(Board *src, Board *dest) {
-  for (int i = 0 ; i < ROWCOL_NB ; ++i) {
-    for (int j = 0; j < ROWCOL_NB ; ++j) {
-      dest->square[i][j] = src->square[i][j];
-    }
-  }
-  dest->activeColor = src->activeColor;
-  for (int k = 0 ; k < 4 ; ++k) {
-    dest->availableCastlings[k] = src->availableCastlings[k];
-  }
-  dest->enPassant = src->enPassant;
-  dest->halfMoveClock = src->halfMoveClock;
-  dest->fullMoveNb = src->fullMoveNb;
+  board->halfMoveClock = identifier_get_halfmove(father.data);
+  board->fullMoveNb = identifier_get_fullmove(father.data);
 }
 

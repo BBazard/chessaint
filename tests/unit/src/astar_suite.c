@@ -29,11 +29,11 @@ void test_move_to_node(void) {
   /* Need to create a correct value for data (taking care of opponents moves) */
 
   mpz_set_str(father.data, "404154534142100000", 10);
-  update_board(father, &graph);
+  update_board(father, &graph.current_node);
   father.score = heuristic(graph.current_node);
 
   mpz_set_str(test.data, "4041545341420703000001", 10);
-  update_board(test, &graph);
+  update_board(test, &graph.current_node);
   test.score = heuristic(graph.current_node);
 
   move_to_node(move, father, &son);

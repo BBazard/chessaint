@@ -41,8 +41,6 @@ void graph_free(Graph *graph);
 
 void play_move(int move, Board *board);
 
-void update_board(Arc father, Graph *graph);
-void copy_board(Board *src, Board *dest);
 
 
 
@@ -86,7 +84,7 @@ void movesGenerator(Graph *graph);
 
   bool isInBoardSquare(int squareX, int squareY);
 
-
+void update_board(Arc father, Board *board);
 
 #endif /* CHESSAINT_INCLUDE_GRAPH_H_ */
 

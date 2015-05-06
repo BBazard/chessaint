@@ -353,7 +353,7 @@ void test_update_board(void) {
   CU_ASSERT_EQUAL(graph.current_node.square[4][4].piece, empty);
   CU_ASSERT_EQUAL(graph.current_node.square[4][5].piece, empty);
 
-  update_board(father, &graph);
+  update_board(father, &graph.current_node);
 
   CU_ASSERT_EQUAL(graph.current_node.square[4][5].piece, pawn);
 }

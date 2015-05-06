@@ -275,3 +275,24 @@ enum Piece charToPiece(char c) {
   return empty;
 }
 
+/**
+ *  @fn void copy_board(Board *src, Board *dest)
+ *  @brief copies element by element a source board in a dest board
+ *  @param[in, out] src the board to copy
+ *  @param[in, out] dest the board that receives data
+ */
+void copy_board(Board *src, Board *dest) {
+  for (int i = 0 ; i < ROWCOL_NB ; ++i) {
+    for (int j = 0; j < ROWCOL_NB ; ++j) {
+      dest->square[i][j] = src->square[i][j];
+    }
+  }
+  dest->activeColor = src->activeColor;
+  for (int k = 0 ; k < 4 ; ++k) {
+    dest->availableCastlings[k] = src->availableCastlings[k];
+  }
+  dest->enPassant = src->enPassant;
+  dest->halfMoveClock = src->halfMoveClock;
+  dest->fullMoveNb = src->fullMoveNb;
+}
+

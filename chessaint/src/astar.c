@@ -38,6 +38,67 @@ void move_to_node(int move, Arc father, Arc *current, Board oldboard) {
 }
 
 /**
+ *  @fn void next_gen(Graph *graph)
+ *  @brief Expand next generation of moves
+ *  @param[in,out] graph the graph needed to computation
+ *
+ *  This function choose the father with the best current score and
+ *  then computes all the possible moves from this position.
+ *  Computed moves are then added to the llist
+ *
+ *  @bug if a father stay the "best" node to choose ie the top node
+ *  of the list, this algorithm will create the same node every time
+ *
+ */
+
+void next_gen(Graph *graph) {
+  Arc father;
+  arc_init(&father);
+  father = (graph->links)->value;
+
+  Arc son;
+  arc_init(&son);
+
+  int move = 0;
+
+  graph->current_node = graph->root;
+  update_board(father, &(graph->current_node));
+
+  printf("father :");
+  arc_print(father);
+  printBoardAndData(graph->current_node);
+  
+  movesGenerator(graph);
+  /* Is movesGenerator working ? cause the stack seems empty ... 
+     because of activeColor ? -> not sure but that's related*/
+  identifier_print(graph->current_moves);
+  move = stack_pop(&(graph->current_moves));
+  
+  printf("\n##move :%d##\n", move);
+  int i=0;
+  while (move != -1) {
+    printf("\n##move :%d##\n", move);
+    son.score = i++;
+    
+    printf("before");
+    arc_print((graph->links)->value);
+
+    move_to_node(move, father, &son, graph->current_node);
+    son.score = i++;
+    printf("mp_size : %d\n", mpz_size(son.data));
+    llist_add(son, &(graph->links));
+
+    printf("after");
+    arc_print((graph->links)->value);
+    
+    move = stack_pop(&(graph->current_moves));
+  }
+
+  /* arc_free(&son); */
+  arc_free(&father);
+}
+
+/**
  *  @fn int get_halfMoveClock(Board board)
  *  @brief return the number halfMoveClock from a board structure
  *  @param[in] board

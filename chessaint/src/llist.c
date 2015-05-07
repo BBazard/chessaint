@@ -49,7 +49,7 @@ void arc_free(Arc *arc) {
 
 void llist_add(Arc newvalue, Llist *list) {
   Element *newelement = malloc(sizeof(Element));
-  /* arc_init(&(newelement->value)); look at bug*/
+  /* arc_init(&(newelement->value)); look at bug */
   newelement->value = newvalue;
   newelement->next = NULL;
 

@@ -56,9 +56,9 @@ void test_move_to_node(void) {
   update_board(test, &graph.current_node);
   test.score = heuristic(graph.current_node);
   stack_free(&stack);
-  
+
   /* printBoardAndData(graph.current_node); */
-  
+
   graph.current_node = graph.root;
 
   stack_init(&stack);
@@ -66,7 +66,7 @@ void test_move_to_node(void) {
   stack_push(&stack, 5453);
   stack_push(&stack, 4142);
   stack_to_identifier(&(father.data), stack, 000000);
-  
+
   graph.current_node = graph.root;
   update_board(father, &graph.current_node);
   father.score = heuristic(graph.current_node);
@@ -75,7 +75,6 @@ void test_move_to_node(void) {
 
   move_to_node(move, father, &son, graph.current_node);
 
-  printf("\n##%d;%d##\n", son.score, test.score);
   CU_ASSERT_EQUAL(son.score, test.score);
 
   arc_free(&father);
@@ -85,3 +84,51 @@ void test_move_to_node(void) {
   graph_free(&graph);
 }
 
+void test_next_gen(void) {
+  Graph graph;
+  graph_init(&graph);
+  Board tmproot;
+
+  for (int i = 0; i < 8; ++i) {
+    for (int j = 0; j < 8; ++j) {
+      tmproot.square[i][j].piece = empty;
+      tmproot.square[i][j].color = neutral;
+    }
+  }
+
+  tmproot.square[0][0].piece = pawn;
+  tmproot.square[0][0].color = white;
+  tmproot.square[7][7].piece = pawn;
+  tmproot.square[7][7].color = black;
+
+  graph.root = tmproot;
+
+  Arc arc;
+  arc_init(&arc);
+
+  Stack stack;
+  stack_init(&stack);
+  stack_push(&stack, 2);
+  stack_push(&stack, 7775);
+  stack_to_identifier(&(arc.data), stack, 100002);
+  arc.score = 0;
+
+  llist_add(arc, &(graph.links));
+  
+  /* graph is ready to be tested */
+  for (int i = 0; i < 4; i++) {
+  arc_print((graph.links)->value);
+  next_gen(&graph);
+  Element *tmp;
+  tmp = graph.links;
+  int i = 1;
+  while (tmp != NULL) {
+    printf("#n = %d\n", i++);
+    arc_print(tmp->value);
+    tmp = tmp->next;
+  }
+  }
+  stack_free(&stack);
+  arc_free(&arc);
+  graph_free(&graph);
+}

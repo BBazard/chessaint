@@ -20,8 +20,8 @@
 void graph_init(Graph *graph) {
   graph->links = NULL;
   stack_init(&(graph->current_moves));
-  initAGame(&graph->root);
-  initAGame(&graph->current_node);
+  /* initAGame(&graph->root); */
+  /* initAGame(&graph->current_node); */
 }
 
 void graph_free(Graph *graph) {

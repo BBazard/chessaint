@@ -36,6 +36,7 @@ void test_llist_add(void) {
   Arc arc;
   arc_init(&arc);
   arc.score = 150;
+  mpz_set_str(*(arc.data), "1234", 10);
 
   /* list should be NULL */
   CU_ASSERT_PTR_NULL(list);
@@ -46,8 +47,17 @@ void test_llist_add(void) {
   /* Look if the data contained in the list are the same than the arc added */
   CU_ASSERT_TRUE(arc_is_equal(list->value, arc));
 
+  /* int i = 1; */
+  /* Element *tmp = list; */
+  /* while (tmp != NULL) { */
+  /*   printf("#n = %d\n", i++); */
+  /*   arc_print(tmp->value); */
+  /*   tmp = tmp->next; */
+  /* } */
+  
   /* Add a new arc */
   arc.score++;
+  mpz_set_str(*(arc.data), "5678", 10);
   llist_add(arc, &list);
 
   /* Look if the arc has been added BEFORE the first one
@@ -63,6 +73,14 @@ void test_llist_add(void) {
   arc.score += 2;
   CU_ASSERT_TRUE(arc_is_equal(list->value, arc));
 
+  /* i = 0; */
+  /* tmp = list; */
+  /* while (tmp != NULL) { */
+  /*   printf("#n = %d\n", i++); */
+  /*   arc_print(tmp->value); */
+  /*   tmp = tmp->next; */
+  /* } */
+  
   arc_free(&arc);
 }
 

@@ -595,17 +595,17 @@ void update_moves(Stack *s, Board *current) {
 void update_board(Arc father, Board *board) {
   Stack stack;
   stack_init(&stack);
-  identifier_to_stack(father.data, &stack);
+  identifier_to_stack(*(father.data), &stack);
 
   update_moves(&stack, board);
-  board->activeColor = !identifier_is_white(father.data);
+  board->activeColor = !identifier_is_white(*(father.data));
 
-  int tmp = identifier_get_cast(father.data);
+  int tmp = identifier_get_cast(*(father.data));
   for (int i = 0; i < 3; ++i) {
     board->availableCastlings[i] = tmp%2;
     tmp /= 2;
   }
-  board->halfMoveClock = identifier_get_halfmove(father.data);
-  board->fullMoveNb = identifier_get_fullmove(father.data);
+  board->halfMoveClock = identifier_get_halfmove(*(father.data));
+  board->fullMoveNb = identifier_get_fullmove(*(father.data));
   stack_free(&stack);
 }

@@ -34,7 +34,7 @@ typedef struct Arc Arc;
 
 struct Arc {
   int score; /**< The score of the arc */
-  Identifier data; /**< All the others data */
+  Identifier *data; /**< All the others data */
 };
 
 /** 

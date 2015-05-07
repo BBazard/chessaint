@@ -50,7 +50,7 @@ void test_move_to_node(void) {
   stack_push(&stack, 5453);
   stack_push(&stack, 4142);
   stack_push(&stack, 703);
-  stack_to_identifier(&(test.data), stack, 100001);
+  stack_to_identifier(test.data, stack, 100001);
 
   graph.current_node = graph.root;
   update_board(test, &graph.current_node);
@@ -65,7 +65,7 @@ void test_move_to_node(void) {
   stack_push(&stack, 4041);
   stack_push(&stack, 5453);
   stack_push(&stack, 4142);
-  stack_to_identifier(&(father.data), stack, 000000);
+  stack_to_identifier(father.data, stack, 000000);
 
   graph.current_node = graph.root;
   update_board(father, &graph.current_node);
@@ -110,13 +110,14 @@ void test_next_gen(void) {
   stack_init(&stack);
   stack_push(&stack, 2);
   stack_push(&stack, 7775);
-  stack_to_identifier(&(arc.data), stack, 100002);
+  stack_to_identifier(arc.data, stack, 100002);
   arc.score = 0;
 
   llist_add(arc, &(graph.links));
   
   /* graph is ready to be tested */
   for (int i = 0; i < 4; i++) {
+  printf("coucoul\n");
   arc_print((graph.links)->value);
   next_gen(&graph);
   Element *tmp;

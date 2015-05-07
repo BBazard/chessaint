@@ -7,7 +7,7 @@
  */
 
 #include "include/astar.h"
-
+static int i = 1;
 /**
  *  @fn void move_to_node(int move, Arc father, Arc *current)
  *  @brief Create a node from a move (int) and it's father's data
@@ -26,11 +26,11 @@ void move_to_node(int move, Arc father, Arc *current, Board oldboard) {
   Stack tmp;
   Board newboard = oldboard;
   stack_init(&tmp);
-  int father_stat = identifier_to_stack(father.data, &tmp);
+  int father_stat = identifier_to_stack(*(father.data), &tmp);
   stack_push(&tmp, move);
 
   father_stat = (father_stat + 100000) % 200000 + 1;
-  stack_to_identifier(&(current->data), tmp, father_stat);
+  stack_to_identifier(current->data, tmp, father_stat);
 
   play_move(move, &newboard);
   current->score = heuristic(newboard);
@@ -48,7 +48,7 @@ void move_to_node(int move, Arc father, Arc *current, Board oldboard) {
  *
  *  @bug if a father stay the "best" node to choose ie the top node
  *  of the list, this algorithm will create the same node every time
- *
+ *  @bug IMPORTANT : every other identifier will be reseted in the llist
  */
 
 void next_gen(Graph *graph) {
@@ -75,17 +75,17 @@ void next_gen(Graph *graph) {
   move = stack_pop(&(graph->current_moves));
   
   printf("\n##move :%d##\n", move);
-  int i=0;
+
   while (move != -1) {
     printf("\n##move :%d##\n", move);
-    son.score = i++;
     
-    printf("before");
     arc_print((graph->links)->value);
 
     move_to_node(move, father, &son, graph->current_node);
     son.score = i++;
-    printf("mp_size : %d\n", mpz_size(son.data));
+    arc_print(son);
+    printf("before /i=%d\n", i);
+    arc_print((graph->links)->value);
     llist_add(son, &(graph->links));
 
     printf("after");

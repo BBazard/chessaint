@@ -9,7 +9,7 @@
 #include <string.h>
 
 /**
- *  @fn void arc_init(Arc *arc)
+ *  @fn void arc_alloc(Arc *arc)
  *  @brief Inits an Arc
  *  @param[out] arc The arc to init
  *
@@ -19,7 +19,8 @@
 
 void arc_alloc(Arc *arc) {
   arc->score = 0;
-  stack_alloc(&(arc->data));
+  arc->data = malloc(sizeof(mpz_t));
+  stack_alloc(arc->data);
 }
 
 /**
@@ -30,7 +31,8 @@ void arc_alloc(Arc *arc) {
  */
 
 void arc_free(Arc *arc) {
-  stack_free(&(arc->data));
+  stack_free(arc->data);
+  free(arc->data);
 }
 
 /**
@@ -39,18 +41,18 @@ void arc_free(Arc *arc) {
  *  @param[in] newvalue The Arc value to add
  *  @param[in,out] list Pointer on the targeted list, must be NULL if the list is empty
  *
- *  @bug Should the function init the newelement->value arc or not ? 
- *  As newvalue is an arc yet initialized before adding it into the list
- *  if so need to free it in llist_suppr ?
+ *  @bug Need to free the inited arcs (init IS needed)
  *
- *  The *Llist can be Null pointer, in this case, the list take newvalue as the first element
+ *  @note The *Llist can be Null pointer, in this case, 
+ *  the list take newvalue as the first element, more, it should be NULL if empty.
  *
  */
 
 void llist_add(Arc newvalue, Llist *list) {
   Element *newelement = malloc(sizeof(Element));
-  /* arc_init(&(newelement->value)); look at bug*/
-  newelement->value = newvalue;
+  arc_alloc(&(newelement->value));
+  newelement->value.score = newvalue.score;
+  mpz_set(*(newelement->value.data), *(newvalue.data));
   newelement->next = NULL;
 
   if (*list == NULL) {
@@ -88,7 +90,7 @@ int llist_suppr(Llist *list) {
       return 1;
   } else {
     tmp = **list;
-    /* arc_free(&((*list)->value)); look at llist_add function*/
+    /* arc_free(&((*list)->value)); */
     free(*list);
     *list = tmp.next;
 
@@ -148,7 +150,7 @@ void llist_print(Llist list) {
 
 void arc_print(Arc value) {
   printf("%d", value.score);
-  identifier_print(value.data);
+  identifier_print(*(value.data));
 }
 
 /**
@@ -164,7 +166,7 @@ void arc_print(Arc value) {
 
 int arc_is_equal(Arc left, Arc right) {
   return (left.score == right.score &&
-          identifier_is_equal(left.data, right.data));
+          identifier_is_equal(*(left.data), *(right.data)));
 }
 
 

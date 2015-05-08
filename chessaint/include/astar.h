@@ -11,7 +11,7 @@
 
 #include "include/heuristic.h"
 
-void move_to_node(int move, Arc father, Arc *current);
+void move_to_node(int move, Arc father, Arc *current, Board oldboard);
 void next_gen(Graph *graph);
 
 int get_halfMoveClock(Board board);

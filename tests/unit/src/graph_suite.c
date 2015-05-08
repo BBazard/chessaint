@@ -66,7 +66,7 @@ void test_rookMoveGenerator(void) {
 
   fenToBoard("8/8/8/4p3/1R2r3/8/8/8 b - - 0 1", &testBoardR);
 
-  /* Enable to see the situation : 
+  /* Enable to see the situation :
  printBoardAndData(testBoardR);*/
 
   rookMoveGenerator(&tmp, 4, 3, black, testBoardR);
@@ -169,7 +169,7 @@ void test_knightMoveGenerator(void) {
 
   fenToBoard("8/8/5p2/8/4N3/8/3K4/8 w - - 0 1", &testBoardN);
 
-  /* Enable to see the situation : 
+  /* Enable to see the situation :
   printBoardAndData(testBoardN); */
 
   knightMoveGenerator(&tmp, 4, 3, white, testBoardN);
@@ -203,7 +203,7 @@ void test_kingMoveGenerator(void) {
 
   fenToBoard("8/8/8/3pp3/3pkp2/3Ppp2/8/8 b - - 0 1", &testBoardK);
 
-  /* Enable to see the situation : 
+  /* Enable to see the situation :
   printBoardAndData(testBoardK); */
   findThreats(&testBoardK, black, threats);
   kingMoveGenerator(&tmp, 4, 3, black, testBoardK, threats);
@@ -362,7 +362,7 @@ void test_update_board(void) {
   stack_push(&graph.current_moves, 4143);
   stack_push(&graph.current_moves, 4344);
   stack_push(&graph.current_moves, 4445);
-  stack_to_identifier(&(father.data), graph.current_moves, 0);
+  stack_to_identifier(father.data, graph.current_moves, 0);
 
   initAGame(&(graph.root));
   initAGame(&(graph.current_node));
@@ -383,7 +383,7 @@ void test_update_board(void) {
 void test_findThreats(void) {
   Board testBoard;
   bool threats[8][8];
-  
+
   /* Juste print the board and the threats to see this complicated situation
    * it's been done so that the only move for the white king is f1 <->(5,0)
    */
@@ -395,7 +395,7 @@ void test_findThreats(void) {
   CU_ASSERT_TRUE(threats[4][0]);
   CU_ASSERT_TRUE(threats[5][1]);
   CU_ASSERT_TRUE(threats[6][2]);
-  
+
   CU_ASSERT_TRUE(threats[0][6]);
   CU_ASSERT_TRUE(threats[1][7]);
   CU_ASSERT_TRUE(threats[1][6]);
@@ -413,7 +413,7 @@ void test_findThreats(void) {
   CU_ASSERT_TRUE(threats[6][6]);
   CU_ASSERT_TRUE(threats[6][5]);
   CU_ASSERT_TRUE(threats[7][5]);
-  
+
   CU_ASSERT_TRUE(threats[2][1]);
   CU_ASSERT_TRUE(threats[4][1]);
 }
@@ -450,12 +450,13 @@ void test_findAllPinnings(void) {
     }
 }
 
-void test_legalMoves(void){
+void test_legalMoves(void) {
   Graph testGraph;
   graph_alloc(&testGraph);
 
   fenToBoard("q6n/7k/8/8/7b/2pp5/8/1r2K3 w KQkq - 0 1", &(testGraph.root));
-  fenToBoard("q6n/7k/8/8/7b/2pp5/8/1r2K3 w KQkq - 0 1", &(testGraph.current_node));
+  fenToBoard("q6n/7k/8/8/7b/2pp5/8/1r2K3 w KQkq - 0 1",
+             &(testGraph.current_node));
   movesGenerator(&testGraph);
   printBoardAndData(testGraph.current_node);
 
@@ -465,7 +466,7 @@ void test_legalMoves(void){
    * it's been done so that the only move for the white king is f1 <->(5,0)
    */
 }
-void test_legalMoves2(void){
+void test_legalMoves2(void) {
   Graph testGraph;
   graph_alloc(&testGraph);
 
@@ -474,12 +475,14 @@ void test_legalMoves2(void){
   movesGenerator(&testGraph);
   printBoardAndData(testGraph.current_node);
 }
-void test_legalMoves3(void){
+void test_legalMoves3(void) {
   Graph testGraph;
   graph_alloc(&testGraph);
 
-  fenToBoard("rnbqk1nr/ppppp1b1/5pQp/8/4PP2/8/PPPP2PP/RNB1KBNR b KQkq - 0 1", &(testGraph.root));
-  fenToBoard("rnbqk1nr/ppppp1b1/5pQp/8/4PP2/8/PPPP2PP/RNB1KBNR b KQkq - 0 1", &(testGraph.current_node));
+  fenToBoard("rnbqk1nr/ppppp1b1/5pQp/8/4PP2/8/PPPP2PP/RNB1KBNR b KQkq - 0 1",
+             &(testGraph.root));
+  fenToBoard("rnbqk1nr/ppppp1b1/5pQp/8/4PP2/8/PPPP2PP/RNB1KBNR b KQkq - 0 1",
+             &(testGraph.current_node));
   movesGenerator(&testGraph);
   printBoardAndData(testGraph.current_node);
   /* (4,7) -> (5,7) */

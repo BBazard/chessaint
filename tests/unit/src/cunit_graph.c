@@ -116,21 +116,21 @@ int add_graph_suite(CU_pSuite pSuite_graph) {
     CU_cleanup_registry();
     return CU_get_error();
   }
-  
+
   if (NULL == CU_add_test(pSuite_graph,
-                           "Test of a certain position for legal moves check",
+                           "Test of a certain position for legal moves check 1",
                           test_legalMoves)) {
     CU_cleanup_registry();
     return CU_get_error();
   }
   if (NULL == CU_add_test(pSuite_graph,
-                           "Another Test of a certain position for legal moves check",
+                          "Test of a certain position for legal moves check 2",
                           test_legalMoves2)) {
     CU_cleanup_registry();
     return CU_get_error();
   }
   if (NULL == CU_add_test(pSuite_graph,
-                           "Another Test of a certain position for legal moves check",
+                          "Test of a certain position for legal moves check 3",
                           test_legalMoves3)) {
     CU_cleanup_registry();
     return CU_get_error();

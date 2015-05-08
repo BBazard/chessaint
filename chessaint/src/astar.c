@@ -15,24 +15,71 @@
  *  @param[in] father The father of the arc to be
  *  @param[out] current The pointer in which to save created arc
  *  the arc MUST be initialized before
+ *  @param[in] oldboard the board at the father state
  *
  *  This function computes the new value of score and data of a
  *  son arc.
  *
  */
 
-void move_to_node(int move, Arc father, Arc *current) {
+void move_to_node(int move, Arc father, Arc *current, Board oldboard) {
   Stack tmp;
   stack_alloc(&tmp);
-  int father_stat = identifier_to_stack(father.data, &tmp);
+  Board newboard = oldboard;
+  int father_stat = identifier_to_stack(*(father.data), &tmp);
+
   stack_push(&tmp, move);
-  /* father_stat ^= 0b100000; not working, father not taken as a binary */
 
-  stack_to_identifier(&(current->data), tmp, 0);
+  father_stat = (father_stat + 100000) % 200000 + 1;
+  stack_to_identifier(current->data, tmp, father_stat);
 
-
-
+  play_move(move, &newboard);
+  current->score = heuristic(newboard);
   stack_free(&tmp);
+}
+
+/**
+ *  @fn void next_gen(Graph *graph)
+ *  @brief Expand next generation of moves
+ *  @param[in,out] graph the graph needed to computation
+ *
+ *  This function choose the father with the best current score and
+ *  then computes all the possible moves from this position.
+ *  Computed moves are then added to the llist
+ *
+ *  @bug if a father stay the "best" node to choose ie the top node
+ *  of the list, this algorithm will create the same node every time
+ *  @note father needs no init AND MUST NOT BE FREED
+ *  @note father score is put to -501 when processed to avoid previously
+ *  spotted buggy situation (like putting it in a closed set for astar)
+ *  @todo perhaps find a better way to correct previous note
+ *
+ */
+
+void next_gen(Graph *graph) {
+  Arc father;
+  father = (graph->links)->value;
+  llist_suppr(&(graph->links));
+  father.score = -501;
+  llist_add(father, &(graph->links));
+
+  Arc son;
+  arc_alloc(&son);
+
+  int move = 0;
+
+  graph->current_node = graph->root;
+  update_board(father, &(graph->current_node));
+
+  movesGenerator(graph);
+  move = stack_pop(&(graph->current_moves));
+  while (move != -1) {
+    move_to_node(move, father, &son, graph->current_node);
+    llist_add(son, &(graph->links));
+    move = stack_pop(&(graph->current_moves));
+  }
+
+  arc_free(&son);
 }
 
 /**

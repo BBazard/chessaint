@@ -25,7 +25,7 @@ typedef struct Graph Graph;
  *
  *  Stores the graph data
  *
- *  @todo Add doxy doc for struct members 
+ *  @todo Add doxy doc for struct members
  *
  */
 
@@ -46,76 +46,79 @@ void play_move(int move, Board *board);
 
 
 void findAllPinnings(Board *board, Color activeColor, bool pinned[8][8]);
-  void findLinePinnings(Board *board, Color enemyColor, bool pinned[8][8],
-                        int X, int Y, int incX, int incY);
-    void findRookPinnings(Board *board, Color enemyColor,
-                                 bool pinned[8][8], int X, int Y);
-    void findBishopPinnings(Board *board, Color enemyColor,
-                                   bool pinned[8][8], int X, int Y);
+void findLinePinnings(Board *board, Color enemyColor, bool pinned[8][8],
+                      int X, int Y, int incX, int incY);
+void findRookPinnings(Board *board, Color enemyColor,
+                      bool pinned[8][8], int X, int Y);
+void findBishopPinnings(Board *board, Color enemyColor,
+                        bool pinned[8][8], int X, int Y);
 
 
 
 
 void movesGenerator(Graph *graph);
 
-  void pawnMoveGeneratorCapture(Stack *moves, int squareX, int squareY,
+void pawnMoveGeneratorCapture(Stack *moves, int squareX, int squareY,
+                              Color activeColor, Board board);
+
+void pawnMoveGeneratorNoCapture(Stack *moves, int squareX, int squareY,
+                                Color activeColor, Board board);
+
+void bishopMoveGenerator(Stack *moves, int squareX, int squareY,
                          Color activeColor, Board board);
 
-  void pawnMoveGeneratorNoCapture(Stack *moves, int squareX, int squareY,
+void rookMoveGenerator(Stack *moves, int squareX, int squareY,
+                       Color activeColor, Board board);
+
+void bishopAndRook4DirectionsGen(int incX, int incY, Stack *moves,
+                                 int squareX, int squareY,
+                                 Color activeColor, Board board);
+
+void queenMoveGenerator(Stack *moves, int squareX, int squareY,
+                        Color activeColor, Board board);
+
+void knightMoveGenerator(Stack *moves, int squareX, int squareY,
                          Color activeColor, Board board);
 
-  void bishopMoveGenerator(Stack *moves, int squareX, int squareY,
-                           Color activeColor, Board board);
+void kingMoveGenerator(Stack *moves, int squareX, int squareY,
+                       Color activeColor, Board board, bool threats[8][8]);
 
-  void rookMoveGenerator(Stack *moves, int squareX, int squareY,
-                         Color activeColor, Board board);
+void knightAndKing4DirectionsGen(int incX, int incY, Stack *moves,
+                                 int squareX, int squareY,
+                                 Color activeColor, Board board);
 
-  void bishopAndRook4DirectionsGen(int incX, int incY, Stack *moves,
-                                   int squareX, int squareY,
-                                   Color activeColor, Board board);
-
-  void queenMoveGenerator(Stack *moves, int squareX, int squareY,
-                          Color activeColor, Board board);
-
-  void knightMoveGenerator(Stack *moves, int squareX, int squareY,
-                           Color activeColor, Board board);
-
-  void kingMoveGenerator(Stack *moves, int squareX, int squareY,
-                         Color activeColor, Board board, bool threats[8][8]);
-
-  void knightAndKing4DirectionsGen(int incX, int incY, Stack *moves,
-                                   int squareX, int squareY,
-                                   Color activeColor, Board board);
-
-  void castlesMoveGenerator(int incX, int squareX, int squareY,
+void castlesMoveGenerator(int incX, int squareX, int squareY,
                           Stack *moves, Board board);
 
-  bool isInBoardSquare(int squareX, int squareY);
+bool isInBoardSquare(int squareX, int squareY);
 
 void update_board(Arc father, Board *board);
 
 void findThreats(Board *board, Color activeColor, bool threats[8][8]);
 
-  void bishopThreatGenerator(int squareX, int squareY, Board board, bool threats[8][8]);
+void bishopThreatGenerator(int squareX, int squareY, Board board,
+                           bool threats[8][8]);
 
-  void rookThreatGenerator(int squareX, int squareY, Board board, bool threats[8][8]);
+void rookThreatGenerator(int squareX, int squareY, Board board,
+                         bool threats[8][8]);
 
-  void queenThreatGenerator(int squareX, int squareY, Board board, bool threats[8][8]);
-  
-  void knightThreatGenerator(int squareX, int squareY, bool threats[8][8]);
-  
-  void kingThreatGenerator(int squareX, int squareY, bool threats[8][8]);
-  
-  void pawnThreatGenerator(int squareX, int squareY,
-                     Color activeColor, bool threats[8][8]);
-  
-  void lineThreatGenerator(int incX, int incY, int squareX,
-                                 int squareY, Board board, bool threats[8][8]);
+void queenThreatGenerator(int squareX, int squareY, Board board,
+                          bool threats[8][8]);
 
-  void squareThreatGenerator(int incX, int incY, int squareX, int squareY,
-                                 bool threats[8][8]);
-  
-  void printThreatBoard(bool threats[8][8]);
+void knightThreatGenerator(int squareX, int squareY, bool threats[8][8]);
+
+void kingThreatGenerator(int squareX, int squareY, bool threats[8][8]);
+
+void pawnThreatGenerator(int squareX, int squareY,
+                         Color activeColor, bool threats[8][8]);
+
+void lineThreatGenerator(int incX, int incY, int squareX,
+                         int squareY, Board board, bool threats[8][8]);
+
+void squareThreatGenerator(int incX, int incY, int squareX, int squareY,
+                           bool threats[8][8]);
+
+void printThreatBoard(bool threats[8][8]);
 
 bool isThreatened(int X, int Y, bool threats[8][8]);
 

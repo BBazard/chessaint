@@ -7,7 +7,7 @@
  */
 
 #include "include/astar.h"
-static int i = 1;
+
 /**
  *  @fn void move_to_node(int move, Arc father, Arc *current)
  *  @brief Create a node from a move (int) and it's father's data
@@ -48,13 +48,19 @@ void move_to_node(int move, Arc father, Arc *current, Board oldboard) {
  *
  *  @bug if a father stay the "best" node to choose ie the top node
  *  of the list, this algorithm will create the same node every time
- *  @bug IMPORTANT : every other identifier will be reseted in the llist
+ *  @note father needs no init AND MUST NOT BE FREED
+ *  @note father score is put to -501 when processed to avoid previously
+ *  spotted buggy situation (like putting it in a closed set for astar)
+ *  @todo perhaps find a better way to correct previous note
+ *
  */
 
 void next_gen(Graph *graph) {
   Arc father;
-  arc_init(&father);
   father = (graph->links)->value;
+  llist_suppr(&(graph->links));
+  father.score = -501;
+  llist_add(father, &(graph->links));
 
   Arc son;
   arc_init(&son);
@@ -64,38 +70,15 @@ void next_gen(Graph *graph) {
   graph->current_node = graph->root;
   update_board(father, &(graph->current_node));
 
-  printf("father :");
-  arc_print(father);
-  printBoardAndData(graph->current_node);
-  
   movesGenerator(graph);
-  /* Is movesGenerator working ? cause the stack seems empty ... 
-     because of activeColor ? -> not sure but that's related*/
-  identifier_print(graph->current_moves);
   move = stack_pop(&(graph->current_moves));
-  
-  printf("\n##move :%d##\n", move);
-
   while (move != -1) {
-    printf("\n##move :%d##\n", move);
-    
-    arc_print((graph->links)->value);
-
     move_to_node(move, father, &son, graph->current_node);
-    son.score = i++;
-    arc_print(son);
-    printf("before /i=%d\n", i);
-    arc_print((graph->links)->value);
     llist_add(son, &(graph->links));
-
-    printf("after");
-    arc_print((graph->links)->value);
-    
     move = stack_pop(&(graph->current_moves));
   }
 
-  /* arc_free(&son); */
-  arc_free(&father);
+  arc_free(&son);
 }
 
 /**

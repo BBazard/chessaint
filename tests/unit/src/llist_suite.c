@@ -54,7 +54,7 @@ void test_llist_add(void) {
   /*   arc_print(tmp->value); */
   /*   tmp = tmp->next; */
   /* } */
-  
+
   /* Add a new arc */
   arc.score++;
   mpz_set_str(*(arc.data), "5678", 10);
@@ -80,7 +80,7 @@ void test_llist_add(void) {
   /*   arc_print(tmp->value); */
   /*   tmp = tmp->next; */
   /* } */
-  
+
   arc_free(&arc);
 }
 

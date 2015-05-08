@@ -114,21 +114,23 @@ void test_next_gen(void) {
   arc.score = 0;
 
   llist_add(arc, &(graph.links));
-  
+
   /* graph is ready to be tested */
   for (int i = 0; i < 4; i++) {
-  printf("coucoul\n");
-  arc_print((graph.links)->value);
-  next_gen(&graph);
-  Element *tmp;
-  tmp = graph.links;
-  int i = 1;
-  while (tmp != NULL) {
-    printf("#n = %d\n", i++);
-    arc_print(tmp->value);
-    tmp = tmp->next;
+    printf("\n\n\n");
+
+    next_gen(&graph);
+
+    Element *tmp = graph.links;
+    int i = 1;
+
+    while (tmp != NULL) {
+      printf("#n = %d\n", i++);
+      arc_print(tmp->value);
+      tmp = tmp->next;
+    }
   }
-  }
+  CU_ASSERT_TRUE(0);
   stack_free(&stack);
   arc_free(&arc);
   graph_free(&graph);

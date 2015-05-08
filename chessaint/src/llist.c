@@ -50,7 +50,7 @@ void arc_free(Arc *arc) {
 
 void llist_add(Arc newvalue, Llist *list) {
   Element *newelement = malloc(sizeof(Element));
-  arc_init(&(newelement->value)); /* look at bug */
+  arc_init(&(newelement->value));
   newelement->value.score = newvalue.score;
   mpz_set(*(newelement->value.data), *(newvalue.data));
   newelement->next = NULL;
@@ -90,7 +90,7 @@ int llist_suppr(Llist *list) {
       return 1;
   } else {
     tmp = **list;
-    /* arc_free(&((*list)->value)); look at llist_add function*/
+    /* arc_free(&((*list)->value)); */
     free(*list);
     *list = tmp.next;
 

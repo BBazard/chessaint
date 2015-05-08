@@ -29,16 +29,24 @@
 Color is_mate(Board board) {
   Stack white_king_moves;
   Stack black_king_moves;
-  stack_init(&white_king_moves);
-  stack_init(&black_king_moves);
+  stack_alloc(&white_king_moves);
+  stack_alloc(&black_king_moves);
+
+  bool threatsForBlackKing[8][8];
+  bool threatsForWhiteKing[8][8];
+
+  findThreats(&board, black, threatsForBlackKing);
+  findThreats(&board, white, threatsForWhiteKing);
 
   for (int i = 0; i < 8; ++i) {
     for (int j = 0; j < 8; ++j) {
       if (board.square[i][j].piece == king) {
         if (board.square[i][j].color == white)
-          kingMoveGenerator(&white_king_moves, i, j, white, board);
+          kingMoveGenerator(&white_king_moves, i, j, white, board,
+              threatsForWhiteKing);
         else
-          kingMoveGenerator(&black_king_moves, i, j, black, board);
+          kingMoveGenerator(&black_king_moves, i, j, black, board,
+              threatsForBlackKing);
       }
     }
   }
@@ -75,7 +83,7 @@ void update_threat(int index[][ROWCOL_NB], Color threat, Board board) {
   Graph graph;
   int poped;
   int p1, p2, p3, p4;
-  graph_init(&graph);
+  graph_alloc(&graph);
   graph.current_node = board;
   graph.current_node.activeColor = threat;
 
@@ -102,7 +110,7 @@ void update_protection(int threat[][ROWCOL_NB], int index[][ROWCOL_NB],
   Graph graph;
   int poped;
   int p1, p2, p3, p4;
-  graph_init(&graph);
+  graph_alloc(&graph);
   graph.current_node = board;
   graph.current_node.activeColor = protection;
 

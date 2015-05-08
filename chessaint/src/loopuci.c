@@ -56,8 +56,7 @@ int uciLoop(FILE* log, char* buffer, Graph *graph) {
       word = getNextWord();  // "movestogo"
       word = getNextWord();  // number
 
-      // act like graph->current_node = graph->root;
-      copy_board(&graph->root, &graph->current_node);
+      graph->current_node = graph->root;
 
       graph->current_node.activeColor = black;
 

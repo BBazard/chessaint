@@ -13,8 +13,8 @@ int clean_suite_llist(void) {
 
 void test_arc_equal(void) {
   Arc left, right;
-  arc_init(&left);
-  arc_init(&right);
+  arc_alloc(&left);
+  arc_alloc(&right);
   left.score = 150;
   right.score = 150;
 
@@ -34,7 +34,7 @@ void test_arc_equal(void) {
 void test_llist_add(void) {
   Llist list = NULL;
   Arc arc;
-  arc_init(&arc);
+  arc_alloc(&arc);
   arc.score = 150;
 
   /* list should be NULL */
@@ -70,8 +70,8 @@ void test_llist_suppr(void) {
   Llist list = NULL;
   Arc arc1;
   Arc arc2;
-  arc_init(&arc1);
-  arc_init(&arc2);
+  arc_alloc(&arc1);
+  arc_alloc(&arc2);
   arc1.score = 150;
   arc2.score = 151;
 
@@ -102,8 +102,8 @@ void test_llist_free(void) {
   Llist list = NULL;
   Arc arc1;
   Arc arc2;
-  arc_init(&arc1);
-  arc_init(&arc2);
+  arc_alloc(&arc1);
+  arc_alloc(&arc2);
   arc1.score = 150;
   arc2.score = 151;
 

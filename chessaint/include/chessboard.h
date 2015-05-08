@@ -143,5 +143,7 @@ enum Piece charToPiece(char c);
 
 void copy_board(Board *src, Board *dest);
 
+Color getOtherColor(Color color);
+
 #endif /* CHESSAINT_INCLUDE_CHESSBOARD_H_ */
 

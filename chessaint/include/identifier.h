@@ -40,7 +40,7 @@ typedef mpz_t Stack;
 
 int stack_contract(int p1, int p2, int p3, int p4);
 void stack_expand(int *p1, int *p2, int *p3, int *p4, int todivide);
-void stack_init(Stack *s);
+void stack_alloc(Stack *s);
 void stack_free(Stack *s);
 void stack_push(Stack *s, int item);
 int stack_pop(Stack *s);

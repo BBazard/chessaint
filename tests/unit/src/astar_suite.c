@@ -18,13 +18,13 @@ void test_move_to_node(void) {
   Arc test;
   Graph graph;
 
-  graph_init(&graph);
+  graph_alloc(&graph);
   initAGame(&graph.root);
   graph.current_node = graph.root;
 
-  arc_init(&father);
-  arc_init(&son);
-  arc_init(&test);
+  arc_alloc(&father);
+  arc_alloc(&son);
+  arc_alloc(&test);
 
   /* Need to create a correct value for data (taking care of opponents moves) */
 

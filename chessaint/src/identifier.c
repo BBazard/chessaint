@@ -53,7 +53,7 @@ void stack_expand(int *p1, int *p2, int *p3, int *p4, int todivide) {
 }
 
 /**
- *  @fn void stack_init(Stack *s)
+ *  @fn void stack_alloc(Stack *s)
  *  @brief Create a stack
  *
  *  Initialisation of a stack
@@ -61,7 +61,7 @@ void stack_expand(int *p1, int *p2, int *p3, int *p4, int todivide) {
  *
  */
 
-void stack_init(Stack *s) {
+void stack_alloc(Stack *s) {
   mpz_init(*s);
 }
 

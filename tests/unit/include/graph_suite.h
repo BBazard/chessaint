@@ -24,5 +24,13 @@ void test_movesGenerator(void);
 void test_play_move(void);
 void test_update_board(void);
 
+void test_findThreats(void);
+
+void test_findAllPinnings(void);
+
+void test_legalMoves(void);
+void test_legalMoves2(void);
+void test_legalMoves3(void);
+
 #endif /* TESTS_UNIT_INCLUDE_GRAPH_SUITE_H_ */
 

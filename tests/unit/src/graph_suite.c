@@ -24,7 +24,7 @@ void test_isInBoardSquare(void) {
 void test_bishopMoveGenerator(void) {
   Board testBoardB;
   Stack tmp;
-  stack_init(&tmp);
+  stack_alloc(&tmp);
 
   /* Say a board with only a white bishop on e4[<=>(4,3)");
    in our system], a white pawn on d5<=>(3,4)\n");
@@ -59,7 +59,7 @@ void test_bishopMoveGenerator(void) {
 void test_rookMoveGenerator(void) {
   Board testBoardR;
   Stack tmp;
-  stack_init(&tmp);
+  stack_alloc(&tmp);
 
   /* Say we have a black rook on e4<=>(4,3), a black pawn");
    on e5<=>(4,4) and a white rook on b4<=>(0,3)**\n"); */
@@ -96,7 +96,7 @@ void test_rookMoveGenerator(void) {
 void test_queenMoveGenerator(void) {
   Board testBoardQ;
   Stack tmp;
-  stack_init(&tmp);
+  stack_alloc(&tmp);
 
   /* Say we have a white queen on e4<=>(4,3), a black knight");
    on f5<=>(5,4) and a white pawn on e2<=>(4,1)**"); */
@@ -162,7 +162,7 @@ void test_queenMoveGenerator(void) {
 void test_knightMoveGenerator(void) {
   Board testBoardN;
   Stack tmp;
-  stack_init(&tmp);
+  stack_alloc(&tmp);
 
   /* Say we have a white knight on e4<=>(4,3), a black pawn
      on f6<=>(5,5) and a white king on d2<=>(3,1) */
@@ -195,8 +195,9 @@ void test_knightMoveGenerator(void) {
 void test_kingMoveGenerator(void) {
   Board testBoardK;
   Stack tmp;
-  stack_init(&tmp);
+  stack_alloc(&tmp);
 
+  bool threats[8][8];
   /* Say we have a black king on e4<=>(4,3), with black pawns
      all around except in f5<=>(5,4) (empty) and in d3<=>(3,2) (white pawn) */
 
@@ -204,8 +205,8 @@ void test_kingMoveGenerator(void) {
 
   /* Enable to see the situation : 
   printBoardAndData(testBoardK); */
-
-  kingMoveGenerator(&tmp, 4, 3, black, testBoardK);
+  findThreats(&testBoardK, black, threats);
+  kingMoveGenerator(&tmp, 4, 3, black, testBoardK, threats);
 
   /* (4,3) -> (3,2) */
   CU_ASSERT_EQUAL(stack_pop(&tmp), 4332);
@@ -218,7 +219,7 @@ void test_kingMoveGenerator(void) {
 void test_pawnMoveGenerator1(void) {
   Board testBoardP;
   Stack tmp;
-  stack_init(&tmp);
+  stack_alloc(&tmp);
 
   /* Say we have a white pawn on a2<=>(0,1) with a black knight on b3<=>(1,2) */
 
@@ -241,7 +242,7 @@ void test_pawnMoveGenerator1(void) {
 void test_pawnMoveGenerator2(void) {
   Board testBoardP2;
   Stack tmp;
-  stack_init(&tmp);
+  stack_alloc(&tmp);
 
   /* Say we have a black pawn on e4<=>(4,3) with a white pawn
      on d4<=>(3,3) so that d2<=>(3,2) can be taken en passant */
@@ -261,27 +262,27 @@ void test_pawnMoveGenerator2(void) {
 }
 
 void test_castlesMoveGenerator(void) {
-  Board testBoardCastles;
+/*  Board testBoardCastles;
   Stack tmp;
-  stack_init(&tmp);
+  stack_alloc(&tmp);
 
-  /* In this situation, all castles might be okay, but still
+   In this situation, all castles might be okay, but still
    a kight on b2 disturb the white castle on queen side*/
 
-  fenToBoard("8/8/8/8/8/8/8/RN2K2R w KQkq - 0 1", &testBoardCastles);
+  /*fenToBoard("8/8/8/8/8/8/8/RN2K2R w KQkq - 0 1", &testBoardCastles);
 
-  /* Enable to see the situation :*/
+   Enable to see the situation :*/
   /* printBoardAndData(testBoardCastles); */
 
-  /* Let castleMoveGenerator be called by kingMoveGenerator (more accurate)*/
+  /* Let castleMoveGenerator be called by kingMoveGenerator (more accurate)
   kingMoveGenerator(&tmp, 4, 0, white, testBoardCastles);
 
-  stack_free(&tmp);
+  stack_free(&tmp);*/
 }
 
 void test_movesGenerator(void) {
   Graph testGraph;
-  graph_init(&testGraph);
+  graph_alloc(&testGraph);
 
   /* We want all moves from the beginning position */
   initAGame(&(testGraph.root));
@@ -355,8 +356,8 @@ void test_play_move(void) {
 void test_update_board(void) {
   Graph graph;
   Arc father;
-  graph_init(&graph);
-  arc_init(&father);
+  graph_alloc(&graph);
+  arc_alloc(&father);
 
   stack_push(&graph.current_moves, 4143);
   stack_push(&graph.current_moves, 4344);
@@ -379,3 +380,108 @@ void test_update_board(void) {
   arc_free(&father);
 }
 
+void test_findThreats(void) {
+  Board testBoard;
+  bool threats[8][8];
+  
+  /* Juste print the board and the threats to see this complicated situation
+   * it's been done so that the only move for the white king is f1 <->(5,0)
+   */
+  fenToBoard("q6n/7k/8/8/7b/3p5/8/1r2K3 w KQkq - 0 1", &testBoard);
+  findThreats(&testBoard, testBoard.activeColor, threats);
+  printBoardAndData(testBoard);
+  printThreatBoard(threats);
+
+  CU_ASSERT_TRUE(threats[4][0]);
+  CU_ASSERT_TRUE(threats[5][1]);
+  CU_ASSERT_TRUE(threats[6][2]);
+  
+  CU_ASSERT_TRUE(threats[0][6]);
+  CU_ASSERT_TRUE(threats[1][7]);
+  CU_ASSERT_TRUE(threats[1][6]);
+
+
+  CU_ASSERT_TRUE(threats[0][0]);
+  CU_ASSERT_TRUE(threats[1][1]);
+  CU_ASSERT_TRUE(threats[3][0]);
+
+  CU_ASSERT_TRUE(threats[5][6]);
+  CU_ASSERT_TRUE(threats[6][5]);
+
+  CU_ASSERT_TRUE(threats[7][7]);
+  CU_ASSERT_TRUE(threats[6][7]);
+  CU_ASSERT_TRUE(threats[6][6]);
+  CU_ASSERT_TRUE(threats[6][5]);
+  CU_ASSERT_TRUE(threats[7][5]);
+  
+  CU_ASSERT_TRUE(threats[2][1]);
+  CU_ASSERT_TRUE(threats[4][1]);
+}
+
+void test_findAllPinnings(void) {
+  Board board;
+  Color activeColor;
+  bool pinned[8][8];
+
+  fenToBoard("8/8/5Q2/8/5b2/8/5k2/8 w - - 0 1", &board);
+  activeColor = black;
+
+  findAllPinnings(&board, activeColor, pinned);
+
+  /*
+  printBoardAndData(board);
+  printf("\n");
+  for (int j = 7 ; j >= 0 ; --j) {
+    for (int i = 0 ; i < 8 ; ++i) {
+      printf("%d ", pinned[i][j]);
+    }
+    printf("\n");
+  }
+  */
+
+
+  for (int j = 0 ; j < 8 ; ++j)
+    for (int i = 0 ; i < 8 ; ++i) {
+      if (i == 5 && j == 3) {
+        CU_ASSERT_EQUAL(pinned[i][j], true);
+      } else {
+        CU_ASSERT_EQUAL(pinned[i][j], false);
+      }
+    }
+}
+
+void test_legalMoves(void){
+  Graph testGraph;
+  graph_alloc(&testGraph);
+
+  fenToBoard("q6n/7k/8/8/7b/2pp5/8/1r2K3 w KQkq - 0 1", &(testGraph.root));
+  fenToBoard("q6n/7k/8/8/7b/2pp5/8/1r2K3 w KQkq - 0 1", &(testGraph.current_node));
+  movesGenerator(&testGraph);
+  printBoardAndData(testGraph.current_node);
+
+  /* (4,0) -> (5,0) */
+  CU_ASSERT_EQUAL(stack_pop(&(testGraph.current_moves)), 4050);
+  /* Juste print the board and the threats to see this complicated situation
+   * it's been done so that the only move for the white king is f1 <->(5,0)
+   */
+}
+void test_legalMoves2(void){
+  Graph testGraph;
+  graph_alloc(&testGraph);
+
+  fenToBoard("3rr3/8/8/8/8/8/P7/4K3 w KQkq - 0 1", &(testGraph.root));
+  fenToBoard("3rr3/8/8/8/8/8/P7/4K3 w KQkq - 0 1", &(testGraph.current_node));
+  movesGenerator(&testGraph);
+  printBoardAndData(testGraph.current_node);
+}
+void test_legalMoves3(void){
+  Graph testGraph;
+  graph_alloc(&testGraph);
+
+  fenToBoard("rnbqk1nr/ppppp1b1/5pQp/8/4PP2/8/PPPP2PP/RNB1KBNR b KQkq - 0 1", &(testGraph.root));
+  fenToBoard("rnbqk1nr/ppppp1b1/5pQp/8/4PP2/8/PPPP2PP/RNB1KBNR b KQkq - 0 1", &(testGraph.current_node));
+  movesGenerator(&testGraph);
+  printBoardAndData(testGraph.current_node);
+  /* (4,7) -> (5,7) */
+  CU_ASSERT_EQUAL(stack_pop(&(testGraph.current_moves)), 4757);
+}

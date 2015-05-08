@@ -36,7 +36,7 @@ struct Graph {
   Stack current_moves;
 };
 
-void graph_init(Graph *graph);
+void graph_alloc(Graph *graph);
 void graph_free(Graph *graph);
 
 void play_move(int move, Board *board);
@@ -45,8 +45,16 @@ void play_move(int move, Board *board);
 
 
 
-void findPinnings(Board *board, Color activeColor, bool pinned[8][8]);
-void findKingThreats(Board *board, Color activeColor, bool threats[8][8]);
+void findAllPinnings(Board *board, Color activeColor, bool pinned[8][8]);
+  void findLinePinnings(Board *board, Color enemyColor, bool pinned[8][8],
+                        int X, int Y, int incX, int incY);
+    void findRookPinnings(Board *board, Color enemyColor,
+                                 bool pinned[8][8], int X, int Y);
+    void findBishopPinnings(Board *board, Color enemyColor,
+                                   bool pinned[8][8], int X, int Y);
+
+
+
 
 void movesGenerator(Graph *graph);
 
@@ -73,7 +81,7 @@ void movesGenerator(Graph *graph);
                            Color activeColor, Board board);
 
   void kingMoveGenerator(Stack *moves, int squareX, int squareY,
-                         Color activeColor, Board board);
+                         Color activeColor, Board board, bool threats[8][8]);
 
   void knightAndKing4DirectionsGen(int incX, int incY, Stack *moves,
                                    int squareX, int squareY,
@@ -85,6 +93,31 @@ void movesGenerator(Graph *graph);
   bool isInBoardSquare(int squareX, int squareY);
 
 void update_board(Arc father, Board *board);
+
+void findThreats(Board *board, Color activeColor, bool threats[8][8]);
+
+  void bishopThreatGenerator(int squareX, int squareY, Board board, bool threats[8][8]);
+
+  void rookThreatGenerator(int squareX, int squareY, Board board, bool threats[8][8]);
+
+  void queenThreatGenerator(int squareX, int squareY, Board board, bool threats[8][8]);
+  
+  void knightThreatGenerator(int squareX, int squareY, bool threats[8][8]);
+  
+  void kingThreatGenerator(int squareX, int squareY, bool threats[8][8]);
+  
+  void pawnThreatGenerator(int squareX, int squareY,
+                     Color activeColor, bool threats[8][8]);
+  
+  void lineThreatGenerator(int incX, int incY, int squareX,
+                                 int squareY, Board board, bool threats[8][8]);
+
+  void squareThreatGenerator(int incX, int incY, int squareX, int squareY,
+                                 bool threats[8][8]);
+  
+  void printThreatBoard(bool threats[8][8]);
+
+bool isThreatened(int X, int Y, bool threats[8][8]);
 
 #endif /* CHESSAINT_INCLUDE_GRAPH_H_ */
 

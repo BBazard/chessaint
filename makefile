@@ -20,47 +20,32 @@ export TESTSNAME:="runtests"
 
 MAKE:=make -se
 export LOGS:=2>&1 | tee
-BUILDTYPE:=debug
 export LINT:=$(TRUNK)/../cpplint.py
 
 # Target-specific variables
-debug : CFLAGS+=-g
-release : CFLAGS+=-O3
-debugtests : LDFLAGS+=-lcunit 
-debugtests : CFLAGS+=-g
-releasetests : LDFLAGS+=-lcunit 
+release : CFLAGS+=-g
+tests : LDFLAGS+=-lcunit 
+tests : CFLAGS+=-g
 
-default : debugtests lint
+default : release tests lint
 	printf "\033[0;30m"
 	printf "All built\n\n"
 	printf "Thanks for using ChessAInt's makefiles !\n"
 	printf "\033[0m"
 .PHONY : default
 
-all : alltests lint doc
+all : tests lint doc
 .PHONY : all
 
 .SILENT :
 
 release :
-	$(MAKE) -C $(PROJECTDIR) all BUILDTYPE:=release
+	$(MAKE) -C $(PROJECTDIR) all
 .PHONY : release
 
-debug :
-	$(MAKE) -C $(PROJECTDIR) all BUILDTYPE:=debug
-.PHONY : debug
-
-alltests : releasetests debugtests
-.PHONY : alltests
-
-releasetests : release
-	$(MAKE) -C $(TESTSDIR) BUILDTYPE:=release
-.PHONY : releasetests
-
-debugtests : debug
-	$(MAKE) -C $(TESTSDIR) BUILDTYPE:=debug
-.PHONY : debugtests
-
+tests :
+	$(MAKE) -C $(TESTSDIR)
+.PHONY : tests
 
 doc :
 	printf "\033[0;34m"
@@ -74,8 +59,8 @@ doc :
 lint :
 	printf "\033[0;36m"
 	printf "Lint in progress\n"
-	$(MAKE) -i -C $(PROJECTDIR) $@ BUILDTYPE:=$(BUILDTYPE) | grep -vE "^Done"
-	$(MAKE) -i -C $(TESTSDIR) $@ BUILDTYPE:=$(BUILDTYPE) | grep -vE "^Done"
+	$(MAKE) -i -C $(PROJECTDIR) $@ | grep -vE "^Done"
+	$(MAKE) -i -C $(TESTSDIR) $@ | grep -vE "^Done"
 	printf "\033[0m"
 .PHONY : lint
 
@@ -83,17 +68,17 @@ cleanall : cleandep cleanbin cleandoc cleanlog
 .PHONY : cleanall
 
 clean :
-	$(MAKE) -C $(PROJECTDIR) $@ BUILDTYPE:=release
-	$(MAKE) -C $(PROJECTDIR) $@ BUILDTYPE:=debug
-	$(MAKE) -C $(TESTSDIR) $@ BUILDTYPE:=release
-	$(MAKE) -C $(TESTSDIR) $@ BUILDTYPE:=debug
+	$(MAKE) -C $(PROJECTDIR) $@
+	$(MAKE) -C $(PROJECTDIR) $@
+	$(MAKE) -C $(TESTSDIR) $@
+	$(MAKE) -C $(TESTSDIR) $@
 .PHONY : clean
 
 cleanbin :
-	$(MAKE) -C $(PROJECTDIR) $@ BUILDTYPE:=release
-	$(MAKE) -C $(PROJECTDIR) $@ BUILDTYPE:=debug
-	$(MAKE) -C $(TESTSDIR) $@ BUILDTYPE:=release
-	$(MAKE) -C $(TESTSDIR) $@ BUILDTYPE:=debug
+	$(MAKE) -C $(PROJECTDIR) $@
+	$(MAKE) -C $(PROJECTDIR) $@
+	$(MAKE) -C $(TESTSDIR) $@
+	$(MAKE) -C $(TESTSDIR) $@
 	rm -f $(BINDIR)/uciLogs.txt
 .PHONY : cleanbin
 

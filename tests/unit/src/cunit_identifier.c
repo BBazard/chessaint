@@ -27,8 +27,8 @@ int add_identifier_suite(CU_pSuite pSuite_identifier) {
   }
 
   if (NULL == CU_add_test(pSuite_identifier,
-                           "Testing stack_init",
-                           test_stack_init)) {
+                           "Testing stack_alloc",
+                           test_stack_alloc)) {
     CU_cleanup_registry();
     return CU_get_error();
   }

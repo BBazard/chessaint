@@ -17,9 +17,9 @@
  *
  */
 
-void arc_init(Arc *arc) {
+void arc_alloc(Arc *arc) {
   arc->score = 0;
-  stack_init(&(arc->data));
+  stack_alloc(&(arc->data));
 }
 
 /**

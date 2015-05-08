@@ -103,6 +103,39 @@ int add_graph_suite(CU_pSuite pSuite_graph) {
     return CU_get_error();
   }
 
+  if (NULL == CU_add_test(pSuite_graph,
+                           "Test of the threat generator function",
+                          test_findThreats)) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
+
+  if (NULL == CU_add_test(pSuite_graph,
+                           "Test of the find pinnings function",
+                          test_findAllPinnings)) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
+  
+  if (NULL == CU_add_test(pSuite_graph,
+                           "Test of a certain position for legal moves check",
+                          test_legalMoves)) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
+  if (NULL == CU_add_test(pSuite_graph,
+                           "Another Test of a certain position for legal moves check",
+                          test_legalMoves2)) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
+  if (NULL == CU_add_test(pSuite_graph,
+                           "Another Test of a certain position for legal moves check",
+                          test_legalMoves3)) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
+
 
   return 0;
 }

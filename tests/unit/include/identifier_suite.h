@@ -11,7 +11,7 @@ int clean_suite_identifier(void);
 
 void test_stack_contract(void);
 
-void test_stack_init(void);
+void test_stack_alloc(void);
 void test_stack_pop(void);
 void test_stack_push(void);
 

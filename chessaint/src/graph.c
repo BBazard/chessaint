@@ -8,18 +8,19 @@
 
 #include "include/graph.h"
 #include <stdbool.h>
+#include <assert.h>
 #include "include/chessboard.h"
 
 /**
- *  @fn void graph_init(Graph *graph)
+ *  @fn void graph_alloc(Graph *graph)
  *  @brief Initialisation of a graph item
  *
  *  Calls any necessary init function.
  *  @note need graph_free afterwards
  */
-void graph_init(Graph *graph) {
+void graph_alloc(Graph *graph) {
   graph->links = NULL;
-  stack_init(&(graph->current_moves));
+  stack_alloc(&(graph->current_moves));
   initAGame(&graph->root);
   initAGame(&graph->current_node);
 }
@@ -43,32 +44,54 @@ void movesGenerator(Graph *graph) {
   Board board = graph->current_node;
   Stack *stack = &(graph->current_moves);
 
-  for (int j = 0 ; j < ROWCOL_NB ; ++j) {
-    for (int i = 0 ; i < ROWCOL_NB ; ++i) {
+  int kingX,kingY;
+  bool pinned[ROWCOL_NB][ROWCOL_NB];
+  findAllPinnings(&board, board.activeColor, pinned);
+
+  bool threats[ROWCOL_NB][ROWCOL_NB];
+  findThreats(&board, board.activeColor, threats);
+
+  /* finding the king of the given color */
+  for (int i = 0 ; i < ROWCOL_NB ; ++i) {
+    for (int j = 0 ; j < ROWCOL_NB ; ++j) {
       if ((board.square[i][j].color == board.activeColor) &&
-          1 /** todo the piece is not pinned */ ) {
-        switch (board.square[i][j].piece) {
-        case pawn:
-          pawnMoveGeneratorCapture(stack, i, j, board.activeColor, board);
-          pawnMoveGeneratorNoCapture(stack, i, j, board.activeColor, board);
-          break;
-        case bishop:
-          bishopMoveGenerator(stack, i, j, board.activeColor, board);
-          break;
-        case knight:
-          knightMoveGenerator(stack, i, j, board.activeColor, board);
-          break;
-        case rook:
-          rookMoveGenerator(stack, i,  j, board.activeColor, board);
-          break;
-        case queen:
-          queenMoveGenerator(stack, i, j, board.activeColor, board);
-          break;
-        case king:
-          kingMoveGenerator(stack, i,  j, board.activeColor, board);
-          break;
-        case empty:
-          break;
+          (board.square[i][j].piece == king)) {
+        kingX = i;
+        kingY = j;
+      }
+    }
+  }
+
+  if (isThreatened(kingX, kingY, threats)) {
+    printf("\nCHESS POSITION DETECTED\n");
+    kingMoveGenerator(stack, kingX,  kingY, board.activeColor, board, threats);
+  }else{ 
+    for (int j = 0 ; j < ROWCOL_NB ; ++j) {
+      for (int i = 0 ; i < ROWCOL_NB ; ++i) {
+        if (board.square[i][j].color == board.activeColor && !pinned[i][j]) {
+          switch (board.square[i][j].piece) {
+          case pawn:
+            pawnMoveGeneratorCapture(stack, i, j, board.activeColor, board);
+            pawnMoveGeneratorNoCapture(stack, i, j, board.activeColor, board);
+            break;
+          case bishop:
+           bishopMoveGenerator(stack, i, j, board.activeColor, board);
+            break;
+          case knight:
+            knightMoveGenerator(stack, i, j, board.activeColor, board);
+            break;
+          case rook:
+            rookMoveGenerator(stack, i,  j, board.activeColor, board);
+            break;
+          case queen:
+            queenMoveGenerator(stack, i, j, board.activeColor, board);
+            break;
+          case king:
+            kingMoveGenerator(stack, i,  j, board.activeColor, board, threats);
+            break;
+          case empty:
+            break;
+          }
         }
       }
     }
@@ -92,14 +115,12 @@ void pawnMoveGeneratorCapture(Stack *moves,
                      int squareX, int squareY,
                      Color activeColor, Board board) {
   int X, Y;
-  Color adverseColor;
-  if (activeColor == white) {
-    adverseColor = black;
+  Color adverseColor = getOtherColor(activeColor);
+
+  if (activeColor == white)
     Y = squareY + 1;
-  } else {
-    adverseColor = white;
+  else
     Y = squareY - 1;
-  }
 
   /* The classic capture of pieces towards left of the board */
   X = squareX + 1;
@@ -164,6 +185,7 @@ void pawnMoveGeneratorNoCapture(Stack *moves, int squareX, int squareY,
   if (isInBoardSquare(X, Y)) {
     if (board.square[X][Y].color == neutral) {
       stack_push(moves, stack_contract(squareX, squareY, X, Y));
+      //printf("\n(%d,%d)->(%d,%d)\n", squareX, squareY,X, Y);
     }
   }
 
@@ -181,9 +203,11 @@ void pawnMoveGeneratorNoCapture(Stack *moves, int squareX, int squareY,
     if (activeColor == white) {
       stack_push(moves, stack_contract(squareX, 1, squareX,
                                        squareY + 2 * whiteMove));
+      //printf("\n(%d,%d)->(%d,%d)\n", squareX, squareY,squareX,squareY + 2 * whiteMove);
     } else {
       stack_push(moves, stack_contract(squareX, 6, squareX,
                                        squareY + 2 * blackMove));
+      //printf("\n(%d,%d)->(%d,%d)\n", squareX, squareY,squareX,squareY + 2 * blackMove);
     }
   }
 }
@@ -274,9 +298,9 @@ void bishopAndRook4DirectionsGen(int incX, int incY, Stack *moves, int squareX,
   Y += incY;
   while ((isInBoardSquare(X, Y) && (board.square[X][Y].color == neutral))) {
         stack_push(moves, stack_contract(squareX, squareY, X, Y));
-        X += incX;
-        Y += incY;
-      }
+    X += incX;
+    Y += incY;
+  }
 
   if (isInBoardSquare(X, Y) && (board.square[X][Y].color != activeColor))
     stack_push(moves, stack_contract(squareX, squareY, X, Y));
@@ -289,17 +313,91 @@ void bishopAndRook4DirectionsGen(int incX, int incY, Stack *moves, int squareX,
  *  fill pinned array
  *
  */
-void findPinnings(Board *board, Color activeColor, bool pinned[8][8]) {
+void findAllPinnings(Board *board, Color activeColor, bool pinned[8][8]) {
+  for (int i = 0; i < ROWCOL_NB; ++i)
+    for (int j = 0; j < ROWCOL_NB; ++j)
+      pinned[i][j] = false;
+
+  Color enemyColor = getOtherColor(activeColor);
+
+  for (int i = 0 ; i < ROWCOL_NB ; ++i)
+    for (int j = 0 ; j < ROWCOL_NB ; ++j)
+      if (board->square[i][j].color == enemyColor) {
+        switch (board->square[i][j].piece) {
+          case bishop:
+            findBishopPinnings(board, enemyColor, pinned, i, j);
+            break;
+          case rook:
+            findRookPinnings(board, enemyColor, pinned, i, j);
+            break;
+          case queen:
+            findBishopPinnings(board, enemyColor, pinned, i, j);
+            findRookPinnings(board, enemyColor, pinned, i, j);
+            break;
+          default:  /* pawn, knight, king, empty */
+            break;
+        }
+      }
 }
 
+
 /**
- *  find if the square next to the king are threated
- *  and if the king itself is threated
- *
- *  fill threats array
+ *  @internal
+ * 
+ *  search for a piece of your color 
+ *  between a enemy piece and your king 
+ *  for a piece 
  */
-void findKingThreats(Board *board, Color activeColor, bool threats[8][8]) {
+void findLinePinnings(Board *board, Color enemyColor, bool pinned[8][8],
+                      int X, int Y, int incX, int incY) {
+  Color myColor = getOtherColor(enemyColor);
+  Piece potentielPinned = empty;
+  int potX = -1;
+  int potY = -1;
+
+  assert(board->square[X][Y].color == enemyColor);
+  X += incX;
+  Y += incY;
+
+  while (isInBoardSquare(X, Y) && board->square[X][Y].color != enemyColor) {
+    if (board->square[X][Y].color == myColor) {
+      if (board->square[X][Y].piece != king) {
+        /* when there is more than one piece    */
+        /* between the king and the enemy piece */
+        if (potentielPinned != empty)
+          return;
+
+        potentielPinned = board->square[X][Y].piece;
+        potX = X;
+        potY = Y;
+      }
+      if (board->square[X][Y].piece == king) {
+        if (potentielPinned != empty)
+          pinned[potX][potY] = true;
+        return;
+      }
+    }
+    X += incX;
+    Y += incY;
+  }
 }
+
+void findRookPinnings(Board *board, Color enemyColor,
+                      bool pinned[8][8], int X, int Y) {
+  findLinePinnings(board, enemyColor, pinned, X, Y, 1, 0);
+  findLinePinnings(board, enemyColor, pinned, X, Y, 0, 1);
+  findLinePinnings(board, enemyColor, pinned, X, Y, -1, 0);
+  findLinePinnings(board, enemyColor, pinned, X, Y, 0, -1);
+}
+
+void findBishopPinnings(Board *board, Color enemyColor,
+                      bool pinned[8][8], int X, int Y) {
+  findLinePinnings(board, enemyColor, pinned, X, Y, -1, -1);
+  findLinePinnings(board, enemyColor, pinned, X, Y, -1, +1);
+  findLinePinnings(board, enemyColor, pinned, X, Y, +1, -1);
+  findLinePinnings(board, enemyColor, pinned, X, Y, +1, +1);
+}
+
 
 /**
  *  @fn void queenMoveGenerator(Stack *moves, int squareX, int squareY,
@@ -385,7 +483,7 @@ void knightMoveGenerator(Stack *moves, int squareX,
 
 /**
  *  @fn void kingMoveGenerator(Stack *moves, int squareX, int squareY,
- *      Color activeColor, Board board)
+ *      Color activeColor, Board board, bool threats[8][8])
  *  @brief gives all moves for a king sitting on a given square by calling
  *          a subfunction
  *  @param[in,out] moves is the stack of moves
@@ -398,50 +496,91 @@ void knightMoveGenerator(Stack *moves, int squareX,
  *
  */
 void kingMoveGenerator(Stack *moves, int squareX,
-                       int squareY, Color activeColor, Board board) {
-  /* To the North */
-  knightAndKing4DirectionsGen(0, 1, moves, squareX, squareY,
+                       int squareY, Color activeColor, Board board,
+                       bool threats[8][8]) {
+  if (isInBoardSquare(squareX, squareY + 1)) {
+    if (!threats[squareX][squareY + 1]) {
+      /* To the North */
+      //printf("\n(%d,%d)->(%d,%d)\n", squareX, squareY, squareX, squareY + 1);
+      knightAndKing4DirectionsGen(0, 1, moves, squareX, squareY,
                               activeColor, board);
-  /* To the East */
-  knightAndKing4DirectionsGen(1, 0, moves, squareX, squareY,
+    }
+  }
+  if (isInBoardSquare(squareX + 1, squareY)) {
+    if (!threats[squareX + 1][squareY]) {
+     // printf("\n(%d,%d)->(%d,%d)\n", squareX, squareY, squareX + 1, squareY);
+      /* To the East */
+      knightAndKing4DirectionsGen(1, 0, moves, squareX, squareY,
                               activeColor, board);
-  /* To the South */
-  knightAndKing4DirectionsGen(0, -1, moves, squareX, squareY,
+    }
+  }
+  if (isInBoardSquare(squareX, squareY - 1)) {
+    if (!threats[squareX][squareY - 1]) {
+     // printf("\n(%d,%d)->(%d,%d)\n", squareX, squareY, squareX, squareY - 1);
+      /* To the South */
+      knightAndKing4DirectionsGen(0, -1, moves, squareX, squareY,
                               activeColor, board);
-  /* To the West */
-  knightAndKing4DirectionsGen(-1, 0, moves, squareX, squareY,
+    }
+  }
+  if (isInBoardSquare(squareX - 1, squareY)) {
+    if (!threats[squareX - 1 ][squareY]) {
+    //  printf("\n(%d,%d)->(%d,%d)\n", squareX, squareY, squareX - 1, squareY);
+      /* To the West */
+      knightAndKing4DirectionsGen(-1, 0, moves, squareX, squareY,
                               activeColor, board);
-  /* To the North-East */
-  knightAndKing4DirectionsGen(1, 1, moves, squareX, squareY,
+    }
+  }
+  if (isInBoardSquare(squareX + 1, squareY + 1)) {
+    if (!threats[squareX + 1 ][squareY + 1]) {
+     // printf("\n(%d,%d)->(%d,%d)\n", squareX, squareY, squareX + 1 , squareY + 1);
+      /* To the North-East */
+      knightAndKing4DirectionsGen(1, 1, moves, squareX, squareY,
                               activeColor, board);
-  /* To the South-East */
-  knightAndKing4DirectionsGen(1, -1, moves, squareX, squareY,
+    }
+  }
+  if (isInBoardSquare(squareX + 1, squareY - 1)) {
+    if (!threats[squareX +1 ][squareY - 1]) {
+     // printf("\n(%d,%d)->(%d,%d)\n", squareX, squareY, squareX + 1, squareY - 1);
+      /* To the South-East */
+      knightAndKing4DirectionsGen(1, -1, moves, squareX, squareY,
                               activeColor, board);
-  /* To the South-West */
-  knightAndKing4DirectionsGen(-1, -1, moves, squareX, squareY,
+    }
+  }
+  if (isInBoardSquare(squareX - 1, squareY - 1)) {
+    if (!threats[squareX - 1][squareY - 1]) {
+     // printf("\n(%d,%d)->(%d,%d)\n", squareX, squareY, squareX - 1, squareY - 1);
+      /* To the South-West */
+      knightAndKing4DirectionsGen(-1, -1, moves, squareX, squareY,
                               activeColor, board);
-  /* To the North-West */
-  knightAndKing4DirectionsGen(-1, 1, moves, squareX, squareY,
+    }
+  }
+  if (isInBoardSquare(squareX - 1, squareY + 1)) {
+    if (!threats[squareX - 1][squareY + 1]) {
+     // printf("\n(%d,%d)->(%d,%d)\n", squareX, squareY, squareX - 1, squareY + 1);
+      /* To the North-West */
+      knightAndKing4DirectionsGen(-1, 1, moves, squareX, squareY,
                               activeColor, board);
+    }
+  }
 
   for (int i = 0 ; i < 4 ; ++i) {
     if (board.availableCastlings[i] == 1) {
       switch (i) {
         case 0:
           if (activeColor == white)
-            castlesMoveGenerator(1, squareX, squareY, moves, board);
+            //castlesMoveGenerator(1, squareX, squareY, moves, board);
           break;
         case 1:
           if (activeColor == white)
-            castlesMoveGenerator(-1, squareX, squareY, moves, board);
+            //castlesMoveGenerator(-1, squareX, squareY, moves, board);
           break;
         case 2:
           if (activeColor == black)
-            castlesMoveGenerator(1, squareX, squareY, moves, board);
+            //castlesMoveGenerator(1, squareX, squareY, moves, board);
           break;
         case 3:
           if (activeColor == black)
-            castlesMoveGenerator(-1, squareX, squareY, moves, board);
+            //castlesMoveGenerator(-1, squareX, squareY, moves, board);
           break;
       }
     }
@@ -594,7 +733,7 @@ void update_moves(Stack *s, Board *current) {
  */
 void update_board(Arc father, Board *board) {
   Stack stack;
-  stack_init(&stack);
+  stack_alloc(&stack);
   identifier_to_stack(father.data, &stack);
   update_moves(&stack, board);
   board->activeColor = !identifier_is_white(father.data);
@@ -607,4 +746,309 @@ void update_board(Arc father, Board *board) {
   board->halfMoveClock = identifier_get_halfmove(father.data);
   board->fullMoveNb = identifier_get_fullmove(father.data);
   stack_free(&stack);
+}
+
+/**
+ *  find if the square next to the king are threated
+ *  and if the king itself is threated
+ *
+ *  fill threats array
+ */
+void findThreats(Board *board, Color activeColor, bool threats[8][8]) {
+  Color opponentColor = getOtherColor(activeColor);
+
+  /* Needed */
+  for (int i = 0 ; i < 8 ; ++i) {
+    for (int j = 0 ; j < 8 ; ++j) {
+      threats[i][j] = false;
+    }
+  }
+
+
+  /*we draw the array of threats <-> squares that opponent can capture */
+  for (int i = 0 ; i < ROWCOL_NB ; ++i) {
+    for (int j = 0 ; j < ROWCOL_NB ; ++j) {
+      if (board->square[i][j].color == opponentColor) {
+        switch (board->square[i][j].piece) {
+          case bishop:
+            bishopThreatGenerator(i, j, *board, threats);
+            break;
+          case knight:
+            knightThreatGenerator(i, j, threats);
+            break;
+          case rook:
+            rookThreatGenerator(i, j, *board, threats);
+            break;
+          case queen:
+            queenThreatGenerator(i, j, *board, threats);
+            break;
+          case king:
+            kingThreatGenerator(i, j, threats);
+            break;
+          case pawn:
+            pawnThreatGenerator(i, j, opponentColor, threats);
+            break;
+          case empty:
+            break;
+          }
+      }
+    }
+  }
+}
+
+/**
+ *  @fn void bishopThreatGenerator(int squareX, int squareY,
+                         Color pieceColor, Board board, bool threats[8][8]) {
+ *  @brief give all theatened square by a bishop through the call of a subfct
+ *  @param[in] squareX 
+ *  @param[in] squareY are the position of the bishop (7,7) system
+ *  @param[in] board is the current board
+ *  @param[in] threats is the board of booleans representing the threatened
+ *             square
+ *
+ */
+void bishopThreatGenerator(int squareX, int squareY, Board board, bool threats[8][8]) {
+  /* Bishop going North-East */
+  lineThreatGenerator(1, 1, squareX, squareY, board, threats);
+
+  /* Bishop going South-East */
+  lineThreatGenerator(1, -1, squareX, squareY, board, threats);
+
+  /* Bishop going South-West */
+  lineThreatGenerator(-1, -1, squareX, squareY, board, threats);
+
+  /* Bishop going North-West */
+  lineThreatGenerator(-1, 1, squareX, squareY, board, threats);
+}
+
+/**
+ *  @fn void rookThreatGenerator(int squareX, int squareY,
+                       Color activeColor, Board board, bool threats[8][8]) {
+ *  @brief gives all threats for a rook sitting on a given square by calling
+           dedicated subfonctions
+ *  @param[in] squareX 
+ *  @param[in] squareY are the position of the rook (7,7) system
+ *  @param[in] board is the current board
+ *  @param[in] threats is the board of booleans representing the threatened
+ *             square
+ *
+ */
+void rookThreatGenerator(int squareX, int squareY, Board board,
+                          bool threats[8][8]) {
+  /* Rook going North */
+  lineThreatGenerator(0, 1, squareX, squareY, board, threats);
+
+  /* Rook going South */
+  lineThreatGenerator(0, -1, squareX, squareY, board, threats);
+
+  /* Rook going East */
+  lineThreatGenerator(1, 0, squareX, squareY, board, threats);
+
+  /* Rook going West */
+  lineThreatGenerator(-1, 0,  squareX, squareY, board, threats);
+}
+/**
+ *  @fn void queenGenerator(Stack *moves, int squareX, int squareY,
+ Color activeColor, Board board)
+ *  @brief gives all threats for a queen sitting on a given square
+ *  @param[in] squareX 
+ *  @param[in] squareY are the position of the queen (7,7) system
+ *  @param[in] board is the current board
+ *  @param[in] threats is the board of booleans representing the threatened
+ *             square
+ */
+void queenThreatGenerator(int squareX, int squareY, Board board,
+                          bool threats[8][8]) {
+  bishopThreatGenerator(squareX, squareY, board, threats);
+  rookThreatGenerator(squareX, squareY, board, threats);
+}
+
+/**
+ *  @fn void lineThreatGenerator(int incX, int incY, int squareX,
+                                 int squareY, Color pieceColor, Board board,
+                                 bool threats[8][8]) {
+ *  @brief this subfunction must mark a square as a threat for the opponent of
+ *         pieceColor
+ *  @param[in] incX the X increment of the precise move 
+ *  @param[in] incY the Y increment of the precise move 
+ *  @param[in] squareX 
+ *  @param[in] squareY are the position of the piece (7,7) system
+ *  @param[in] board is the current board
+ *  @param[in] threats is the board of booleans representing the threatened
+ *             square
+ *
+ *  This function gives all threatened square for a colored bishop or rook 
+ *  in a boolean array
+ */
+void lineThreatGenerator(int incX, int incY, int squareX,
+                         int squareY, Board board, bool threats[8][8]) {
+  int X = squareX;
+  int Y = squareY;
+
+  X += incX;
+  Y += incY;
+  while ((isInBoardSquare(X, Y) && (board.square[X][Y].color == neutral))) {
+    threats[X][Y] = true;
+    X += incX;
+    Y += incY;
+  }
+
+  if (isInBoardSquare(X, Y))
+    threats[X][Y] = true;
+}
+
+void printThreatBoard(bool threats[8][8]) {
+  for (int j = 7 ; j >= 0 ; --j) {
+    printf("|");
+    for (int i = 0 ; i < 8 ; ++i) {
+      printf("%s|", threats[i][j] ? "x" : " ");
+    }
+    printf("\n");
+  }
+}
+/**
+ *  @fn  void knightThreatGenerator(int squareX, int squareY, Color pieceColor,
+                          Board board, bool threats[8][8]) {
+ *  @brief gives all moves for a knight sitting on a given square by calling
+ *          subfunctions
+ *  @param[in] squareX 
+ *  @param[in] squareY are the position of the knight (7,7) system
+ *  @param[in] threats is the board of booleans representing the threatened
+ *             square
+ */
+void knightThreatGenerator(int squareX, int squareY, bool threats[8][8]) {
+  /* move : North then East
+     | |F|  Finish
+     | |
+     |S|    Start */
+  squareThreatGenerator(1, 2, squareX, squareY, threats);
+  /* move : North then West
+     |F| |  Finish
+     | |
+     |S|    Start */
+  squareThreatGenerator(-1, 2, squareX, squareY, threats);
+  /* move : East then North
+     |F|  Finish
+     |S| | |  Start */
+  squareThreatGenerator(2, 1, squareX, squareY, threats);
+  /* move : East then South
+     |S| | |  Start
+     |F|  Finish */
+  squareThreatGenerator(2, -1, squareX, squareY, threats);
+  /* move : South then West
+     |S|  Start
+     | |
+     |F| |  Finish */
+  squareThreatGenerator(-1, -2, squareX, squareY, threats);
+  /* move : South then East
+     |S|    Start
+     | |
+     | |F|  Finish */
+  squareThreatGenerator(1, -2, squareX, squareY, threats);
+  /* move : West then North
+     |F|      Finish
+     | | |S|  Start */
+  squareThreatGenerator(-2, 1, squareX, squareY, threats);
+  /* move : West then South
+     | | |S|  Start
+     |F|      Finish */
+  squareThreatGenerator(-2, -1, squareX, squareY, threats);
+}
+
+/**
+ *  @fn void kingThreatGenerator(int squareX, int squareY, Color activeColor,
+                        Board board, bool threats[8][8]) {
+ *  @brief gives all threats for a king sitting on a given square by calling
+ *          a subfunction
+ *  @param[in] squareX 
+ *  @param[in] squareY are the position of the king (7,7) system
+ *  @param[in] threats is the board of booleans representing the threatened
+ *             square
+ */
+void kingThreatGenerator(int squareX, int squareY, bool threats[8][8]) {
+  /* To the North */
+  squareThreatGenerator(0, 1, squareX, squareY, threats);
+  /* To the East */
+  squareThreatGenerator(1, 0, squareX, squareY, threats);
+  /* To the South */
+  squareThreatGenerator(0, -1, squareX, squareY, threats);
+  /* To the West */
+  squareThreatGenerator(-1, 0, squareX, squareY, threats);
+  /* To the North-East */
+  squareThreatGenerator(1, 1, squareX, squareY, threats);
+  /* To the South-East */
+  squareThreatGenerator(1, -1, squareX, squareY, threats);
+  /* To the South-West */
+  squareThreatGenerator(-1, -1, squareX, squareY, threats);
+  /* To the North-West */
+  squareThreatGenerator(-1, 1, squareX, squareY, threats);
+}
+
+/**
+ *  @fn void pawnThreatGenerator(int squareX, int squareY,
+                     Color pieceColor, Board board, bool threats[8][8]) {
+ *  @brief gives all threats for a pawn sitting on a given square
+ *  @param[in,out] moves the stack of moves
+ *  @param[in] squareX 
+ *  @param[in] squareY are the position of the pawx (7,7) system
+ *  @param[in] pieceColor is the color of the pawn
+ *  @param[in] threats is the board of booleans representing the threatened
+ *             square
+ *  
+ *  @note : no enPassant handling yet
+ *
+ */
+void pawnThreatGenerator(int squareX, int squareY,
+                     Color pieceColor, bool threats[8][8]) {
+  int X, Y;
+  if (pieceColor == white)
+    Y = squareY + 1;
+  else
+    Y = squareY - 1;
+
+  /* The classic capture of pieces towards left of the board */
+  X = squareX + 1;
+  if (isInBoardSquare(X, Y)) {
+      threats[X][Y] = true;
+  }
+
+  /* The classic capture of pieces towards right of the board */
+  X = squareX - 1;
+  if (isInBoardSquare(X, Y)) {
+      threats[X][Y] = true;
+  }
+}
+/**
+ *  @fn  void squareThreatGenerator(int incX, int incY, int squareX, int squareY,
+                                 Color pieceColor, Board board,
+                                 bool threats[8][8]) {
+ *  @brief this subfunction must mark a square as a threat for the opponent of
+ *         pieceColor
+ *  @param[in] incX the increment on X of the particular move being considered
+ *  @param[in] incY the increment on Y of the particular move being considered
+ *  @param[in] squareX 
+ *  @param[in] squareY are the position of the piece (7,7) system
+ *  @param[in] threats is the board of booleans representing the threatened
+ *             square
+ *
+ */
+void squareThreatGenerator(int incX, int incY, int squareX, int squareY,
+                                 bool threats[8][8]) {
+  int X = squareX + incX;
+  int Y = squareY + incY;
+
+  if (isInBoardSquare(X, Y))
+    threats[X][Y] = true;
+}
+
+/** 
+ *  @fn bool isThreatened(int X, int Y, bool threats[8][8])
+ *  @brief tells if a piece is threatened. USEFULL TO FIND IF KING IS CHECKED
+ *  @param[out] bool : the answer
+ *  @param[in] X
+ *  @param[in] Y : the coords of the checked square
+ *  @param[in] threats the map of the threats
+ */
+bool isThreatened(int X, int Y, bool threats[8][8]) {
+  return threats[X][Y];
 }

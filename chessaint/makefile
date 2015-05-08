@@ -4,21 +4,9 @@ error:
 	printf "Error : this makefile must be called from another makefile\n"
 	printf "\033[0m"
 .PHONY : error
-else
-ifeq ($(BUILDTYPE), debug)
-else
-ifeq ($(BUILDTYPE), release)
-else
-error:
-	printf "\033[0;31m"
-	printf "Error : wrong buildtype : $(BUILDTYPE)\n"
-	printf "\033[0m"
-.PHONY : error
-endif
-endif
 endif
 
-OUTPUTDIR:=$(BUILDDIR)/$(BUILDTYPE)
+OUTPUTDIR:=$(BUILDDIR)/objs
 
 SRC:=$(wildcard src/*.c)
 INCLUDE:=$(wildcard include/*.h)
@@ -30,7 +18,7 @@ all : $(OBJS)
 	printf "\033[0;32m"
 	printf "Creating binary file in : $(BINDIR)\n"
 	printf "\033[0m"
-	$(LD) $(CFLAGS) -o $(BINDIR)/${BUILDTYPE}$(EXECUTABLENAME) $(OBJS) $(LDFLAGS)
+	$(LD) $(CFLAGS) -o $(BINDIR)/$(EXECUTABLENAME) $(OBJS) $(LDFLAGS)
 .PHONY : all
 
 -include $(DEPENDIR)/$(OBJS:.o=.d)
@@ -53,7 +41,7 @@ cleanbin :
 	printf "\033[0;33m"
 	printf "Suppressing $(BUILDTYPE) binary\n"
 	printf "\033[0m"
-	rm -f $(BINDIR)/${BUILDTYPE}$(EXECUTABLENAME)
+	rm -f $(BINDIR)/$(EXECUTABLENAME)
 .PHONY : cleanbin
 
 lint :

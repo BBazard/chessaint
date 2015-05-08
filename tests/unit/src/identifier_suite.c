@@ -15,9 +15,9 @@ void test_stack_contract(void) {
   CU_ASSERT_EQUAL(1234, stack_contract(1, 2, 3, 4));
 }
 
-void test_stack_init(void) {
+void test_stack_alloc(void) {
   Stack s;
-  stack_init(&s);
+  stack_alloc(&s);
 
   CU_ASSERT_EQUAL(mpz_cmp_ui(s, 0), 0);
 
@@ -26,7 +26,7 @@ void test_stack_init(void) {
 
 void test_stack_push(void) {
   Stack s;
-  stack_init(&s);
+  stack_alloc(&s);
 
   int to_push1 = 2345;
   int to_push2 = 3788;
@@ -160,7 +160,7 @@ void test_identifier_get_fullmove(void) {
 void test_identifier_to_stack(void) {
   Stack stack;
   Identifier id;
-  stack_init(&stack);
+  stack_alloc(&stack);
   mpz_init_set_str(id, "12345678001122", 10);
   identifier_to_stack(id, &stack);
 

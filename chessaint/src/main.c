@@ -23,7 +23,7 @@ int main() {
   char buffer[UCI_SIZE] = "";
 
   Graph graph;
-  graph_init(&graph);
+  graph_alloc(&graph);
 
   while (uciLoop(log, buffer, &graph)) {}
 

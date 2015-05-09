@@ -124,18 +124,30 @@ int add_graph_suite(CU_pSuite pSuite_graph) {
     return CU_get_error();
   }
   if (NULL == CU_add_test(pSuite_graph,
-                          "Test of a certain position for legal moves check 2",
+  "Another Test of a certain position for legal moves check",
                           test_legalMoves2)) {
     CU_cleanup_registry();
     return CU_get_error();
   }
+
   if (NULL == CU_add_test(pSuite_graph,
-                          "Test of a certain position for legal moves check 3",
+    "Another Test of a certain position for legal moves check",
                           test_legalMoves3)) {
     CU_cleanup_registry();
     return CU_get_error();
   }
-
+  if (NULL == CU_add_test(pSuite_graph,
+"Test for legal moves : only solution put a piece between the threat king",
+    test_legalMoves4)) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
+  if (NULL == CU_add_test(pSuite_graph,
+    "Another Test of a certain position for legal moves check",
+                          test_legalMoves5)) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
 
   return 0;
 }

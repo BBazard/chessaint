@@ -96,31 +96,43 @@ void update_board(Arc father, Board *board);
 
 void findThreats(Board *board, Color activeColor, bool threats[8][8]);
 
-void bishopThreatGenerator(int squareX, int squareY, Board board,
-                           bool threats[8][8]);
+  void bishopThreatGenerator(int squareX, int squareY, Board board,
+                            bool threats[8][8]);
 
-void rookThreatGenerator(int squareX, int squareY, Board board,
-                         bool threats[8][8]);
-
-void queenThreatGenerator(int squareX, int squareY, Board board,
+  void rookThreatGenerator(int squareX, int squareY, Board board,
                           bool threats[8][8]);
 
-void knightThreatGenerator(int squareX, int squareY, bool threats[8][8]);
+  void queenThreatGenerator(int squareX, int squareY, Board board,
+                          bool threats[8][8]);
 
-void kingThreatGenerator(int squareX, int squareY, bool threats[8][8]);
+  void knightThreatGenerator(int squareX, int squareY, bool threats[8][8]);
 
-void pawnThreatGenerator(int squareX, int squareY,
-                         Color activeColor, bool threats[8][8]);
+  void kingThreatGenerator(int squareX, int squareY, bool threats[8][8]);
 
-void lineThreatGenerator(int incX, int incY, int squareX,
-                         int squareY, Board board, bool threats[8][8]);
+  void pawnThreatGenerator(int squareX, int squareY,
+                     Color activeColor, bool threats[8][8]);
 
-void squareThreatGenerator(int incX, int incY, int squareX, int squareY,
-                           bool threats[8][8]);
+  void lineThreatGenerator(int incX, int incY, int squareX,
+                                 int squareY, Board board, bool threats[8][8]);
 
-void printThreatBoard(bool threats[8][8]);
+  void squareThreatGenerator(int incX, int incY, int squareX, int squareY,
+                                 bool threats[8][8]);
+
+  void printThreatBoard(bool threats[8][8]);
+
+int stopThreat(Board board, bool pinned[8][8],
+              bool threats[8][8], int threatenedX, int threatenedY);
+
+  void stopThreatMoveGenerator(Board board, Stack *moves,
+                                bool pinned[8][8]);
+
+  void playMoveToCheckThreat(int move, Board *board);
 
 bool isThreatened(int X, int Y, bool threats[8][8]);
 
+bool isSurrounded(int X, int Y, Board board, bool threats[8][8]);
+
+void checkSurroundings(int X, int Y, Board board, bool threats[8][8],
+                      bool *answer);
 #endif /* CHESSAINT_INCLUDE_GRAPH_H_ */
 

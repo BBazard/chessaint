@@ -31,6 +31,7 @@ void test_findAllPinnings(void);
 void test_legalMoves(void);
 void test_legalMoves2(void);
 void test_legalMoves3(void);
-
+void test_legalMoves4(void);
+void test_legalMoves5(void);
 #endif /* TESTS_UNIT_INCLUDE_GRAPH_SUITE_H_ */
 

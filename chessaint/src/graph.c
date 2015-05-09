@@ -45,6 +45,7 @@ void movesGenerator(Graph *graph) {
   Stack *stack = &(graph->current_moves);
 
   int kingX, kingY;
+  int aMove;
   bool pinned[ROWCOL_NB][ROWCOL_NB];
   findAllPinnings(&board, board.activeColor, pinned);
 
@@ -64,6 +65,13 @@ void movesGenerator(Graph *graph) {
 
   if (isThreatened(kingX, kingY, threats)) {
     printf("\nCHESS POSITION DETECTED\n");
+    if (isSurrounded(kingX, kingY, board, threats)) {
+      printf("BUT KING CAN'T MOVE\n");
+      aMove = stopThreat(board, pinned, threats, kingX, kingY);
+      if (aMove != 0) {
+        stack_push(stack, aMove);
+        }
+    }
     kingMoveGenerator(stack, kingX,  kingY, board.activeColor, board, threats);
   } else {
     for (int j = 0 ; j < ROWCOL_NB ; ++j) {
@@ -98,6 +106,86 @@ void movesGenerator(Graph *graph) {
   }
 }
 
+/*
+ *  @fn  int stopThreat(Board board, bool pinned[8][8],
+               bool threats[8][8], int threatenedX, int threatenedY)
+ *  @brief this function is called when king is threatened but can't move
+ *        it tries many pieces in order to stop of possible the threat
+ *        Actually the first move that stops the trheat is played
+ *  @param[in] board
+ *  @param[in] pinned the map of pinned pieces that cant move
+ *  @param[in] threats the map of threats
+ *  @param[in] threatenedX
+ *  @param[in] threatenedY the coords of the threatened piece (king)
+ */
+int stopThreat(Board board, bool pinned[8][8],
+               bool threats[8][8], int threatenedX, int threatenedY) {
+  Board originalBoard;
+  originalBoard = board;
+  Stack moves;
+  stack_alloc(&moves);
+
+  bool endThreat = false;
+  int aMove = 0;
+  int poped;
+
+  stopThreatMoveGenerator(board, &moves, pinned);
+  while (((poped = stack_pop(&moves)) != - 1) && (!endThreat)) {
+    aMove = poped;
+    playMoveToCheckThreat(aMove, &board);
+    findThreats(&board, board.activeColor, threats);
+    /* printThreatBoard(threats); */
+
+    if (!isThreatened(threatenedX, threatenedY, threats)) {
+      endThreat = true;
+    } else {
+      board = originalBoard;
+      aMove = 0;
+    }
+  }
+
+  return aMove;
+}
+
+/*
+ *  @fn void stopThreatMoveGenerator(Board board, Stack *moves,
+ *                                    bool pinned[8][8])
+ *  @brief generates all moves except king's one. These moves will then be 
+ *        checked in stopThreat to see if they stop the threat
+ *  @param[in] board
+ *  @param[in,out] moves the moves generated
+ *  @param[in] pinned beacause pinned pieces can't move
+ */
+void stopThreatMoveGenerator(Board board, Stack *moves, bool pinned[8][8]) {
+  for (int j = 0 ; j < ROWCOL_NB ; ++j) {
+    for (int i = 0 ; i < ROWCOL_NB ; ++i) {
+      if (board.square[i][j].color == board.activeColor && !pinned[i][j]) {
+        switch (board.square[i][j].piece) {
+        case pawn:
+          pawnMoveGeneratorCapture(moves, i, j, board.activeColor, board);
+          pawnMoveGeneratorNoCapture(moves, i, j, board.activeColor, board);
+          break;
+        case bishop:
+         bishopMoveGenerator(moves, i, j, board.activeColor, board);
+          break;
+        case knight:
+          knightMoveGenerator(moves, i, j, board.activeColor, board);
+          break;
+        case rook:
+          rookMoveGenerator(moves, i,  j, board.activeColor, board);
+          break;
+        case queen:
+          queenMoveGenerator(moves, i, j, board.activeColor, board);
+          break;
+        case king:
+          break;
+        case empty:
+          break;
+        }
+      }
+    }
+  }
+}
 /**
  *  @fn void pawnMoveGeneratorCapture(Stack *moves, int squareX, int squareY,
  *  Color activeColor, Board board, Coord enPassant)
@@ -185,7 +273,7 @@ void pawnMoveGeneratorNoCapture(Stack *moves, int squareX, int squareY,
   if (isInBoardSquare(X, Y)) {
     if (board.square[X][Y].color == neutral) {
       stack_push(moves, stack_contract(squareX, squareY, X, Y));
-      /* printf("\n(%d,%d)->(%d,%d)\n", squareX, squareY,X, Y); */
+      // printf("\n(%d,%d)->(%d,%d)\n", squareX, squareY,X, Y);
     }
   }
 
@@ -203,13 +291,13 @@ void pawnMoveGeneratorNoCapture(Stack *moves, int squareX, int squareY,
     if (activeColor == white) {
       stack_push(moves, stack_contract(squareX, 1, squareX,
                                        squareY + 2 * whiteMove));
-      /* printf("\n(%d,%d)->(%d,%d)\n", squareX, squareY, squareX,
-         squareY + 2 * whiteMove); */
+// printf("\n(%d,%d)->(%d,%d)\n",
+// squareX, squareY,squareX,squareY + 2 * whiteMove);
     } else {
       stack_push(moves, stack_contract(squareX, 6, squareX,
                                        squareY + 2 * blackMove));
-      /* printf("\n(%d,%d)->(%d,%d)\n", squareX, squareY, squareX,
-         squareY + 2 * blackMove); */
+// printf("\n(%d,%d)->(%d,%d)\n",
+// squareX, squareY,squareX,squareY + 2 * blackMove);
     }
   }
 }
@@ -503,16 +591,14 @@ void kingMoveGenerator(Stack *moves, int squareX,
   if (isInBoardSquare(squareX, squareY + 1)) {
     if (!threats[squareX][squareY + 1]) {
       /* To the North */
-      /* printf("\n(%d,%d)->(%d,%d)\n", squareX, squareY, squareX,
-         squareY + 1); */
+      // printf("\n(%d,%d)->(%d,%d)\n", squareX, squareY, squareX, squareY + 1);
       knightAndKing4DirectionsGen(0, 1, moves, squareX, squareY,
                                   activeColor, board);
     }
   }
   if (isInBoardSquare(squareX + 1, squareY)) {
     if (!threats[squareX + 1][squareY]) {
-      /*  printf("\n(%d,%d)->(%d,%d)\n", squareX, squareY, squareX + 1,
-          squareY); */
+      // printf("\n(%d,%d)->(%d,%d)\n", squareX, squareY, squareX + 1, squareY);
       /* To the East */
       knightAndKing4DirectionsGen(1, 0, moves, squareX, squareY,
                                   activeColor, board);
@@ -529,8 +615,7 @@ void kingMoveGenerator(Stack *moves, int squareX,
   }
   if (isInBoardSquare(squareX - 1, squareY)) {
     if (!threats[squareX - 1 ][squareY]) {
-      /*   printf("\n(%d,%d)->(%d,%d)\n", squareX, squareY, squareX - 1,
-           squareY); */
+//  printf("\n(%d,%d)->(%d,%d)\n", squareX, squareY, squareX - 1, squareY);
       /* To the West */
       knightAndKing4DirectionsGen(-1, 0, moves, squareX, squareY,
                                   activeColor, board);
@@ -538,8 +623,7 @@ void kingMoveGenerator(Stack *moves, int squareX,
   }
   if (isInBoardSquare(squareX + 1, squareY + 1)) {
     if (!threats[squareX + 1 ][squareY + 1]) {
-      /*  printf("\n(%d,%d)->(%d,%d)\n", squareX, squareY, squareX + 1 ,
-          squareY + 1); */
+// printf("\n(%d,%d)->(%d,%d)\n", squareX, squareY, squareX + 1 , squareY + 1);
       /* To the North-East */
       knightAndKing4DirectionsGen(1, 1, moves, squareX, squareY,
                                   activeColor, board);
@@ -547,8 +631,7 @@ void kingMoveGenerator(Stack *moves, int squareX,
   }
   if (isInBoardSquare(squareX + 1, squareY - 1)) {
     if (!threats[squareX +1 ][squareY - 1]) {
-      /*  printf("\n(%d,%d)->(%d,%d)\n", squareX, squareY, squareX + 1,
-          squareY - 1); */
+// printf("\n(%d,%d)->(%d,%d)\n", squareX, squareY, squareX + 1, squareY - 1);
       /* To the South-East */
       knightAndKing4DirectionsGen(1, -1, moves, squareX, squareY,
                                   activeColor, board);
@@ -556,8 +639,7 @@ void kingMoveGenerator(Stack *moves, int squareX,
   }
   if (isInBoardSquare(squareX - 1, squareY - 1)) {
     if (!threats[squareX - 1][squareY - 1]) {
-      /*  printf("\n(%d,%d)->(%d,%d)\n", squareX, squareY, squareX - 1,
-          squareY - 1); */
+// printf("\n(%d,%d)->(%d,%d)\n", squareX, squareY, squareX - 1, squareY - 1);
       /* To the South-West */
       knightAndKing4DirectionsGen(-1, -1, moves, squareX, squareY,
                                   activeColor, board);
@@ -565,8 +647,7 @@ void kingMoveGenerator(Stack *moves, int squareX,
   }
   if (isInBoardSquare(squareX - 1, squareY + 1)) {
     if (!threats[squareX - 1][squareY + 1]) {
-      /*  printf("\n(%d,%d)->(%d,%d)\n", squareX, squareY, squareX - 1,
-          squareY + 1); */
+// printf("\n(%d,%d)->(%d,%d)\n", squareX, squareY, squareX - 1, squareY + 1);
       /* To the North-West */
       knightAndKing4DirectionsGen(-1, 1, moves, squareX, squareY,
                                   activeColor, board);
@@ -576,21 +657,21 @@ void kingMoveGenerator(Stack *moves, int squareX,
   for (int i = 0 ; i < 4 ; ++i) {
     if (board.availableCastlings[i] == 1) {
       switch (i) {
-      case 0:
-        if (activeColor == white)
-          /* castlesMoveGenerator(1, squareX, squareY, moves, board); */
+        case 0:
+          if (activeColor == white)
+            // castlesMoveGenerator(1, squareX, squareY, moves, board);
           break;
-      case 1:
-        if (activeColor == white)
-          /* castlesMoveGenerator(-1, squareX, squareY, moves, board); */
+        case 1:
+          if (activeColor == white)
+            // castlesMoveGenerator(-1, squareX, squareY, moves, board);
           break;
-      case 2:
-        if (activeColor == black)
-          /* castlesMoveGenerator(1, squareX, squareY, moves, board); */
+        case 2:
+          if (activeColor == black)
+            // castlesMoveGenerator(1, squareX, squareY, moves, board);
           break;
-      case 3:
-        if (activeColor == black)
-          /* castlesMoveGenerator(-1, squareX, squareY, moves, board); */
+        case 3:
+          if (activeColor == black)
+            // castlesMoveGenerator(-1, squareX, squareY, moves, board);
           break;
       }
     }
@@ -819,7 +900,7 @@ void findThreats(Board *board, Color activeColor, bool threats[8][8]) {
  *
  */
 void bishopThreatGenerator(int squareX, int squareY, Board board,
-                           bool threats[8][8]) {
+                          bool threats[8][8]) {
   /* Bishop going North-East */
   lineThreatGenerator(1, 1, squareX, squareY, board, threats);
 
@@ -1063,4 +1144,66 @@ void squareThreatGenerator(int incX, int incY, int squareX, int squareY,
  */
 bool isThreatened(int X, int Y, bool threats[8][8]) {
   return threats[X][Y];
+}
+
+/*
+ *  @fn bool isSurrounded(int X, int Y, Board board, bool threats[8][8]) {
+ *  @brief tells if a piece is surrounded ie can't move all around itself
+ *          this calls a subfunction : checkSurroundigs
+ *  @param[out] bool : the answer
+ *  @param[in] X
+ *  @param[in] Y the coords of the piece to be checked
+ *  @param[in] board the board
+ *  @param[in] threats the map of threats
+ */
+bool isSurrounded(int X, int Y, Board board, bool threats[8][8]) {
+  bool answer;
+  answer = true;
+
+  checkSurroundings(X, Y + 1, board, threats, &answer);
+  checkSurroundings(X, Y - 1, board, threats, &answer);
+  checkSurroundings(X + 1, Y, board, threats, &answer);
+  checkSurroundings(X - 1, Y, board, threats, &answer);
+  checkSurroundings(X + 1, Y + 1, board, threats, &answer);
+  checkSurroundings(X + 1, Y - 1, board, threats, &answer);
+  checkSurroundings(X - 1, Y + 1, board, threats, &answer);
+  checkSurroundings(X - 1, Y - 1, board, threats, &answer);
+
+  return answer;
+}
+
+/*
+ *  @fn void checkSurroundings(int X, int Y, Board board, bool threats[8][8],
+                      bool *answer) {
+ *  @brief tells if a gvein square can't be reached
+ *  @param[in, out] bool : the answer
+ *  @param[in] X
+ *  @param[in] Y the coords of the piece to be checked
+ *  @param[in] board the board
+ *  @param[in] threats the map of threats
+ */
+void checkSurroundings(int X, int Y, Board board, bool threats[8][8],
+                      bool *answer) {
+  if (isInBoardSquare(X, Y)) {
+    if ((threats[X][Y] == false)
+        && (board.square[X][Y].color != board.activeColor))
+      *answer = false;
+  }
+}
+
+/*
+ *  @fn void playMoveToCheckThreat(int move, Board *board) {
+ *  @brief just moves a piece to see what becomes the board
+ *  @param[in, out] the board to update
+ *  @param[int] the move in compressed writing style
+ *
+ *  @note this should later take in account castlings etc..
+ */
+void playMoveToCheckThreat(int move, Board *board) {
+  int a, b, c, d;
+  stack_expand(&a, &b, &c, &d, move);
+
+  board->square[c][d] = board->square[a][b];
+  board->square[a][b].color = neutral;
+  board->square[a][b].piece = empty;
 }

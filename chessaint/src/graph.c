@@ -34,9 +34,11 @@ void graph_free(Graph *graph) {
  *  @param[in, out] graph Pointer on the graph used to compute moves
  *
  *  @note  Need to add the en passant kill
- *  @bug "root" (in graph->root and others) seems to refer to
- *  current_node (in graph struct)
- *  Need to change that
+ *  @bug Calling isThreatened with wrong value (here with gdb have :
+ *  Program received signal SIGSEGV, Segmentation fault.
+ *  0x00000000004050c3 in isThreatened (X=0, Y=4204201, threats=0x7fffffffcb30)
+ *  at src/graph.c:1143
+ *  1143 return threats[X][Y];
  *
  */
 void movesGenerator(Graph *graph) {
@@ -44,7 +46,7 @@ void movesGenerator(Graph *graph) {
   Stack *stack = &(graph->current_moves);
   int kingX, kingY;
   int aMove = 0;
-  
+
   bool pinned[ROWCOL_NB][ROWCOL_NB];
   findAllPinnings(&board, board.activeColor, pinned);
 
@@ -147,7 +149,7 @@ int stopThreat(Board board, bool pinned[8][8],
 /*
  *  @fn void stopThreatMoveGenerator(Board board, Stack *moves,
  *                                    bool pinned[8][8])
- *  @brief generates all moves except king's one. These moves will then be 
+ *  @brief generates all moves except king's one. These moves will then be
  *        checked in stopThreat to see if they stop the threat
  *  @param[in] board
  *  @param[in,out] moves the moves generated

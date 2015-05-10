@@ -525,7 +525,8 @@ void test_legalMoves6(void) {
   graph_alloc(&testGraph);
 
   fenToBoard("rnb1kb1r/pppprppp/5N2/8/8/8/8/8 b KQkq - 0 1", &(testGraph.root));
-  fenToBoard("rnb1kb1r/pppprppp/5N2/8/8/8/8/8 b - - 0 1", &(testGraph.current_node));
+  fenToBoard("rnb1kb1r/pppprppp/5N2/8/8/8/8/8 b - - 0 1",
+             &(testGraph.current_node));
   movesGenerator(&testGraph);
   printf("\n***Only solution for black : king goes to d8 or pawn take***\n");
   printBoardAndData(testGraph.current_node);

@@ -496,11 +496,14 @@ void test_legalMoves4(void) {
   Graph testGraph;
   graph_alloc(&testGraph);
 
-  fenToBoard("rr6/8/8/8/8/8/7R/K7 w KQkq - 0 1", &(testGraph.root));
-  fenToBoard("rr6/8/8/8/8/8/7R/K7 w KQkq - 0 1", &(testGraph.current_node));
+  fenToBoard("r7/8/8/8/8/8/7R/K7 w - - 0 1", &(testGraph.root));
+  fenToBoard("r7/8/8/8/8/8/7R/K7 w - - 0 1", &(testGraph.current_node));
   movesGenerator(&testGraph);
-  printf("\n***Only solution for white : rook goes to a2***\n");
+  printf("\n***Only solution for white : rook goes to a2 or king moves***\n");
   printBoardAndData(testGraph.current_node);
+  /* King Move */
+  CU_ASSERT_EQUAL(stack_pop(&(testGraph.current_moves)), 11);
+  CU_ASSERT_EQUAL(stack_pop(&(testGraph.current_moves)), 10);
   /* (7,1) -> (0,1) */
   CU_ASSERT_EQUAL(stack_pop(&(testGraph.current_moves)), 7101);
 }
@@ -509,11 +512,23 @@ void test_legalMoves5(void) {
   Graph testGraph;
   graph_alloc(&testGraph);
 
-  fenToBoard("rr6/rKr5/rr6/8/8/8/8/7R w KQkq - 0 1", &(testGraph.root));
-  fenToBoard("rr6/rKr5/rr6/8/8/8/8/7R w KQkq - 0 1", &(testGraph.current_node));
+  fenToBoard("rr6/rKr5/rr6/8/8/8/8/7R w - - 0 1", &(testGraph.root));
+  fenToBoard("rr6/rKr5/rr6/8/8/8/8/7R w - - 0 1", &(testGraph.current_node));
   movesGenerator(&testGraph);
   printf("\n***Only solution for white : king goes to c7***\n");
   printBoardAndData(testGraph.current_node);
   /* (1,6) -> (2,6) */
   CU_ASSERT_EQUAL(stack_pop(&(testGraph.current_moves)), 1626);
+}
+void test_legalMoves6(void) {
+  Graph testGraph;
+  graph_alloc(&testGraph);
+
+  fenToBoard("rnb1kb1r/pppprppp/5N2/8/8/8/8/8 b KQkq - 0 1", &(testGraph.root));
+  fenToBoard("rnb1kb1r/pppprppp/5N2/8/8/8/8/8 b - - 0 1", &(testGraph.current_node));
+  movesGenerator(&testGraph);
+  printf("\n***Only solution for black : king goes to d8 or pawn take***\n");
+  printBoardAndData(testGraph.current_node);
+  CU_ASSERT_EQUAL(stack_pop(&(testGraph.current_moves)), 4737);
+  CU_ASSERT_EQUAL(stack_pop(&(testGraph.current_moves)), 6655);
 }

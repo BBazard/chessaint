@@ -10,7 +10,6 @@
 #include <stdbool.h>
 #include <assert.h>
 #include "include/chessboard.h"
-
 /**
  *  @fn void graph_alloc(Graph *graph)
  *  @brief Initialisation of a graph item
@@ -43,9 +42,9 @@ void graph_free(Graph *graph) {
 void movesGenerator(Graph *graph) {
   Board board = graph->current_node;
   Stack *stack = &(graph->current_moves);
-
   int kingX, kingY;
-  int aMove;
+  int aMove = 0;
+  
   bool pinned[ROWCOL_NB][ROWCOL_NB];
   findAllPinnings(&board, board.activeColor, pinned);
 
@@ -65,13 +64,11 @@ void movesGenerator(Graph *graph) {
 
   if (isThreatened(kingX, kingY, threats)) {
     printf("\nCHESS POSITION DETECTED\n");
-    if (isSurrounded(kingX, kingY, board, threats)) {
-      printf("BUT KING CAN'T MOVE\n");
-      aMove = stopThreat(board, pinned, threats, kingX, kingY);
-      if (aMove != 0) {
-        stack_push(stack, aMove);
-        }
-    }
+    aMove = stopThreat(board, pinned, threats, kingX, kingY);
+    /* printf("%d",aMove); */
+    if (aMove != 0)
+    stack_push(stack, aMove);
+
     kingMoveGenerator(stack, kingX,  kingY, board.activeColor, board, threats);
   } else {
     for (int j = 0 ; j < ROWCOL_NB ; ++j) {
@@ -134,16 +131,16 @@ int stopThreat(Board board, bool pinned[8][8],
     aMove = poped;
     playMoveToCheckThreat(aMove, &board);
     findThreats(&board, board.activeColor, threats);
-    /* printThreatBoard(threats); */
-
+    /*  printThreatBoard(threats); */
+    /*  printf("%d",aMove); */
     if (!isThreatened(threatenedX, threatenedY, threats)) {
       endThreat = true;
+      break;
     } else {
       board = originalBoard;
       aMove = 0;
     }
   }
-
   return aMove;
 }
 

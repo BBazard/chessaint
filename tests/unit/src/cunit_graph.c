@@ -149,6 +149,12 @@ int add_graph_suite(CU_pSuite pSuite_graph) {
     return CU_get_error();
   }
 
+  if (NULL == CU_add_test(pSuite_graph,
+    "Another Test of a certain position for legal moves check",
+                          test_legalMoves6)) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
   return 0;
 }
 

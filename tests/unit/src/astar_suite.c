@@ -66,6 +66,7 @@ void test_move_to_node(void) {
   stack_push(&stack, 5453);
   stack_push(&stack, 4142);
   stack_to_identifier(father.data, stack, 000000);
+  stack_free(&stack);
 
   graph.current_node = graph.root;
   update_board(father, &graph.current_node);
@@ -88,6 +89,7 @@ void test_next_gen(void) {
   Graph graph;
   graph_alloc(&graph);
   Board tmproot;
+  initAGame(&tmproot);
 
   for (int i = 0; i < 8; ++i) {
     for (int j = 0; j < 8; ++j) {
@@ -115,6 +117,8 @@ void test_next_gen(void) {
 
   llist_add(arc, &(graph.links));
 
+  graph.current_node = tmproot;
+
   /* graph is ready to be tested */
   for (int i = 0; i < 4; i++) {
     printf("\n\n\n");
@@ -135,3 +139,4 @@ void test_next_gen(void) {
   arc_free(&arc);
   graph_free(&graph);
 }
+

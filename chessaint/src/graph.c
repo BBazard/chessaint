@@ -20,8 +20,8 @@
 void graph_alloc(Graph *graph) {
   graph->links = NULL;
   stack_alloc(&(graph->current_moves));
-  /* initAGame(&graph->root); */
-  /* initAGame(&graph->current_node); */
+  initAGame(&graph->root);
+  initAGame(&graph->current_node);
 }
 
 void graph_free(Graph *graph) {
@@ -34,11 +34,6 @@ void graph_free(Graph *graph) {
  *  @param[in, out] graph Pointer on the graph used to compute moves
  *
  *  @note  Need to add the en passant kill
- *  @bug Calling isThreatened with wrong value (here with gdb have :
- *  Program received signal SIGSEGV, Segmentation fault.
- *  0x00000000004050c3 in isThreatened (X=0, Y=4204201, threats=0x7fffffffcb30)
- *  at src/graph.c:1143
- *  1143 return threats[X][Y];
  *
  */
 void movesGenerator(Graph *graph) {
@@ -53,6 +48,8 @@ void movesGenerator(Graph *graph) {
   bool threats[ROWCOL_NB][ROWCOL_NB];
   findThreats(&board, board.activeColor, threats);
 
+  bool thereIsNoKing = true;
+
   /* finding the king of the given color */
   for (int i = 0 ; i < ROWCOL_NB ; ++i) {
     for (int j = 0 ; j < ROWCOL_NB ; ++j) {
@@ -60,11 +57,12 @@ void movesGenerator(Graph *graph) {
           (board.square[i][j].piece == king)) {
         kingX = i;
         kingY = j;
+        thereIsNoKing = false;
       }
     }
   }
 
-  if (isThreatened(kingX, kingY, threats)) {
+  if (!thereIsNoKing && (isThreatened(kingX, kingY, threats))) {
     printf("\nCHESS POSITION DETECTED\n");
     aMove = stopThreat(board, pinned, threats, kingX, kingY);
     /* printf("%d",aMove); */
@@ -143,6 +141,7 @@ int stopThreat(Board board, bool pinned[8][8],
       aMove = 0;
     }
   }
+  stack_free(&moves);
   return aMove;
 }
 
@@ -1206,3 +1205,4 @@ void playMoveToCheckThreat(int move, Board *board) {
   board->square[a][b].color = neutral;
   board->square[a][b].piece = empty;
 }
+

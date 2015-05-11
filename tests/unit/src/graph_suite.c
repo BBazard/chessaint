@@ -465,6 +465,7 @@ void test_legalMoves(void) {
   /* Juste print the board and the threats to see this complicated situation
    * it's been done so that the only move for the white king is f1 <->(5,0)
    */
+  graph_free(&testGraph);
 }
 
 void test_legalMoves2(void) {
@@ -477,6 +478,7 @@ void test_legalMoves2(void) {
   printBoardAndData(testGraph.current_node);
 
   CU_ASSERT_EQUAL(stack_pop(&(testGraph.current_moves)), -1);
+  graph_free(&testGraph);
 }
 void test_legalMoves3(void) {
   Graph testGraph;
@@ -490,6 +492,7 @@ void test_legalMoves3(void) {
   printBoardAndData(testGraph.current_node);
   /* (4,7) -> (5,7) */
   CU_ASSERT_EQUAL(stack_pop(&(testGraph.current_moves)), 4757);
+  graph_free(&testGraph);
 }
 
 void test_legalMoves4(void) {
@@ -506,6 +509,7 @@ void test_legalMoves4(void) {
   CU_ASSERT_EQUAL(stack_pop(&(testGraph.current_moves)), 10);
   /* (7,1) -> (0,1) */
   CU_ASSERT_EQUAL(stack_pop(&(testGraph.current_moves)), 7101);
+  graph_free(&testGraph);
 }
 
 void test_legalMoves5(void) {
@@ -519,6 +523,7 @@ void test_legalMoves5(void) {
   printBoardAndData(testGraph.current_node);
   /* (1,6) -> (2,6) */
   CU_ASSERT_EQUAL(stack_pop(&(testGraph.current_moves)), 1626);
+  graph_free(&testGraph);
 }
 void test_legalMoves6(void) {
   Graph testGraph;
@@ -532,4 +537,6 @@ void test_legalMoves6(void) {
   printBoardAndData(testGraph.current_node);
   CU_ASSERT_EQUAL(stack_pop(&(testGraph.current_moves)), 4737);
   CU_ASSERT_EQUAL(stack_pop(&(testGraph.current_moves)), 6655);
+  graph_free(&testGraph);
 }
+

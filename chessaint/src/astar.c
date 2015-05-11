@@ -115,3 +115,4 @@ int get_castles(Board board) {
   }
   return atoi(ans);
 }
+

@@ -43,7 +43,7 @@ void arc_free(Arc *arc) {
  *
  *  @bug Need to free the inited arcs (init IS needed)
  *
- *  @note The *Llist can be Null pointer, in this case, 
+ *  @note The *Llist can be Null pointer, in this case,
  *  the list take newvalue as the first element, more, it should be NULL if empty.
  *
  */
@@ -115,24 +115,29 @@ void llist_free(Llist *list) {
 }
 
 /**
- *  @fn void llist_shorten(Llist *list, int from)
+ *  @fn int llist_shorten(Llist *list, int from)
  *  @brief Shorten a llist
  *  @param[in,out] list The list to shorten
  *  @param[in] from Starting point of deletion
+ *  @return 1 If something was suppressed
+ *  @return 0 Otherwise
  *
  *  Suppress all elements after the point of deletion
  *
  */
 
-void llist_shorten(Llist *list, int from) {
+int llist_shorten(Llist *list, int from) {
   Llist tmp = *list;
   Llist tmp2;
   for (int i = 1; i < from; ++i) {
     tmp = tmp->next;
+    if (tmp->next == NULL)
+      return 0;
   }
   tmp2 = tmp->next;
   tmp->next = NULL;
   llist_free(&tmp2);
+  return 1;
 }
 
 /**
@@ -208,5 +213,22 @@ int arc_is_equal(Arc left, Arc right) {
           identifier_is_equal(*(left.data), *(right.data)));
 }
 
+/**
+ *  @fn void arc_extract(Arc arc, int move, int score)
+ *  @brief Extract score and first move of the arc
+ *  @param[in] arc The arc of which to extract data
+ *  @param[out] move The first move of this arc
+ *  @param[out] score The score of this arc
+ *
+ */
 
+void arc_extract(Arc arc, int *move, int *score) {
+  int tmp;
+  Stack s;
+  stack_alloc(&s);
+  *score = arc.score;
 
+  identifier_to_stack(*(arc.data), &s);
+  while ( (tmp = stack_pop(&s)) != -1)
+    *move = tmp;
+}

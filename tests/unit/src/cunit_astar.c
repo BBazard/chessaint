@@ -27,9 +27,16 @@ int add_astar_suite(CU_pSuite pSuite_astar) {
     return CU_get_error();
   }
 
-    if (NULL == CU_add_test(pSuite_astar,
+  if (NULL == CU_add_test(pSuite_astar,
                            "Testing next_gen function",
                             test_next_gen)) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
+
+  if (NULL == CU_add_test(pSuite_astar,
+                           "Testing astar function",
+                            test_astar)) {
     CU_cleanup_registry();
     return CU_get_error();
   }

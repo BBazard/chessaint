@@ -74,14 +74,12 @@ void arc_free(Arc *arc);
 void llist_add(Arc newvalue, Llist *list);
 int llist_suppr(Llist *list);
 void llist_free(Llist *list);
-void llist_shorten(Llist *list, int from);
+int llist_shorten(Llist *list, int from);
 int llist_length(Llist list);
 
 void arc_print(Arc value);
 int arc_is_equal(Arc left, Arc right);
-void llist_print(Llist list);
-
-
+void arc_extract(Arc arc, int *move, int *score);
 
 #endif /* CHESSAINT_INCLUDE_LLIST_H_ */
 

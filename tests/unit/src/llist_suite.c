@@ -158,7 +158,8 @@ void test_llist_shorten(void) {
   /*   tmp = tmp->next; */
   /* } */
 
-  llist_shorten(&list, 30);
+  /* printf("%d", llist_shorten(&list, 60)); */
+  /* printf("%d", llist_shorten(&list, 30)); */
 
   /* i = 1; */
   /* tmp = list; */
@@ -167,7 +168,6 @@ void test_llist_shorten(void) {
   /*   arc_print(tmp->value); */
   /*   tmp = tmp->next; */
   /* } */
-
 }
 
 void test_llist_length(void) {
@@ -182,4 +182,25 @@ void test_llist_length(void) {
   arc_free(&arc);
 
   CU_ASSERT_EQUAL(llist_length(list), 50);
+}
+
+void test_arc_extract(void) {
+  Arc arc;
+  arc_alloc(&arc);
+  Stack s;
+  stack_alloc(&s);
+  arc.score = 143;
+
+  stack_push(&s, 4142);
+  stack_push(&s, 4243);
+  stack_push(&s, 4344);
+  stack_push(&s, 4445);
+  stack_to_identifier(arc.data, s, 111111);
+
+  /* arc_print(arc); */
+
+  int move, score;
+  arc_extract(arc, &move, &score);
+  CU_ASSERT_EQUAL(move, 4142);
+  CU_ASSERT_EQUAL(score, 143);
 }

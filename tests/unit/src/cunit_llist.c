@@ -61,6 +61,13 @@ int add_llist_suite(CU_pSuite pSuite_llist) {
     return CU_get_error();
   }
 
+  if (NULL == CU_add_test(pSuite_llist,
+                          "Test of arc_extract function",
+                          test_arc_extract)) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
+
   return 0;
 }
 

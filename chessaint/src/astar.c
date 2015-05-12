@@ -105,29 +105,47 @@ void next_gen(Graph *graph) {
  *
  *  @note Know that maximal number of nodes being x, the true max number of node could reach 1,1x
  *  take that in account when assigning it.
+ *  @note Previous note not implemented yet, the true number won't excess x+1
  *
  */
 
-/* int astar(Graph *graph, int query_score, int depth, int max_time, */
-/*           int max_nodes, int *stop, int *bestmove) { */
-/*   time_t start_time = time(NULL); */
-/*   int ret=0; */
-/*   *bestmove = -1; */
-  
-/*   while ( (current_score < query_score) && !(*stop) */
-/*           && (time(NULL) - start_time < max_time) ) { */
-    
-/*   } */
-/*   if (current_score >= query_score) */
-/*     ret = 1; */
-/*   if ((time(NULL) - start_time >= max_time)) */
-/*     ret += 2; */
-/*   if (*stop) */
-/*     ret += 16; */
+int astar(Graph *graph, int query_score, int depth, int max_time,
+          int max_nodes, int *stop, int *bestmove) {
+  time_t start_time = time(NULL);
+  int ret = 0;
+  int current_score = -501;
+  *bestmove = -1;
+  Llist tmp;
 
-/*   return 0; */
-/* } */
-  
+  int i = 0; /* to delete */
+
+  while ( (current_score < query_score) && !(*stop)
+          && (time(NULL) - start_time < max_time) ) {
+    printf("###################### %d ###################", i); /* to delete */
+    i++; /* to delete */
+    next_gen(graph);
+
+    /* Get bestmove for this generation */
+    tmp = graph->links;
+    while (identifier_is_white(*(tmp->value.data)) == graph->root.activeColor )
+      tmp = tmp->next;
+    /* Have to test if it is the best in test_astar function */ /* to delete */
+    arc_extract(tmp->value, bestmove, &current_score);
+
+    /* Shorten list if needed */
+    if (llist_shorten(&graph->links, max_nodes))
+      ret += 8;
+  }
+  if (current_score >= query_score)
+    ret = 1;
+  if ((time(NULL) - start_time >= max_time))
+    ret += 2;
+  if (*stop)
+    ret += 16;
+
+  return 0;
+}
+
 
 /**
  *  @fn int get_halfMoveClock(Board board)

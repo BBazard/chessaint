@@ -139,3 +139,47 @@ void test_llist_free(void) {
   arc_free(&arc2);
 }
 
+void test_llist_shorten(void) {
+  Arc arc;
+  Llist list = NULL;
+  arc_alloc(&arc);
+  arc.score = 0;
+  for (int i = 0; i < 50; ++i) {
+    llist_add(arc, &list);
+    arc.score++;
+  }
+  arc_free(&arc);
+
+  /* int i = 1; */
+  /* Element *tmp = list; */
+  /* while (tmp != NULL) { */
+  /*   printf("#n = %d\n", i++); */
+  /*   arc_print(tmp->value); */
+  /*   tmp = tmp->next; */
+  /* } */
+
+  llist_shorten(&list, 30);
+
+  /* i = 1; */
+  /* tmp = list; */
+  /* while (tmp != NULL) { */
+  /*   printf("#n = %d\n", i++); */
+  /*   arc_print(tmp->value); */
+  /*   tmp = tmp->next; */
+  /* } */
+
+}
+
+void test_llist_length(void) {
+  Arc arc;
+  Llist list = NULL;
+  arc_alloc(&arc);
+  arc.score = 0;
+  for (int i = 0; i < 50; ++i) {
+    llist_add(arc, &list);
+    arc.score++;
+  }
+  arc_free(&arc);
+
+  CU_ASSERT_EQUAL(llist_length(list), 50);
+}

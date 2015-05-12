@@ -47,6 +47,20 @@ int add_llist_suite(CU_pSuite pSuite_llist) {
     return CU_get_error();
   }
 
+  if (NULL == CU_add_test(pSuite_llist,
+                          "Test of llist_shorten function",
+                          test_llist_shorten)) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
+
+  if (NULL == CU_add_test(pSuite_llist,
+                          "Test of llist_length function",
+                          test_llist_length)) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
+
   return 0;
 }
 

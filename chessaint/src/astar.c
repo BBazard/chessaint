@@ -92,12 +92,12 @@ void next_gen(Graph *graph) {
  *  @param[in] max_nodes The number of nodes allowed (-1 = no limit but not recommended)
  *  @param[in] stop {0,1} Stop computation if changed to 0
  *  @param[out] bestmove The current best move
- *  @return 0 If found a score better than query_score
- *  @return 1 If time limit was reached
- *  @return 2 If maximal depth was reached
- *  @return 4 If maximal number of nodes was reached
- *  @return 8 If it was asked to stop
- *  @return 16 If exited anormally
+ *  @return 1 If found a score better than query_score
+ *  @return 2 If time limit was reached
+ *  @return 4 If maximal depth was reached
+ *  @return 8 If maximal number of nodes was reached
+ *  @return 16 If it was asked to stop
+ *  @return 32 If exited anormally
  *  @return sum of previous for multiple flags
  *
  *  Compute from the start to the end (choosen with one or several parameters)
@@ -111,6 +111,21 @@ void next_gen(Graph *graph) {
 /* int astar(Graph *graph, int query_score, int depth, int max_time, */
 /*           int max_nodes, int *stop, int *bestmove) { */
 /*   time_t start_time = time(NULL); */
+/*   int ret=0; */
+/*   *bestmove = -1; */
+  
+/*   while ( (current_score < query_score) && !(*stop) */
+/*           && (time(NULL) - start_time < max_time) ) { */
+    
+/*   } */
+/*   if (current_score >= query_score) */
+/*     ret = 1; */
+/*   if ((time(NULL) - start_time >= max_time)) */
+/*     ret += 2; */
+/*   if (*stop) */
+/*     ret += 16; */
+
+/*   return 0; */
 /* } */
   
 

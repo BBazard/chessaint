@@ -115,6 +115,45 @@ void llist_free(Llist *list) {
 }
 
 /**
+ *  @fn void llist_shorten(Llist *list, int from)
+ *  @brief Shorten a llist
+ *  @param[in,out] list The list to shorten
+ *  @param[in] from Starting point of deletion
+ *
+ *  Suppress all elements after the point of deletion
+ *
+ */
+
+void llist_shorten(Llist *list, int from) {
+  Llist tmp = *list;
+  Llist tmp2;
+  for (int i = 1; i < from; ++i) {
+    tmp = tmp->next;
+  }
+  tmp2 = tmp->next;
+  tmp->next = NULL;
+  llist_free(&tmp2);
+}
+
+/**
+ *  @fn int llist_length(Llist list)
+ *  @brief Computes the number of element of a llist
+ *  @param[in] list The list to parse
+ *  @return int The number of elements
+ *
+ */
+
+int llist_length(Llist list) {
+  Llist tmp = list;
+  int ret = 0;
+  while (tmp != NULL) {
+    tmp = tmp->next;
+    ret++;
+  }
+  return ret;
+}
+
+/**
  *  @fn void arc_print(Arc value)
  *  @brief Print an Arc
  *  @param[in] value Arc to print, all elements of the structure must be defined

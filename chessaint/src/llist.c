@@ -90,7 +90,7 @@ int llist_suppr(Llist *list) {
       return 1;
   } else {
     tmp = **list;
-    /* arc_free(&((*list)->value)); */
+    arc_free(&(tmp.value));
     free(*list);
     *list = tmp.next;
 

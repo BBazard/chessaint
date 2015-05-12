@@ -232,3 +232,18 @@ void arc_extract(Arc arc, int *move, int *score) {
   while ( (tmp = stack_pop(&s)) != -1)
     *move = tmp;
 }
+
+/**
+ *  @fn void arc_copy(Arc source, Arc *dest)
+ *  @brief Copy arc source in arc dest
+ *  @param[in] source The original arc
+ *  @param[out] dest Pointer on the destination arc
+ *
+ *  @note dest MUST be initialiazed before
+ *
+ */
+
+void arc_copy(Arc source, Arc *dest) {
+  dest->score = source.score;
+  mpz_set(*(dest->data), *(source.data));
+}

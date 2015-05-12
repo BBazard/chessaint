@@ -63,7 +63,7 @@ void movesGenerator(Graph *graph) {
   }
 
   if (!thereIsNoKing && (isThreatened(kingX, kingY, threats))) {
-    printf("\nCHESS POSITION DETECTED\n");
+    /* printf("\nCHESS POSITION DETECTED\n"); */
     aMove = stopThreat(board, pinned, threats, kingX, kingY);
     /* printf("%d",aMove); */
     if (aMove != 0)

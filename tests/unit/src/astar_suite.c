@@ -88,21 +88,6 @@ void test_move_to_node(void) {
 void test_next_gen(void) {
   Graph graph;
   graph_alloc(&graph);
-  Board tmproot;
-
-  for (int i = 0; i < 8; ++i) {
-    for (int j = 0; j < 8; ++j) {
-      tmproot.square[i][j].piece = empty;
-      tmproot.square[i][j].color = neutral;
-    }
-  }
-
-  tmproot.square[0][0].piece = pawn;
-  tmproot.square[0][0].color = white;
-  tmproot.square[7][7].piece = pawn;
-  tmproot.square[7][7].color = black;
-
-  graph.root = tmproot;
 
   Arc arc;
   arc_alloc(&arc);
@@ -112,26 +97,23 @@ void test_next_gen(void) {
   stack_push(&stack, 2);
   stack_push(&stack, 7775);
   stack_to_identifier(arc.data, stack, 100002);
-  arc.score = 0;
 
-  llist_add(arc, &(graph.links));
-
-  graph.current_node = tmproot;
+  /* llist_add(arc, &(graph.links)); */
 
   /* graph is ready to be tested */
   for (int i = 0; i < 4; i++) {
-    printf("\n\n\n");
+    /* printf("\n\n\n"); */
 
     next_gen(&graph);
 
-    Element *tmp = graph.links;
-    int i = 1;
+    /* Element *tmp = graph.links; */
+    /* int i = 1; */
 
-    while (tmp != NULL) {
-      printf("#n = %d\n", i++);
-      arc_print(tmp->value);
-      tmp = tmp->next;
-    }
+    /* while (tmp != NULL) { */
+    /*   printf("#n = %d\n", i++); */
+    /*   arc_print(tmp->value); */
+    /*   tmp = tmp->next; */
+    /* } */
   }
   CU_ASSERT_TRUE(0);
   stack_free(&stack);
@@ -142,25 +124,13 @@ void test_next_gen(void) {
 void test_astar(void) {
   Graph graph;
   graph_alloc(&graph);
-  Board tmproot;
 
-  for (int i = 0; i < 8; ++i) {
-    for (int j = 0; j < 8; ++j) {
-      tmproot.square[i][j].piece = empty;
-      tmproot.square[i][j].color = neutral;
-    }
-  }
-
-  tmproot.square[0][0].piece = pawn;
-  tmproot.square[0][0].color = white;
-  tmproot.square[7][7].piece = pawn;
-  tmproot.square[7][7].color = black;
-
-  graph.root = tmproot;
   int bestmove;
   int ret = -1;
   int stop = 0;
-  printf("coucou");
-  /* astar(&graph, 500, 0, 120, 200, &stop, &bestmove); */
-  printf("%d->%d", ret, bestmove);
+
+  ret = astar(&graph, 500, 0, 5, 30, &stop, &bestmove);
+  /* works with max_nodes = 30 but not = 20, 
+     seems that while condition always true */
+  printf("## %d->%d ##", ret, bestmove);
 }

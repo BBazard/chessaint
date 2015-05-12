@@ -121,7 +121,7 @@ void test_next_gen(void) {
 
   /* graph is ready to be tested */
   for (int i = 0; i < 4; i++) {
-    printf("\n\n\n");
+    /* printf("\n\n\n"); */
 
     next_gen(&graph);
 

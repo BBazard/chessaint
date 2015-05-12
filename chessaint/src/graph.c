@@ -67,7 +67,7 @@ void movesGenerator(Graph *graph) {
     aMove = stopThreat(board, pinned, threats, kingX, kingY);
     /* printf("%d",aMove); */
     if (aMove != 0)
-    stack_push(stack, aMove);
+      stack_push(stack, aMove);
 
     kingMoveGenerator(stack, kingX,  kingY, board.activeColor, board, threats);
   } else {
@@ -117,8 +117,9 @@ void movesGenerator(Graph *graph) {
  */
 int stopThreat(Board board, bool pinned[8][8],
                bool threats[8][8], int threatenedX, int threatenedY) {
-  Board originalBoard;
+  Board originalBoard, currentBoard;
   originalBoard = board;
+  currentBoard = originalBoard;
   Stack moves;
   stack_alloc(&moves);
 
@@ -126,18 +127,18 @@ int stopThreat(Board board, bool pinned[8][8],
   int aMove = 0;
   int poped;
 
-  stopThreatMoveGenerator(board, &moves, pinned);
+  stopThreatMoveGenerator(currentBoard, &moves, pinned);
   while (((poped = stack_pop(&moves)) != - 1) && (!endThreat)) {
     aMove = poped;
-    playMoveToCheckThreat(aMove, &board);
-    findThreats(&board, board.activeColor, threats);
+    playMoveToCheckThreat(aMove, &currentBoard);
+    findThreats(&currentBoard, currentBoard.activeColor, threats);
     /*  printThreatBoard(threats); */
     /*  printf("%d",aMove); */
     if (!isThreatened(threatenedX, threatenedY, threats)) {
       endThreat = true;
       break;
     } else {
-      board = originalBoard;
+      currentBoard = originalBoard;
       aMove = 0;
     }
   }
@@ -975,16 +976,20 @@ void lineThreatGenerator(int incX, int incY, int squareX,
                          int squareY, Board board, bool threats[8][8]) {
   int X = squareX;
   int Y = squareY;
+  Color opponentColor = getOtherColor(board.activeColor);
 
   X += incX;
   Y += incY;
-  while ((isInBoardSquare(X, Y) && (board.square[X][Y].color == neutral))) {
+  while (((isInBoardSquare(X, Y) && (board.square[X][Y].color == neutral)))
+      || (isInBoardSquare(X, Y) &&
+        (board.square[X][Y].color == board.activeColor) &&
+        board.square[X][Y].piece == king)) {
     threats[X][Y] = true;
     X += incX;
     Y += incY;
   }
 
-  if (isInBoardSquare(X, Y))
+  if (isInBoardSquare(X, Y) && (board.square[X][Y].color == opponentColor))
     threats[X][Y] = true;
 }
 

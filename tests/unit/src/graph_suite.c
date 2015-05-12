@@ -519,10 +519,8 @@ void test_legalMoves5(void) {
   fenToBoard("rr6/rKr5/rr6/8/8/8/8/7R w - - 0 1", &(testGraph.root));
   fenToBoard("rr6/rKr5/rr6/8/8/8/8/7R w - - 0 1", &(testGraph.current_node));
   movesGenerator(&testGraph);
-  printf("\n***Only solution for white : king goes to c7***\n");
+  printf("\n***This postion is chekmate...****\n");
   printBoardAndData(testGraph.current_node);
-  /* (1,6) -> (2,6) */
-  CU_ASSERT_EQUAL(stack_pop(&(testGraph.current_moves)), 1626);
   graph_free(&testGraph);
 }
 void test_legalMoves6(void) {

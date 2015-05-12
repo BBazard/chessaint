@@ -99,7 +99,7 @@ void stack_push(Stack *s, int item) {
 }
 
 /**
- *  @fn int stack_pop(Stack *s);
+ *  @fn int stack_pop(Stack *s)
  *  @brief Extract an item from the stack
  *  @return -1 If the stack is empty
  *  @return int the first element of the stack
@@ -123,6 +123,16 @@ int stack_pop(Stack *s) {
     mpz_clear(tmp);
   }
   return ret;
+}
+
+/**
+ *  @fn int stack_length(Stack *s)
+ *  @brief Returns the number of element of the stack
+ *
+ */
+
+int stack_length(Stack s) {
+  return mpz_sizeinbase(s, 10)/4;
 }
 
 /**

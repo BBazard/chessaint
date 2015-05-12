@@ -60,6 +60,9 @@ int uciLoop(FILE* log, char* buffer, Graph *graph) {
 
       graph->current_node.activeColor = black;
 
+      // empty stack
+      while (stack_pop(&(graph->current_moves)) != -1) {}
+
       movesGenerator(graph);
 
       int move = pickBestMove(&(graph->current_moves));
@@ -85,9 +88,9 @@ int uciLoop(FILE* log, char* buffer, Graph *graph) {
  * generateMoves
  */
 int pickBestMove(Stack *current_moves) {
-    int move = 0;
-    for (int i = 0, rd = rand() % 10 ; i < rd + 1 ; ++i) // NOLINT
-      move = stack_pop(current_moves);
-    return move;
+  int move = 0;
+  for (int i = 0, rd = rand() % stack_length(*current_moves) ; i < rd + 1 ; ++i) //NOLINT
+    move = stack_pop(current_moves);
+  return move;
 }
 

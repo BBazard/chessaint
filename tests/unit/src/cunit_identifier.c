@@ -47,6 +47,13 @@ int add_identifier_suite(CU_pSuite pSuite_identifier) {
     return CU_get_error();
   }
 
+  if (NULL == CU_add_test(pSuite_identifier,
+                           "Testing stack_length",
+                           test_stack_length)) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
+
   /* if (NULL == CU_add_test(pSuite_identifier, */
   /*                          "Testing identifier_print", */
   /*                          test_identifier_print)) { */

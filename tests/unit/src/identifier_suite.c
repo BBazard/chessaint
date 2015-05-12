@@ -74,6 +74,22 @@ void test_stack_pop(void) {
   stack_free(&s);
 }
 
+void test_stack_length(void) {
+  Stack s;
+  stack_alloc(&s);
+
+  int to_stack1 = 8888;
+  int to_stack2 = 3788;
+  int to_stack3 = 2345;
+
+  stack_push(&s, to_stack1);
+  stack_push(&s, to_stack2);
+  stack_push(&s, to_stack3);
+
+  CU_ASSERT_EQUAL(3, stack_length(s));
+
+  stack_free(&s);
+}
 
 void test_identifier_print(void) {
   Identifier id;

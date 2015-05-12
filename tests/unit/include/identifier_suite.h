@@ -14,6 +14,7 @@ void test_stack_contract(void);
 void test_stack_alloc(void);
 void test_stack_pop(void);
 void test_stack_push(void);
+void test_stack_length(void);
 
 void test_identifier_print(void);
 void test_identifier_is_leaf(void);

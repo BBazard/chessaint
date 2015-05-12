@@ -44,6 +44,7 @@ void stack_alloc(Stack *s);
 void stack_free(Stack *s);
 void stack_push(Stack *s, int item);
 int stack_pop(Stack *s);
+int stack_length(Stack s);
 
 void identifier_print(Identifier id);
 

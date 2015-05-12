@@ -83,6 +83,38 @@ void next_gen(Graph *graph) {
 }
 
 /**
+ *  @fn int astar(Graph *graph, int query_score, int depth, int max_time,
+ *  int max_nodes, int *stop, int *bestmove)
+ *  @brief Computation of the whole graph
+ *  @param[in,out] graph The graph used for computation
+ *  @param[in] [-500, 500] query_score Quit astar if as score above this is found (500 = no limit)
+ *  @param[in] depth The maximal depth allowed (-1 = no limit)
+ *  @param[in] max_nodes The number of nodes allowed (-1 = no limit but not recommended)
+ *  @param[in] stop {0,1} Stop computation if changed to 0
+ *  @param[out] bestmove The current best move
+ *  @return 0 If found a score better than query_score
+ *  @return 1 If time limit was reached
+ *  @return 2 If maximal depth was reached
+ *  @return 4 If maximal number of nodes was reached
+ *  @return 8 If it was asked to stop
+ *  @return 16 If exited anormally
+ *  @return sum of previous for multiple flags
+ *
+ *  Compute from the start to the end (choosen with one or several parameters)
+ *  the best move possible.
+ *
+ *  @note Know that maximal number of nodes being x, the true max number of node could reach 1,1x
+ *  take that in account when assigning it.
+ *
+ */
+
+/* int astar(Graph *graph, int query_score, int depth, int max_time, */
+/*           int max_nodes, int *stop, int *bestmove) { */
+/*   time_t start_time = time(NULL); */
+/* } */
+  
+
+/**
  *  @fn int get_halfMoveClock(Board board)
  *  @brief return the number halfMoveClock from a board structure
  *  @param[in] board

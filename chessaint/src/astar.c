@@ -158,6 +158,7 @@ int astar(Graph *graph, int query_score, int depth, int max_time,
     arc_extract(tmp->value, bestmove, &current_score);
 
     /* Shorten list if needed */
+    
     if (llist_shorten(&graph->links, max_nodes))
       ret = 8;
   }
@@ -167,7 +168,7 @@ int astar(Graph *graph, int query_score, int depth, int max_time,
     ret += 2;
   if (*stop)
     ret += 16;
-
+  printf("list %d\n", llist_length(graph->links)); /* to delete */
   arc_print(graph->links->value); /* to delete */
   printf("%d", stack_length(*(graph->links->value.data))); /* to delete */
   return ret;

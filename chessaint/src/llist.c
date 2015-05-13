@@ -129,6 +129,8 @@ void llist_free(Llist *list) {
 int llist_shorten(Llist *list, int from) {
   Llist tmp = *list;
   Llist tmp2;
+  if (from == -1)
+    return 0;
   for (int i = 1; i < from; ++i) {
     tmp = tmp->next;
     if (tmp->next == NULL)

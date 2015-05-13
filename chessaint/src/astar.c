@@ -143,7 +143,7 @@ int astar(Graph *graph, int query_score, int depth, int max_time,
   while ( (current_score < query_score) && !(*stop)
           && (time(NULL) - start_time < max_time) ) {
     current_time = time(NULL) - start_time;
-    printf("## %d ####\n", current_time); /* to delete */
+    printf("#time : %d#\n", current_time); /* to delete */
     next_gen(graph);
 
     /* Get bestmove for this generation */

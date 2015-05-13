@@ -76,7 +76,6 @@ void stack_alloc(Stack *s) {
 
 void stack_free(Stack *s) {
   mpz_clear(*s);
-  s = NULL;
 }
 
 /**

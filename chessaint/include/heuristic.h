@@ -8,6 +8,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 #include "include/graph.h"
 
 Color is_mate(Board board);

@@ -43,7 +43,7 @@ void arc_free(Arc *arc) {
  *
  *  @bug Need to free the inited arcs (init IS needed)
  *
- *  @note The *Llist can be Null pointer, in this case, 
+ *  @note The *Llist can be Null pointer, in this case,
  *  the list take newvalue as the first element, more, it should be NULL if empty.
  *
  */
@@ -90,7 +90,7 @@ int llist_suppr(Llist *list) {
       return 1;
   } else {
     tmp = **list;
-    /* arc_free(&((*list)->value)); */
+    arc_free(&(tmp.value));
     free(*list);
     *list = tmp.next;
 
@@ -112,6 +112,52 @@ void llist_free(Llist *list) {
   while (*list != NULL)
     llist_suppr(list);
   *list = NULL;
+}
+
+/**
+ *  @fn int llist_shorten(Llist *list, int from)
+ *  @brief Shorten a llist
+ *  @param[in,out] list The list to shorten
+ *  @param[in] from Starting point of deletion
+ *  @return 1 If something was suppressed
+ *  @return 0 Otherwise
+ *
+ *  Suppress all elements after the point of deletion
+ *
+ */
+
+int llist_shorten(Llist *list, int from) {
+  Llist tmp = *list;
+  Llist tmp2;
+  if (from == -1)
+    return 0;
+  for (int i = 1; i < from; ++i) {
+    tmp = tmp->next;
+    if (tmp->next == NULL)
+      return 0;
+  }
+  tmp2 = tmp->next;
+  tmp->next = NULL;
+  llist_free(&tmp2);
+  return 1;
+}
+
+/**
+ *  @fn int llist_length(Llist list)
+ *  @brief Computes the number of element of a llist
+ *  @param[in] list The list to parse
+ *  @return int The number of elements
+ *
+ */
+
+int llist_length(Llist list) {
+  Llist tmp = list;
+  int ret = 0;
+  while (tmp != NULL) {
+    tmp = tmp->next;
+    ret++;
+  }
+  return ret;
 }
 
 /**
@@ -169,5 +215,37 @@ int arc_is_equal(Arc left, Arc right) {
           identifier_is_equal(*(left.data), *(right.data)));
 }
 
+/**
+ *  @fn void arc_extract(Arc arc, int move, int score)
+ *  @brief Extract score and first move of the arc
+ *  @param[in] arc The arc of which to extract data
+ *  @param[out] move The first move of this arc
+ *  @param[out] score The score of this arc
+ *
+ */
 
+void arc_extract(Arc arc, int *move, int *score) {
+  int tmp;
+  Stack s;
+  stack_alloc(&s);
+  *score = arc.score;
 
+  identifier_to_stack(*(arc.data), &s);
+  while ( (tmp = stack_pop(&s)) != -1)
+    *move = tmp;
+}
+
+/**
+ *  @fn void arc_copy(Arc source, Arc *dest)
+ *  @brief Copy arc source in arc dest
+ *  @param[in] source The original arc
+ *  @param[out] dest Pointer on the destination arc
+ *
+ *  @note dest MUST be initialiazed before
+ *
+ */
+
+void arc_copy(Arc source, Arc *dest) {
+  dest->score = source.score;
+  mpz_set(*(dest->data), *(source.data));
+}

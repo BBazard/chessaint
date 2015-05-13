@@ -13,6 +13,8 @@
 
 void move_to_node(int move, Arc father, Arc *current, Board oldboard);
 void next_gen(Graph *graph);
+int astar(Graph *graph, int query_score, int depth, int max_time,
+          int max_nodes, int *stop, int *bestmove);
 
 int get_halfMoveClock(Board board);
 int get_castles(Board board);

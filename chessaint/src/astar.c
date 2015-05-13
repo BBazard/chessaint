@@ -158,7 +158,7 @@ int astar(Graph *graph, int query_score, int depth, int max_time,
     arc_extract(tmp->value, bestmove, &current_score);
 
     /* Shorten list if needed */
-    
+
     if (llist_shorten(&graph->links, max_nodes))
       ret = 8;
   }

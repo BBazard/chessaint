@@ -8,7 +8,7 @@
 
 #include "include/loopuci.h"
 #include "include/uci.h"
-#include "include/graph.h"
+#include "include/astar.h"
 
 /**
  * receive a uci string and act accordingly
@@ -63,12 +63,17 @@ int uciLoop(FILE* log, char* buffer, Graph *graph) {
       // empty stack
       while (stack_pop(&(graph->current_moves)) != -1) {}
 
-      movesGenerator(graph);
+      /* movesGenerator(graph); */
 
-      int move = pickBestMove(&(graph->current_moves));
+      int *bestmove = 0; /* pickBestMove(&(graph->current_moves)); */
+      int stop = 0;
+      int nodes = 200;
+
+      if (astar(graph, 500, 0, 5, nodes, &stop, bestmove) == 32)
+        return 0;
 
       int a, b, c, d;
-      stack_expand(&a, &b, &c, &d, move);
+      stack_expand(&a, &b, &c, &d, *bestmove);
       getUciString(a, b, c, d, uciBuffer);
 
       char bestmoveString[20];

@@ -205,7 +205,7 @@ void test_kingMoveGenerator(void) {
 
   /* Enable to see the situation :
   printBoardAndData(testBoardK); */
-  findThreats(&testBoardK, black, threats);
+  findThreats(&testBoardK, white, black, threats);
   kingMoveGenerator(&tmp, 4, 3, black, testBoardK, threats);
 
   /* (4,3) -> (3,2) */
@@ -383,14 +383,18 @@ void test_update_board(void) {
 void test_findThreats(void) {
   Board testBoard;
   bool threats[8][8];
+  Color opponentColor;
 
   /* Juste print the board and the threats to see this complicated situation
    * it's been done so that the only move for the white king is f1 <->(5,0)
    */
   fenToBoard("q6n/7k/8/8/7b/3p5/8/1r2K3 w KQkq - 0 1", &testBoard);
-  findThreats(&testBoard, testBoard.activeColor, threats);
-  printBoardAndData(testBoard);
-  printThreatBoard(threats);
+
+  opponentColor = getOtherColor(testBoard.activeColor);
+
+  findThreats(&testBoard, opponentColor, testBoard.activeColor, threats);
+  /* printBoardAndData(testBoard);
+  printThreatBoard(threats); */
 
   CU_ASSERT_TRUE(threats[4][0]);
   CU_ASSERT_TRUE(threats[5][1]);
@@ -450,23 +454,6 @@ void test_findAllPinnings(void) {
     }
 }
 
-void test_legalMoves(void) {
-  Graph testGraph;
-  graph_alloc(&testGraph);
-
-  fenToBoard("q6n/7k/8/8/7b/2pp5/8/1r2K3 w KQkq - 0 1", &(testGraph.root));
-  fenToBoard("q6n/7k/8/8/7b/2pp5/8/1r2K3 w KQkq - 0 1",
-            &(testGraph.current_node));
-  movesGenerator(&testGraph);
-  printBoardAndData(testGraph.current_node);
-
-  /* (4,0) -> (5,0) */
-  CU_ASSERT_EQUAL(stack_pop(&(testGraph.current_moves)), 4050);
-  /* Juste print the board and the threats to see this complicated situation
-   * it's been done so that the only move for the white king is f1 <->(5,0)
-   */
-  graph_free(&testGraph);
-}
 
 void test_legalMoves2(void) {
   Graph testGraph;
@@ -475,8 +462,7 @@ void test_legalMoves2(void) {
   fenToBoard("3rrr2/8/8/8/8/8/P7/4K3 w KQkq - 0 1", &(testGraph.root));
   fenToBoard("3rrr2/8/8/8/8/8/P7/4K3 w KQkq - 0 1", &(testGraph.current_node));
   movesGenerator(&testGraph);
-  printBoardAndData(testGraph.current_node);
-
+  /* printBoardAndData(testGraph.current_node); */
   CU_ASSERT_EQUAL(stack_pop(&(testGraph.current_moves)), -1);
   graph_free(&testGraph);
 }
@@ -489,7 +475,7 @@ void test_legalMoves3(void) {
   fenToBoard("rnbqk1nr/ppppp1b1/5pQp/8/4PP2/8/PPPP2PP/RNB1KBNR b KQkq - 0 1",
       &(testGraph.current_node));
   movesGenerator(&testGraph);
-  printBoardAndData(testGraph.current_node);
+  /* printBoardAndData(testGraph.current_node); */
   /* (4,7) -> (5,7) */
   CU_ASSERT_EQUAL(stack_pop(&(testGraph.current_moves)), 4757);
   graph_free(&testGraph);
@@ -499,30 +485,18 @@ void test_legalMoves4(void) {
   Graph testGraph;
   graph_alloc(&testGraph);
 
-  fenToBoard("r7/8/8/8/8/8/7R/K7 w - - 0 1", &(testGraph.root));
-  fenToBoard("r7/8/8/8/8/8/7R/K7 w - - 0 1", &(testGraph.current_node));
+  fenToBoard("r7/8/8/8/7R/7R/1N6/K7 w - - 0 1", &(testGraph.root));
+  fenToBoard("r7/8/8/8/7R/7R/1N6/K7 w - - 0 1", &(testGraph.current_node));
   movesGenerator(&testGraph);
-  printf("\n***Only solution for white : rook goes to a2 or king moves***\n");
-  printBoardAndData(testGraph.current_node);
+  /* printBoardAndData(testGraph.current_node); */
   /* King Move */
-  CU_ASSERT_EQUAL(stack_pop(&(testGraph.current_moves)), 11);
   CU_ASSERT_EQUAL(stack_pop(&(testGraph.current_moves)), 10);
-  /* (7,1) -> (0,1) */
-  CU_ASSERT_EQUAL(stack_pop(&(testGraph.current_moves)), 7101);
+  CU_ASSERT_EQUAL(stack_pop(&(testGraph.current_moves)), 1103);
+  CU_ASSERT_EQUAL(stack_pop(&(testGraph.current_moves)), 7202);
+  CU_ASSERT_EQUAL(stack_pop(&(testGraph.current_moves)), 7303);
   graph_free(&testGraph);
 }
 
-void test_legalMoves5(void) {
-  Graph testGraph;
-  graph_alloc(&testGraph);
-
-  fenToBoard("rr6/rKr5/rr6/8/8/8/8/7R w - - 0 1", &(testGraph.root));
-  fenToBoard("rr6/rKr5/rr6/8/8/8/8/7R w - - 0 1", &(testGraph.current_node));
-  movesGenerator(&testGraph);
-  printf("\n***This postion is chekmate...****\n");
-  printBoardAndData(testGraph.current_node);
-  graph_free(&testGraph);
-}
 void test_legalMoves6(void) {
   Graph testGraph;
   graph_alloc(&testGraph);
@@ -531,10 +505,22 @@ void test_legalMoves6(void) {
   fenToBoard("rnb1kb1r/pppprppp/5N2/8/8/8/8/8 b - - 0 1",
              &(testGraph.current_node));
   movesGenerator(&testGraph);
-  printf("\n***Only solution for black : king goes to d8 or pawn take***\n");
-  printBoardAndData(testGraph.current_node);
+  /* printBoardAndData(testGraph.current_node); */
   CU_ASSERT_EQUAL(stack_pop(&(testGraph.current_moves)), 4737);
   CU_ASSERT_EQUAL(stack_pop(&(testGraph.current_moves)), 6655);
   graph_free(&testGraph);
 }
 
+void test_legalMoves7(void) {
+  Graph testGraph;
+  graph_alloc(&testGraph);
+
+  fenToBoard("rnbqkbnr/ppppp1pp/3N4/3B4/8/8/8/8 b - - 0 1", &(testGraph.root));
+  fenToBoard("rnbqkbnr/ppppp1pp/3N4/3B4/8/8/8/8 b - - 0 1",
+             &(testGraph.current_node));
+  movesGenerator(&testGraph);
+  /* printBoardAndData(testGraph.current_node); */
+  CU_ASSERT_EQUAL(stack_pop(&(testGraph.current_moves)), 2635);
+  CU_ASSERT_EQUAL(stack_pop(&(testGraph.current_moves)), 4635);
+  graph_free(&testGraph);
+}

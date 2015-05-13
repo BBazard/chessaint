@@ -35,8 +35,8 @@ Color is_mate(Board board) {
   bool threatsForBlackKing[8][8];
   bool threatsForWhiteKing[8][8];
 
-  findThreats(&board, black, threatsForBlackKing);
-  findThreats(&board, white, threatsForWhiteKing);
+  findThreats(&board, white, black, threatsForBlackKing);
+  findThreats(&board, black, white, threatsForWhiteKing);
 
   for (int i = 0; i < 8; ++i) {
     for (int j = 0; j < 8; ++j) {

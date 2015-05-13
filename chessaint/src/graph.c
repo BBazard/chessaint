@@ -40,13 +40,14 @@ void movesGenerator(Graph *graph) {
   Board board = graph->current_node;
   Stack *stack = &(graph->current_moves);
   int kingX, kingY;
-  int aMove = 0;
+  Color opponentColor = getOtherColor(board.activeColor);
+
 
   bool pinned[ROWCOL_NB][ROWCOL_NB];
   findAllPinnings(&board, board.activeColor, pinned);
 
   bool threats[ROWCOL_NB][ROWCOL_NB];
-  findThreats(&board, board.activeColor, threats);
+  findThreats(&board, opponentColor, board.activeColor, threats);
 
   bool thereIsNoKing = true;
 
@@ -63,11 +64,7 @@ void movesGenerator(Graph *graph) {
   }
 
   if (!thereIsNoKing && (isThreatened(kingX, kingY, threats))) {
-    printf("\nCHESS POSITION DETECTED\n");
-    aMove = stopThreat(board, pinned, threats, kingX, kingY);
-    /* printf("%d",aMove); */
-    if (aMove != 0)
-      stack_push(stack, aMove);
+    stopThreat(stack, board, pinned, threats, kingX, kingY);
 
     kingMoveGenerator(stack, kingX,  kingY, board.activeColor, board, threats);
   } else {
@@ -104,46 +101,43 @@ void movesGenerator(Graph *graph) {
 }
 
 /*
- *  @fn  int stopThreat(Board board, bool pinned[8][8],
+ *  @fn  void stopThreat(Stack *stack, Board board, bool pinned[8][8],
                bool threats[8][8], int threatenedX, int threatenedY)
- *  @brief this function is called when king is threatened but can't move
- *        it tries many pieces in order to stop of possible the threat
- *        Actually the first move that stops the trheat is played
+ *  @brief this function is called when the king is threatened and find all
+ *          moves (through a stack) that can stop the threat. Then we go back
+ *          to movesGenerator
+ *  @param[in, out] stack of moves
  *  @param[in] board
  *  @param[in] pinned the map of pinned pieces that cant move
  *  @param[in] threats the map of threats
  *  @param[in] threatenedX
  *  @param[in] threatenedY the coords of the threatened piece (king)
  */
-int stopThreat(Board board, bool pinned[8][8],
+void stopThreat(Stack *stack, Board board, bool pinned[8][8],
                bool threats[8][8], int threatenedX, int threatenedY) {
   Board originalBoard, currentBoard;
   originalBoard = board;
   currentBoard = originalBoard;
-  Stack moves;
-  stack_alloc(&moves);
+  Stack tmpMoves;
+  stack_alloc(&tmpMoves);
 
-  bool endThreat = false;
-  int aMove = 0;
+  Color opponentColor = getOtherColor(board.activeColor);
+
   int poped;
 
-  stopThreatMoveGenerator(currentBoard, &moves, pinned);
-  while (((poped = stack_pop(&moves)) != - 1) && (!endThreat)) {
-    aMove = poped;
-    playMoveToCheckThreat(aMove, &currentBoard);
-    findThreats(&currentBoard, currentBoard.activeColor, threats);
+  stopThreatMoveGenerator(currentBoard, &tmpMoves, pinned);
+  while (((poped = stack_pop(&tmpMoves)) != - 1)) {
+    playMoveToCheckThreat(poped, &currentBoard);
+    findThreats(&currentBoard, opponentColor, currentBoard.activeColor,
+                threats);
     /*  printThreatBoard(threats); */
-    /*  printf("%d",aMove); */
     if (!isThreatened(threatenedX, threatenedY, threats)) {
-      endThreat = true;
-      break;
-    } else {
-      currentBoard = originalBoard;
-      aMove = 0;
+      stack_push(stack, poped);
+      /* printf("\n%d\n",poped); */
     }
+    currentBoard = originalBoard;
   }
-  stack_free(&moves);
-  return aMove;
+  stack_free(&tmpMoves);
 }
 
 /*
@@ -840,14 +834,18 @@ void update_board(Arc father, Board *board) {
 }
 
 /**
- *  find if the square next to the king are threated
- *  and if the king itself is threated
+ *  @fn void findThreats(Board *board, Color color1, Color color2,
+ *                      bool threats[8][8])
+ *  @brief This function gives in the threats array all the threats or
+ *          protections (depending of the point of view) of color1 over color2
  *
- *  fill threats array
+ *  @param[in, out] board
+ *  @param[in] color1 the color that attacks or defends
+ *  @param[in] color2 the color to attack or defend
+ *  @param[in, out] threats the map of threats (or protection)
  */
-void findThreats(Board *board, Color activeColor, bool threats[8][8]) {
-  Color opponentColor = getOtherColor(activeColor);
-
+void findThreats(Board *board, Color color1, Color color2,
+                      bool threats[8][8]) {
   /* Needed */
   for (int i = 0 ; i < 8 ; ++i) {
     for (int j = 0 ; j < 8 ; ++j) {
@@ -855,11 +853,10 @@ void findThreats(Board *board, Color activeColor, bool threats[8][8]) {
     }
   }
 
-
   /*we draw the array of threats <-> squares that opponent can capture */
   for (int i = 0 ; i < ROWCOL_NB ; ++i) {
     for (int j = 0 ; j < ROWCOL_NB ; ++j) {
-      if (board->square[i][j].color == opponentColor) {
+      if (board->square[i][j].color == color1) {
         switch (board->square[i][j].piece) {
         case bishop:
           bishopThreatGenerator(i, j, *board, threats);
@@ -877,7 +874,7 @@ void findThreats(Board *board, Color activeColor, bool threats[8][8]) {
           kingThreatGenerator(i, j, threats);
           break;
         case pawn:
-          pawnThreatGenerator(i, j, opponentColor, threats);
+          pawnThreatGenerator(i, j, color1, threats);
           break;
         case empty:
           break;
@@ -989,7 +986,7 @@ void lineThreatGenerator(int incX, int incY, int squareX,
     Y += incY;
   }
 
-  if (isInBoardSquare(X, Y) && (board.square[X][Y].color == opponentColor))
+  if (isInBoardSquare(X, Y))
     threats[X][Y] = true;
 }
 

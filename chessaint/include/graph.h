@@ -94,7 +94,8 @@ bool isInBoardSquare(int squareX, int squareY);
 
 void update_board(Arc father, Board *board);
 
-void findThreats(Board *board, Color activeColor, bool threats[8][8]);
+void findThreats(Board *board, Color color1, Color color2,
+                      bool threats[8][8]);
 
   void bishopThreatGenerator(int squareX, int squareY, Board board,
                             bool threats[8][8]);
@@ -120,7 +121,7 @@ void findThreats(Board *board, Color activeColor, bool threats[8][8]);
 
   void printThreatBoard(bool threats[8][8]);
 
-int stopThreat(Board board, bool pinned[8][8],
+void stopThreat(Stack *stack, Board board, bool pinned[8][8],
               bool threats[8][8], int threatenedX, int threatenedY);
 
   void stopThreatMoveGenerator(Board board, Stack *moves,

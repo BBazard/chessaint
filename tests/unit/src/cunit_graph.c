@@ -118,12 +118,6 @@ int add_graph_suite(CU_pSuite pSuite_graph) {
   }
 
   if (NULL == CU_add_test(pSuite_graph,
-                           "Test of a certain position for legal moves check 1",
-                          test_legalMoves)) {
-    CU_cleanup_registry();
-    return CU_get_error();
-  }
-  if (NULL == CU_add_test(pSuite_graph,
   "Another Test of a certain position for legal moves check",
                           test_legalMoves2)) {
     CU_cleanup_registry();
@@ -142,12 +136,6 @@ int add_graph_suite(CU_pSuite pSuite_graph) {
     CU_cleanup_registry();
     return CU_get_error();
   }
-  if (NULL == CU_add_test(pSuite_graph,
-    "Another Test of a certain position for legal moves check",
-                          test_legalMoves5)) {
-    CU_cleanup_registry();
-    return CU_get_error();
-  }
 
   if (NULL == CU_add_test(pSuite_graph,
     "Another Test of a certain position for legal moves check",
@@ -155,6 +143,12 @@ int add_graph_suite(CU_pSuite pSuite_graph) {
     CU_cleanup_registry();
     return CU_get_error();
   }
+
+  if (NULL == CU_add_test(pSuite_graph,
+    "Test for a buggy ingame situation",
+                          test_legalMoves7)) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
   return 0;
 }
-

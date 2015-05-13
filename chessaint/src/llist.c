@@ -233,6 +233,7 @@ void arc_extract(Arc arc, int *move, int *score) {
   identifier_to_stack(*(arc.data), &s);
   while ( (tmp = stack_pop(&s)) != -1)
     *move = tmp;
+  stack_free(&s);
 }
 
 /**

@@ -11,6 +11,12 @@
 #include "include/astar.h"
 
 /**
+ *  Choose to use astar (set to 0) or not (set to 1)
+ *
+ */
+#define RANDOM_MOVE 0
+
+/**
  * receive a uci string and act accordingly
  *
  * @return 0 if the gui stop
@@ -19,7 +25,7 @@
 int uciLoop(FILE* log, char* buffer, Graph *graph) {
   char uciBuffer[5] = "zzzz";
   char* word = NULL;
-
+  int astar_time = 5;
   receive(log, buffer);
   char* firstWord = getFirstWord(buffer);
   // strcmp second parameter
@@ -52,28 +58,35 @@ int uciLoop(FILE* log, char* buffer, Graph *graph) {
       word = getNextWord();  // "wtime"
       word = getNextWord();  // number
       word = getNextWord();  // "btime"
+      astar_time = atoi(word);
       word = getNextWord();  // number
       word = getNextWord();  // "movestogo"
       word = getNextWord();  // number
 
       graph->current_node = graph->root;
 
-      graph->current_node.activeColor = black;
+      graph->current_node.activeColor = white;
 
       // empty stack
       while (stack_pop(&(graph->current_moves)) != -1) {}
 
-      /* movesGenerator(graph); */
+      int bestmove = 0;
 
-      int *bestmove = 0; /* pickBestMove(&(graph->current_moves)); */
-      int stop = 0;
-      int nodes = 200;
-
-      if (astar(graph, 500, 0, 5, nodes, &stop, bestmove) == 32)
-        return 0;
+      if (RANDOM_MOVE) {
+        movesGenerator(graph);
+        bestmove = pickBestMove(&(graph->current_moves));
+      } else {
+        int stop = 0; /* do not change */
+        int nodes = -1; /* the max number of nodes -1 <=> +inf */
+        int ret = -1; /* do not change */
+        ret = astar(graph, 500, 0, astar_time, nodes, &stop, &bestmove);
+        /* printf("astar ret = %d", ret); /\* to delete *\/ */
+        if (ret == 32)
+          return 0;
+      }
 
       int a, b, c, d;
-      stack_expand(&a, &b, &c, &d, *bestmove);
+      stack_expand(&a, &b, &c, &d, bestmove);
       getUciString(a, b, c, d, uciBuffer);
 
       char bestmoveString[20];

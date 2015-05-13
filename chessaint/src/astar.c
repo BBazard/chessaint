@@ -67,7 +67,6 @@ void next_gen(Graph *graph) {
   stack_alloc(&s);
 
   int move = 0;
-
   graph->current_node = graph->root;
 
   if (graph->links != NULL) {
@@ -78,6 +77,8 @@ void next_gen(Graph *graph) {
     /* llist_add(father, &(graph->links)); /\* Add father to links *\/ */
 
     update_board(father, &(graph->current_node));
+  } else {
+    stack_to_identifier(father.data, s, 100001); /* If astar plays black */
   }
 
   /* printf("##father##"); /\* to delete *\/ */
@@ -95,7 +96,7 @@ void next_gen(Graph *graph) {
     llist_add(son, &(graph->links));
     move = stack_pop(&(graph->current_moves));
   }
-  /* llist_shorten(&(graph->links), 2); /\* to delete *\/ */
+
   arc_free(&father);
   arc_free(&son);
 }
@@ -115,7 +116,7 @@ void next_gen(Graph *graph) {
  *  @return 4 If maximal depth was reached
  *  @return 8 If maximal number of nodes was reached
  *  @return 16 If it was asked to stop
- *  @return 32 If exited anormally
+ *  @return 32 If graph->links was empty
  *  @return sum of previous for multiple flags
  *
  *  Compute from the start to the end (choosen with one or several parameters)
@@ -138,22 +139,24 @@ int astar(Graph *graph, int query_score, int depth, int max_time,
   *bestmove = -1;
   Llist tmp;
 
-  int current_time = 0; /* to delete */
+  printBoardAndData(graph->root); /* To print board when playing */
 
   while ( (current_score < query_score) && !(*stop)
           && (time(NULL) - start_time < max_time) ) {
-    current_time = time(NULL) - start_time;
-    printf("#time : %d#\n", current_time); /* to delete */
     next_gen(graph);
 
     /* Get bestmove for this generation */
     tmp = graph->links;
+    if (tmp == NULL)
+      return 32;
 
-    while (identifier_is_white(*(tmp->value.data)) == graph->root.activeColor) {
+    while ((tmp != NULL) && ((unsigned) identifier_is_white(*(tmp->value.data))
+                            == graph->root.activeColor)) {
       tmp = tmp->next;
-      if (tmp == NULL)
-        return 32;
     }
+    if (tmp == NULL)
+      tmp = graph->links;
+
     /* Have to test if it is the best in test_astar function */ /* to delete */
     arc_extract(tmp->value, bestmove, &current_score);
 
@@ -168,9 +171,7 @@ int astar(Graph *graph, int query_score, int depth, int max_time,
     ret += 2;
   if (*stop)
     ret += 16;
-  printf("list %d\n", llist_length(graph->links)); /* to delete */
-  arc_print(graph->links->value); /* to delete */
-  printf("%d", stack_length(*(graph->links->value.data))); /* to delete */
+  llist_free(&(graph->links));
   return ret;
 }
 

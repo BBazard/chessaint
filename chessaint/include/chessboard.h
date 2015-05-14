@@ -13,7 +13,7 @@
 #include <string.h>
 #include <stdbool.h>
 
-#define SQUARES_NB 64
+#define SQUARES_NB 64x
 /*Number of rowws and columns = 8*/
 #define ROWCOL_NB 8
 

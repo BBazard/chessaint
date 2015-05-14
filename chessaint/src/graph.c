@@ -395,6 +395,8 @@ void bishopAndRook4DirectionsGen(int incX, int incY, Stack *moves, int squareX,
  *
  *  fill pinned array
  *
+ *  @todo Move in chessboard
+ *
  */
 void findAllPinnings(Board *board, Color activeColor, bool pinned[8][8]) {
   for (int i = 0; i < ROWCOL_NB; ++i)
@@ -735,6 +737,8 @@ void knightAndKing4DirectionsGen(int incX, int incY, Stack *moves,
  *  @param[in] squareX
  *  @param[in] squareY are the coordinates of the square to test
  *  @param[out] bool : true if the square is in false otherwise.
+ *
+ *  @todo Move in chessboard
  */
 bool isInBoardSquare(int squareX, int squareY) {
   return (squareX >= 0) && (squareX <= 7) && (squareY >= 0) && (squareY <= 7);

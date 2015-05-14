@@ -17,6 +17,13 @@
 #define RANDOM_MOVE 0
 
 /**
+ *  Choose to use uci or not (if 1, astar_time is set to 5)
+ *  else it is changed by using go x x astar_time x x x
+ *
+ */
+#define USE_UCI 0
+
+/**
  * receive a uci string and act accordingly
  *
  * @return 0 if the gui stop
@@ -58,14 +65,15 @@ int uciLoop(FILE* log, char* buffer, Graph *graph) {
       word = getNextWord();  // "wtime"
       word = getNextWord();  // number
       word = getNextWord();  // "btime"
-      astar_time = atoi(word);
+      if (!USE_UCI)
+        astar_time = atoi(word);
       word = getNextWord();  // number
       word = getNextWord();  // "movestogo"
       word = getNextWord();  // number
 
       graph->current_node = graph->root;
 
-      graph->current_node.activeColor = white;
+      graph->current_node.activeColor = black;
 
       // empty stack
       while (stack_pop(&(graph->current_moves)) != -1) {}

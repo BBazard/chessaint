@@ -34,6 +34,7 @@ Color is_mate(Board board) {
 
   bool threatsForBlackKing[8][8];
   bool threatsForWhiteKing[8][8];
+  bool kingthreat = false;
 
   findThreats(&board, white, black, threatsForBlackKing);
   findThreats(&board, black, white, threatsForWhiteKing);
@@ -41,20 +42,23 @@ Color is_mate(Board board) {
   for (int i = 0; i < 8; ++i) {
     for (int j = 0; j < 8; ++j) {
       if (board.square[i][j].piece == king) {
-        if (board.square[i][j].color == white)
+        if (board.square[i][j].color == white) {
+          kingthreat = threatsForWhiteKing[i][j];
           kingMoveGenerator(&white_king_moves, i, j, white, board,
-              threatsForWhiteKing);
-        else
+                            threatsForWhiteKing);
+        } else {
+          kingthreat = threatsForBlackKing[i][j];
           kingMoveGenerator(&black_king_moves, i, j, black, board,
-              threatsForBlackKing);
+                            threatsForBlackKing);
+        }
       }
     }
   }
-  if (stack_pop(&white_king_moves) == -1) {
+  if (stack_pop(&white_king_moves) == -1 && kingthreat) {
     stack_free(&white_king_moves);
     stack_free(&black_king_moves);
     return white;
-  } else if (stack_pop(&black_king_moves) == -1) {
+  } else if (stack_pop(&black_king_moves) == -1 && kingthreat) {
     stack_free(&white_king_moves);
     stack_free(&black_king_moves);
     return black;
@@ -149,8 +153,6 @@ void update_protection(int threat[][ROWCOL_NB], int index[][ROWCOL_NB],
  *
  */
 
-#define check_mate 0
-
 int heuristic(Board board) {
   float score = 0;
   float scoreindex[ROWCOL_NB][ROWCOL_NB];
@@ -160,7 +162,7 @@ int heuristic(Board board) {
   int black_proIdx[ROWCOL_NB][ROWCOL_NB];
 
   /* Returns 500 or -500 directly if one of the kings is mate */
-  if (is_mate(board) != neutral && check_mate) {
+  if (is_mate(board) != neutral) {
     if (is_mate(board) == board.activeColor)
       return -500;
     else

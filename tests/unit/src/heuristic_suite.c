@@ -12,8 +12,8 @@ int clean_suite_heuristic(void) {
 }
 
 void test_is_mate(void) {
-  char* white_mate_fen = "6rk/4pq2/3r4/8/8/8/8/B5KR w - - 0 1";
-  char* black_mate_fen = "6RK/4PQ2/3R4/8/8/8/8/b5kr b - - 0 1";
+  char* white_mate_fen = "6rr/4pq2/3k4/4p3/8/8/8/B5KR w - - 0 1";
+  char* black_mate_fen = "6RR/4PQ2/3K4/4P3/8/8/8/b5kr b - - 0 1";
   char* initial_fen =
     "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 

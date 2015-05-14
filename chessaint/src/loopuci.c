@@ -84,11 +84,12 @@ int uciLoop(FILE* log, char* buffer, Graph *graph) {
         movesGenerator(graph);
         bestmove = pickBestMove(&(graph->current_moves));
       } else {
+        int depth = -1;
         int stop = 0; /* do not change */
         int nodes = -1; /* the max number of nodes -1 <=> +inf */
         int ret = -1; /* do not change */
-        ret = astar(graph, 500, 0, astar_time, nodes, &stop, &bestmove);
-        /* printf("astar ret = %d", ret); /\* to delete *\/ */
+        ret = astar(graph, 1000, depth, astar_time, nodes, &stop, &bestmove);
+        printf("astar ret = %d\n", ret); /* to delete */
         if (ret == 32)
           return 0;
       }

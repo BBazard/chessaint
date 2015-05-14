@@ -76,6 +76,7 @@ int llist_suppr(Llist *list);
 void llist_free(Llist *list);
 int llist_shorten(Llist *list, int from);
 int llist_length(Llist list);
+void llist_concatenate(Llist *list, Llist to_concat);
 
 void arc_print(Arc value);
 int arc_is_equal(Arc left, Arc right);

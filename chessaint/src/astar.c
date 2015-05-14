@@ -35,6 +35,7 @@ void move_to_node(int move, Arc father, Arc *current, Board oldboard) {
 
   play_move(move, &newboard);
   current->score = heuristic(newboard);
+  printf("\ncurrent : %d\n", current->score);
   stack_free(&tmp);
 }
 
@@ -71,25 +72,25 @@ int next_gen(Graph *graph, int depth) {
   Stack s;
   stack_alloc(&s);
 
-  /* Llist tmp = graph->links; */
+  Llist tmp = graph->links;
 
   int move = 0;
   graph->current_node = graph->root;
 
   if (graph->links != NULL) {
-    /* if (depth != -1) { */
-    /*   while (identifier_get_fullmove >= depth) { */
-    /*     tmp = tmp->next; */
-    /*     if (tmp == NULL) */
-    /*       return 0; */
-    /*   } */
-    /*   arc_copy(tmp->value, &father); */
-    /* } */
+    if (depth != -1) {
+      while (identifier_get_fullmove(*((graph->links)->value.data)) >= depth) {
+        llist_add((graph->links)->value, &tmp);
+        if ( llist_suppr(&(graph->links)) )
+          return 0;
+      }
+    }
 
     arc_copy((graph->links)->value, &father);
     llist_suppr(&(graph->links));
 
-    father.score = -501;
+    llist_concatenate(&(graph->links), tmp);
+
     /* llist_add(father, &(graph->links)); /\* Add father to links *\/ */
 
     update_board(father, &(graph->current_node));
@@ -179,6 +180,7 @@ int astar(Graph *graph, int query_score, int depth, int max_time,
 
     /* Have to test if it is the best in test_astar function */ /* to delete */
     arc_extract(tmp->value, bestmove, &current_score);
+    printf("coucou %d", current_score);
 
     /* Shorten list if needed */
 

@@ -204,3 +204,50 @@ void test_arc_extract(void) {
   CU_ASSERT_EQUAL(move, 4142);
   CU_ASSERT_EQUAL(score, 143);
 }
+
+void test_llist_concatenate(void) {
+  Llist list1 = NULL;
+  Llist list2 = NULL;
+  Arc arc;
+  arc_alloc(&arc);
+
+  for (int i = 0; i < 4; ++i) {
+    llist_add(arc, &list1);
+    arc.score += 10;
+    llist_add(arc, &list2);
+    arc.score -= 9;
+  }
+
+  /* printf("LIST 1 \n\n"); */
+
+  /* int i = 1; */
+  /* Element *tmp = list1; */
+  /* while (tmp != NULL) { */
+  /*   printf("#n = %d\n", i++); */
+  /*   arc_print(tmp->value); */
+  /*   tmp = tmp->next; */
+  /* } */
+
+  /* printf("LIST 2 \n\n"); */
+
+  /* i = 1; */
+  /* tmp = list2; */
+  /* while (tmp != NULL) { */
+  /*   printf("#n = %d\n", i++); */
+  /*   arc_print(tmp->value); */
+  /*   tmp = tmp->next; */
+  /* } */
+
+  /* llist_concatenate(&list1, list2); */
+
+  /* printf("LIST 1+2\n\n"); */
+
+  /* i = 1; */
+  /* tmp = list1; */
+  /* while (tmp != NULL) { */
+  /*   printf("#n = %d\n", i++); */
+  /*   arc_print(tmp->value); */
+  /*   tmp = tmp->next; */
+  /* } */
+  arc_free(&arc);
+}

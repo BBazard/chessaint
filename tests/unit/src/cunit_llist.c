@@ -68,6 +68,13 @@ int add_llist_suite(CU_pSuite pSuite_llist) {
     return CU_get_error();
   }
 
+  if (NULL == CU_add_test(pSuite_llist,
+                          "Test of llist_concatenate function",
+                          test_llist_concatenate)) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
+
   return 0;
 }
 

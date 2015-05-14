@@ -161,6 +161,22 @@ int llist_length(Llist list) {
 }
 
 /**
+ *  @fn void llist_concatenate(Llist *list, Llist to_concat)
+ *  @brief Add all elements of a list ot another
+ *  @param[in, out] list The list in which are added elements
+ *  @param[in] to_concat The list to add to the other
+ *
+ */
+
+void llist_concatenate(Llist *list, Llist to_concat) {
+  Llist tmp = to_concat;
+  while (tmp != NULL) {
+    llist_add(tmp->value, list);
+    tmp = tmp->next;
+  }
+}
+
+/**
  *  @fn void arc_print(Arc value)
  *  @brief Print an Arc
  *  @param[in] value Arc to print, all elements of the structure must be defined

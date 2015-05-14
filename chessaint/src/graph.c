@@ -825,7 +825,7 @@ void update_board(Arc father, Board *board) {
   identifier_to_stack(*(father.data), &stack);
 
   update_moves(&stack, board);
-  
+
   int tmp = identifier_get_cast(*(father.data));
   for (int i = 0; i < 3; ++i) {
     board->availableCastlings[i] = tmp%2;

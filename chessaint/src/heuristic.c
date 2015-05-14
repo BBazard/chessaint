@@ -139,7 +139,8 @@ void update_protection(int threat[][ROWCOL_NB], int index[][ROWCOL_NB],
   }
   graph_free(&graph);
 }
-/** @fn int heuristic(Board board)
+/**
+ *  @fn int heuristic(Board board)
  *  @brief Returns a score for a given board
  *  @param[in] board The representation of the board
  *  @return [|-500;500|] The value of the computed score if working well

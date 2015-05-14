@@ -104,7 +104,7 @@ void test_next_gen(void) {
   for (int i = 0; i < 4; i++) {
     /* printf("\n\n\n"); */
 
-    next_gen(&graph);
+    next_gen(&graph, -1);
 
     /* Element *tmp = graph.links; */
     /* int i = 1; */

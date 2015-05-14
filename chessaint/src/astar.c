@@ -39,9 +39,14 @@ void move_to_node(int move, Arc father, Arc *current, Board oldboard) {
 }
 
 /**
- *  @fn void next_gen(Graph *graph)
+ *  @fn int next_gen(Graph *graph, int depth)
  *  @brief Expand next generation of moves
  *  @param[in,out] graph the graph needed to computation
+ *  @param[in] depth The max depth for a node (if reached, node won't be used
+ *  for computation)
+ *
+ *  @return 1 If worked well
+ *  @return 0 If every node was at max depth
  *
  *  This function choose the father with the best current score and
  *  then computes all the possible moves from this position.
@@ -56,7 +61,7 @@ void move_to_node(int move, Arc father, Arc *current, Board oldboard) {
  *
  */
 
-void next_gen(Graph *graph) {
+int next_gen(Graph *graph, int depth) {
   Arc father;
   arc_alloc(&father);
 
@@ -66,10 +71,21 @@ void next_gen(Graph *graph) {
   Stack s;
   stack_alloc(&s);
 
+  /* Llist tmp = graph->links; */
+
   int move = 0;
   graph->current_node = graph->root;
 
   if (graph->links != NULL) {
+    /* if (depth != -1) { */
+    /*   while (identifier_get_fullmove >= depth) { */
+    /*     tmp = tmp->next; */
+    /*     if (tmp == NULL) */
+    /*       return 0; */
+    /*   } */
+    /*   arc_copy(tmp->value, &father); */
+    /* } */
+
     arc_copy((graph->links)->value, &father);
     llist_suppr(&(graph->links));
 
@@ -99,6 +115,8 @@ void next_gen(Graph *graph) {
 
   arc_free(&father);
   arc_free(&son);
+
+  return 1;
 }
 
 /**
@@ -135,6 +153,7 @@ int astar(Graph *graph, int query_score, int depth, int max_time,
           int max_nodes, int *stop, int *bestmove) {
   time_t start_time = time(NULL);
   int ret = 0;
+  int gen_ret = 1;
   int current_score = -501;
   *bestmove = -1;
   Llist tmp;
@@ -142,8 +161,9 @@ int astar(Graph *graph, int query_score, int depth, int max_time,
   printBoardAndData(graph->root); /* To print board when playing */
 
   while ( (current_score < query_score) && !(*stop)
-          && (time(NULL) - start_time < max_time) ) {
-    next_gen(graph);
+          && (time(NULL) - start_time < max_time)
+          && gen_ret ) {
+    gen_ret = next_gen(graph, depth);
 
     /* Get bestmove for this generation */
     tmp = graph->links;
@@ -166,9 +186,11 @@ int astar(Graph *graph, int query_score, int depth, int max_time,
       ret = 8;
   }
   if (current_score >= query_score)
-    ret = 1;
+    ret += 1;
   if ((time(NULL) - start_time >= max_time))
     ret += 2;
+  if (!gen_ret)
+    ret += 4;
   if (*stop)
     ret += 16;
   llist_free(&(graph->links));

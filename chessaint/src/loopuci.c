@@ -40,7 +40,12 @@ int uciLoop(FILE* log, char* buffer, Graph *graph) {
   char uciBuffer[5] = "zzzz";
   char* word = NULL;
 
+  /* log of the moves with cmdline mode */
+  FILE *moveslog = fopen("moveslog", "a");
+  setbuf(moveslog, NULL);
+
   /* Astar parameters */
+
   int query_score = 500;
   int depth = 5;
   int astar_time = 10;
@@ -66,6 +71,11 @@ int uciLoop(FILE* log, char* buffer, Graph *graph) {
       word = getNextWord();  // "moves"
 
       word = getNextWord();  // the first move
+
+      if (CMDLINE_MOD) {
+        time_t t = time(NULL);
+        fprintf(moveslog, "%sHuman     : %d\n", ctime(&t), uciToMove(word));
+      }
 
       while (getLastCharacter(word) != '\n') {
         play_move(uciToMove(word), &graph->root);
@@ -100,6 +110,7 @@ int uciLoop(FILE* log, char* buffer, Graph *graph) {
       while (stack_pop(&(graph->current_moves)) != -1) {}
 
       int bestmove = 0;
+      int a, b, c, d;
 
       if (RANDOM_MOVE) {
         movesGenerator(graph);
@@ -110,13 +121,23 @@ int uciLoop(FILE* log, char* buffer, Graph *graph) {
           ret = astar(graph, query_score, depth, astar_time,
                       nodes, &stop, &bestmove);
           printf("astar ret = %d\n", ret); /* to delete */
+
           graph->current_node = graph->root;
           play_move(bestmove, &(graph->root));
+
+          stack_expand(&a, &b, &c, &d, bestmove);
+          getUciString(a, b, c, d, uciBuffer);
+          fprintf(moveslog, "ChessAint : %s\n", uciBuffer);
           printBoardAndData(graph->root);
-          scanf("%d", &bestmove);
+
+          scanf("%s[5]", uciBuffer);
+          bestmove = uciToMove(uciBuffer);
+
+          fprintf(moveslog, "Human     : %s\n", uciBuffer);
           play_move(bestmove, &(graph->root));
+
           if (ret == 32)
-          return 0;
+            return 0;
         }
         ret = astar(graph, query_score, depth, astar_time,
                     nodes, &stop, &bestmove);
@@ -124,7 +145,6 @@ int uciLoop(FILE* log, char* buffer, Graph *graph) {
           return 0;
       }
 
-      int a, b, c, d;
       stack_expand(&a, &b, &c, &d, bestmove);
       getUciString(a, b, c, d, uciBuffer);
 

@@ -26,5 +26,7 @@ void test_identifier_get_fullmove(void);
 
 void test_identifier_to_stack(void);
 
+void test_float_to_int(void);
+
 #endif /* TESTS_UNIT_INCLUDE_IDENTIFIER_SUITE_H_ */
 

@@ -60,5 +60,7 @@ void stack_to_identifier(Identifier *id, Stack stack, int status);
 
 int identifier_is_equal(Identifier left, Identifier right);
 
+int float_to_int(float x);
+
 #endif /* CHESSAINT_INCLUDE_IDENTIFIER_H_ */
 

@@ -110,6 +110,13 @@ int add_identifier_suite(CU_pSuite pSuite_identifier) {
     return CU_get_error();
   }
 
+    if (NULL == CU_add_test(pSuite_identifier,
+                           "Testing float_to_int",
+                           test_float_to_int)) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
+
   return 0;
 }
 

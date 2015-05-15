@@ -129,7 +129,7 @@ void test_astar(void) {
   int ret = -1;
   int stop = 0;
 
-  ret = astar(&graph, 500, 0, 5, 150, &stop, &bestmove);
+  ret = astar(&graph, 500, -1, 5, 150, &stop, &bestmove);
   /* works with max_nodes = 150, 
      seems that while condition always true */
   printf("## %d->%d ##", ret, bestmove);

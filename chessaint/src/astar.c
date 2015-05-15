@@ -35,7 +35,6 @@ void move_to_node(int move, Arc father, Arc *current, Board oldboard) {
 
   play_move(move, &newboard);
   current->score = heuristic(newboard);
-  printf("\ncurrent : %d\n", current->score);
   stack_free(&tmp);
 }
 
@@ -72,7 +71,7 @@ int next_gen(Graph *graph, int depth) {
   Stack s;
   stack_alloc(&s);
 
-  Llist tmp = graph->links;
+  Llist tmp = NULL;
 
   int move = 0;
   graph->current_node = graph->root;
@@ -81,11 +80,11 @@ int next_gen(Graph *graph, int depth) {
     if (depth != -1) {
       while (identifier_get_fullmove(*((graph->links)->value.data)) >= depth) {
         llist_add((graph->links)->value, &tmp);
-        if ( llist_suppr(&(graph->links)) )
+        llist_suppr(&(graph->links));
+        if (graph->links->next == NULL)
           return 0;
       }
     }
-
     arc_copy((graph->links)->value, &father);
     llist_suppr(&(graph->links));
 
@@ -135,7 +134,7 @@ int next_gen(Graph *graph, int depth) {
  *  @return 4 If maximal depth was reached
  *  @return 8 If maximal number of nodes was reached
  *  @return 16 If it was asked to stop
- *  @return 32 If graph->links was empty
+ *  @return 32 If graph->links was empty ie astar is mate
  *  @return sum of previous for multiple flags
  *
  *  Compute from the start to the end (choosen with one or several parameters)
@@ -180,7 +179,6 @@ int astar(Graph *graph, int query_score, int depth, int max_time,
 
     /* Have to test if it is the best in test_astar function */ /* to delete */
     arc_extract(tmp->value, bestmove, &current_score);
-    printf("coucou %d", current_score);
 
     /* Shorten list if needed */
 

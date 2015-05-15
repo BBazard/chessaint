@@ -225,9 +225,6 @@ int heuristic(Board board) {
     for (int j = 0; j < 8; ++j)
       score += scoreindex[i][j];
 
-  if (score < .0)
-    return ( -1 * ((int) (-1 * score)));
-  else
-    return ((int) (score));
+  return float_to_int(score);
 }
 

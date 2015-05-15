@@ -277,7 +277,7 @@ int identifier_get_fullmove(Identifier id) {
   int ret;
 
   if ( (ret = (mpz_sizeinbase(id, 10) -6))%4 != 0)
-    return -1;
+    return ret/4+1;
   else
     return ret/4;
 }
@@ -329,3 +329,12 @@ int identifier_is_equal(Identifier left, Identifier right) {
   return !(mpz_cmp(left, right));
 }
 
+int float_to_int(float x) {
+  int ret = 0;
+  if (x < .0f)
+    ret = -1 * ( (int) (-1 * x)); //NOLINT
+  else
+    ret = ( (int) x); //NOLINT
+
+  return ret;
+}

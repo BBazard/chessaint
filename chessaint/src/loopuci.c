@@ -32,7 +32,15 @@
 int uciLoop(FILE* log, char* buffer, Graph *graph) {
   char uciBuffer[5] = "zzzz";
   char* word = NULL;
+
+  /* Astar parameters */
+  int query_score = 500;
+  int depth = -1;
   int astar_time = 5;
+  int stop = 0; /* do not change */
+  int nodes = -1; /* the max number of nodes -1 <=> +inf */
+  int ret = -1; /* do not change */
+  
   receive(log, buffer);
   char* firstWord = getFirstWord(buffer);
   // strcmp second parameter
@@ -63,11 +71,17 @@ int uciLoop(FILE* log, char* buffer, Graph *graph) {
   } else if (strcmp(firstWord, "go") == 0) {
       // ignore all these parameters but assume they exist
       word = getNextWord();  // "wtime"
+      if (!USE_UCI)
+        query_score = atoi(word);
       word = getNextWord();  // number
+      if (!USE_UCI)
+        depth = atoi(word);
       word = getNextWord();  // "btime"
       if (!USE_UCI)
         astar_time = atoi(word);
       word = getNextWord();  // number
+      if (!USE_UCI)
+        nodes = atoi(word);
       word = getNextWord();  // "movestogo"
       word = getNextWord();  // number
 
@@ -84,16 +98,12 @@ int uciLoop(FILE* log, char* buffer, Graph *graph) {
         movesGenerator(graph);
         bestmove = pickBestMove(&(graph->current_moves));
       } else {
-        int depth = -1;
-        int stop = 0; /* do not change */
-        int nodes = -1; /* the max number of nodes -1 <=> +inf */
-        int ret = -1; /* do not change */
-        ret = astar(graph, 1000, depth, astar_time, nodes, &stop, &bestmove);
+        ret = astar(graph, query_score, depth, astar_time, nodes, &stop, &bestmove);
         printf("astar ret = %d\n", ret); /* to delete */
         if (ret == 32)
           return 0;
       }
-
+ 
       int a, b, c, d;
       stack_expand(&a, &b, &c, &d, bestmove);
       getUciString(a, b, c, d, uciBuffer);

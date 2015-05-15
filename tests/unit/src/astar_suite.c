@@ -125,6 +125,8 @@ void test_astar(void) {
   Graph graph;
   graph_alloc(&graph);
 
+  play_move(4143, &(graph.root));
+
   int bestmove;
   int ret = -1;
   int stop = 0;

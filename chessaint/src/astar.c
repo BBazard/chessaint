@@ -90,22 +90,13 @@ int next_gen(Graph *graph, int depth) {
 
     llist_concatenate(&(graph->links), tmp);
 
-    /* llist_add(father, &(graph->links)); /\* Add father to links *\/ */
-
     update_board(father, &(graph->current_node));
   } else {
     stack_to_identifier(father.data, s, 100001); /* If astar plays black */
   }
 
-  /* printf("##father##"); /\* to delete *\/ */
-  /* arc_print(father); /\* to delete *\/ */
-
-  /* printBoardAndData(graph->current_node); /\* to delete *\/ */
-
   movesGenerator(graph);
   move = stack_pop(&(graph->current_moves));
-
-  /* printf("##move : %d##", move); /\* to delete *\/ */
 
   while (move != -1) {
     move_to_node(move, father, &son, graph->current_node);
@@ -157,8 +148,6 @@ int astar(Graph *graph, int query_score, int depth, int max_time,
   int current_score = -501;
   *bestmove = -1;
   Llist tmp;
-
-  printBoardAndData(graph->root); /* To print board when playing */
 
   while ( (current_score < query_score) && !(*stop)
           && (time(NULL) - start_time < max_time)

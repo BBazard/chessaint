@@ -17,11 +17,18 @@
 #define RANDOM_MOVE 0
 
 /**
- *  Choose to use uci or not (if 1, astar_time is set to 5)
- *  else it is changed by using go x x astar_time x x x
+ *  Choose to use cmdline mode or not, if 1,
+ *  First move is played by using uci syntax :
+ *  position x moves nnnn (where nnnn is the first white move Ex : e2e4)
+ *  go s d a n x x
+ *  where s d a n replace default values for :
+ *  - query_score (5OO for mate)
+ *  - depth (-1 for no limit)
+ *  - astar_time (time in seconds)
+ *  - nodes (-1 for no limit)
  *
  */
-#define USE_UCI 0
+#define CMDLINE_MOD 1
 
 /**
  * receive a uci string and act accordingly
@@ -35,12 +42,12 @@ int uciLoop(FILE* log, char* buffer, Graph *graph) {
 
   /* Astar parameters */
   int query_score = 500;
-  int depth = -1;
-  int astar_time = 5;
+  int depth = 5;
+  int astar_time = 10;
   int stop = 0; /* do not change */
   int nodes = -1; /* the max number of nodes -1 <=> +inf */
   int ret = -1; /* do not change */
-  
+
   receive(log, buffer);
   char* firstWord = getFirstWord(buffer);
   // strcmp second parameter
@@ -71,16 +78,16 @@ int uciLoop(FILE* log, char* buffer, Graph *graph) {
   } else if (strcmp(firstWord, "go") == 0) {
       // ignore all these parameters but assume they exist
       word = getNextWord();  // "wtime"
-      if (!USE_UCI)
+      if (CMDLINE_MOD)
         query_score = atoi(word);
       word = getNextWord();  // number
-      if (!USE_UCI)
+      if (CMDLINE_MOD)
         depth = atoi(word);
       word = getNextWord();  // "btime"
-      if (!USE_UCI)
+      if (CMDLINE_MOD)
         astar_time = atoi(word);
       word = getNextWord();  // number
-      if (!USE_UCI)
+      if (CMDLINE_MOD)
         nodes = atoi(word);
       word = getNextWord();  // "movestogo"
       word = getNextWord();  // number
@@ -98,12 +105,25 @@ int uciLoop(FILE* log, char* buffer, Graph *graph) {
         movesGenerator(graph);
         bestmove = pickBestMove(&(graph->current_moves));
       } else {
-        ret = astar(graph, query_score, depth, astar_time, nodes, &stop, &bestmove);
-        printf("astar ret = %d\n", ret); /* to delete */
+        while (CMDLINE_MOD) { /* To play in cmdline mode */
+          printBoardAndData(graph->root);
+          ret = astar(graph, query_score, depth, astar_time,
+                      nodes, &stop, &bestmove);
+          printf("astar ret = %d\n", ret); /* to delete */
+          graph->current_node = graph->root;
+          play_move(bestmove, &(graph->root));
+          printBoardAndData(graph->root);
+          scanf("%d", &bestmove);
+          play_move(bestmove, &(graph->root));
+          if (ret == 32)
+          return 0;
+        }
+        ret = astar(graph, query_score, depth, astar_time,
+                    nodes, &stop, &bestmove);
         if (ret == 32)
           return 0;
       }
- 
+
       int a, b, c, d;
       stack_expand(&a, &b, &c, &d, bestmove);
       getUciString(a, b, c, d, uciBuffer);

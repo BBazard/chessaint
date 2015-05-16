@@ -112,7 +112,7 @@ int next_gen(Graph *graph, int depth) {
 
 /**
  *  @fn int astar(Graph *graph, int query_score, int depth, int max_time,
- *  int max_nodes, int *stop, int *bestmove)
+ *  int max_nodes, int *stop, int *bestmove, FILE *log)
  *  @brief Computation of the whole graph
  *  @param[in,out] graph The graph used for computation
  *  @param[in] [-500, 500] query_score Quit astar if as score above this is found (500 = no limit)
@@ -120,6 +120,7 @@ int next_gen(Graph *graph, int depth) {
  *  @param[in] max_nodes The number of nodes allowed (-1 = no limit but not recommended)
  *  @param[in] stop {0,1} Stop computation if changed to 0
  *  @param[out] bestmove The current best move
+ *  @param[in, out] log The log buffer in which to store the computed moves
  *  @return 1 If found a score better than query_score
  *  @return 2 If time limit was reached
  *  @return 4 If maximal depth was reached
@@ -141,7 +142,7 @@ int next_gen(Graph *graph, int depth) {
  */
 
 int astar(Graph *graph, int query_score, int depth, int max_time,
-          int max_nodes, int *stop, int *bestmove) {
+          int max_nodes, int *stop, int *bestmove, FILE *log) {
   time_t start_time = time(NULL);
   int ret = 0;
   int gen_ret = 1;
@@ -168,6 +169,8 @@ int astar(Graph *graph, int query_score, int depth, int max_time,
 
     /* Have to test if it is the best in test_astar function */ /* to delete */
     arc_extract(tmp->value, bestmove, &current_score);
+    if (current_score >= query_score)
+      identifier_moves_log(*(tmp->value.data), log);
 
     /* Shorten list if needed */
 

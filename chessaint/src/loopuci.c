@@ -74,7 +74,7 @@ int uciLoop(FILE* log, char* buffer, Graph *graph) {
 
       if (CMDLINE_MOD) {
         time_t t = time(NULL);
-        fprintf(moveslog, "%sHuman     : %d\n", ctime(&t), uciToMove(word));
+        fprintf(moveslog, "\n%sHuman     : %s", ctime(&t), word);
       }
 
       while (getLastCharacter(word) != '\n') {
@@ -119,7 +119,7 @@ int uciLoop(FILE* log, char* buffer, Graph *graph) {
         while (CMDLINE_MOD) { /* To play in cmdline mode */
           printBoardAndData(graph->root);
           ret = astar(graph, query_score, depth, astar_time,
-                      nodes, &stop, &bestmove);
+                      nodes, &stop, &bestmove, moveslog);
           printf("astar ret = %d\n", ret); /* to delete */
 
           graph->current_node = graph->root;
@@ -127,7 +127,8 @@ int uciLoop(FILE* log, char* buffer, Graph *graph) {
 
           stack_expand(&a, &b, &c, &d, bestmove);
           getUciString(a, b, c, d, uciBuffer);
-          fprintf(moveslog, "ChessAint : %s\n", uciBuffer);
+
+          fprintf(moveslog, "ChessAint : %s -- return : %d\n", uciBuffer, ret);
           printBoardAndData(graph->root);
 
           scanf("%s[5]", uciBuffer);
@@ -140,7 +141,7 @@ int uciLoop(FILE* log, char* buffer, Graph *graph) {
             return 0;
         }
         ret = astar(graph, query_score, depth, astar_time,
-                    nodes, &stop, &bestmove);
+                    nodes, &stop, &bestmove, NULL);
         if (ret == 32)
           return 0;
       }

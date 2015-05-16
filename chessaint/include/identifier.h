@@ -61,6 +61,7 @@ void stack_to_identifier(Identifier *id, Stack stack, int status);
 int identifier_is_equal(Identifier left, Identifier right);
 
 int float_to_int(float x);
+int identifier_moves_log(Identifier data, FILE *output);
 
 #endif /* CHESSAINT_INCLUDE_IDENTIFIER_H_ */
 

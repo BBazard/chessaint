@@ -165,9 +165,9 @@ int heuristic(Board board) {
   /* Returns 500 or -500 directly if one of the kings is mate */
   if (is_mate(board) != neutral) {
     if (is_mate(board) == board.activeColor)
-      return -500;
+      return float_to_int(-500);
     else
-      return 500;
+      return float_to_int(500);
   }
 
   /* Divides by 2 if a piece is threatened */

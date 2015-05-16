@@ -139,6 +139,19 @@ void test_heuristic(void) {
   fenToBoard(mate_fen, &mate);
   CU_ASSERT_EQUAL(heuristic(mate), 500);
 
+  initAGame(&mate);
+  play_move(5254, &mate);
+  play_move(6775, &mate);
+  play_move(1022, &mate);
+  play_move(605, &mate);
+  play_move(4051, &mate);
+  play_move(7563, &mate);
+
+  printBoardAndData(mate);
+
+  CU_ASSERT_EQUAL(heuristic(mate), 500);
+  CU_ASSERT_EQUAL(is_mate(mate), white);
+  
   /* Score is computed with white as reference meaning a good score (above 0)
      represents a advantage for white.
      But we should still assert that the sum of white and black score is equal

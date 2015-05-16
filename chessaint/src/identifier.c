@@ -338,3 +338,49 @@ int float_to_int(float x) {
 
   return ret;
 }
+
+/**
+ *  @fn int identifier_moves_log(Identifier data, FILE *output)
+ *  @brief Output moves of an id in a file
+ *
+ *  @return 0 If output was NULL
+ *  @return 1 Otherwise
+ *
+ */
+
+int identifier_moves_log(Identifier data, FILE *output) {
+  if (output == NULL)
+    return 0;
+  Stack s, s2;
+  stack_alloc(&s);
+  identifier_to_stack(data, &s);
+  stack_alloc(&s2);
+  identifier_to_stack(data, &s2);
+
+  char strmove[5];
+  int move = 0, a, b, c, d;
+  fprintf(output, "MOVES : ");
+
+  while ((move = stack_pop(&s)) != -1) {
+    stack_expand(&a, &b, &c, &d, move);
+    strmove[0] = a + 'a';
+    strmove[1] = b + '1';
+    strmove[2] = c + 'a';
+    strmove[3] = d + '1';
+    strmove[4] = '\0';
+
+    fprintf(output, "%s ", strmove);
+  }
+
+  fprintf(output, "<->");
+
+  move = 0;
+  while ((move = stack_pop(&s2)) != -1) {
+    fprintf(output, "%d ", move);
+  }
+
+  fprintf(output, "\n");
+  stack_free(&s2);
+  stack_free(&s);
+  return 1;
+}

@@ -35,7 +35,7 @@ int add_llist_suite(CU_pSuite pSuite_llist) {
 
   if (NULL == CU_add_test(pSuite_llist,
                            "Test of the deleting function in a linked list",
-                           test_llist_suppr)) {
+                           test_llist_rm_first)) {
     CU_cleanup_registry();
     return CU_get_error();
   }

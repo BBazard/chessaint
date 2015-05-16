@@ -72,7 +72,7 @@ void arc_alloc(Arc *arc);
 void arc_free(Arc *arc);
 
 void llist_add(Arc newvalue, Llist *list);
-int llist_suppr(Llist *list);
+int llist_rm_first(Llist *list);
 void llist_free(Llist *list);
 int llist_shorten(Llist *list, int from);
 int llist_length(Llist list);

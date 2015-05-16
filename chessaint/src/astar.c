@@ -80,13 +80,13 @@ int next_gen(Graph *graph, int depth) {
     if (depth != -1) {
       while (identifier_get_fullmove(*((graph->links)->value.data)) >= depth) {
         llist_add((graph->links)->value, &tmp);
-        llist_suppr(&(graph->links));
+        llist_rm_first(&(graph->links));
         if (graph->links->next == NULL)
           return 0;
       }
     }
     arc_copy((graph->links)->value, &father);
-    llist_suppr(&(graph->links));
+    llist_rm_first(&(graph->links));
 
     llist_concatenate(&(graph->links), tmp);
 

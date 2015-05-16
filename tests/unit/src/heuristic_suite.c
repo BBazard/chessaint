@@ -151,7 +151,7 @@ void test_heuristic(void) {
 
   CU_ASSERT_EQUAL(heuristic(mate), 500);
   CU_ASSERT_EQUAL(is_mate(mate), white);
-  
+
   /* Score is computed with white as reference meaning a good score (above 0)
      represents a advantage for white.
      But we should still assert that the sum of white and black score is equal

@@ -11,7 +11,7 @@ int clean_suite_llist(void);
 
 void test_arc_equal(void);
 void test_llist_add(void);
-void test_llist_suppr(void);
+void test_llist_rm_first(void);
 void test_llist_free(void);
 void test_llist_shorten(void);
 void test_llist_length(void);

@@ -72,7 +72,7 @@ void llist_add(Arc newvalue, Llist *list) {
 }
 
 /**
- *  @fn int llist_suppr(Llist *list)
+ *  @fn int llist_rm_first(Llist *list)
  *  @brief Suppress an element
  *  @param[in,out] list Pointer on the targeted Llist, not NULL normally
  *  @return 0 if the first element was suppressed succefully
@@ -83,16 +83,16 @@ void llist_add(Arc newvalue, Llist *list) {
  *
  */
 
-int llist_suppr(Llist *list) {
-  Element tmp;
+int llist_rm_first(Llist *list) {
+  Element *next;
 
   if (*list == NULL) {
       return 1;
   } else {
-    tmp = **list;
-    arc_free(&(tmp.value));
+    next = (*list)->next;
+    arc_free(&((*list)->value));
     free(*list);
-    *list = tmp.next;
+    *list = next;
 
     return 0;
   }
@@ -103,14 +103,14 @@ int llist_suppr(Llist *list) {
  *  @brief Suppress all elements
  *  @param[in,out] list Pointer on the targeted Llist
  *
- *  Use the llist_suppr function to suppress every element
+ *  Use the llist_rm_first function to suppress every element
  *  and let the targeted list poiting on NULL at the end of process
  *
  */
 
 void llist_free(Llist *list) {
   while (*list != NULL)
-    llist_suppr(list);
+    llist_rm_first(list);
   *list = NULL;
 }
 

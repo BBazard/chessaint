@@ -25,6 +25,7 @@ void graph_alloc(Graph *graph) {
 }
 
 void graph_free(Graph *graph) {
+  llist_free(&(graph->links));
   stack_free(&(graph->current_moves));
 }
 

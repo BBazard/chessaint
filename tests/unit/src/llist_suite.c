@@ -81,6 +81,7 @@ void test_llist_add(void) {
   /*   tmp = tmp->next; */
   /* } */
 
+  llist_free(&list);
   arc_free(&arc);
 }
 
@@ -168,6 +169,7 @@ void test_llist_shorten(void) {
   /*   arc_print(tmp->value); */
   /*   tmp = tmp->next; */
   /* } */
+  llist_free(&list);
 }
 
 void test_llist_length(void) {
@@ -182,6 +184,8 @@ void test_llist_length(void) {
   arc_free(&arc);
 
   CU_ASSERT_EQUAL(llist_length(list), 50);
+
+  llist_free(&list);
 }
 
 void test_arc_extract(void) {
@@ -252,5 +256,8 @@ void test_llist_concatenate(void) {
   /*   arc_print(tmp->value); */
   /*   tmp = tmp->next; */
   /* } */
+
+  llist_free(&list1);
+  llist_free(&list2);
   arc_free(&arc);
 }

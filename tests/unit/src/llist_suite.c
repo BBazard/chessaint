@@ -203,6 +203,9 @@ void test_arc_extract(void) {
   arc_extract(arc, &move, &score);
   CU_ASSERT_EQUAL(move, 4142);
   CU_ASSERT_EQUAL(score, 143);
+
+  stack_free(&s);
+  arc_free(&arc);
 }
 
 void test_llist_concatenate(void) {

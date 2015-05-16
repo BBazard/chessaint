@@ -135,4 +135,6 @@ void test_astar(void) {
   /* works with max_nodes = 150, 
      seems that while condition always true */
   printf("## %d->%d ##", ret, bestmove);
+
+  graph_free(&graph);
 }

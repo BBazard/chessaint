@@ -104,6 +104,7 @@ int next_gen(Graph *graph, int depth) {
     move = stack_pop(&(graph->current_moves));
   }
 
+  stack_free(&s);
   arc_free(&father);
   arc_free(&son);
 

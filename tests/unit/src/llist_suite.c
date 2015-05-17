@@ -11,86 +11,86 @@ int clean_suite_llist(void) {
   return 0;
 }
 
-void test_arc_equal(void) {
-  Arc left, right;
-  arc_alloc(&left);
-  arc_alloc(&right);
+void test_node_equal(void) {
+  Node left, right;
+  node_alloc(&left);
+  node_alloc(&right);
   left.score = 150;
   right.score = 150;
 
   /* When left and right are equal */
-  CU_ASSERT_TRUE(arc_is_equal(left, right));
+  CU_ASSERT_TRUE(node_is_equal(left, right));
 
   /* change right to have different values in left and right */
   right.score++;
 
   /* When left and right are not equal */
-  CU_ASSERT_FALSE(arc_is_equal(left, right));
+  CU_ASSERT_FALSE(node_is_equal(left, right));
 
-  arc_free(&left);
-  arc_free(&right);
+  node_free(&left);
+  node_free(&right);
 }
 
 void test_llist_add(void) {
   Llist list = NULL;
-  Arc arc;
-  arc_alloc(&arc);
-  arc.score = 150;
-  mpz_set_str(*(arc.data), "1234", 10);
+  Node node;
+  node_alloc(&node);
+  node.score = 150;
+  mpz_set_str(*(node.data), "1234", 10);
 
   /* list should be NULL */
   CU_ASSERT_PTR_NULL(list);
 
-  /* Add the arc to the list */
-  llist_add(arc, &list);
+  /* Add the node to the list */
+  llist_add(node, &list);
 
-  /* Look if the data contained in the list are the same than the arc added */
-  CU_ASSERT_TRUE(arc_is_equal(list->value, arc));
+  /* Look if the data contained in the list are the same than the node added */
+  CU_ASSERT_TRUE(node_is_equal(list->value, node));
 
   /* int i = 1; */
   /* Element *tmp = list; */
   /* while (tmp != NULL) { */
   /*   printf("#n = %d\n", i++); */
-  /*   arc_print(tmp->value); */
+  /*   node_print(tmp->value); */
   /*   tmp = tmp->next; */
   /* } */
 
-  /* Add a new arc */
-  arc.score++;
-  mpz_set_str(*(arc.data), "5678", 10);
-  llist_add(arc, &list);
+  /* Add a new node */
+  node.score++;
+  mpz_set_str(*(node.data), "5678", 10);
+  llist_add(node, &list);
 
-  /* Look if the arc has been added BEFORE the first one
+  /* Look if the node has been added BEFORE the first one
      (because his score is higher) */
-  CU_ASSERT_TRUE(arc_is_equal(list->value, arc));
+  CU_ASSERT_TRUE(node_is_equal(list->value, node));
 
-  /* Add another arc */
-  arc.score -= 2;
-  llist_add(arc, &list);
+  /* Add another node */
+  node.score -= 2;
+  llist_add(node, &list);
 
-  /* Look if the arc at the top has not changed
+  /* Look if the node at the top has not changed
      (because his score is lower) */
-  arc.score += 2;
-  CU_ASSERT_TRUE(arc_is_equal(list->value, arc));
+  node.score += 2;
+  CU_ASSERT_TRUE(node_is_equal(list->value, node));
 
   /* i = 0; */
   /* tmp = list; */
   /* while (tmp != NULL) { */
   /*   printf("#n = %d\n", i++); */
-  /*   arc_print(tmp->value); */
+  /*   node_print(tmp->value); */
   /*   tmp = tmp->next; */
   /* } */
 
   llist_free(&list);
-  arc_free(&arc);
+  node_free(&node);
 }
 
 void test_llist_rm_first(void) {
   Llist list = NULL;
-  Arc arc1;
-  Arc arc2;
-  arc_alloc(&arc1);
-  arc_alloc(&arc2);
+  Node arc1;
+  Node arc2;
+  node_alloc(&arc1);
+  node_alloc(&arc2);
   arc1.score = 150;
   arc2.score = 151;
 
@@ -105,7 +105,7 @@ void test_llist_rm_first(void) {
   llist_rm_first(&list);
 
   /* See if the remaining list have arc2 has its first element */
-  CU_ASSERT_TRUE(arc_is_equal(list->value, arc1));
+  CU_ASSERT_TRUE(node_is_equal(list->value, arc1));
 
   /* See deleting an element returns 0 */
   CU_ASSERT_FALSE(llist_rm_first(&list));
@@ -113,16 +113,16 @@ void test_llist_rm_first(void) {
   /* Confirm the list is now a NULL pointer */
   CU_ASSERT_PTR_NULL(list);
 
-  arc_free(&arc1);
-  arc_free(&arc2);
+  node_free(&arc1);
+  node_free(&arc2);
 }
 
 void test_llist_free(void) {
   Llist list = NULL;
-  Arc arc1;
-  Arc arc2;
-  arc_alloc(&arc1);
-  arc_alloc(&arc2);
+  Node arc1;
+  Node arc2;
+  node_alloc(&arc1);
+  node_alloc(&arc2);
   arc1.score = 150;
   arc2.score = 151;
 
@@ -136,26 +136,26 @@ void test_llist_free(void) {
   /* Test if llist_free returns a NULL pointing list */
   CU_ASSERT_PTR_NULL(list);
 
-  arc_free(&arc1);
-  arc_free(&arc2);
+  node_free(&arc1);
+  node_free(&arc2);
 }
 
 void test_llist_shorten(void) {
-  Arc arc;
+  Node node;
   Llist list = NULL;
-  arc_alloc(&arc);
-  arc.score = 0;
+  node_alloc(&node);
+  node.score = 0;
   for (int i = 0; i < 50; ++i) {
-    llist_add(arc, &list);
-    arc.score++;
+    llist_add(node, &list);
+    node.score++;
   }
-  arc_free(&arc);
+  node_free(&node);
 
   /* int i = 1; */
   /* Element *tmp = list; */
   /* while (tmp != NULL) { */
   /*   printf("#n = %d\n", i++); */
-  /*   arc_print(tmp->value); */
+  /*   node_print(tmp->value); */
   /*   tmp = tmp->next; */
   /* } */
 
@@ -166,63 +166,63 @@ void test_llist_shorten(void) {
   /* tmp = list; */
   /* while (tmp != NULL) { */
   /*   printf("#n = %d\n", i++); */
-  /*   arc_print(tmp->value); */
+  /*   node_print(tmp->value); */
   /*   tmp = tmp->next; */
   /* } */
   llist_free(&list);
 }
 
 void test_llist_length(void) {
-  Arc arc;
+  Node node;
   Llist list = NULL;
-  arc_alloc(&arc);
-  arc.score = 0;
+  node_alloc(&node);
+  node.score = 0;
   for (int i = 0; i < 50; ++i) {
-    llist_add(arc, &list);
-    arc.score++;
+    llist_add(node, &list);
+    node.score++;
   }
-  arc_free(&arc);
+  node_free(&node);
 
   CU_ASSERT_EQUAL(llist_length(list), 50);
 
   llist_free(&list);
 }
 
-void test_arc_extract(void) {
-  Arc arc;
-  arc_alloc(&arc);
+void test_node_extract(void) {
+  Node node;
+  node_alloc(&node);
   Stack s;
   stack_alloc(&s);
-  arc.score = 143;
+  node.score = 143;
 
   stack_push(&s, 4142);
   stack_push(&s, 4243);
   stack_push(&s, 4344);
   stack_push(&s, 4445);
-  stack_to_identifier(arc.data, s, 111111);
+  stack_to_identifier(node.data, s, 111111);
 
-  /* arc_print(arc); */
+  /* node_print(node); */
 
   int move, score;
-  arc_extract(arc, &move, &score);
+  node_extract(node, &move, &score);
   CU_ASSERT_EQUAL(move, 4142);
   CU_ASSERT_EQUAL(score, 143);
 
   stack_free(&s);
-  arc_free(&arc);
+  node_free(&node);
 }
 
 void test_llist_concatenate(void) {
   Llist list1 = NULL;
   Llist list2 = NULL;
-  Arc arc;
-  arc_alloc(&arc);
+  Node node;
+  node_alloc(&node);
 
   for (int i = 0; i < 4; ++i) {
-    llist_add(arc, &list1);
-    arc.score += 10;
-    llist_add(arc, &list2);
-    arc.score -= 9;
+    llist_add(node, &list1);
+    node.score += 10;
+    llist_add(node, &list2);
+    node.score -= 9;
   }
 
   /* printf("LIST 1 \n\n"); */
@@ -231,7 +231,7 @@ void test_llist_concatenate(void) {
   /* Element *tmp = list1; */
   /* while (tmp != NULL) { */
   /*   printf("#n = %d\n", i++); */
-  /*   arc_print(tmp->value); */
+  /*   node_print(tmp->value); */
   /*   tmp = tmp->next; */
   /* } */
 
@@ -241,7 +241,7 @@ void test_llist_concatenate(void) {
   /* tmp = list2; */
   /* while (tmp != NULL) { */
   /*   printf("#n = %d\n", i++); */
-  /*   arc_print(tmp->value); */
+  /*   node_print(tmp->value); */
   /*   tmp = tmp->next; */
   /* } */
 
@@ -253,11 +253,12 @@ void test_llist_concatenate(void) {
   /* tmp = list1; */
   /* while (tmp != NULL) { */
   /*   printf("#n = %d\n", i++); */
-  /*   arc_print(tmp->value); */
+  /*   node_print(tmp->value); */
   /*   tmp = tmp->next; */
   /* } */
 
   llist_free(&list1);
   llist_free(&list2);
-  arc_free(&arc);
+  node_free(&node);
 }
+

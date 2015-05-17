@@ -14,46 +14,33 @@
 #include <stdbool.h>
 
 #define SQUARES_NB 64x
-/* Number of rowws and columns = 8 */
+/* Number of rows and columns = 8 */
 #define ROWCOL_NB 8
-
-/** 
- *  @typedef Coord
- *  @brief Definition of the Coord type
- *
- *  Defines struct Coord as the Coord type
- *
- */
-typedef struct Coord Coord;
 
 /** 
  *  @struct Coord
  *  @brief Represents a point on the board
  *  with (7,7) the system
+ *  
+ *  use for enpassant
  *
  */
-struct Coord {
+typedef struct Coord {
   int column; /**< x coordinates */
   int line;   /**< y coordinates */
-};
-
-
-typedef enum Color Color;
+} Coord;
 
 /** 
  *  @enum Color
  *  @brief Colors of pieces 
  *
- * To describe the state of a square for exemple
+ * To describe the state of a square for example
  */
-enum Color {
+typedef enum Color {
   white,  /**< white player's possession */
   black,  /**< black player's possession */
   neutral /**< For empty squares */
-};
-
-
-typedef enum Piece Piece;
+} Color;
 
 /** 
  *  @enum Piece
@@ -63,7 +50,7 @@ typedef enum Piece Piece;
  *
  *  List all pieces
  */
-enum Piece {
+typedef enum Piece {
   pawn,   /**< pawn   - pion (fr) */
   bishop, /**< bishop - fou (fr) */
   knight, /**< knight - cavalier (fr) */
@@ -71,47 +58,28 @@ enum Piece {
   queen,  /**< queen  - dame (fr) */
   king,   /**< king   - roi (fr) */
   empty   /**< for empty squares */
-};
-
-/** 
- *  @typedef Square
- *  @brief Definition of the Square type
- *
- *  Defines struct Square as the Square type
- *
- */
-typedef struct Square Square;
-
+} Piece;
 
 /** 
  *  @struct Square
  *  @brief Represents a square on the board
  *
  */
-struct Square {
+typedef struct Square {
   Color color; /**< The color of the owner of the case, can be neutral */
   Piece piece; /**< The piece which is in the square, can be empty */
-};
-
-/** 
- *  @typedef Board
- *  @brief Definition of the Board type
- *
- *  Defines struct Board as the Board type
- *
- */
-typedef struct Board Board;
+} Square;
 
 /** 
  *  @struct Board
  *  @brief Represents board + game data
  *
  *  All data required to play a game from a position is stored in a  board
- *  according to FEN strings data (same fields tranlated in our structures)
+ *  according to FEN strings data (same fields translated in our structures)
  *  When you got a board you know everything : the player to play, from 
  *  which position, with which castles available...
  */
-struct Board {
+typedef struct Board {
   Square square[ROWCOL_NB][ROWCOL_NB]; /**< A board = 64 squares : 8x8 */
 
   Color activeColor; /**< Next to play from this position */
@@ -124,7 +92,7 @@ struct Board {
                              /**< [2] : black king side castle        \n*/
                              /**< [3] : black queen side castle       \n*/
                              /**< values : 1 for true and 0 for false   */
-};
+} Board;
 
 /* lines first, columns then */
 Color colorToInit[ROWCOL_NB][ROWCOL_NB];

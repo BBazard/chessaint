@@ -12,17 +12,8 @@
 #include "include/identifier.h"
 
 /** 
- *  @typedef Arc
- *  @brief Definition of the Arc type
- *
- *  Defines struct Arc as the Arc type
- *
- */
-typedef struct Arc Arc;
-
-/** 
- *  @struct Arc
- *  @brief Represents the arc between two nodes of a graph
+ *  @struct Node
+ *  @brief Represents the node between two nodes of a graph
  *
  *  Stores the score a given board (for astar computation)
  *  and the others data about the game we need.
@@ -30,29 +21,20 @@ typedef struct Arc Arc;
  *  Identifier type
  *
  */
-struct Arc {
-  int score; /**< The score of the arc */
+typedef struct Node {
+  int score; /**< The score of the node */
   Identifier *data; /**< All the others data */
-};
-
-/** 
- *  @typedef Element
- *  @brief Definition of the Element type
- *
- *  Defines struct Element as the Element type
- *
- */
-typedef struct Element Element;
+} Node;
 
 /** 
  *  @struct Element
  *  @brief Definition of an list element
  *
  */
-struct Element {
-  Arc value; /**< The value of the element, an arc */
+typedef struct Element {
+  Node value; /**< The value of the element, an node */
   struct Element *next; /**< The link to the next element of the list */
-};
+} Element;
 
 /** 
  *  @typedef Llist
@@ -63,20 +45,20 @@ struct Element {
  */
 typedef Element *Llist;
 
-void arc_alloc(Arc *arc);
-void arc_free(Arc *arc);
+void node_alloc(Node *node);
+void node_free(Node *node);
 
-void llist_add(Arc newvalue, Llist *list);
+void llist_add(Node newvalue, Llist *list);
 int llist_rm_first(Llist *list);
 void llist_free(Llist *list);
 int llist_shorten(Llist *list, int from);
 int llist_length(Llist list);
 void llist_concatenate(Llist *list, Llist to_concat);
 
-void arc_print(Arc value);
-int arc_is_equal(Arc left, Arc right);
-void arc_extract(Arc arc, int *move, int *score);
-void arc_copy(Arc source, Arc *dest);
+void node_print(Node value);
+int node_is_equal(Node left, Node right);
+void node_extract(Node node, int *move, int *score);
+void node_copy(Node source, Node *dest);
 
 #endif /* CHESSAINT_INCLUDE_LLIST_H_ */
 

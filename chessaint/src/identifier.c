@@ -10,20 +10,18 @@
  *  of coords possible
  *
  */
-
 #define MAX_PAIRS 8889
 
 /**
  *  @fn int stack_contract(int p1, int p2, int p3, int p4)
  *  @brief Transform four int in one
- *  @param[in] p1 Most Signifiant Bit
+ *  @param[in] p1 Most Significant Bit
  *  @param[in] p2,p3,p4 Others bits
  *  @return int "p1p2p3p4"
  *
  *  Return the int which is the "concatenation" of p1...p4, MSB first
  *
  */
-
 int stack_contract(int p1, int p2, int p3, int p4) {
   return p1*1000 + p2*100 + p3*10 + p4;
 }
@@ -37,7 +35,6 @@ int stack_contract(int p1, int p2, int p3, int p4) {
  *  Divide todivide in p1, p2, p3 and p4
  *
  */
-
 void stack_expand(int *p1, int *p2, int *p3, int *p4, int todivide) {
   int tmp = todivide;
 
@@ -58,7 +55,6 @@ void stack_expand(int *p1, int *p2, int *p3, int *p4, int todivide) {
  *  @note need stack_free afterwards
  *
  */
-
 void stack_alloc(Stack *s) {
   mpz_init(*s);
 }
@@ -71,7 +67,6 @@ void stack_alloc(Stack *s) {
  *  by s
  *
  */
-
 void stack_free(Stack *s) {
   mpz_clear(*s);
 }
@@ -83,7 +78,6 @@ void stack_free(Stack *s) {
  *  This function adds an int to the stack
  *
  */
-
 void stack_push(Stack *s, int item) {
   mpz_t tmp;
   mpz_init_set(tmp, *s);
@@ -107,7 +101,6 @@ void stack_push(Stack *s, int item) {
  *  the moveGenerator will never add the a1a1 move.
  *
  */
-
 int stack_pop(Stack *s) {
   mpz_t tmp;
   int ret;
@@ -127,7 +120,6 @@ int stack_pop(Stack *s) {
  *  @brief Returns the number of element of the stack
  *
  */
-
 int stack_length(Stack s) {
   return mpz_sizeinbase(s, 10)/4;
 }
@@ -140,7 +132,6 @@ int stack_length(Stack s) {
  *  output.
  *
  */
-
 void identifier_print(Identifier id) {
   FILE* stdout;
   stdout = fopen("/dev/stdout", "a");
@@ -150,18 +141,18 @@ void identifier_print(Identifier id) {
 
   fclose(stdout);
 }
+
 /**
  *  @fn int identifier_is_leaf(Identifier id)
- *  @brief Check if an arc is a leaf of the graph
+ *  @brief Check if an node is a leaf of the graph
  *  @param[in] id The identifier used
- *  @return 1 If the arc is a leaf
+ *  @return 1 If the node is a leaf
  *  @return 0 Otherwise
  *
- *  This function check if a given arc is a leaf
+ *  This function check if a given node is a leaf
  *  or not, given its Identifier
  *
  */
-
 int identifier_is_leaf(Identifier id) {
   Identifier tmp;
   int ret;
@@ -175,16 +166,15 @@ int identifier_is_leaf(Identifier id) {
 
 /**
  *  @fn int identifier_is_white(Identifier id)
- *  @brief Check if an arc is a white move
+ *  @brief Check if an node is a white move
  *  @param[in] id The identifier used
- *  @return 1 If the arc is a white move
+ *  @return 1 If the node is a white move
  *  @return 0 Otherwise
  *
- *  This function check if a given arc is a white move
+ *  This function check if a given node is a white move
  *  or not, given its Identifier
  *
  */
-
 int identifier_is_white(Identifier id) {
   Identifier tmp;
   int ret;
@@ -198,16 +188,15 @@ int identifier_is_white(Identifier id) {
 
 /**
  *  @fn int identifier_is_passant(Identifier id)
- *  @brief Check if an arc contains a enpassant move
+ *  @brief Check if an node contains a enpassant move
  *  @param[in] id The identifier used
- *  @return 1 If the arc contains enpassant
+ *  @return 1 If the node contains enpassant
  *  @return 0 Otherwise
  *
- *  This function check if a given arc contains a enpassant move
+ *  This function check if a given node contains a enpassant move
  *  or not, given its Identifier
  *
  */
-
 int identifier_is_passant(Identifier id) {
   Identifier tmp;
   int ret;
@@ -225,11 +214,10 @@ int identifier_is_passant(Identifier id) {
  *  @param[in] id The identifier used
  *  @return [|0;15|] Meaning a state of castling
  *
- *  This function check the castling state of an arc, given its
+ *  This function check the castling state of an node, given its
  *  Identifier
  *
  */
-
 int identifier_get_cast(Identifier id) {
   Identifier tmp;
   int ret;
@@ -252,7 +240,6 @@ int identifier_get_cast(Identifier id) {
  *  the fifty-move rule.
  *
  */
-
 int identifier_get_halfmove(Identifier id) {
   int ret;
 
@@ -270,7 +257,6 @@ int identifier_get_halfmove(Identifier id) {
  *  since the game has started
  *
  */
-
 int identifier_get_fullmove(Identifier id) {
   int ret;
 
@@ -290,7 +276,6 @@ int identifier_get_fullmove(Identifier id) {
  *  and store it in a stack
  *
  */
-
 int identifier_to_stack(Identifier id, Stack *stack) {
   return mpz_tdiv_q_ui(*stack, id, 1000000);
 }
@@ -305,7 +290,6 @@ int identifier_to_stack(Identifier id, Stack *stack) {
  *  part of the identifier
  *
  */
-
 void stack_to_identifier(Identifier *id, Stack stack, int status) {
   Identifier tmp;
   mpz_init(tmp);
@@ -322,7 +306,6 @@ void stack_to_identifier(Identifier *id, Stack stack, int status) {
  *  @return 0 Otherwise
  *
  */
-
 int identifier_is_equal(Identifier left, Identifier right) {
   return !(mpz_cmp(left, right));
 }
@@ -345,7 +328,6 @@ int float_to_int(float x) {
  *  @return 1 Otherwise
  *
  */
-
 int identifier_moves_log(Identifier data, FILE *output) {
   if (output == NULL)
     return 0;
@@ -382,3 +364,4 @@ int identifier_moves_log(Identifier data, FILE *output) {
   stack_free(&s);
   return 1;
 }
+

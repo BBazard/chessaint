@@ -9,20 +9,19 @@
 #include "include/astar.h"
 
 /**
- *  @fn void move_to_node(int move, Arc father, Arc *current)
+ *  @fn void move_to_node(int move, Node father, Node *current)
  *  @brief Create a node from a move (int) and it's father's data
  *  @param[in] move The move to convert
- *  @param[in] father The father of the arc to be
- *  @param[out] current The pointer in which to save created arc
- *  the arc MUST be initialized before
+ *  @param[in] father The father of the node to be
+ *  @param[out] current The pointer in which to save created node
+ *  the node MUST be initialized before
  *  @param[in] oldboard the board at the father state
  *
  *  This function computes the new value of score and data of a
- *  son arc.
+ *  son node.
  *
  */
-
-void move_to_node(int move, Arc father, Arc *current, Board oldboard) {
+void move_to_node(int move, Node father, Node *current, Board oldboard) {
   Stack tmp;
   stack_alloc(&tmp);
   Board newboard = oldboard;
@@ -60,13 +59,12 @@ void move_to_node(int move, Arc father, Arc *current, Board oldboard) {
  *  @todo perhaps find a better way to correct previous note
  *
  */
-
 int next_gen(Graph *graph, int depth) {
-  Arc father;
-  arc_alloc(&father);
+  Node father;
+  node_alloc(&father);
 
-  Arc son;
-  arc_alloc(&son);
+  Node son;
+  node_alloc(&son);
 
   Stack s;
   stack_alloc(&s);
@@ -85,7 +83,7 @@ int next_gen(Graph *graph, int depth) {
           return 0;
       }
     }
-    arc_copy((graph->links)->value, &father);
+    node_copy((graph->links)->value, &father);
     llist_rm_first(&(graph->links));
 
     llist_concatenate(&(graph->links), tmp);
@@ -106,8 +104,8 @@ int next_gen(Graph *graph, int depth) {
 
   llist_free(&tmp);
   stack_free(&s);
-  arc_free(&father);
-  arc_free(&son);
+  node_free(&father);
+  node_free(&son);
 
   return 1;
 }
@@ -131,7 +129,7 @@ int next_gen(Graph *graph, int depth) {
  *  @return 32 If graph->links was empty ie astar is mate
  *  @return sum of previous for multiple flags
  *
- *  Compute from the start to the end (choosen with one or several parameters)
+ *  Compute from the start to the end (chosen with one or several parameters)
  *  the best move possible.
  *
  *  @note Know that maximal number of nodes being x, the true max number of node could reach 1,1x
@@ -139,10 +137,9 @@ int next_gen(Graph *graph, int depth) {
  *  @note Previous note not implemented yet, the true number won't excess x+1
  *
  *  @todo test is bestmove is the best
- *  @todo use depth parameter to check max depth possibilites
+ *  @todo use depth parameter to check max depth possibility
  *
  */
-
 int astar(Graph *graph, int query_score, int depth, int max_time,
           int max_nodes, int *stop, int *bestmove, FILE *log) {
   time_t start_time = time(NULL);
@@ -172,15 +169,15 @@ int astar(Graph *graph, int query_score, int depth, int max_time,
       tmp = graph->links;
 
     /* move_length = identifier_get_fullmove(*(tmp->value.data)); */
-    arc_extract(tmp->value, bestmove, &current_score);
+    node_extract(tmp->value, bestmove, &current_score);
 
-    /* DO NOT SUPPRESS SECTION UNDER DEVELOPPMENT */
+    /* DO NOT SUPPRESS SECTION UNDER DEVELOPMENT */
     /* while ( (tmp != NULL) && (tmp->value.score == current_score) && */
     /*         ((unsigned) !identifier_is_white(*(tmp->value.data)) */
     /*          == graph->root.activeColor) ) { */
     /*   if (move_length > identifier_get_fullmove(*(tmp->value.data))) { */
     /*     move_length = identifier_get_fullmove(*(tmp->value.data)); */
-    /*     arc_extract(tmp->value, bestmove, &current_score); */
+    /*     node_extract(tmp->value, bestmove, &current_score); */
     /*     fprintf(log, "SCORE :%d\n", tmp->value.score); */
     /*     identifier_moves_log(*(tmp->value.data), log); */
     /*   } */
@@ -209,7 +206,6 @@ int astar(Graph *graph, int query_score, int depth, int max_time,
   return ret;
 }
 
-
 /**
  *  @fn int get_halfMoveClock(Board board)
  *  @brief return the number halfMoveClock from a board structure
@@ -222,7 +218,7 @@ int get_halfMoveClock(Board board) {
 
 /**
  *  @fn int get_castles(Board board)
- *  @brief return an integer telling about the cuurent availble castles
+ *  @brief return an integer telling about the current available castles
  *
  *  @param[in] board the board in which we check castles
  *  @param[out] the formatted int

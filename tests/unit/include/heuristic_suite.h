@@ -15,3 +15,4 @@ void test_update_protection(void);
 void test_heuristic(void);
 
 #endif /* TESTS_UNIT_INCLUDE_HEURISTIC_SUITE_H_ */
+

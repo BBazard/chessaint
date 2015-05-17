@@ -190,3 +190,4 @@ void test_float_to_int(void) {
 
   CU_ASSERT_EQUAL(-16, float_to_int(f));
 }
+

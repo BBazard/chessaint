@@ -13,9 +13,9 @@ int clean_suite_astar(void) {
 
 void test_move_to_node(void) {
   int move = 703;
-  Arc father;
-  Arc son;
-  Arc test;
+  Node father;
+  Node son;
+  Node test;
   Graph graph;
 
   graph_alloc(&graph);
@@ -38,9 +38,9 @@ void test_move_to_node(void) {
 
   /* printBoardAndData(graph.current_node); */
 
-  arc_alloc(&father);
-  arc_alloc(&son);
-  arc_alloc(&test);
+  node_alloc(&father);
+  node_alloc(&son);
+  node_alloc(&test);
 
   /* Need to create a correct value for data (taking care of opponents moves) */
 
@@ -78,9 +78,9 @@ void test_move_to_node(void) {
 
   CU_ASSERT_EQUAL(son.score, test.score);
 
-  arc_free(&father);
-  arc_free(&son);
-  arc_free(&test);
+  node_free(&father);
+  node_free(&son);
+  node_free(&test);
 
   graph_free(&graph);
 }
@@ -89,16 +89,16 @@ void test_next_gen(void) {
   Graph graph;
   graph_alloc(&graph);
 
-  Arc arc;
-  arc_alloc(&arc);
+  Node node;
+  node_alloc(&node);
 
   Stack stack;
   stack_alloc(&stack);
   stack_push(&stack, 2);
   stack_push(&stack, 7775);
-  stack_to_identifier(arc.data, stack, 100002);
+  stack_to_identifier(node.data, stack, 100002);
 
-  /* llist_add(arc, &(graph.links)); */
+  /* llist_add(node, &(graph.links)); */
 
   /* graph is ready to be tested */
   for (int i = 0; i < 4; i++) {
@@ -111,13 +111,13 @@ void test_next_gen(void) {
 
     /* while (tmp != NULL) { */
     /*   printf("#n = %d\n", i++); */
-    /*   arc_print(tmp->value); */
+    /*   node_print(tmp->value); */
     /*   tmp = tmp->next; */
     /* } */
   }
   CU_ASSERT_TRUE(0);
   stack_free(&stack);
-  arc_free(&arc);
+  node_free(&node);
   graph_free(&graph);
 }
 
@@ -138,3 +138,4 @@ void test_astar(void) {
 
   graph_free(&graph);
 }
+

@@ -21,7 +21,7 @@ int add_llist_suite(CU_pSuite pSuite_llist) {
   /* add the tests to the suite */
   if (NULL == CU_add_test(pSuite_llist,
                            "Test of the equal function between arcs",
-                           test_arc_equal)) {
+                           test_node_equal)) {
     CU_cleanup_registry();
     return CU_get_error();
   }
@@ -62,8 +62,8 @@ int add_llist_suite(CU_pSuite pSuite_llist) {
   }
 
   if (NULL == CU_add_test(pSuite_llist,
-                          "Test of arc_extract function",
-                          test_arc_extract)) {
+                          "Test of node_extract function",
+                          test_node_extract)) {
     CU_cleanup_registry();
     return CU_get_error();
   }

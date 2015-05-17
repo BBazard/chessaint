@@ -152,3 +152,4 @@ int add_graph_suite(CU_pSuite pSuite_graph) {
   }
   return 0;
 }
+

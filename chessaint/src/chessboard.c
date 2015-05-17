@@ -54,14 +54,13 @@ void initAGame(Board *game) {
   game->fullMoveNb = 1;
 }
 
-
 /**
  *  @fn void fenToBoard(char *fen, Board *game)
  *  @brief Put a board to the position described by the FEN string
  *  @param[in] char *fen : the fen string
  *  @param[in,out] Board *game: the board to put in a certain position
  *
- *  @bug : i think the bug is : if no square en passant, the end of the
+ *  @bug : I think the bug is : if no square en passant, the end of the
  *    string is badly parsed. I'll check that -hugo
  *
  *  Parsing function
@@ -325,7 +324,6 @@ void findAllPinnings(Board *board, Color activeColor, bool pinned[8][8]) {
         }
       }
 }
-
 
 /**
  *  @internal

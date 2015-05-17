@@ -25,7 +25,6 @@
  *  configuration displayed by the board
  *
  */
-
 Color is_mate(Board board) {
   Graph graph;
   graph_alloc(&graph);
@@ -65,7 +64,6 @@ Color is_mate(Board board) {
  *  number of pieces threatening the place
  *
  */
-
 void update_threat(int index[][ROWCOL_NB], Color threat, Board board) {
   Graph graph;
   int poped;
@@ -122,6 +120,7 @@ void update_protection(int threat[][ROWCOL_NB], int index[][ROWCOL_NB],
   }
   graph_free(&graph);
 }
+
 /**
  *  @fn int heuristic(Board board)
  *  @brief Returns a score for a given board
@@ -136,7 +135,6 @@ void update_protection(int threat[][ROWCOL_NB], int index[][ROWCOL_NB],
  *  another (currently, test is failed)
  *
  */
-
 int heuristic(Board board) {
   float score = 0;
   float scoreindex[ROWCOL_NB][ROWCOL_NB];

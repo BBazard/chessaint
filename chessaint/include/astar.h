@@ -11,7 +11,7 @@
 
 #include "include/heuristic.h"
 
-void move_to_node(int move, Arc father, Arc *current, Board oldboard);
+void move_to_node(int move, Node father, Node *current, Board oldboard);
 int next_gen(Graph *graph, int depth);
 int astar(Graph *graph, int query_score, int depth, int max_time,
           int max_nodes, int *stop, int *bestmove, FILE *log);

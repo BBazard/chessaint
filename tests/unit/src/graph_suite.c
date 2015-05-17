@@ -370,9 +370,9 @@ void test_play_move(void) {
 
 void test_update_board(void) {
   Graph graph;
-  Arc father;
+  Node father;
   graph_alloc(&graph);
-  arc_alloc(&father);
+  node_alloc(&father);
 
   stack_push(&graph.current_moves, 4143);
   stack_push(&graph.current_moves, 4344);
@@ -392,7 +392,7 @@ void test_update_board(void) {
   CU_ASSERT_EQUAL(graph.current_node.square[4][5].piece, pawn);
 
   graph_free(&graph);
-  arc_free(&father);
+  node_free(&father);
 }
 
 void test_findThreats(void) {
@@ -539,3 +539,4 @@ void test_legalMoves7(void) {
   CU_ASSERT_EQUAL(stack_pop(&(testGraph.current_moves)), 4635);
   graph_free(&testGraph);
 }
+

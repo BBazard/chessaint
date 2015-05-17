@@ -10,28 +10,19 @@
 #include "include/llist.h"
 
 /**
- *  @typedef Graph
- *  @brief Definition of the Graph type
- *
- *  Defines struct Graph as the Graph type
- *
- */
-typedef struct Graph Graph;
-
-/**
  *  @struct Graph
  *  @brief Represents a graph for astar computation
  *
  *  Stores the graph data
  *
  */
-struct Graph {
+typedef struct Graph {
   Board root;           /**< The board after the player has played */
-  Board current_node;   /**< The board is the asater */
+  Board current_node;   /**< The board is for the astar */
   Stack current_moves;  /**< The moves playable for a given node */
   Llist links;          /**< The list of all the nodes of the graph */
                         /**< (score sorted) */
-};
+} Graph;
 
 void graph_alloc(Graph *graph);
 void graph_free(Graph *graph);
@@ -73,7 +64,7 @@ void knightAndKing4DirectionsGen(int incX, int incY, Stack *moves,
 void castlesMoveGenerator(int incX, int squareX, int squareY,
                           Stack *moves, Board board);
 
-void update_board(Arc father, Board *board);
+void update_board(Node father, Board *board);
 
 void findThreats(Board *board, Color color1, Color color2,
                       bool threats[8][8]);

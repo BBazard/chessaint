@@ -304,10 +304,15 @@ bool isInBoardSquare(int squareX, int squareY) {
 }
 
 /**
- *  find the piece which cannot move
- *  because of pinnings
+ *  @brief find the piece which cannot move
+ *         because of pinnings :
+ *         the piece cannot move without the king being mate
  *
  *  fill pinned array
+ *
+ *  @param board
+ *  @param activeColor
+ *  @param pinned
  *
  */
 void findAllPinnings(Board *board, Color activeColor, bool pinned[8][8]) {
@@ -338,13 +343,16 @@ void findAllPinnings(Board *board, Color activeColor, bool pinned[8][8]) {
 }
 
 /**
+ *  @brief search for a piece of your color between a enemy
+ *         piece and your king for a piece
+ *  
  *  @param board The board on which to compute
  *  @param enemyColor The color of threatening pieces
  *  @param pinned The bool matrix in which are given results
  *  @param X
  *  @param Y
- *  search for a piece of your color between a enemy
- *  piece and your king for a piece
+ *  @param incX
+ *  @param incY
  *
  */
 void findLinePinnings(Board *board, Color enemyColor, bool pinned[8][8],
@@ -381,7 +389,13 @@ void findLinePinnings(Board *board, Color enemyColor, bool pinned[8][8],
   }
 }
 /**
- * Pinning for rooks
+ *  @brief Pinning for rooks
+ *
+ *  @param board
+ *  @param enemyColor
+ *  @param pinned
+ *  @param X
+ *  @param Y
  */
 void findRookPinnings(Board *board, Color enemyColor,
                       bool pinned[8][8], int X, int Y) {
@@ -391,7 +405,13 @@ void findRookPinnings(Board *board, Color enemyColor,
   findLinePinnings(board, enemyColor, pinned, X, Y, 0, -1);
 }
 /**
- *  Pinning for bishops
+ *  @brief Pinning for bishops
+ *
+ *  @param board
+ *  @param enemyColor
+ *  @param pinned
+ *  @param X
+ *  @param Y
  */
 void findBishopPinnings(Board *board, Color enemyColor,
                         bool pinned[8][8], int X, int Y) {

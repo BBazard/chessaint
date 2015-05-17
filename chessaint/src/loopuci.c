@@ -28,7 +28,7 @@
  *  - nodes (-1 for no limit)
  *
  */
-#define CMDLINE_MOD 0
+#define CMDLINE_MOD 0x
 
 /**
  * receive a uci string and act accordingly

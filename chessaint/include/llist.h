@@ -11,7 +11,7 @@
 
 #include "include/identifier.h"
 
-/** 
+/**
  *  @struct Node
  *  @brief Represents the node between two nodes of a graph
  *
@@ -21,22 +21,32 @@
  *  Identifier type
  *
  */
-typedef struct Node {
+struct Node {
   int score; /**< The score of the node */
   Identifier *data; /**< All the others data */
-} Node;
+};
 
-/** 
+/**
+ *  @param Node Define struct Node as type
+ */
+typedef struct Node Node
+
+/**
  *  @struct Element
  *  @brief Definition of an list element
  *
  */
-typedef struct Element {
+struct Element {
   Node value; /**< The value of the element, an node */
   struct Element *next; /**< The link to the next element of the list */
-} Element;
+};
 
-/** 
+/**
+ *  @param Element Define struct Element as type
+ */
+typedef struct Element Element;
+
+/**
  *  @typedef Llist
  *  @brief Definition of the Llist type
  *

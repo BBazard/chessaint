@@ -1,5 +1,5 @@
 /* This file is part of the ChessAInt project 2015 */
-/** 
+/**
  *  @file
  */
 
@@ -24,32 +24,42 @@
  */
 #define ROWCOL_NB 8
 
-/** 
+/**
  *  @struct Coord
  *  @brief Represents a point on the board
  *  with (7,7) the system
- *  
+ *
  *  use for enpassant
  *
  */
-typedef struct Coord {
+struct Coord {
   int column; /**< x coordinates */
   int line;   /**< y coordinates */
-} Coord;
+};
 
-/** 
+/**
+ *  @param Coord Define struct Coord as type
+ */
+typedef struct Coord Coord;
+
+/**
  *  @enum Color
- *  @brief Colors of pieces 
+ *  @brief Colors of pieces
  *
  * To describe the state of a square for example
  */
-typedef enum Color {
+enum Color {
   white,  /**< white player's possession */
   black,  /**< black player's possession */
   neutral /**< For empty squares */
-} Color;
+};
 
-/** 
+/**
+ *  @param Color Define struct Color as type
+ */
+typedef enum Color Color;
+
+/**
  *  @enum Piece
  *  @brief Pieces types
  *
@@ -57,7 +67,7 @@ typedef enum Color {
  *
  *  List all pieces
  */
-typedef enum Piece {
+enum Piece {
   pawn,   /**< pawn   - pion (fr) */
   bishop, /**< bishop - fou (fr) */
   knight, /**< knight - cavalier (fr) */
@@ -65,28 +75,38 @@ typedef enum Piece {
   queen,  /**< queen  - dame (fr) */
   king,   /**< king   - roi (fr) */
   empty   /**< for empty squares */
-} Piece;
+};
 
-/** 
+/**
+ *  @param Piece Define struct Piece as type
+ */
+typedef enum Piece Piece;
+
+/**
  *  @struct Square
  *  @brief Represents a square on the board
  *
  */
-typedef struct Square {
+struct Square {
   Color color; /**< The color of the owner of the case, can be neutral */
   Piece piece; /**< The piece which is in the square, can be empty */
-} Square;
+};
 
-/** 
+/**
+ *  @param Square Define struct Square as type
+ */
+typedef struct Square Square;
+
+/**
  *  @struct Board
  *  @brief Represents board + game data
  *
  *  All data required to play a game from a position is stored in a  board
  *  according to FEN strings data (same fields translated in our structures)
- *  When you got a board you know everything : the player to play, from 
+ *  When you got a board you know everything : the player to play, from
  *  which position, with which castles available...
  */
-typedef struct Board {
+struct Board {
   Square square[ROWCOL_NB][ROWCOL_NB]; /**< A board = 64 squares : 8x8 */
 
   Color activeColor; /**< Next to play from this position */
@@ -99,13 +119,12 @@ typedef struct Board {
                              /**< [2] : black king side castle        \n*/
                              /**< [3] : black queen side castle       \n*/
                              /**< values : 1 for true and 0 for false   */
-} Board;
+};
 
-/* lines first, columns then */
-Color colorToInit[ROWCOL_NB][ROWCOL_NB];
-Piece piecesToInit[ROWCOL_NB][ROWCOL_NB];
-
-Board myGame;
+/**
+ *  @param Board Define struct Board as type
+ */
+typedef struct Board Board;
 
 void initAGame(Board *game);
 

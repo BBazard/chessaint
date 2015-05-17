@@ -9,6 +9,9 @@
 #include "include/chessboard.h"
 #include <assert.h>
 
+/**
+ *  The variable to init color in initAGame function
+ */
 Color colorToInit[ROWCOL_NB][ROWCOL_NB] = {
   {white, white, white, white, white, white, white, white},
   {white, white, white, white, white, white, white, white},
@@ -20,6 +23,9 @@ Color colorToInit[ROWCOL_NB][ROWCOL_NB] = {
   {black, black, black, black, black, black, black, black},
 };
 
+/**
+ *  The variable to init pieces in initAGame function
+ */
 Piece piecesToInit[ROWCOL_NB][ROWCOL_NB] = {
   {rook, knight, bishop, queen, king, bishop, knight, rook},
   {pawn, pawn, pawn, pawn, pawn, pawn, pawn, pawn},
@@ -55,8 +61,8 @@ void initAGame(Board *game) {
 
 /**
  *  @brief Put a board to the position described by the FEN string
- *  @param[in] char *fen : the fen string
- *  @param[in,out] Board *game: the board to put in a certain position
+ *  @param[in] fen The fen string
+ *  @param[in,out] game The board to put in a certain position
  *
  *  @bug : I think the bug is : if no square en passant, the end of the
  *    string is badly parsed. I'll check that -hugo
@@ -163,9 +169,9 @@ void fenToBoard(char *fen, Board *game) {
 
 /**
  *  @brief Print the board and game data in a formatted way
- *  @param[in] board game: the board (and its data of its structure) to display
- *  @note : Never forget that a1 <-> (0,0) so this printing is kinda flipped
- *  @bug : Previous note is FALSE actually it works only for a1, b2 etc since 
+ *  @param[in] game: the board (and its data of its structure) to display
+ *  @note Never forget that a1 <-> (0,0) so this printing is kinda flipped
+ *  @bug Previous note is FALSE actually it works only for a1, b2 etc since 
  *  board is symmetrized ( ie e2 is not (4,1), but (1,4) with current code)
  */
 void printBoardAndData(Board game) {
@@ -291,7 +297,7 @@ Color getOtherColor(Color color) {
  *  @brief Test if the given square given with its coordinates is in the board
  *  @param[in] squareX
  *  @param[in] squareY are the coordinates of the square to test
- *  @param[out] bool : true if the square is in false otherwise.
+ *  @return bool true if the square is in false otherwise.
  */
 bool isInBoardSquare(int squareX, int squareY) {
   return (squareX >= 0) && (squareX <= 7) && (squareY >= 0) && (squareY <= 7);

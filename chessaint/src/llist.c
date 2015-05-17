@@ -159,7 +159,11 @@ void llist_concatenate(Llist *list, Llist to_concat) {
     tmp = tmp->next;
   }
 }
-
+/**
+ *  @brief Prints a list
+ *  @param[in] list The list to print
+ *
+ */
 void llist_print(Llist list) {
   Element *tmp;
   tmp = list;

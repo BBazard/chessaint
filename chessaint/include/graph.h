@@ -16,13 +16,18 @@
  *  Stores the graph data
  *
  */
-typedef struct Graph {
+struct Graph {
   Board root;           /**< The board after the player has played */
   Board current_node;   /**< The board is for the astar */
   Stack current_moves;  /**< The moves playable for a given node */
   Llist links;          /**< The list of all the nodes of the graph */
                         /**< (score sorted) */
-} Graph;
+};
+
+/**
+ *  @param Graph Define struct Graph as type
+ */
+typedef struct Graph Graph;
 
 void graph_alloc(Graph *graph);
 void graph_free(Graph *graph);

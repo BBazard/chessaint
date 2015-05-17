@@ -292,7 +292,12 @@ void stack_to_identifier(Identifier *id, Stack stack, int status) {
 int identifier_is_equal(Identifier left, Identifier right) {
   return !(mpz_cmp(left, right));
 }
-
+/**
+ *  @brief Change a float to an int
+ *  @param[in] x The float
+ *  @return The int
+ *
+ */
 int float_to_int(float x) {
   int ret = 0;
   if (x < .0f)
@@ -336,7 +341,6 @@ int identifier_moves_log(Identifier data, FILE *output) {
 
   fprintf(output, "<-> ");
 
-  move = 0;
   while ((move = stack_pop(&s2)) != -1) {
     fprintf(output, "%d ", move);
   }

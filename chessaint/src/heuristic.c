@@ -17,9 +17,6 @@
  *  @return white/black If the specified king is mate
  *  @return neutral If no king is mate
  *
- *  @bug function not working until kingMoveGenerator is not taking
- *  chess position into account
- *
  *  This function check if there is a mate in the
  *  configuration displayed by the board
  *
@@ -88,6 +85,19 @@ void update_threat(int index[][ROWCOL_NB], Color threat, Board board) {
   graph_free(&graph);
 }
 
+/**
+ *  @brief Gives the protected places of all board
+ *  @param[out] index Matrix of ints
+ *  @param[in] threat The index of treats
+ *  @param[in] protection The color protecting
+ *  @param[in] board The current positions of pieces
+ *
+ *  This functions given a board and a player gives a state of what the given
+ *  player protect on the board.
+ *  The result is stored as a double array of ints, the number means the
+ *  number of pieces protecting the place
+ *
+ */
 void update_protection(int threat[][ROWCOL_NB], int index[][ROWCOL_NB],
                        Color protection, Board board) {
   Graph graph;
@@ -127,9 +137,6 @@ void update_protection(int threat[][ROWCOL_NB], int index[][ROWCOL_NB],
  *  Given a board, this function compute a score
  *  giving an idea of which player has an advantage this turn and tries to
  *  quantify it.
- *
- *  @todo Add the capacity to halve the score of a piece if endangered by
- *  another (currently, test is failed)
  *
  */
 int heuristic(Board board) {

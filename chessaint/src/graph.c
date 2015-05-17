@@ -12,9 +12,11 @@
 
 /**
  *  @brief Initialisation of a graph item
+ *  @param[in,out] graph The graph to alloc
  *
  *  Calls any necessary init function.
  *  @note need graph_free afterwards
+ *
  */
 void graph_alloc(Graph *graph) {
   graph->links = NULL;
@@ -23,6 +25,12 @@ void graph_alloc(Graph *graph) {
   initAGame(&graph->current_node);
 }
 
+/**
+ *  @brief Free the memory of a graph item
+ *  @param[in,out] graph The graph to free
+ *
+ *  Calls any necessary free function.
+ */
 void graph_free(Graph *graph) {
   llist_free(&(graph->links));
   stack_free(&(graph->current_moves));
@@ -178,8 +186,8 @@ void stopThreatMoveGenerator(Board board, Stack *moves, bool pinned[8][8]) {
 /**
  *  @brief gives all moves for a pawn sitting on a given square
  *  @param[in,out] moves the stack of moves
- *  @param[in] squareX
- *  @param[in] squareY are the position of the pawn (7,7) system
+ *  @param[in] squareX X coord of the pawn (7,7) system
+ *  @param[in] squareY Y coord of the pawn (7,7) system
  *  @param[in] activeColor is the color of the pawn
  *  @param[in] board is the current board
  *
@@ -234,8 +242,8 @@ void pawnMoveGeneratorCapture(Stack *moves,
 /**
  *  @brief gives all moves for a pawn sitting on a given square
  *  @param[in,out] moves the stack of moves
- *  @param[in] squareX
- *  @param[in] squareY are the position of the pawn (7,7) system
+ *  @param[in] squareX X coord of the pawn (7,7) system
+ *  @param[in] squareY Y coord of the pawn (7,7) system
  *  @param[in] activeColor is the color of the pawn
  *  @param[in] board is the current board
  *
@@ -292,8 +300,8 @@ void pawnMoveGeneratorNoCapture(Stack *moves, int squareX, int squareY,
  *  @brief gives all moves for a bishop sitting on a given square by calling
  *         dedicated subfonctions
  *  @param[in,out] moves the stack of moves
- *  @param[in] squareX
- *  @param[in] squareY are the position of the bishop (7,7) system
+ *  @param[in] squareX X coord of the bishop (7,7) system
+ *  @param[in] squareY Y coord of the bishop (7,7) system
  *  @param[in] activeColor is the color of the bishop
  *  @param[in] board is the current board
  *
@@ -321,8 +329,8 @@ void bishopMoveGenerator(Stack *moves, int squareX, int squareY,
  *  @brief gives all moves for a rook sitting on a given square by calling
  *  dedicated subfonctions
  *  @param[in,out] moves the stack of moves
- *  @param[in] squareX
- *  @param[in] squareY are the position of the rook (7,7) system
+ *  @param[in] squareX X coord of the rook (7,7) system
+ *  @param[in] squareY Y coord of the rook (7,7) system
  *  @param[in] activeColor is the color of the rook
  *  @param[in] board is the current board
  *
@@ -351,8 +359,8 @@ void rookMoveGenerator(Stack *moves, int squareX, int squareY,
  *  @param[in] incX the X increment of the precise move
  *  @param[in] incY the Y increment of the precise move
  *  @param[in,out] moves the stack of moves
- *  @param[in] squareX
- *  @param[in] squareY are the position of the piece (7,7) system
+ *  @param[in] squareX X coord of the piece (7,7) system
+ *  @param[in] squareY Y coord of the pawn (7,7) system
  *  @param[in] activeColor is the color of the piece
  *  @param[in] board is the current board
  *
@@ -380,8 +388,8 @@ void bishopAndRook4DirectionsGen(int incX, int incY, Stack *moves, int squareX,
  *  @brief gives all moves for a queen sitting on a given square
  *
  *  @param[in,out] moves the stack  of moves
- *  @param[in] squareX
- *  @param[in] squareY are the position of the queen (7,7) system
+ *  @param[in] squareX X coord of the queen (7,7) system
+ *  @param[in] squareY Y coord of the queen (7,7) system
  *  @param[in] activeColor is the color of the queen
  *  @param[in] board is the current board
  *  This function gives all legal move for a colored queen except those linked
@@ -400,8 +408,8 @@ void queenMoveGenerator(Stack *moves, int squareX, int squareY,
  *  @brief gives all moves for a knight sitting on a given square by calling
  *          subfunctions
  *  @param[in,out] moves the stack  of moves
- *  @param[in] squareX
- *  @param[in] squareY are the position of the knight (7,7) system
+ *  @param[in] squareX X coord of the knight (7,7) system
+ *  @param[in] squareY Y coord of the knight (7,7) system
  *  @param[in] activeColor is the color of the knight
  *  @param[in] board is the current board
  */
@@ -457,12 +465,11 @@ void knightMoveGenerator(Stack *moves, int squareX,
  *  @brief gives all moves for a king sitting on a given square by calling
  *          a subfunction
  *  @param[in,out] moves is the stack of moves
- *  @param[in] squareX
- *  @param[in] squareY are the position of the king (7,7) system
+ *  @param[in] squareX X coord of the king (7,7) system
+ *  @param[in] squareY Y coord of the king (7,7) system
  *  @param[in] activeColor is the color of the king
  *  @param[in] board is the current board
- *  @note No chess position handling here !
- *  @note No castling handling yet !
+ *  @param threats The matrix of threats
  *
  */
 void kingMoveGenerator(Stack *moves, int squareX,
@@ -600,8 +607,8 @@ void castlesMoveGenerator(int incX, int squareX, int squareY, Stack *moves,
  *  @param[in] incX the increment on X of the particular move being considered
  *  @param[in] incY the increment on Y of the particular move being considered
  *  @param[in,out] moves the stack of moves
- *  @param[in] squareX
- *  @param[in] squareY are the position of the piece (7,7) system
+ *  @param[in] squareX X coord of the piece (7,7) system
+ *  @param[in] squareY Y coord of the piece (7,7) system
  *  @param[in] activeColor is the color of the piece
  *  @param[in] board is the current board
  *
@@ -666,8 +673,10 @@ void play_move(int move, Board *board) {
 }
 
 /**
- * called by update_board,
- * should never be used in another way
+ *  @param[in,out] s The stack in which are stored the moves
+ *  @param[in,out] current The board to update
+ *  Called by update_board, should never be used in another way
+ *
  */
 void update_moves(Stack *s, Board *current) {
   int current_move = stack_pop(s);
@@ -681,15 +690,10 @@ void update_moves(Stack *s, Board *current) {
 /**
  *  @brief Update graph->current node
  *  @param[in] father The node in which the board will be updated
- *  @param[in] graph->root The reference board
- *  @param[out] graph->current_node The board updated
+ *  @param[in, out] board The board to update
  *
  *  This function updates the current_node board of the graph according
  *  to the data contained in the node identifier and the root board
- *
- *  @todo Coord enPassant not updated currently need to correct that
- *  @todo For Alexis :
- *  change idendifier_is_white by a getColor or something meaningful Alexis
  *
  */
 void update_board(Node father, Board *board) {
@@ -764,11 +768,11 @@ void findThreats(Board *board, Color color1, Color color2,
 
 /**
  *  @brief give all theatened square by a bishop through the call of a subfct
- *  @param[in] squareX
- *  @param[in] squareY are the position of the bishop (7,7) system
+ *  @param[in] squareX X coord of the bishop (7,7) system
+ *  @param[in] squareY Y coord of the bishop (7,7) system
  *  @param[in] board is the current board
- *  @param[in] threats is the board of booleans representing the threatened
- *             square
+ *  @param[in] threats is the matrix of booleans representing the threatened
+ *  square
  *
  */
 void bishopThreatGenerator(int squareX, int squareY, Board board,
@@ -788,12 +792,12 @@ void bishopThreatGenerator(int squareX, int squareY, Board board,
 
 /**
  *  @brief gives all threats for a rook sitting on a given square by calling
- dedicated subfonctions
- *  @param[in] squareX
- *  @param[in] squareY are the position of the rook (7,7) system
+ *  dedicated subfonctions
+ *  @param[in] squareX X coord of the rook (7,7) system
+ *  @param[in] squareY Y coord of the rook (7,7) system
  *  @param[in] board is the current board
- *  @param[in] threats is the board of booleans representing the threatened
- *             square
+ *  @param[in] threats is the matrix of booleans representing the threatened
+ *  square
  *
  */
 void rookThreatGenerator(int squareX, int squareY, Board board,
@@ -813,8 +817,8 @@ void rookThreatGenerator(int squareX, int squareY, Board board,
 
 /**
  *  @brief gives all threats for a queen sitting on a given square
- *  @param[in] squareX
- *  @param[in] squareY are the position of the queen (7,7) system
+ *  @param[in] squareX X coord of the queen (7,7) system
+ *  @param[in] squareY Y coord of the queen (7,7) system
  *  @param[in] board is the current board
  *  @param[in] threats is the board of booleans representing the threatened
  *             square
@@ -830,8 +834,8 @@ void queenThreatGenerator(int squareX, int squareY, Board board,
  *         pieceColor
  *  @param[in] incX the X increment of the precise move
  *  @param[in] incY the Y increment of the precise move
- *  @param[in] squareX
- *  @param[in] squareY are the position of the piece (7,7) system
+ *  @param[in] squareX X coord of the piece (7,7) system
+ *  @param[in] squareY Y coord of the piece (7,7) system
  *  @param[in] board is the current board
  *  @param[in] threats is the board of booleans representing the threatened
  *             square
@@ -858,7 +862,11 @@ void lineThreatGenerator(int incX, int incY, int squareX,
   if (isInBoardSquare(X, Y))
     threats[X][Y] = true;
 }
-
+/**
+ *  @brief Print a threat matrix
+ *  @param[in] threats The matrix to print
+ *
+ */
 void printThreatBoard(bool threats[8][8]) {
   for (int j = 7 ; j >= 0 ; --j) {
     printf("|");
@@ -873,8 +881,8 @@ void printThreatBoard(bool threats[8][8]) {
  *  @brief gives all moves for a knight sitting on a given square by calling
  *         subfunctions
  *
- *  @param[in] squareX
- *  @param[in] squareY are the position of the knight (7,7) system
+ *  @param[in] squareX X coord of the knight (7,7) system
+ *  @param[in] squareY Y coord of the knight (7,7) system
  *  @param[in] threats is the board of booleans representing the threatened
  *             square
  */
@@ -920,8 +928,8 @@ void knightThreatGenerator(int squareX, int squareY, bool threats[8][8]) {
 /**
  *  @brief gives all threats for a king sitting on a given square by calling
  *          a subfunction
- *  @param[in] squareX
- *  @param[in] squareY are the position of the king (7,7) system
+ *  @param[in] squareX X coord of the king (7,7) system
+ *  @param[in] squareY Y coord of the king (7,7) system
  *  @param[in] threats is the board of booleans representing the threatened
  *             square
  */
@@ -946,9 +954,8 @@ void kingThreatGenerator(int squareX, int squareY, bool threats[8][8]) {
 
 /**
  *  @brief gives all threats for a pawn sitting on a given square
- *  @param[in,out] moves the stack of moves
- *  @param[in] squareX
- *  @param[in] squareY are the position of the pawn (7,7) system
+ *  @param[in] squareX X coord of the pawn (7,7) system
+ *  @param[in] squareY Y coord of the pawn (7,7) system
  *  @param[in] pieceColor is the color of the pawn
  *  @param[in] threats is the board of booleans representing the threatened
  *             square
@@ -982,8 +989,8 @@ void pawnThreatGenerator(int squareX, int squareY,
  *         pieceColor
  *  @param[in] incX the increment on X of the particular move being considered
  *  @param[in] incY the increment on Y of the particular move being considered
- *  @param[in] squareX
- *  @param[in] squareY are the position of the piece (7,7) system
+ *  @param[in] squareX X coord of the piece (7,7) system
+ *  @param[in] squareY Y coord of the piece (7,7) system
  *  @param[in] threats is the board of booleans representing the threatened
  *             square
  *
@@ -999,7 +1006,7 @@ void squareThreatGenerator(int incX, int incY, int squareX, int squareY,
 
 /**
  *  @brief tells if a piece is threatened. USEFUL TO FIND IF KING IS CHECKED
- *  @param[out] bool : the answer
+ *  @param[out] threats The matrix in which is stored the result
  *  @param[in] X
  *  @param[in] Y : the coords of the checked square
  *  @param[in] threats the map of the threats
@@ -1011,7 +1018,7 @@ bool isThreatened(int X, int Y, bool threats[8][8]) {
 /**
  *  @brief tells if a piece is surrounded ie can't move all around itself
  *          this calls a subfunction : checkSurroundigs
- *  @param[out] bool : the answer
+ *  @param[out] threats The board in which is stored the result
  *  @param[in] X
  *  @param[in] Y the coords of the piece to be checked
  *  @param[in] board the board
@@ -1035,11 +1042,13 @@ bool isSurrounded(int X, int Y, Board board, bool threats[8][8]) {
 
 /**
  *  @brief tells if a given square can't be reached
- *  @param[in, out] bool : the answer
+ *  @param[in, out] threats The board in which is stored the result
  *  @param[in] X
  *  @param[in] Y the coords of the piece to be checked
  *  @param[in] board the board
  *  @param[in] threats the map of threats
+ *  @param answer true if the square can be reached
+ *  false otherwise
  */
 void checkSurroundings(int X, int Y, Board board, bool threats[8][8],
                       bool *answer) {
@@ -1052,8 +1061,8 @@ void checkSurroundings(int X, int Y, Board board, bool threats[8][8],
 
 /**
  *  @brief just moves a piece to see what becomes the board
- *  @param[in, out] the board to update
- *  @param[int] the move in compressed writing style
+ *  @param[in,out] board The board to update
+ *  @param[in] move The move in compressed writing style
  *
  *  @note this should later take in account castlings etc..
  */

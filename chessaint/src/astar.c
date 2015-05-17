@@ -151,21 +151,12 @@ int astar(Graph *graph, int query_score, int depth, int max_time,
   int current_score = -501;
   *bestmove = -1;
   Llist tmp;
-
-  FILE *logtmp = fopen("totallog", "a"); /* to delete */
-  setbuf(logtmp, NULL); /* to delete */
+  /* int move_length = -1; */
 
   while ( (current_score < query_score) && !(*stop)
           && (time(NULL) - start_time < max_time)
           && gen_ret ) {
     gen_ret = next_gen(graph, depth);
-
-    tmp = graph->links; /* to delete */
-    while (tmp != NULL) { /* to delete */
-      fprintf(logtmp, "SCORE :%d : ", tmp->value.score); /* to delete */
-      identifier_moves_log(*(tmp->value.data), logtmp); /* to delete */
-      tmp = tmp->next; /* to delete */
-    } /* to delete */
 
     /* Get bestmove for this generation */
     tmp = graph->links;
@@ -180,14 +171,27 @@ int astar(Graph *graph, int query_score, int depth, int max_time,
     if (tmp == NULL)
       tmp = graph->links;
 
-    /* Have to test if it is the best in test_astar function */ /* to delete */
+    /* move_length = identifier_get_fullmove(*(tmp->value.data)); */
     arc_extract(tmp->value, bestmove, &current_score);
 
-    /* Shorten list if needed */
+    /* DO NOT SUPPRESS SECTION UNDER DEVELOPPMENT */
+    /* while ( (tmp != NULL) && (tmp->value.score == current_score) && */
+    /*         ((unsigned) !identifier_is_white(*(tmp->value.data)) */
+    /*          == graph->root.activeColor) ) { */
+    /*   if (move_length > identifier_get_fullmove(*(tmp->value.data))) { */
+    /*     move_length = identifier_get_fullmove(*(tmp->value.data)); */
+    /*     arc_extract(tmp->value, bestmove, &current_score); */
+    /*     fprintf(log, "SCORE :%d\n", tmp->value.score); */
+    /*     identifier_moves_log(*(tmp->value.data), log); */
+    /*   } */
+    /*   tmp = tmp->next; */
+    /* } */
 
+    /* Shorten list if needed */
     if (llist_shorten(&graph->links, max_nodes))
       ret = 8;
   }
+
   if (current_score >= query_score)
     ret += 1;
   if ((time(NULL) - start_time >= max_time))
@@ -196,8 +200,11 @@ int astar(Graph *graph, int query_score, int depth, int max_time,
     ret += 4;
   if (*stop)
     ret += 16;
-  fprintf(log, "SCORE :%d\n", tmp->value.score);
+
+  if (log != NULL)
+    fprintf(log, "SCORE : %d\n", tmp->value.score);
   identifier_moves_log(*(tmp->value.data), log);
+
   llist_free(&(graph->links));
   return ret;
 }

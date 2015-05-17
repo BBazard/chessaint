@@ -31,20 +31,19 @@ Color is_mate(Board board) {
   graph_alloc(&graph);
   graph.current_node = board;
   graph.current_node.activeColor = white;
-  
+
   movesGenerator(&graph);
-  
 
   if (stack_pop(&(graph.current_moves)) == -1) {
     graph_free(&graph);
     return white;
   }
-  
+
   graph.current_node.activeColor = black;
   stack_free(&(graph.current_moves));
   stack_alloc(&(graph.current_moves));
   movesGenerator(&graph);
-    
+
   if (stack_pop(&(graph.current_moves)) == -1) {
     graph_free(&graph);
     return black;

@@ -372,7 +372,7 @@ int identifier_moves_log(Identifier data, FILE *output) {
     fprintf(output, "%s ", strmove);
   }
 
-  fprintf(output, "<->");
+  fprintf(output, "<-> ");
 
   move = 0;
   while ((move = stack_pop(&s2)) != -1) {

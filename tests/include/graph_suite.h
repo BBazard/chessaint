@@ -1,7 +1,7 @@
 /* This file is part of the ChessAInt project 2015 */
 
-#ifndef TESTS_UNIT_INCLUDE_GRAPH_SUITE_H_
-#define TESTS_UNIT_INCLUDE_GRAPH_SUITE_H_
+#ifndef TESTS_INCLUDE_GRAPH_SUITE_H_
+#define TESTS_INCLUDE_GRAPH_SUITE_H_
 
 #include "CUnit/Basic.h"
 #include "include/graph.h"
@@ -33,5 +33,5 @@ void test_legalMoves3(void);
 void test_legalMoves4(void);
 void test_legalMoves6(void);
 void test_legalMoves7(void);
-#endif /* TESTS_UNIT_INCLUDE_GRAPH_SUITE_H_ */
+#endif /* TESTS_INCLUDE_GRAPH_SUITE_H_ */
 

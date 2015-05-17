@@ -32,9 +32,8 @@ Piece piecesToInit[ROWCOL_NB][ROWCOL_NB] = {
 };
 
 /**
- *  @fn void initAGame(Board *game)
  *  @brief Put a board to the initial position
- *  @param[in,out] Board pointer on the board to initialize
+ *  @param[in,out] game pointer on the board to initialize
  */
 void initAGame(Board *game) {
   for (int i = 0; i < ROWCOL_NB; i++) {
@@ -55,7 +54,6 @@ void initAGame(Board *game) {
 }
 
 /**
- *  @fn void fenToBoard(char *fen, Board *game)
  *  @brief Put a board to the position described by the FEN string
  *  @param[in] char *fen : the fen string
  *  @param[in,out] Board *game: the board to put in a certain position
@@ -164,7 +162,6 @@ void fenToBoard(char *fen, Board *game) {
 }
 
 /**
- *  @fn void printBoardAndData(Board game)
  *  @brief Print the board and game data in a formatted way
  *  @param[in] board game: the board (and its data of its structure) to display
  *  @note : Never forget that a1 <-> (0,0) so this printing is kinda flipped
@@ -254,7 +251,12 @@ void printBoardAndData(Board game) {
     game.fullMoveNb);
 }
 
-enum Piece charToPiece(char c) {
+/**
+ *  @brief Change a char in a piece
+ *  @param[in] c The char to transform
+ *  @return piece
+ */
+Piece charToPiece(char c) {
   c = toupper(c);
   if (c == 'P')
     return pawn;
@@ -271,6 +273,11 @@ enum Piece charToPiece(char c) {
   return empty;
 }
 
+/**
+ *  @brief Get the opponent color
+ *  @param[in] color The color given
+ *  @return The opponent color
+ */
 Color getOtherColor(Color color) {
   if (color == white)
     return black;
@@ -281,7 +288,6 @@ Color getOtherColor(Color color) {
 }
 
 /**
- *  @fn isInBoardSquare(int squareX, int squareY)
  *  @brief Test if the given square given with its coordinates is in the board
  *  @param[in] squareX
  *  @param[in] squareY are the coordinates of the square to test
@@ -326,11 +332,14 @@ void findAllPinnings(Board *board, Color activeColor, bool pinned[8][8]) {
 }
 
 /**
- *  @internal
+ *  @param board The board on which to compute
+ *  @param enemyColor The color of threatening pieces
+ *  @param pinned The bool matrix in which are given results
+ *  @param X
+ *  @param Y
+ *  search for a piece of your color between a enemy
+ *  piece and your king for a piece
  *
- *  search for a piece of your color
- *  between a enemy piece and your king
- *  for a piece
  */
 void findLinePinnings(Board *board, Color enemyColor, bool pinned[8][8],
                       int X, int Y, int incX, int incY) {
@@ -365,7 +374,9 @@ void findLinePinnings(Board *board, Color enemyColor, bool pinned[8][8],
     Y += incY;
   }
 }
-
+/**
+ * Pinning for rooks
+ */
 void findRookPinnings(Board *board, Color enemyColor,
                       bool pinned[8][8], int X, int Y) {
   findLinePinnings(board, enemyColor, pinned, X, Y, 1, 0);
@@ -373,7 +384,9 @@ void findRookPinnings(Board *board, Color enemyColor,
   findLinePinnings(board, enemyColor, pinned, X, Y, -1, 0);
   findLinePinnings(board, enemyColor, pinned, X, Y, 0, -1);
 }
-
+/**
+ *  Pinning for bishops
+ */
 void findBishopPinnings(Board *board, Color enemyColor,
                         bool pinned[8][8], int X, int Y) {
   findLinePinnings(board, enemyColor, pinned, X, Y, -1, -1);

@@ -1,7 +1,7 @@
 /* This file is part of the ChessAInt project 2015 */
 
-#ifndef TESTS_UNIT_INCLUDE_UCI_SUITE_H_
-#define TESTS_UNIT_INCLUDE_UCI_SUITE_H_
+#ifndef TESTS_INCLUDE_UCI_SUITE_H_
+#define TESTS_INCLUDE_UCI_SUITE_H_
 
 #include "include/uci.h"
 #include "CUnit/Basic.h"
@@ -19,5 +19,5 @@ void test_rmUCILastCharacter(void);
 
 void test_getUciString(void);
 
-#endif /* TESTS_UNIT_INCLUDE_UCI_SUITE_H_ */
+#endif /* TESTS_INCLUDE_UCI_SUITE_H_ */
 

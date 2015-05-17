@@ -14,7 +14,7 @@ TESTSSRC:=$(wildcard src/*.c)
 TESTSINCLUDE:=$(wildcard include/*.h)
 TESTSOBJS:=$(patsubst src/%.c,$(OUTPUTDIR)/%.o,$(TESTSSRC))
 
-CINCLUDE:=-I $(CURDIR) -I ../../chessaint
+CINCLUDE:=-I $(CURDIR) -I ../chessaint
 
 all : $(TESTSOBJS) $(PROJECTOBJS)
 	printf "\033[0;32m"

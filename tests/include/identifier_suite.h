@@ -1,7 +1,7 @@
 /* This file is part of the ChessAInt project 2015 */
 
-#ifndef TESTS_UNIT_INCLUDE_IDENTIFIER_SUITE_H_
-#define TESTS_UNIT_INCLUDE_IDENTIFIER_SUITE_H_
+#ifndef TESTS_INCLUDE_IDENTIFIER_SUITE_H_
+#define TESTS_INCLUDE_IDENTIFIER_SUITE_H_
 
 #include "CUnit/Basic.h"
 #include "include/identifier.h"
@@ -28,5 +28,5 @@ void test_identifier_to_stack(void);
 
 void test_float_to_int(void);
 
-#endif /* TESTS_UNIT_INCLUDE_IDENTIFIER_SUITE_H_ */
+#endif /* TESTS_INCLUDE_IDENTIFIER_SUITE_H_ */
 

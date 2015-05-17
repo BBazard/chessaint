@@ -7,7 +7,7 @@ export LDFLAGS:=-lgmp
 
 TRUNK:=$(CURDIR)
 PROJECTDIR:=$(TRUNK)/chessaint
-TESTSDIR:=$(TRUNK)/tests/unit
+TESTSDIR:=$(TRUNK)/tests
 DOCDIR:=$(TRUNK)/docs
 
 export BINDIR:=$(TRUNK)/bin

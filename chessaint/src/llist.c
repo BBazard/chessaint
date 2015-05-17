@@ -9,7 +9,6 @@
 #include <string.h>
 
 /**
- *  @fn void node_alloc(Node *node)
  *  @brief Inits an Node
  *  @param[out] node The node to init
  *
@@ -23,7 +22,6 @@ void node_alloc(Node *node) {
 }
 
 /**
- *  @fn void node_free(Node *node)
  *  @brief Free an Node
  *  @param[out] node The node to free
  *
@@ -34,7 +32,6 @@ void node_free(Node *node) {
 }
 
 /**
- *  @fn void llist_add(Node newvalue, Llist *list)
  *  @brief Adds an Node a specified Llist
  *  @param[in] newvalue The Node value to add
  *  @param[in,out] list Pointer on the targeted list, must be NULL if the list is empty
@@ -69,7 +66,6 @@ void llist_add(Node newvalue, Llist *list) {
 }
 
 /**
- *  @fn int llist_rm_first(Llist *list)
  *  @brief Suppress an element
  *  @param[in,out] list Pointer on the targeted Llist, not NULL normally
  *  @return 0 if the first element was suppressed successfully
@@ -95,7 +91,6 @@ int llist_rm_first(Llist *list) {
 }
 
 /**
- *  @fn void llist_free(Llist *list)
  *  @brief Suppress all elements
  *  @param[in,out] list Pointer on the targeted Llist
  *
@@ -110,7 +105,6 @@ void llist_free(Llist *list) {
 }
 
 /**
- *  @fn int llist_shorten(Llist *list, int from)
  *  @brief Shorten a llist
  *  @param[in,out] list The list to shorten
  *  @param[in] from Starting point of deletion
@@ -137,7 +131,6 @@ int llist_shorten(Llist *list, int from) {
 }
 
 /**
- *  @fn int llist_length(Llist list)
  *  @brief Computes the number of element of a llist
  *  @param[in] list The list to parse
  *  @return int The number of elements
@@ -154,7 +147,6 @@ int llist_length(Llist list) {
 }
 
 /**
- *  @fn void llist_concatenate(Llist *list, Llist to_concat)
  *  @brief Add all elements of a list to another
  *  @param[in, out] list The list in which are added elements
  *  @param[in] to_concat The list to add to the other
@@ -182,7 +174,6 @@ void llist_print(Llist list) {
 }
 
 /**
- *  @fn void node_print(Node value)
  *  @brief Print an Node
  *  @param[in] value Node to print, all elements of the structure must be defined
  *
@@ -196,7 +187,6 @@ void node_print(Node value) {
 }
 
 /**
- *  @fn int node_is_equal(Node left, Node right)
  *  @brief Test if to node are equals
  *  @param[in] left The left member of the equality
  *  @param[in] right The right member of the equality
@@ -211,7 +201,6 @@ int node_is_equal(Node left, Node right) {
 }
 
 /**
- *  @fn void node_extract(Node node, int move, int score)
  *  @brief Extract score and first move of the node
  *  @param[in] node The node of which to extract data
  *  @param[out] move The first move of this node
@@ -231,7 +220,6 @@ void node_extract(Node node, int *move, int *score) {
 }
 
 /**
- *  @fn void node_copy(Node source, Node *dest)
  *  @brief Copy node source in node dest
  *  @param[in] source The original node
  *  @param[out] dest Pointer on the destination node

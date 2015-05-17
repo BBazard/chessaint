@@ -11,7 +11,6 @@
 #include "include/chessboard.h"
 
 /**
- *  @fn void graph_alloc(Graph *graph)
  *  @brief Initialisation of a graph item
  *
  *  Calls any necessary init function.
@@ -30,7 +29,6 @@ void graph_free(Graph *graph) {
 }
 
 /**
- *  @fn void movesGenerator(Graph graph)
  *  @brief gives all moves from a graph
  *  @param[in, out] graph Pointer on the graph used to compute moves
  *
@@ -102,8 +100,6 @@ void movesGenerator(Graph *graph) {
 }
 
 /**
- *  @fn void stopThreat(Stack *stack, Board board, bool pinned[8][8],
- *             bool threats[8][8], int threatenedX, int threatenedY)
  *  @brief this function is called when the king is threatened and find all
  *          moves (through a stack) that can stop the threat. Then we go back
  *          to movesGenerator
@@ -142,8 +138,6 @@ void stopThreat(Stack *stack, Board board, bool pinned[8][8],
 }
 
 /**
- *  @fn void stopThreatMoveGenerator(Board board, Stack *moves,
- *                                    bool pinned[8][8])
  *  @brief generates all moves except king's one. These moves will then be
  *        checked in stopThreat to see if they stop the threat
  *  @param[in] board
@@ -182,8 +176,6 @@ void stopThreatMoveGenerator(Board board, Stack *moves, bool pinned[8][8]) {
 }
 
 /**
- *  @fn void pawnMoveGeneratorCapture(Stack *moves, int squareX, int squareY,
- *  Color activeColor, Board board, Coord enPassant)
  *  @brief gives all moves for a pawn sitting on a given square
  *  @param[in,out] moves the stack of moves
  *  @param[in] squareX
@@ -240,8 +232,6 @@ void pawnMoveGeneratorCapture(Stack *moves,
 }
 
 /**
- *  @fn void pawnMoveGeneratorNoCapture(Stack *moves, int squareX, int squareY,
- *  Color activeColor, Board board, Coord enPassant)
  *  @brief gives all moves for a pawn sitting on a given square
  *  @param[in,out] moves the stack of moves
  *  @param[in] squareX
@@ -299,8 +289,6 @@ void pawnMoveGeneratorNoCapture(Stack *moves, int squareX, int squareY,
 }
 
 /**
- *  @fn void bishopMoveGenerator(Stack *moves, int squareX, int squareY,
- Color activeColor, Board board)
  *  @brief gives all moves for a bishop sitting on a given square by calling
  *         dedicated subfonctions
  *  @param[in,out] moves the stack of moves
@@ -330,8 +318,6 @@ void bishopMoveGenerator(Stack *moves, int squareX, int squareY,
 }
 
 /**
- *  @fn void rookMoveGenerator(Stack *moves, int squareX, int squareY,
- *                             Color activeColor, Board board)
  *  @brief gives all moves for a rook sitting on a given square by calling
  *  dedicated subfonctions
  *  @param[in,out] moves the stack of moves
@@ -361,9 +347,6 @@ void rookMoveGenerator(Stack *moves, int squareX, int squareY,
 }
 
 /**
- *  @fn void bishopAndRook4DirectionsGen(int incX, int incY, Stack *moves,
- *                          int squareX, int squareY, Color activeColor,
- *                          Board board)
  *  @brief the subfonctions dealing with the 4 directions of movement
  *  @param[in] incX the X increment of the precise move
  *  @param[in] incY the Y increment of the precise move
@@ -394,8 +377,6 @@ void bishopAndRook4DirectionsGen(int incX, int incY, Stack *moves, int squareX,
 }
 
 /**
- *  @fn void queenMoveGenerator(Stack *moves, int squareX, int squareY,
- Color activeColor, Board board)
  *  @brief gives all moves for a queen sitting on a given square
  *
  *  @param[in,out] moves the stack  of moves
@@ -416,8 +397,6 @@ void queenMoveGenerator(Stack *moves, int squareX, int squareY,
 }
 
 /**
- *  @fn void knightMoveGenerator(Stack *moves, int squareX, int squareY,
- *      Color activeColor, Board board)
  *  @brief gives all moves for a knight sitting on a given square by calling
  *          subfunctions
  *  @param[in,out] moves the stack  of moves
@@ -475,8 +454,6 @@ void knightMoveGenerator(Stack *moves, int squareX,
 }
 
 /**
- *  @fn void kingMoveGenerator(Stack *moves, int squareX, int squareY,
- *      Color activeColor, Board board, bool threats[8][8])
  *  @brief gives all moves for a king sitting on a given square by calling
  *          a subfunction
  *  @param[in,out] moves is the stack of moves
@@ -588,8 +565,6 @@ void kingMoveGenerator(Stack *moves, int squareX,
 }
 
 /**
- *  @fn void castlesMoveGenerator(int incX, int squareX, int squareY,
- *                         Stack *moves, Board board) {
  *  @brief Checks if castle is possible and add the move to stack if it is
  *  @param[in] incX used to determine what castle we are checking
  *  @param[in] squareX original position of the king who want to castle
@@ -621,8 +596,6 @@ void castlesMoveGenerator(int incX, int squareX, int squareY, Stack *moves,
 }
 
 /**
- *  @fn void knightAndKing4DirectionsGen(int incX, int incY, Stack *moves,
- *                  int squareX, int squareY, Color activeColor, Board board)
  *  @brief the subfonctions dealing with the 4 directions of movement
  *  @param[in] incX the increment on X of the particular move being considered
  *  @param[in] incY the increment on Y of the particular move being considered
@@ -646,7 +619,6 @@ void knightAndKing4DirectionsGen(int incX, int incY, Stack *moves,
 }
 
 /**
- *  @fn void play_move(int move, Board *board)
  *  @brief play a move on a board
  *  @param[in] move the move to play, Ex : 4143 pour e2e4
  *  @param[in,out] board the board on which to play the move
@@ -707,7 +679,6 @@ void update_moves(Stack *s, Board *current) {
 }
 
 /**
- *  @fn void update_board(Node father, Graph *graph)
  *  @brief Update graph->current node
  *  @param[in] father The node in which the board will be updated
  *  @param[in] graph->root The reference board
@@ -739,8 +710,6 @@ void update_board(Node father, Board *board) {
 }
 
 /**
- *  @fn void findThreats(Board *board, Color color1, Color color2,
- *                      bool threats[8][8])
  *  @brief This function gives in the threats array all the threats or
  *          protections (depending of the point of view) of color1 over color2
  *
@@ -751,6 +720,10 @@ void update_board(Node father, Board *board) {
  */
 void findThreats(Board *board, Color color1, Color color2,
                       bool threats[8][8]) {
+  /* No use in this version */
+  if (color2 != neutral)
+    color2 = neutral;
+
   /* Needed */
   for (int i = 0 ; i < 8 ; ++i) {
     for (int j = 0 ; j < 8 ; ++j) {
@@ -790,8 +763,6 @@ void findThreats(Board *board, Color color1, Color color2,
 }
 
 /**
- *  @fn void bishopThreatGenerator(int squareX, int squareY,
- Color pieceColor, Board board, bool threats[8][8]) {
  *  @brief give all theatened square by a bishop through the call of a subfct
  *  @param[in] squareX
  *  @param[in] squareY are the position of the bishop (7,7) system
@@ -816,8 +787,6 @@ void bishopThreatGenerator(int squareX, int squareY, Board board,
 }
 
 /**
- *  @fn void rookThreatGenerator(int squareX, int squareY,
- Color activeColor, Board board, bool threats[8][8]) {
  *  @brief gives all threats for a rook sitting on a given square by calling
  dedicated subfonctions
  *  @param[in] squareX
@@ -843,15 +812,12 @@ void rookThreatGenerator(int squareX, int squareY, Board board,
 }
 
 /**
- *  @fn void queenGenerator(Stack *moves, int squareX, int squareY,
- Color activeColor, Board board)
  *  @brief gives all threats for a queen sitting on a given square
  *  @param[in] squareX
  *  @param[in] squareY are the position of the queen (7,7) system
  *  @param[in] board is the current board
  *  @param[in] threats is the board of booleans representing the threatened
  *             square
- *  @bug name doesn't match sourcecode see source below this comment
  */
 void queenThreatGenerator(int squareX, int squareY, Board board,
                           bool threats[8][8]) {
@@ -860,9 +826,6 @@ void queenThreatGenerator(int squareX, int squareY, Board board,
 }
 
 /**
- *  @fn void lineThreatGenerator(int incX, int incY, int squareX,
- int squareY, Color pieceColor, Board board,
- bool threats[8][8]) {
  *  @brief this subfunction must mark a square as a threat for the opponent of
  *         pieceColor
  *  @param[in] incX the X increment of the precise move
@@ -907,8 +870,6 @@ void printThreatBoard(bool threats[8][8]) {
 }
 
 /**
- *  @fn  void knightThreatGenerator(int squareX, int squareY, Color pieceColor,
- *                                  Board board, bool threats[8][8]) {
  *  @brief gives all moves for a knight sitting on a given square by calling
  *         subfunctions
  *
@@ -957,8 +918,6 @@ void knightThreatGenerator(int squareX, int squareY, bool threats[8][8]) {
 }
 
 /**
- *  @fn void kingThreatGenerator(int squareX, int squareY, Color activeColor,
- Board board, bool threats[8][8]) {
  *  @brief gives all threats for a king sitting on a given square by calling
  *          a subfunction
  *  @param[in] squareX
@@ -986,8 +945,6 @@ void kingThreatGenerator(int squareX, int squareY, bool threats[8][8]) {
 }
 
 /**
- *  @fn void pawnThreatGenerator(int squareX, int squareY,
- Color pieceColor, Board board, bool threats[8][8]) {
  *  @brief gives all threats for a pawn sitting on a given square
  *  @param[in,out] moves the stack of moves
  *  @param[in] squareX
@@ -1021,9 +978,6 @@ void pawnThreatGenerator(int squareX, int squareY,
 }
 
 /**
- *  @fn  void squareThreatGenerator(int incX, int incY, int squareX,
- *                                int squareY, Color pieceColor,
- *                                Board board, bool threats[8][8]) {
  *  @brief this subfunction must mark a square as a threat for the opponent of
  *         pieceColor
  *  @param[in] incX the increment on X of the particular move being considered
@@ -1044,7 +998,6 @@ void squareThreatGenerator(int incX, int incY, int squareX, int squareY,
 }
 
 /**
- *  @fn bool isThreatened(int X, int Y, bool threats[8][8])
  *  @brief tells if a piece is threatened. USEFUL TO FIND IF KING IS CHECKED
  *  @param[out] bool : the answer
  *  @param[in] X
@@ -1056,7 +1009,6 @@ bool isThreatened(int X, int Y, bool threats[8][8]) {
 }
 
 /**
- *  @fn bool isSurrounded(int X, int Y, Board board, bool threats[8][8]) {
  *  @brief tells if a piece is surrounded ie can't move all around itself
  *          this calls a subfunction : checkSurroundigs
  *  @param[out] bool : the answer
@@ -1082,8 +1034,6 @@ bool isSurrounded(int X, int Y, Board board, bool threats[8][8]) {
 }
 
 /**
- *  @fn void checkSurroundings(int X, int Y, Board board, bool threats[8][8],
- *                     bool *answer) {
  *  @brief tells if a given square can't be reached
  *  @param[in, out] bool : the answer
  *  @param[in] X
@@ -1101,7 +1051,6 @@ void checkSurroundings(int X, int Y, Board board, bool threats[8][8],
 }
 
 /**
- *  @fn void playMoveToCheckThreat(int move, Board *board) {
  *  @brief just moves a piece to see what becomes the board
  *  @param[in, out] the board to update
  *  @param[int] the move in compressed writing style

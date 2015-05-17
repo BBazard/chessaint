@@ -13,8 +13,15 @@
 #include <string.h>
 #include <stdbool.h>
 
+/**
+ *  Number of square in a board
+ *
+ */
 #define SQUARES_NB 64x
-/* Number of rows and columns = 8 */
+/**
+ *  Number of rows and columns
+ *
+ */
 #define ROWCOL_NB 8
 
 /** 
@@ -106,9 +113,7 @@ void fenToBoard(char *fen, Board *game);
 
 void printBoardAndData(Board game);
 
-enum Piece charToPiece(char c);
-
-void copy_board(Board *src, Board *dest);
+Piece charToPiece(char c);
 
 Color getOtherColor(Color color);
 

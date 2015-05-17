@@ -1,7 +1,7 @@
 /* This file is part of the ChessAInt project 2015 */
 
-#ifndef TESTS_UNIT_INCLUDE_LLIST_SUITE_H_
-#define TESTS_UNIT_INCLUDE_LLIST_SUITE_H_
+#ifndef TESTS_INCLUDE_LLIST_SUITE_H_
+#define TESTS_INCLUDE_LLIST_SUITE_H_
 
 #include "CUnit/Basic.h"
 #include "include/llist.h"
@@ -18,5 +18,5 @@ void test_llist_length(void);
 void test_llist_concatenate(void);
 void test_node_extract(void);
 
-#endif /* TESTS_UNIT_INCLUDE_LLIST_SUITE_H_ */
+#endif /* TESTS_INCLUDE_LLIST_SUITE_H_ */
 

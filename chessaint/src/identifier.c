@@ -13,7 +13,6 @@
 #define MAX_PAIRS 8889
 
 /**
- *  @fn int stack_contract(int p1, int p2, int p3, int p4)
  *  @brief Transform four int in one
  *  @param[in] p1 Most Significant Bit
  *  @param[in] p2,p3,p4 Others bits
@@ -27,7 +26,6 @@ int stack_contract(int p1, int p2, int p3, int p4) {
 }
 
 /**
- *  @fn void stack_expand(int *p1, int *p2, int *p3, int *p4, int todivide)
  *  @brief Transform an int in four
  *  @param[out] p1,p2,p3,p4 Where p1 is todivide MSB and p4 todivide LSB
  *  @param[in] todivide The integer (must be in [|0; 10000|]) to divide in four
@@ -48,7 +46,6 @@ void stack_expand(int *p1, int *p2, int *p3, int *p4, int todivide) {
 }
 
 /**
- *  @fn void stack_alloc(Stack *s)
  *  @brief Create a stack
  *
  *  Initialisation of a stack
@@ -60,7 +57,6 @@ void stack_alloc(Stack *s) {
 }
 
 /**
- *  @fn void stack_free(Stack *s)
  *  @brief Free a stack
  *
  *  Free the memory space allocated for stack pointed
@@ -72,7 +68,6 @@ void stack_free(Stack *s) {
 }
 
 /**
- *  @fn void stack_push(Stack *s, int item)
  *  @brief add an item to the stack
  *
  *  This function adds an int to the stack
@@ -90,7 +85,6 @@ void stack_push(Stack *s, int item) {
 }
 
 /**
- *  @fn int stack_pop(Stack *s)
  *  @brief Extract an item from the stack
  *  @return -1 If the stack is empty
  *  @return int the first element of the stack
@@ -116,7 +110,6 @@ int stack_pop(Stack *s) {
 }
 
 /**
- *  @fn int stack_length(Stack *s)
  *  @brief Returns the number of element of the stack
  *
  */
@@ -125,7 +118,6 @@ int stack_length(Stack s) {
 }
 
 /**
- *  @fn void identifier_print(Identifier id)
  *  @brief Print an identifier
  *
  *  This function prints an identifier on the standard
@@ -143,7 +135,6 @@ void identifier_print(Identifier id) {
 }
 
 /**
- *  @fn int identifier_is_leaf(Identifier id)
  *  @brief Check if an node is a leaf of the graph
  *  @param[in] id The identifier used
  *  @return 1 If the node is a leaf
@@ -165,7 +156,6 @@ int identifier_is_leaf(Identifier id) {
 }
 
 /**
- *  @fn int identifier_is_white(Identifier id)
  *  @brief Check if an node is a white move
  *  @param[in] id The identifier used
  *  @return 1 If the node is a white move
@@ -187,7 +177,6 @@ int identifier_is_white(Identifier id) {
 }
 
 /**
- *  @fn int identifier_is_passant(Identifier id)
  *  @brief Check if an node contains a enpassant move
  *  @param[in] id The identifier used
  *  @return 1 If the node contains enpassant
@@ -209,7 +198,6 @@ int identifier_is_passant(Identifier id) {
 }
 
 /**
- *  @fn int identifier_get_cast(Identifier id)
  *  @brief Get the castling state
  *  @param[in] id The identifier used
  *  @return [|0;15|] Meaning a state of castling
@@ -230,7 +218,6 @@ int identifier_get_cast(Identifier id) {
 }
 
 /**
- *  @fn int identifier_get_halfmove(Identifier id)
  *  @brief Get the number of "half move clock"
  *  @param[in] id The identifier used
  *  @return [|0;51|] the number of half moves
@@ -248,7 +235,6 @@ int identifier_get_halfmove(Identifier id) {
 }
 
 /**
- *  @fn int identifier_get_fullmove(Identifier id)
  *  @brief Get the number of moves
  *  @param[in] id The identifier used
  *  @return (int) the number of moves
@@ -267,7 +253,6 @@ int identifier_get_fullmove(Identifier id) {
 }
 
 /**
- *  @fn void identifier_to_stack(Identifier id, Stack *stack)
  *  @brief Puts the "history" part of id in a stack
  *  @param[in] id The identifier holding the data
  *  @param[out] stack The stack in which to store extracted data
@@ -281,7 +266,6 @@ int identifier_to_stack(Identifier id, Stack *stack) {
 }
 
 /**
- *  @fn void stack_to_identifier(Identifier *id, Stack stack)
  *  @brief Puts the content of a stack in the identifier id
  *  @param[in] stack The stack in which to store extracted data
  *  @param[out] id The identifier holding the data
@@ -300,7 +284,6 @@ void stack_to_identifier(Identifier *id, Stack stack, int status) {
 }
 
 /**
- *  @fn int identifier_is_equal(Identifier left, Identifier right)
  *  @brief Compares identifiers
  *  @return 1 If identifier are equal
  *  @return 0 Otherwise
@@ -321,7 +304,6 @@ int float_to_int(float x) {
 }
 
 /**
- *  @fn int identifier_moves_log(Identifier data, FILE *output)
  *  @brief Output moves of an id in a file
  *
  *  @return 0 If output was NULL

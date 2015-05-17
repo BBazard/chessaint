@@ -12,7 +12,6 @@
 #include "include/heuristic.h"
 
 /**
- *  @fn Color is_mate(Board board)
  *  @brief Check if there is mate
  *  @param[in] board The board
  *  @return white/black If the specified king is mate
@@ -52,7 +51,6 @@ Color is_mate(Board board) {
 }
 
 /**
- *  @fn void update_threat(int index[][ROWCOL_NB], Color threat, Board board)
  *  @brief Gives the threatened places of all board
  *  @param[out] index Matrix of ints
  *  @param[in] threat The player threatening
@@ -122,7 +120,6 @@ void update_protection(int threat[][ROWCOL_NB], int index[][ROWCOL_NB],
 }
 
 /**
- *  @fn int heuristic(Board board)
  *  @brief Returns a score for a given board
  *  @param[in] board The representation of the board
  *  @return [|-500;500|] The value of the computed score if working well

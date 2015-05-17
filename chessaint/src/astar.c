@@ -9,7 +9,6 @@
 #include "include/astar.h"
 
 /**
- *  @fn void move_to_node(int move, Node father, Node *current)
  *  @brief Create a node from a move (int) and it's father's data
  *  @param[in] move The move to convert
  *  @param[in] father The father of the node to be
@@ -38,7 +37,6 @@ void move_to_node(int move, Node father, Node *current, Board oldboard) {
 }
 
 /**
- *  @fn int next_gen(Graph *graph, int depth)
  *  @brief Expand next generation of moves
  *  @param[in,out] graph the graph needed to computation
  *  @param[in] depth The max depth for a node (if reached, node won't be used
@@ -111,12 +109,11 @@ int next_gen(Graph *graph, int depth) {
 }
 
 /**
- *  @fn int astar(Graph *graph, int query_score, int depth, int max_time,
- *  int max_nodes, int *stop, int *bestmove, FILE *log)
  *  @brief Computation of the whole graph
  *  @param[in,out] graph The graph used for computation
- *  @param[in] [-500, 500] query_score Quit astar if as score above this is found (500 = no limit)
+ *  @param[in] query_score Quit astar if as score above this is found (> 501 = no limit)
  *  @param[in] depth The maximal depth allowed (-1 = no limit)
+ *  @param[in] max_time The time astar is given for computation
  *  @param[in] max_nodes The number of nodes allowed (-1 = no limit but not recommended)
  *  @param[in] stop {0,1} Stop computation if changed to 0
  *  @param[out] bestmove The current best move
@@ -207,21 +204,19 @@ int astar(Graph *graph, int query_score, int depth, int max_time,
 }
 
 /**
- *  @fn int get_halfMoveClock(Board board)
  *  @brief return the number halfMoveClock from a board structure
  *  @param[in] board
- *  @param[out] the number halfMoveClock
+ *  @return The number halfMoveClock
  */
 int get_halfMoveClock(Board board) {
   return board.halfMoveClock;
 }
 
 /**
- *  @fn int get_castles(Board board)
  *  @brief return an integer telling about the current available castles
  *
  *  @param[in] board the board in which we check castles
- *  @param[out] the formatted int
+ *  @return The formatted int
  *
  *  The int returned is formatted this way :
  *  K*2^3 + Q*2^2 + k*2 + q with K,k,Q,q between 0 or 1

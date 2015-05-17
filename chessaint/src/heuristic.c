@@ -27,46 +27,30 @@
  */
 
 Color is_mate(Board board) {
-  Stack white_king_moves;
-  Stack black_king_moves;
-  stack_alloc(&white_king_moves);
-  stack_alloc(&black_king_moves);
+  Graph graph;
+  graph_alloc(&graph);
+  graph.current_node = board;
+  graph.current_node.activeColor = white;
+  
+  movesGenerator(&graph);
+  
 
-  bool threatsForBlackKing[8][8];
-  bool threatsForWhiteKing[8][8];
-  bool kingthreat = false;
-
-  findThreats(&board, white, black, threatsForBlackKing);
-  findThreats(&board, black, white, threatsForWhiteKing);
-
-  for (int i = 0; i < 8; ++i) {
-    for (int j = 0; j < 8; ++j) {
-      if (board.square[i][j].piece == king) {
-        if (board.square[i][j].color == white) {
-          kingthreat = threatsForWhiteKing[i][j];
-          kingMoveGenerator(&white_king_moves, i, j, white, board,
-                            threatsForWhiteKing);
-        } else {
-          kingthreat = threatsForBlackKing[i][j];
-          kingMoveGenerator(&black_king_moves, i, j, black, board,
-                            threatsForBlackKing);
-        }
-      }
-    }
-  }
-  if (stack_pop(&white_king_moves) == -1 && kingthreat) {
-    stack_free(&white_king_moves);
-    stack_free(&black_king_moves);
+  if (stack_pop(&(graph.current_moves)) == -1) {
+    graph_free(&graph);
     return white;
-  } else if (stack_pop(&black_king_moves) == -1 && kingthreat) {
-    stack_free(&white_king_moves);
-    stack_free(&black_king_moves);
-    return black;
-  } else {
-    stack_free(&white_king_moves);
-    stack_free(&black_king_moves);
-    return neutral;
   }
+  
+  graph.current_node.activeColor = black;
+  stack_free(&(graph.current_moves));
+  stack_alloc(&(graph.current_moves));
+  movesGenerator(&graph);
+    
+  if (stack_pop(&(graph.current_moves)) == -1) {
+    graph_free(&graph);
+    return black;
+  }
+  graph_free(&graph);
+  return neutral;
 }
 
 /**
@@ -165,9 +149,9 @@ int heuristic(Board board) {
   /* Returns 500 or -500 directly if one of the kings is mate */
   if (is_mate(board) != neutral) {
     if (is_mate(board) == board.activeColor)
-      return float_to_int(-500);
-    else
       return float_to_int(500);
+    else
+      return float_to_int(-500);
   }
 
   /* Divides by 2 if a piece is threatened */
@@ -203,7 +187,7 @@ int heuristic(Board board) {
         break;
       }
       /* Scores depends on the player */
-      if (board.activeColor != board.square[i][j].color)
+      if (board.activeColor == board.square[i][j].color)
         scoreindex[i][j] *= -1;
 
       /* Manage threats */

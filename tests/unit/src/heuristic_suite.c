@@ -132,26 +132,13 @@ void test_heuristic(void) {
      the rule of computation only with current position) and not
      the normal score */
 
-  char* mate_fen = "6rk/4pq2/3r4/8/8/8/8/B5KR w - - 0 1";
+  char* mate_fen = "6rk/4pq2/3r4/8/8/8/8/B5KR b - - 0 1";
   Board mate;
   initAGame(&mate);
 
   fenToBoard(mate_fen, &mate);
   CU_ASSERT_EQUAL(heuristic(mate), 500);
-
-  initAGame(&mate);
-  play_move(5254, &mate);
-  play_move(6775, &mate);
-  play_move(1022, &mate);
-  play_move(605, &mate);
-  play_move(4051, &mate);
-  play_move(7563, &mate);
-
-  printBoardAndData(mate);
-
-  CU_ASSERT_EQUAL(heuristic(mate), 500);
-  CU_ASSERT_EQUAL(is_mate(mate), white);
-
+  
   /* Score is computed with white as reference meaning a good score (above 0)
      represents a advantage for white.
      But we should still assert that the sum of white and black score is equal
@@ -206,7 +193,7 @@ void test_heuristic(void) {
   fenToBoard(safe_fen, &safe);
   fenToBoard(danger_fen, &danger);
 
-  CU_ASSERT_EQUAL(heuristic(safe), heuristic(danger) + 10/2);
+  CU_ASSERT_EQUAL(heuristic(safe) + 10/2, heuristic(danger));
 
   /* Assert that a piece in danger but protected is worth the original value */
 
@@ -216,6 +203,6 @@ void test_heuristic(void) {
   initAGame(&protected);
   fenToBoard(p_fen, &protected);
 
-  CU_ASSERT_EQUAL(heuristic(safe), heuristic(protected)-10*1/2);
+  CU_ASSERT_EQUAL(heuristic(safe)-10*1/2, heuristic(protected));
 }
 

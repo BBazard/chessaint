@@ -16,7 +16,6 @@
  *  Defines struct Graph as the Graph type
  *
  */
-
 typedef struct Graph Graph;
 
 /**
@@ -25,35 +24,19 @@ typedef struct Graph Graph;
  *
  *  Stores the graph data
  *
- *  @todo Add doxy doc for struct members
- *
  */
-
 struct Graph {
-  Board root;
-  Board current_node;
-  Llist links;
-  Stack current_moves;
+  Board root;           /**< The board after the player has played */
+  Board current_node;   /**< The board is the asater */
+  Stack current_moves;  /**< The moves playable for a given node */
+  Llist links;          /**< The list of all the nodes of the graph */
+                        /**< (score sorted) */
 };
 
 void graph_alloc(Graph *graph);
 void graph_free(Graph *graph);
 
 void play_move(int move, Board *board);
-
-
-
-
-
-void findAllPinnings(Board *board, Color activeColor, bool pinned[8][8]);
-void findLinePinnings(Board *board, Color enemyColor, bool pinned[8][8],
-                      int X, int Y, int incX, int incY);
-void findRookPinnings(Board *board, Color enemyColor,
-                      bool pinned[8][8], int X, int Y);
-void findBishopPinnings(Board *board, Color enemyColor,
-                        bool pinned[8][8], int X, int Y);
-
-
 
 
 void movesGenerator(Graph *graph);
@@ -89,8 +72,6 @@ void knightAndKing4DirectionsGen(int incX, int incY, Stack *moves,
 
 void castlesMoveGenerator(int incX, int squareX, int squareY,
                           Stack *moves, Board board);
-
-bool isInBoardSquare(int squareX, int squareY);
 
 void update_board(Arc father, Board *board);
 

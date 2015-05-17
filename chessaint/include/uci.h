@@ -2,6 +2,7 @@
 /**
  *  @file
  */
+
 #ifndef CHESSAINT_INCLUDE_UCI_H_
 #define CHESSAINT_INCLUDE_UCI_H_
 

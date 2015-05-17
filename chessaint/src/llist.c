@@ -176,16 +176,6 @@ void llist_concatenate(Llist *list, Llist to_concat) {
   }
 }
 
-/**
- *  @fn void arc_print(Arc value)
- *  @brief Print an Arc
- *  @param[in] value Arc to print, all elements of the structure must be defined
- *
- *  Print the content of an Arc in a formated output (on stdout), the content is print as the following example :
- *  Ex : #0| e4--2->e5 | Set : none | Color : white
- *
- */
-
 void llist_print(Llist list) {
   Element *tmp;
   tmp = list;
@@ -203,7 +193,6 @@ void llist_print(Llist list) {
  *  @fn void arc_print(Arc value)
  *  @brief Print an Arc
  *  @param[in] value Arc to print, all elements of the structure must be defined
- *  @todo transform "set" into an enumeration
  *
  *  Print the content of an Arc in a formated output (on stdout), the content is print as the following example :
  *  Ex : #0| e4--2->e5 | Set : none | Color : white

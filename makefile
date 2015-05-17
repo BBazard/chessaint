@@ -51,7 +51,6 @@ doc :
 	printf "\033[0;34m"
 	printf "Generating Documentation\n"
 	doxygen $(DOCDIR)/config/main.cfg
-	doxygen $(DOCDIR)/config/wrapper.cfg
 	cat $(LOGDIR)/docwarnings
 	printf "\033[0m"
 .PHONY : doc

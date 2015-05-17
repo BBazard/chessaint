@@ -262,21 +262,36 @@ void test_pawnMoveGenerator2(void) {
 }
 
 void test_castlesMoveGenerator(void) {
-/*  Board testBoardCastles;
+  /*Board testBoardCastles;
+  Board testBoardCastles2;
   Stack tmp;
   stack_alloc(&tmp);
 
+  bool threats1[8][8];
+  bool threats2[8][8];
+
    In this situation, all castles might be okay, but still
-   a kight on b2 disturb the white castle on queen side*/
+   a kight on b2 disturb the white castle on queen side
 
-  /*fenToBoard("8/8/8/8/8/8/8/RN2K2R w KQkq - 0 1", &testBoardCastles);
+  fenToBoard("r3k2r/R5q1/8/8/8/8/r7/R3K2R w KQkq - 0 1", &testBoardCastles);
+  fenToBoard("r3k2r/R5q1/8/8/8/8/r7/R3K2R b KQkq - 0 1", &testBoardCastles2);
 
-   Enable to see the situation :*/
-  /* printBoardAndData(testBoardCastles); */
+  findThreats(&testBoardCastles, black, white, threats1);
+  findThreats(&testBoardCastles2, white, black, threats2);
 
-  /* Let castleMoveGenerator be called by kingMoveGenerator (more accurate)
-  kingMoveGenerator(&tmp, 4, 0, white, testBoardCastles);
+  Enable to see the situation :
+  printBoardAndData(testBoardCastles);
 
+  kingMoveGenerator(&tmp, 4, 0, white, testBoardCastles, threats1);
+  kingMoveGenerator(&tmp, 4, 7, black, testBoardCastles2, threats2);
+ Yeah there are other moves than only casylings 
+  CU_ASSERT_EQUAL(stack_pop(&(tmp)), 4727);
+  CU_ASSERT_EQUAL(stack_pop(&(tmp)), 4767);
+  CU_ASSERT_EQUAL(stack_pop(&(tmp)), 4737);
+  CU_ASSERT_EQUAL(stack_pop(&(tmp)), 4757);
+  CU_ASSERT_EQUAL(stack_pop(&(tmp)), 4020);
+  CU_ASSERT_EQUAL(stack_pop(&(tmp)), 4030);
+  CU_ASSERT_EQUAL(stack_pop(&(tmp)), 4050);
   stack_free(&tmp);*/
 }
 

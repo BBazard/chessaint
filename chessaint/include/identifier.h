@@ -25,7 +25,6 @@
  *  The form is : xxxx ... xxxx x x xx xx
  *
  */
-
 typedef mpz_t Identifier;
 
 /**
@@ -35,7 +34,6 @@ typedef mpz_t Identifier;
  *  Rename type mpz_t from GNU Multi-Precision library
  *
  */
-
 typedef mpz_t Stack;
 
 int stack_contract(int p1, int p2, int p3, int p4);

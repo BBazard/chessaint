@@ -8,7 +8,6 @@
 
 #include "include/graph.h"
 #include <stdbool.h>
-#include <assert.h>
 #include "include/chessboard.h"
 /**
  *  @fn void graph_alloc(Graph *graph)
@@ -391,101 +390,6 @@ void bishopAndRook4DirectionsGen(int incX, int incY, Stack *moves, int squareX,
 }
 
 /**
- *  find the piece which cannot move
- *  because of pinnings
- *
- *  fill pinned array
- *
- *  @todo Move in chessboard
- *
- */
-void findAllPinnings(Board *board, Color activeColor, bool pinned[8][8]) {
-  for (int i = 0; i < ROWCOL_NB; ++i)
-    for (int j = 0; j < ROWCOL_NB; ++j)
-      pinned[i][j] = false;
-
-  Color enemyColor = getOtherColor(activeColor);
-
-  for (int i = 0 ; i < ROWCOL_NB ; ++i)
-    for (int j = 0 ; j < ROWCOL_NB ; ++j)
-      if (board->square[i][j].color == enemyColor) {
-        switch (board->square[i][j].piece) {
-        case bishop:
-          findBishopPinnings(board, enemyColor, pinned, i, j);
-          break;
-        case rook:
-          findRookPinnings(board, enemyColor, pinned, i, j);
-          break;
-        case queen:
-          findBishopPinnings(board, enemyColor, pinned, i, j);
-          findRookPinnings(board, enemyColor, pinned, i, j);
-          break;
-        default:  /* pawn, knight, king, empty */
-          break;
-        }
-      }
-}
-
-
-/**
- *  @internal
- *
- *  search for a piece of your color
- *  between a enemy piece and your king
- *  for a piece
- */
-void findLinePinnings(Board *board, Color enemyColor, bool pinned[8][8],
-                      int X, int Y, int incX, int incY) {
-  Color myColor = getOtherColor(enemyColor);
-  Piece potentielPinned = empty;
-  int potX = -1;
-  int potY = -1;
-
-  assert(board->square[X][Y].color == enemyColor);
-  X += incX;
-  Y += incY;
-
-  while (isInBoardSquare(X, Y) && board->square[X][Y].color != enemyColor) {
-    if (board->square[X][Y].color == myColor) {
-      if (board->square[X][Y].piece != king) {
-        /* when there is more than one piece    */
-        /* between the king and the enemy piece */
-        if (potentielPinned != empty)
-          return;
-
-        potentielPinned = board->square[X][Y].piece;
-        potX = X;
-        potY = Y;
-      }
-      if (board->square[X][Y].piece == king) {
-        if (potentielPinned != empty)
-          pinned[potX][potY] = true;
-        return;
-      }
-    }
-    X += incX;
-    Y += incY;
-  }
-}
-
-void findRookPinnings(Board *board, Color enemyColor,
-                      bool pinned[8][8], int X, int Y) {
-  findLinePinnings(board, enemyColor, pinned, X, Y, 1, 0);
-  findLinePinnings(board, enemyColor, pinned, X, Y, 0, 1);
-  findLinePinnings(board, enemyColor, pinned, X, Y, -1, 0);
-  findLinePinnings(board, enemyColor, pinned, X, Y, 0, -1);
-}
-
-void findBishopPinnings(Board *board, Color enemyColor,
-                        bool pinned[8][8], int X, int Y) {
-  findLinePinnings(board, enemyColor, pinned, X, Y, -1, -1);
-  findLinePinnings(board, enemyColor, pinned, X, Y, -1, +1);
-  findLinePinnings(board, enemyColor, pinned, X, Y, +1, -1);
-  findLinePinnings(board, enemyColor, pinned, X, Y, +1, +1);
-}
-
-
-/**
  *  @fn void queenMoveGenerator(Stack *moves, int squareX, int squareY,
  Color activeColor, Board board)
  *  @brief gives all moves for a queen sitting on a given square
@@ -649,26 +553,32 @@ void kingMoveGenerator(Stack *moves, int squareX,
                                   activeColor, board);
     }
   }
-
-  for (int i = 0 ; i < 4 ; ++i) {
-    if (board.availableCastlings[i] == 1) {
-      switch (i) {
-        case 0:
-          if (activeColor == white)
-            // castlesMoveGenerator(1, squareX, squareY, moves, board);
-          break;
-        case 1:
-          if (activeColor == white)
-            // castlesMoveGenerator(-1, squareX, squareY, moves, board);
-          break;
-        case 2:
-          if (activeColor == black)
-            // castlesMoveGenerator(1, squareX, squareY, moves, board);
-          break;
-        case 3:
-          if (activeColor == black)
-            // castlesMoveGenerator(-1, squareX, squareY, moves, board);
-          break;
+  /*First condition on castling : not be in checked position */
+  if (!threats[squareX][squareY]) {
+    for (int i = 0 ; i < 4 ; ++i) {
+      if (board.availableCastlings[i] == 1) {
+        switch (i) {
+          case 0:
+            if ((activeColor == white) && (!threats[squareX + 1][squareY]) &&
+                (!threats[squareX + 2][squareY]))
+              /* castlesMoveGenerator(1, squareX, squareY, moves, board); */
+            break;
+          case 1:
+            if ((activeColor == white) && (!threats[squareX - 1][squareY]) &&
+                (!threats[squareX - 2][squareY]))
+             /* castlesMoveGenerator(-1, squareX, squareY, moves, board); */
+            break;
+          case 2:
+            if ((activeColor == black) && (!threats[squareX + 1][squareY]) &&
+                (!threats[squareX + 2][squareY]))
+             /*  castlesMoveGenerator(1, squareX, squareY, moves, board); */
+            break;
+          case 3:
+            if ((activeColor == black) && (!threats[squareX - 1][squareX]) &&
+                (!threats[squareX - 2][squareY]))
+            /*  castlesMoveGenerator(-1, squareX, squareY, moves, board); */
+            break;
+        }
       }
     }
   }
@@ -703,7 +613,7 @@ void castlesMoveGenerator(int incX, int squareX, int squareY, Stack *moves,
   } while (testSquare != nextSquareX);
 
   if (canCastle) {
-    printf("(%d,%d)->(%d,%d)\n", squareX, squareY, nextSquareX, squareY);
+    stack_push(moves, stack_contract(squareX, squareY, nextSquareX, squareY));
   }
 }
 
@@ -733,19 +643,6 @@ void knightAndKing4DirectionsGen(int incX, int incY, Stack *moves,
 }
 
 /**
- *  @fn isInBoardSquare(int squareX, int squareY)
- *  @brief Test if the given square given with its coordinates is in the board
- *  @param[in] squareX
- *  @param[in] squareY are the coordinates of the square to test
- *  @param[out] bool : true if the square is in false otherwise.
- *
- *  @todo Move in chessboard
- */
-bool isInBoardSquare(int squareX, int squareY) {
-  return (squareX >= 0) && (squareX <= 7) && (squareY >= 0) && (squareY <= 7);
-}
-
-/**
  *  @fn void play_move(int move, Board *board)
  *  @brief play a move on a board
  *  @param[in] move the move to play, Ex : 4143 pour e2e4
@@ -767,7 +664,7 @@ void play_move(int move, Board *board) {
     board->enPassant.column = 0; /* means there is no enpassant */
   board->fullMoveNb += 1;
 
-  /* Castling */
+  /* Updating castlings list */
   if (board->activeColor == white) {
     if (a == 7 && b == 0)
       board->availableCastlings[0] = 0;
@@ -787,6 +684,7 @@ void play_move(int move, Board *board) {
       board->availableCastlings[3] = 0;
     }
   }
+
   board->square[c][d] = board->square[a][b];
   board->square[a][b].color = neutral;
   board->square[a][b].piece = empty;
@@ -977,7 +875,6 @@ void lineThreatGenerator(int incX, int incY, int squareX,
                          int squareY, Board board, bool threats[8][8]) {
   int X = squareX;
   int Y = squareY;
-  Color opponentColor = getOtherColor(board.activeColor);
 
   X += incX;
   Y += incY;

@@ -14,7 +14,7 @@
 #include <stdbool.h>
 
 #define SQUARES_NB 64x
-/*Number of rowws and columns = 8*/
+/* Number of rowws and columns = 8 */
 #define ROWCOL_NB 8
 
 /** 
@@ -34,7 +34,7 @@ typedef struct Coord Coord;
  */
 struct Coord {
   int column; /**< x coordinates */
-  int line; /**< y coordinates */
+  int line;   /**< y coordinates */
 };
 
 
@@ -47,8 +47,8 @@ typedef enum Color Color;
  * To describe the state of a square for exemple
  */
 enum Color {
-  white, /**< white player's possession */
-  black, /**< black player's possession */
+  white,  /**< white player's possession */
+  black,  /**< black player's possession */
   neutral /**< For empty squares */
 };
 
@@ -64,13 +64,13 @@ typedef enum Piece Piece;
  *  List all pieces
  */
 enum Piece {
-  pawn, /**< pawn - pion (fr) */
+  pawn,   /**< pawn   - pion (fr) */
   bishop, /**< bishop - fou (fr) */
   knight, /**< knight - cavalier (fr) */
-  rook, /**< rook - tour (fr) */
-  queen, /**< queen - dame (fr) */
-  king, /**< king - roi (fr) */
-  empty /**< for empty squares */
+  rook,   /**< rook   - tour (fr) */
+  queen,  /**< queen  - dame (fr) */
+  king,   /**< king   - roi (fr) */
+  empty   /**< for empty squares */
 };
 
 /** 
@@ -88,7 +88,6 @@ typedef struct Square Square;
  *  @brief Represents a square on the board
  *
  */
-
 struct Square {
   Color color; /**< The color of the owner of the case, can be neutral */
   Piece piece; /**< The piece which is in the square, can be empty */
@@ -116,15 +115,15 @@ struct Board {
   Square square[ROWCOL_NB][ROWCOL_NB]; /**< A board = 64 squares : 8x8 */
 
   Color activeColor; /**< Next to play from this position */
-  int availableCastlings[4]; /**< What are the available castles
-                                1st element : white king side castle
-                                2nd element : white queen side castle
-                                3rd element : black king side castle
-                                4th element : black queen side castle
-                                values 1 : for true 0 for false*/
   Coord enPassant; /**< Which square can be taken en passant */
   int halfMoveClock; /**< useful to think about draws */
   int fullMoveNb; /**<Total moves, starting to 1 (convention) */
+  int availableCastlings[4]; /**< What are the available castles      \n*/
+                             /**< [0] : white king side castle        \n*/
+                             /**< [1] : white queen side castle       \n*/
+                             /**< [2] : black king side castle        \n*/
+                             /**< [3] : black queen side castle       \n*/
+                             /**< values : 1 for true and 0 for false   */
 };
 
 /* lines first, columns then */
@@ -144,6 +143,16 @@ enum Piece charToPiece(char c);
 void copy_board(Board *src, Board *dest);
 
 Color getOtherColor(Color color);
+
+bool isInBoardSquare(int squareX, int squareY);
+
+void findAllPinnings(Board *board, Color activeColor, bool pinned[8][8]);
+void findLinePinnings(Board *board, Color enemyColor, bool pinned[8][8],
+                      int X, int Y, int incX, int incY);
+void findRookPinnings(Board *board, Color enemyColor,
+                      bool pinned[8][8], int X, int Y);
+void findBishopPinnings(Board *board, Color enemyColor,
+                        bool pinned[8][8], int X, int Y);
 
 #endif /* CHESSAINT_INCLUDE_CHESSBOARD_H_ */
 

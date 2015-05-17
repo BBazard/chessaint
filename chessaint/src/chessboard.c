@@ -7,10 +7,7 @@
  */
 
 #include "include/chessboard.h"
-
-/**
- * @todo need to init in a function
- */
+#include <assert.h>
 
 Color colorToInit[ROWCOL_NB][ROWCOL_NB] = {
   {white, white, white, white, white, white, white, white},
@@ -282,5 +279,108 @@ Color getOtherColor(Color color) {
     return white;
 
   return neutral;
+}
+
+/**
+ *  @fn isInBoardSquare(int squareX, int squareY)
+ *  @brief Test if the given square given with its coordinates is in the board
+ *  @param[in] squareX
+ *  @param[in] squareY are the coordinates of the square to test
+ *  @param[out] bool : true if the square is in false otherwise.
+ */
+bool isInBoardSquare(int squareX, int squareY) {
+  return (squareX >= 0) && (squareX <= 7) && (squareY >= 0) && (squareY <= 7);
+}
+
+/**
+ *  find the piece which cannot move
+ *  because of pinnings
+ *
+ *  fill pinned array
+ *
+ */
+void findAllPinnings(Board *board, Color activeColor, bool pinned[8][8]) {
+  for (int i = 0; i < ROWCOL_NB; ++i)
+    for (int j = 0; j < ROWCOL_NB; ++j)
+      pinned[i][j] = false;
+
+  Color enemyColor = getOtherColor(activeColor);
+
+  for (int i = 0 ; i < ROWCOL_NB ; ++i)
+    for (int j = 0 ; j < ROWCOL_NB ; ++j)
+      if (board->square[i][j].color == enemyColor) {
+        switch (board->square[i][j].piece) {
+        case bishop:
+          findBishopPinnings(board, enemyColor, pinned, i, j);
+          break;
+        case rook:
+          findRookPinnings(board, enemyColor, pinned, i, j);
+          break;
+        case queen:
+          findBishopPinnings(board, enemyColor, pinned, i, j);
+          findRookPinnings(board, enemyColor, pinned, i, j);
+          break;
+        default:  /* pawn, knight, king, empty */
+          break;
+        }
+      }
+}
+
+
+/**
+ *  @internal
+ *
+ *  search for a piece of your color
+ *  between a enemy piece and your king
+ *  for a piece
+ */
+void findLinePinnings(Board *board, Color enemyColor, bool pinned[8][8],
+                      int X, int Y, int incX, int incY) {
+  Color myColor = getOtherColor(enemyColor);
+  Piece potentielPinned = empty;
+  int potX = -1;
+  int potY = -1;
+
+  assert(board->square[X][Y].color == enemyColor);
+  X += incX;
+  Y += incY;
+
+  while (isInBoardSquare(X, Y) && board->square[X][Y].color != enemyColor) {
+    if (board->square[X][Y].color == myColor) {
+      if (board->square[X][Y].piece != king) {
+        /* when there is more than one piece    */
+        /* between the king and the enemy piece */
+        if (potentielPinned != empty)
+          return;
+
+        potentielPinned = board->square[X][Y].piece;
+        potX = X;
+        potY = Y;
+      }
+      if (board->square[X][Y].piece == king) {
+        if (potentielPinned != empty)
+          pinned[potX][potY] = true;
+        return;
+      }
+    }
+    X += incX;
+    Y += incY;
+  }
+}
+
+void findRookPinnings(Board *board, Color enemyColor,
+                      bool pinned[8][8], int X, int Y) {
+  findLinePinnings(board, enemyColor, pinned, X, Y, 1, 0);
+  findLinePinnings(board, enemyColor, pinned, X, Y, 0, 1);
+  findLinePinnings(board, enemyColor, pinned, X, Y, -1, 0);
+  findLinePinnings(board, enemyColor, pinned, X, Y, 0, -1);
+}
+
+void findBishopPinnings(Board *board, Color enemyColor,
+                        bool pinned[8][8], int X, int Y) {
+  findLinePinnings(board, enemyColor, pinned, X, Y, -1, -1);
+  findLinePinnings(board, enemyColor, pinned, X, Y, -1, +1);
+  findLinePinnings(board, enemyColor, pinned, X, Y, +1, -1);
+  findLinePinnings(board, enemyColor, pinned, X, Y, +1, +1);
 }
 

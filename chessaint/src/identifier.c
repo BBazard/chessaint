@@ -33,7 +33,6 @@ int stack_contract(int p1, int p2, int p3, int p4) {
  *  @brief Transform an int in four
  *  @param[out] p1,p2,p3,p4 Where p1 is todivide MSB and p4 todivide LSB
  *  @param[in] todivide The integer (must be in [|0; 10000|]) to divide in four
- *  @bug last "tmp =" is useless
  *
  *  Divide todivide in p1, p2, p3 and p4
  *
@@ -49,7 +48,6 @@ void stack_expand(int *p1, int *p2, int *p3, int *p4, int todivide) {
   *p2 = tmp%10;
   tmp = (tmp-*p2)/10;
   *p1 = tmp%10;
-  tmp = (tmp-*p1)/10;
 }
 
 /**

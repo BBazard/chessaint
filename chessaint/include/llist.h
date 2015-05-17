@@ -18,7 +18,6 @@
  *  Defines struct Arc as the Arc type
  *
  */
-
 typedef struct Arc Arc;
 
 /** 
@@ -31,7 +30,6 @@ typedef struct Arc Arc;
  *  Identifier type
  *
  */
-
 struct Arc {
   int score; /**< The score of the arc */
   Identifier *data; /**< All the others data */
@@ -44,7 +42,6 @@ struct Arc {
  *  Defines struct Element as the Element type
  *
  */
-
 typedef struct Element Element;
 
 /** 
@@ -52,7 +49,6 @@ typedef struct Element Element;
  *  @brief Definition of an list element
  *
  */
-
 struct Element {
   Arc value; /**< The value of the element, an arc */
   struct Element *next; /**< The link to the next element of the list */
@@ -65,7 +61,6 @@ struct Element {
  *  Defines type Llist as a pointer on type Element (=struct Element).
  *
  */
-
 typedef Element *Llist;
 
 void arc_alloc(Arc *arc);

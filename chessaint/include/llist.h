@@ -29,7 +29,7 @@ struct Node {
 /**
  *  @param Node Define struct Node as type
  */
-typedef struct Node Node
+typedef struct Node Node;
 
 /**
  *  @struct Element

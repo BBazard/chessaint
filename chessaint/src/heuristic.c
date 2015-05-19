@@ -184,7 +184,7 @@ int heuristic(Board board) {
         scoreindex[i][j] = 70;
         break;
       case king:
-        scoreindex[i][j] = 130;
+        scoreindex[i][j] = 0;
         break;
       }
       /* Scores depends on the player */

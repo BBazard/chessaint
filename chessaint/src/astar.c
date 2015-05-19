@@ -32,7 +32,7 @@ void move_to_node(int move, Node father, Node *current, Board oldboard) {
   stack_to_identifier(current->data, tmp, father_stat);
 
   play_move(move, &newboard);
-  current->score = heuristic(newboard);
+  current->score = heuristic(newboard)-father.score;
   stack_free(&tmp);
 }
 
@@ -77,8 +77,10 @@ int next_gen(Graph *graph, int depth) {
       while (identifier_get_fullmove(*((graph->links)->value.data)) >= depth) {
         llist_add((graph->links)->value, &tmp);
         llist_rm_first(&(graph->links));
-        if (graph->links->next == NULL)
+        if (graph->links == NULL) {
+          llist_concatenate(&(graph->links), tmp);
           return 0;
+        }
       }
     }
     node_copy((graph->links)->value, &father);
@@ -94,13 +96,25 @@ int next_gen(Graph *graph, int depth) {
   movesGenerator(graph);
   move = stack_pop(&(graph->current_moves));
 
+  llist_free(&tmp);
+  tmp = NULL;
+  
   while (move != -1) {
     move_to_node(move, father, &son, graph->current_node);
-    llist_add(son, &(graph->links));
+
+    if (graph->current_node.activeColor == white)
+      llist_add(son, &tmp);
+    else
+      llist_add(son, &(graph->links));
+
     move = stack_pop(&(graph->current_moves));
   }
 
-  llist_free(&tmp);
+  if (graph->current_node.activeColor == white) {
+    llist_add(tmp->value, &(graph->links));
+    llist_free(&tmp);
+  }
+  
   stack_free(&s);
   node_free(&father);
   node_free(&son);
@@ -151,7 +165,7 @@ int astar(Graph *graph, int query_score, int depth, int max_time,
           && (time(NULL) - start_time < max_time)
           && gen_ret ) {
     gen_ret = next_gen(graph, depth);
-
+    
     /* Get bestmove for this generation */
     tmp = graph->links;
     if (tmp == NULL)

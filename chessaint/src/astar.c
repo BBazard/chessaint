@@ -107,11 +107,10 @@ int next_gen(Graph *graph, int depth) {
     move = stack_pop(&(graph->current_moves));
   }
 
-  if (graph->current_node.activeColor == white) {
+  if (tmp != NULL && graph->current_node.activeColor == white)
     llist_add(tmp->value, &(graph->links));
-    llist_free(&tmp);
-  }
 
+  llist_free(&tmp);
   stack_free(&s);
   node_free(&father);
   node_free(&son);

@@ -17,8 +17,6 @@
  * The worst case is "position startpos moves h2h3...g2g3..."\n
  * That is to say about (25 + 5 * maxMovesNb) characters\n
  * Let's fix maxMovesNb 200 (100 black moves and 100 white moves)
- * 
- * @todo set UCI_SIZE dynamically thanks to graph.fullMoveNb
  */
 #define UCI_SIZE 1024
 

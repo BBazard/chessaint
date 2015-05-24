@@ -36,8 +36,6 @@ void node_free(Node *node) {
  *  @param[in] newvalue The Node value to add
  *  @param[in,out] list Pointer on the targeted list, must be NULL if the list is empty
  *
- *  @bug Need to free the inited arcs (init IS needed)
- *
  *  @note The *Llist can be Null pointer, in this case,
  *  the list take newvalue as the first element, more, it should be NULL if empty.
  *

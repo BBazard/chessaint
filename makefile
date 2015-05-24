@@ -101,5 +101,6 @@ cleandoc :
 	printf "\033[0m"
 	rm -rf $(DOCDIR)/build/*
 	rm -rf $(DOCDIR)/html
+	rm -rf $(DOCDIR)/latex
 .PHONY : cleandoc
 

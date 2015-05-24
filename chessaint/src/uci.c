@@ -1,7 +1,6 @@
 /* This file is part of the ChessAInt project 2015 */
 /**
  * @file
- * @todo handle error with a real stderr file
  */
 
 #include "include/uci.h"
@@ -11,9 +10,6 @@
 /**
  * Print an error message
  * and stop the engine
- *
- * @todo stop the engine
- * with uci "quit" or something
  */
 void manageErrors(char *msg) {
   fprintf(stderr, "Error ! Details : %s", msg);

@@ -49,12 +49,9 @@ void move_to_node(int move, Node father, Node *current, Board oldboard) {
  *  then computes all the possible moves from this position.
  *  Computed moves are then added to the llist
  *
- *  @bug if a father stay the "best" node to choose ie the top node
- *  of the list, this algorithm will create the same node every time
  *  @note father needs no init AND MUST NOT BE FREED
  *  @note father score is put to -501 when processed to avoid previously
  *  spotted buggy situation (like putting it in a closed set for astar)
- *  @todo perhaps find a better way to correct previous note
  *
  */
 int next_gen(Graph *graph, int depth) {
@@ -98,7 +95,7 @@ int next_gen(Graph *graph, int depth) {
 
   llist_free(&tmp);
   tmp = NULL;
-  
+
   while (move != -1) {
     move_to_node(move, father, &son, graph->current_node);
 
@@ -114,7 +111,7 @@ int next_gen(Graph *graph, int depth) {
     llist_add(tmp->value, &(graph->links));
     llist_free(&tmp);
   }
-  
+
   stack_free(&s);
   node_free(&father);
   node_free(&son);
@@ -147,9 +144,6 @@ int next_gen(Graph *graph, int depth) {
  *  take that in account when assigning it.
  *  @note Previous note not implemented yet, the true number won't excess x+1
  *
- *  @todo test is bestmove is the best
- *  @todo use depth parameter to check max depth possibility
- *
  */
 int astar(Graph *graph, int query_score, int depth, int max_time,
           int max_nodes, int *stop, int *bestmove, FILE *log) {
@@ -165,7 +159,7 @@ int astar(Graph *graph, int query_score, int depth, int max_time,
           && (time(NULL) - start_time < max_time)
           && gen_ret ) {
     gen_ret = next_gen(graph, depth);
-    
+
     /* Get bestmove for this generation */
     tmp = graph->links;
     if (tmp == NULL)

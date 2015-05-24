@@ -64,9 +64,6 @@ void initAGame(Board *game) {
  *  @param[in] fen The fen string
  *  @param[in,out] game The board to put in a certain position
  *
- *  @bug : I think the bug is : if no square en passant, the end of the
- *    string is badly parsed. I'll check that -hugo
- *
  *  Parsing function
  */
 void fenToBoard(char *fen, Board *game) {
@@ -171,8 +168,6 @@ void fenToBoard(char *fen, Board *game) {
  *  @brief Print the board and game data in a formatted way
  *  @param[in] game: the board (and its data of its structure) to display
  *  @note Never forget that a1 <-> (0,0) so this printing is kinda flipped
- *  @bug Previous note is FALSE actually it works only for a1, b2 etc since 
- *  board is symmetrized ( ie e2 is not (4,1), but (1,4) with current code)
  */
 void printBoardAndData(Board game) {
   printf("\n\n");

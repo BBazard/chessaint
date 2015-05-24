@@ -219,10 +219,8 @@ void pawnMoveGeneratorCapture(Stack *moves,
       stack_push(moves, stack_contract(squareX, squareY, X, Y));
   }
 
-  /** @todo en passant
-   * The capture en passant
-   */
-   /*
+  /* The capture en passant
+   
    if (isInBoardSquare(board.enPassant.line,
    board.enPassant.column)) {
    X = squareX + 1;
@@ -629,8 +627,6 @@ void knightAndKing4DirectionsGen(int incX, int incY, Stack *moves,
  *  @brief play a move on a board
  *  @param[in] move the move to play, Ex : 4143 pour e2e4
  *  @param[in,out] board the board on which to play the move
- *
- *  @todo Need to update castling in board
  *
  */
 void play_move(int move, Board *board) {

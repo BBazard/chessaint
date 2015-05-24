@@ -1,9 +1,6 @@
 /* This file is part of the ChessAInt project 2015 */
 /**
  * @file
- * @todo handle error with a real stderr file
- * @todo create functions to open/close files
- * @todo parse uci strings
  */
 
 #include "include/loopuci.h"

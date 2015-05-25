@@ -34,7 +34,7 @@ default : release tests lint
 	printf "\033[0m"
 .PHONY : default
 
-all : tests lint doc
+all : release tests lint doc
 .PHONY : all
 
 .SILENT :
